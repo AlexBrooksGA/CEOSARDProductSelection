@@ -1,0 +1,9 @@
+{
+  "landsat-8-collection-2": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null},
+  "landsat-9-collection-2": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null},
+  "landsat-8-us-ard": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null},
+  "landsat-9-us-ard": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null},
+  "landsat-8-aircas": {"ceos_ard_status": "Assessment in progress", "ceos_ard_verified": false, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "In progress", "ceos_ard_record_url": null},
+  "sentinel-2-esa": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null},
+  "earthdaily-constellation": {"ceos_ard_status": "CEOS-ARD assessed", "ceos_ard_verified": true, "ceos_ard_pfs": null, "ceos_ard_assessment_level": "Assessment detail not reported", "ceos_ard_record_url": null}
+}

@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/secrets.toml
+
+# Local runtime and generated review artifacts
+.streamlit/cache/
+*.log
+output/
+tmp/

@@ -1,0 +1,120 @@
+{
+  "agencies": {
+    "AIR-CAS": {
+      "asset_url": "https://english.aircas.ac.cn/images/kty_logo.png",
+      "file": "aircas.png",
+      "homepage": "https://english.aircas.ac.cn/",
+      "mime_type": "image/png",
+      "source_kind": "page logo"
+    },
+    "CSIRO": {
+      "asset_url": "https://www.csiro.au/-/media/Web-team/Images/CSIRO_Logo/logo.png?h=85&iar=0&mh=85&mw=85&w=85&hash=7274FF1C07A84A176DA08265D18B87E5",
+      "file": "csiro.png",
+      "homepage": "https://www.csiro.au/",
+      "mime_type": "image/png",
+      "source_kind": "page logo"
+    },
+    "Catalyst/PCI": {
+      "asset_url": "https://catalyst.earth/wp-content/uploads/2023/08/LOGO.svg",
+      "display_treatment": "monochrome-dark",
+      "file": "catalyst.svg",
+      "homepage": "https://catalyst.earth/",
+      "mime_type": "image/svg+xml",
+      "source_kind": "page logo"
+    },
+    "Constellr": {
+      "asset_url": "https://cdn.prod.website-files.com/694266bf80292257d6fd8603/696fc0050e82fe9748d6d534_constellr_webclip.png",
+      "file": "constellr.png",
+      "homepage": "https://constellr.com/",
+      "mime_type": "image/png",
+      "source_kind": "curated official asset"
+    },
+    "DLR": {
+      "asset_url": "https://www.dlr.de/static/media/Logo-en.bc10c5b6.svg",
+      "file": "dlr.svg",
+      "homepage": "https://www.dlr.de/en",
+      "mime_type": "image/svg+xml",
+      "source_kind": "curated official asset"
+    },
+    "ESA": {
+      "asset_url": "https://www.esa.int/extension/pillars/design/pillars/images/ESA_Logo.svg",
+      "display_treatment": "monochrome-dark",
+      "file": "esa.svg",
+      "homepage": "https://www.esa.int/",
+      "mime_type": "image/svg+xml",
+      "source_kind": "page logo"
+    },
+    "EarthDaily": {
+      "asset_url": "https://earthdaily.com/hs-fs/hubfs/3.%20Logos%20all/EarthDaily%20Logos/EDA_logo_main.png?width=240&height=113&name=EDA_logo_main.png",
+      "file": "earthdaily.png",
+      "homepage": "https://earthdaily.com/",
+      "mime_type": "image/png",
+      "source_kind": "page logo"
+    },
+    "Geoscience Australia": {
+      "asset_url": "https://www.ga.gov.au/designs/images/geoscience_inline_Black.svg",
+      "file": "geoscience-australia.svg",
+      "homepage": "https://www.ga.gov.au/",
+      "mime_type": "image/svg+xml",
+      "source_kind": "page logo"
+    },
+    "ISRO": {
+      "asset_url": "https://www.isro.gov.in/media_isro/image/favicon.png.webp",
+      "file": "isro.webp",
+      "homepage": "https://www.isro.gov.in/",
+      "mime_type": "image/webp",
+      "source_kind": "curated official asset"
+    },
+    "JAXA": {
+      "asset_url": "https://global.jaxa.jp/images/banner_l_e.jpg",
+      "file": "jaxa.jpg",
+      "homepage": "https://global.jaxa.jp/",
+      "mime_type": "image/jpeg",
+      "source_kind": "curated official asset"
+    },
+    "NASA/JPL": {
+      "asset_url": "https://www.jpl.nasa.gov/favicon.ico",
+      "file": "nasa-jpl.ico",
+      "homepage": "https://www.jpl.nasa.gov/",
+      "mime_type": "image/x-icon",
+      "source_kind": "curated official asset"
+    },
+    "NRCan": {
+      "asset_url": "https://natural-resources.canada.ca/libraries/theme-gcweb/assets/sig-blk-en.svg",
+      "file": "nrcan.svg",
+      "homepage": "https://natural-resources.canada.ca/",
+      "mime_type": "image/svg+xml",
+      "source_kind": "page logo"
+    },
+    "Sinergise and Digital Earth Africa": {
+      "asset_url": "https://digitalearthafrica.org/wp-content/uploads/DE_Africa_Logo_Primary_RGB_1-1.png",
+      "file": "digital-earth-africa.png",
+      "homepage": "https://digitalearthafrica.org/",
+      "mime_type": "image/png",
+      "source_kind": "curated official asset"
+    },
+    "Synspective": {
+      "asset_url": "https://synspective.com/wp-content/themes/synspective/common/favicons/favicon.svg",
+      "file": "synspective.svg",
+      "homepage": "https://synspective.com/",
+      "mime_type": "image/svg+xml",
+      "source_kind": "curated official asset"
+    },
+    "USGS": {
+      "asset_url": "https://www.usgs.gov/themes/custom/usgs_tantalum/usgs_logo.png",
+      "display_treatment": "monochrome-dark",
+      "file": "usgs.png",
+      "homepage": "https://www.usgs.gov/",
+      "mime_type": "image/png",
+      "source_kind": "page logo"
+    },
+    "VITO/ESA": {
+      "asset_url": "https://vito.be/themes/custom/vitotheme/logo.svg",
+      "file": "vito.svg",
+      "homepage": "https://vito.be/en",
+      "mime_type": "image/svg+xml",
+      "source_kind": "page logo"
+    }
+  },
+  "notice": "Agency marks are shown for factual identification only; ownership remains with each organisation."
+}
