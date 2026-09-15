@@ -1,0 +1,192 @@
+﻿product_id,field,before,after,source_url,date_checked
+catalyst-spot5-hrg-2-5m,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/Catalyst-SPOT5-HRG/WGCV%20Assessment%20-%20Catalyst%20SPOT%205%20SR%20v5.pdf,14/09/2026
+constellr-lstprecision,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/ST/v5.0/Constellr%20LSTprecision%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+desis-l2a,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/DESIS%20HSI%20L2A/WGCV%20Assessment%20DLR%20DESIS%20HSI%20v501%20MT.pdf,14/09/2026
+earthdaily-constellation,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/EDC-SR/EarthDaily%20-%20CEOS%20ARD%20Peer%20Review%20Summary.pdf,14/09/2026
+aircas-l8-sr,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20SR%20v5.pdf,14/09/2026
+aircas-l8-st,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20ST%20v5.pdf,14/09/2026
+landsat-c2-sr,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Review_Panel_Assessment_USGS_SR_PFS_v5.pdf,14/09/2026
+landsat-c2-st,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Review_Panel_Assessment_for_USGS_ST_PFS_v5.pdf,14/09/2026
+landsat-c2-usard-sr,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Reflectance-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+landsat-c2-usard-st,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Temperature-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+opera-rtc-sentinel1,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/Opera%20RTC%20Sentinel-1%20peer%20review.zip,14/09/2026
+risat1a-eos04-nrb,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ISRO_EOS04_SAR_v1.0_WGCV_Assessment.zip,14/09/2026
+ga-sentinel1-nrb,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-NRB-GA/Sentinel-1%20NRB%20%28Geoscience%20Australia%29%20-%20CEOS%20ARD%20Peer%20Review%20Summary%20.pdf,14/09/2026
+opera-disp-sentinel1,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-OPERA-INSAR/OPERA%20DISP%20InSAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+dea-sentinel1-rtc,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/NRB/v5.5/WGCV_CARD4L_Assessment_for_Sinergise_Sentinel-1_NRB_v5.5.pdf,14/09/2026
+synspective-strix-nrb,ard_tier,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/SynspectiveStrixNRB/Synspective%20NRB%20SAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+catalyst-spot5-hrg-2-5m,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/Catalyst-SPOT5-HRG/WGCV%20Assessment%20-%20Catalyst%20SPOT%205%20SR%20v5.pdf,14/09/2026
+constellr-lstprecision,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/ST/v5.0/Constellr%20LSTprecision%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+desis-l2a,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/DESIS%20HSI%20L2A/WGCV%20Assessment%20DLR%20DESIS%20HSI%20v501%20MT.pdf,14/09/2026
+earthdaily-constellation,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/EDC-SR/EarthDaily%20-%20CEOS%20ARD%20Peer%20Review%20Summary.pdf,14/09/2026
+aircas-l8-sr,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20SR%20v5.pdf,14/09/2026
+aircas-l8-st,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20ST%20v5.pdf,14/09/2026
+landsat-c2-sr,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Review_Panel_Assessment_USGS_SR_PFS_v5.pdf,14/09/2026
+landsat-c2-st,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Review_Panel_Assessment_for_USGS_ST_PFS_v5.pdf,14/09/2026
+landsat-c2-usard-sr,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Reflectance-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+landsat-c2-usard-st,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Temperature-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+opera-rtc-sentinel1,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/Opera%20RTC%20Sentinel-1%20peer%20review.zip,14/09/2026
+risat1a-eos04-nrb,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ISRO_EOS04_SAR_v1.0_WGCV_Assessment.zip,14/09/2026
+ga-sentinel1-nrb,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-NRB-GA/Sentinel-1%20NRB%20%28Geoscience%20Australia%29%20-%20CEOS%20ARD%20Peer%20Review%20Summary%20.pdf,14/09/2026
+opera-disp-sentinel1,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-OPERA-INSAR/OPERA%20DISP%20InSAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+dea-sentinel1-rtc,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/NRB/v5.5/WGCV_CARD4L_Assessment_for_Sinergise_Sentinel-1_NRB_v5.5.pdf,14/09/2026
+synspective-strix-nrb,ard_tier_display,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/SynspectiveStrixNRB/Synspective%20NRB%20SAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+alos2-palsar2-25m-scansar-nrb,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ALOS-2/JAXA%20PALSAR-2%2025m%20ScanSAR%20HH%20HV%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ALOS-2/JAXA%20PALSAR-2%2025m%20FineBeam%20Global%20Mosaic%20HH%20HV%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.pdf,14/09/2026
+catalyst-sentinel1-rtc,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/Catalyst%20Sentinel1A%2010m%20VVVH%20WGCV%20Eval%20for%20SAR%28NRB%29%20Threshold%20v1.1.pdf,14/09/2026
+catalyst-spot5-hrg-2-5m,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/Catalyst-SPOT5-HRG/WGCV%20Assessment%20-%20Catalyst%20SPOT%205%20SR%20v5.pdf,14/09/2026
+constellr-lstprecision,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/ST/v5.0/Constellr%20LSTprecision%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+desis-l2a,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/DESIS%20HSI%20L2A/WGCV%20Assessment%20DLR%20DESIS%20HSI%20v501%20MT.pdf,14/09/2026
+earthdaily-constellation,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/EDC-SR/EarthDaily%20-%20CEOS%20ARD%20Peer%20Review%20Summary.pdf,14/09/2026
+enmap-l2a,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_DLR_EnMAP_SR_Threshold_v5.pdf,14/09/2026
+aircas-l8-sr,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20SR%20v5.pdf,14/09/2026
+aircas-l8-st,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20ST%20v5.pdf,14/09/2026
+landsat-c2-sr,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Review_Panel_Assessment_USGS_SR_PFS_v5.pdf,14/09/2026
+landsat-c2-st,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Review_Panel_Assessment_for_USGS_ST_PFS_v5.pdf,14/09/2026
+landsat-c2-usard-sr,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Reflectance-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+landsat-c2-usard-st,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Temperature-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+novasar1-rtc,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/NovaSAR_WGCVEval.zip,14/09/2026
+nrcan-rcm-nrb,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/NRCan%20RCM/RCM%2016m%20StripMap%20NRB%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.1.pdf,14/09/2026
+nrcan-rcm-pol,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/NRCan%20RCM/RCM%2030m%20ScanSAR%20NRB%20POL%20WGCV%20Eval%20for%20SAR(NRB%20POL)%20Threshold%20v1.1.pdf,14/09/2026
+opera-rtc-sentinel1,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/Opera%20RTC%20Sentinel-1%20peer%20review.zip,14/09/2026
+proba-v-l3-toc,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0/PROBA-V%20Assessment%20for%20SR%20S5TOC%20Threshold%20v5.pdf,14/09/2026
+risat1a-eos04-nrb,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ISRO_EOS04_SAR_v1.0_WGCV_Assessment.zip,14/09/2026
+risat1a-eos04-india-mosaic,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/EOS04%2018m%20MRS%20ScanSAR%20HH%20HV%20Mosaic%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.1.pdf,14/09/2026
+ga-sentinel1-nrb,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-NRB-GA/Sentinel-1%20NRB%20%28Geoscience%20Australia%29%20-%20CEOS%20ARD%20Peer%20Review%20Summary%20.pdf,14/09/2026
+opera-disp-sentinel1,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-OPERA-INSAR/OPERA%20DISP%20InSAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+dea-sentinel1-rtc,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/NRB/v5.5/WGCV_CARD4L_Assessment_for_Sinergise_Sentinel-1_NRB_v5.5.pdf,14/09/2026
+sentinel2-level2a,ard_tier_notes,"""The linked official peer-review assessment explicitly identifies this level.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Evaluation_for_ESA-S2_SR_at_Threshold_PFS_v5.pdf,14/09/2026
+synspective-strix-nrb,ard_tier_notes,"""No overall tier is recorded unless an official assessment document states it explicitly.""",Threshold compliance explicitly confirmed in the linked WGCV peer-review outcome.,https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/SynspectiveStrixNRB/Synspective%20NRB%20SAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+,,,,,
+,,,,,
+alos2-palsar2-25m-scansar-nrb,bit_depth_basis,"""unknown""","""output_product""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,bit_depth_basis,"""unknown""","""output_product""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,bit_depth_basis,"""unknown""","""output_product""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+opera-rtc-sentinel1,bit_depth_basis,"""unknown""","""output_product""",https://d2pn8kiwq2w21t.cloudfront.net/documents/ProductSpec_RTC_FXo4L08.pdf,14/09/2026
+opera-disp-sentinel1,bit_depth_basis,"""unknown""","""output_product""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+constellr-lstprecision,bit_depth_basis,"""unknown""","""output_product""",https://constellr.github.io/product-lst/LST-precision-metadata/,14/09/2026
+desis-l2a,bit_depth_basis,"""unknown""","""output_product""",https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis/products/pav-dlr-tn-004.pdf/@@download/file,14/09/2026
+enmap-l2a,bit_depth_basis,"""unknown""","""output_product""",https://www.enmap.org/data/test_data/EN-PCV-ICD-2009-2_HSI_Product_Specification_Level1_Level2_v1.5_excerpt_draft_public.pdf,14/09/2026
+proba-v-l3-toc,bit_depth_basis,"""unknown""","""output_product""",https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+,,,,,
+,,,,,
+catalyst-spot5-hrg-2-5m,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/Catalyst-SPOT5-HRG/WGCV%20Assessment%20-%20Catalyst%20SPOT%205%20SR%20v5.pdf,14/09/2026
+constellr-lstprecision,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/ST/v5.0/Constellr%20LSTprecision%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+desis-l2a,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/DESIS%20HSI%20L2A/WGCV%20Assessment%20DLR%20DESIS%20HSI%20v501%20MT.pdf,14/09/2026
+earthdaily-constellation,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/EDC-SR/EarthDaily%20-%20CEOS%20ARD%20Peer%20Review%20Summary.pdf,14/09/2026
+aircas-l8-sr,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20SR%20v5.pdf,14/09/2026
+aircas-l8-st,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20ST%20v5.pdf,14/09/2026
+landsat-c2-sr,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Review_Panel_Assessment_USGS_SR_PFS_v5.pdf,14/09/2026
+landsat-c2-st,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Review_Panel_Assessment_for_USGS_ST_PFS_v5.pdf,14/09/2026
+landsat-c2-usard-sr,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Reflectance-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+landsat-c2-usard-st,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Temperature-v5.0_Landsat_C2_US_ARD.pdf,14/09/2026
+opera-rtc-sentinel1,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/Opera%20RTC%20Sentinel-1%20peer%20review.zip,14/09/2026
+risat1a-eos04-nrb,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ISRO_EOS04_SAR_v1.0_WGCV_Assessment.zip,14/09/2026
+ga-sentinel1-nrb,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-NRB-GA/Sentinel-1%20NRB%20%28Geoscience%20Australia%29%20-%20CEOS%20ARD%20Peer%20Review%20Summary%20.pdf,14/09/2026
+opera-disp-sentinel1,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-OPERA-INSAR/OPERA%20DISP%20InSAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+dea-sentinel1-rtc,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Self%20Assessments/NRB/v5.5/WGCV_CARD4L_Assessment_for_Sinergise_Sentinel-1_NRB_v5.5.pdf,14/09/2026
+synspective-strix-nrb,ceos_ard_assessment_level,null,"""Threshold""",https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/SynspectiveStrixNRB/Synspective%20NRB%20SAR%20-%20CEOS%20ARD%20Review%20Summary.pdf,14/09/2026
+proba-v-l3-toc,coordinate_system,null,"""WGS84 geographic / Plate Carree""",https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+alos2-palsar2-25m-scansar-nrb,coordinate_system,null,"""UTM""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,coordinate_system,"""Geographic latitude/longitude""","""Geographic latitude/longitude; ITRF97 / GRS80""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+,,,,,
+opera-disp-sentinel1,coordinate_system,null,"""UTM grid (zone depends on frame)""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+proba-v-l3-toc,data_format,null,"""HDF5; Cloud Optimized GeoTIFF also documented""",https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+alos2-palsar2-25m-scansar-nrb,data_format,"""GeoTIFF""","""Cloud Optimized GeoTIFF + XML metadata""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+opera-disp-sentinel1,data_format,"""HDF5""","""NetCDF-4 / HDF5 (.nc)""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+alos2-palsar2-25m-scansar-nrb,elevation_model,null,"""AW3D30 v3.1; updated to v4.1 for observation data after July 2024""",https://www.eorc.jaxa.jp/ALOS/en/dataset/open_and_free/pdf/Update_of_the_processing_software_for_the_ALOS-2_PALSAR-2_ScanSAR_CEOS-ARD_compliant_product_e.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,elevation_model,null,"""AW3D30""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,elevation_model,null,"""Copernicus DEM""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+landsat-c2-st,elevation_model,"""ASTER GED emissivity input""",null,https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature,14/09/2026
+landsat-c2-usard-st,elevation_model,"""ASTER GED emissivity input""",null,https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature,14/09/2026
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+landsat-c2-sr,output_data_type,null,"""int16""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-st,output_data_type,null,"""int16""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-usard-sr,output_data_type,null,"""int16""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+landsat-c2-usard-st,output_data_type,null,"""int16""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+sentinel2-level2a,output_data_type,null,"""int16""",https://sentiwiki.copernicus.eu/web/s2-mission,14/09/2026
+alos2-palsar2-25m-scansar-nrb,output_data_type,null,"""int16""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,output_data_type,null,"""int16""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,output_data_type,null,"""float32""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+opera-rtc-sentinel1,output_data_type,null,"""float32""",https://d2pn8kiwq2w21t.cloudfront.net/documents/ProductSpec_RTC_FXo4L08.pdf,14/09/2026
+opera-disp-sentinel1,output_data_type,null,"""float32""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+constellr-lstprecision,output_data_type,null,"""int16""",https://constellr.github.io/product-lst/LST-precision-metadata/,14/09/2026
+desis-l2a,output_data_type,null,"""int16""",https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis/products/pav-dlr-tn-004.pdf/@@download/file,14/09/2026
+enmap-l2a,output_data_type,null,"""int16""",https://www.enmap.org/data/test_data/EN-PCV-ICD-2009-2_HSI_Product_Specification_Level1_Level2_v1.5_excerpt_draft_public.pdf,14/09/2026
+,,,,,
+earthdaily-constellation,output_data_type,null,"""int16""",https://earthdaily.com/hubfs/NGEOS%20PDFs/Next%20Generation%20EO%20Forum%20-%20EDC%20DATA%20PRODUCTS.pdf?hsLang=en,14/09/2026
+landsat-c2-sr,output_storage_bit_depth,null,16,https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-st,output_storage_bit_depth,null,16,https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-usard-sr,output_storage_bit_depth,null,16,https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+landsat-c2-usard-st,output_storage_bit_depth,null,16,https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+sentinel2-level2a,output_storage_bit_depth,null,16,https://sentiwiki.copernicus.eu/web/s2-mission,14/09/2026
+alos2-palsar2-25m-scansar-nrb,output_storage_bit_depth,null,16,https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,output_storage_bit_depth,null,16,https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,output_storage_bit_depth,null,32,https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+opera-rtc-sentinel1,output_storage_bit_depth,null,32,https://d2pn8kiwq2w21t.cloudfront.net/documents/ProductSpec_RTC_FXo4L08.pdf,14/09/2026
+opera-disp-sentinel1,output_storage_bit_depth,null,32,https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+constellr-lstprecision,output_storage_bit_depth,null,16,https://constellr.github.io/product-lst/LST-precision-metadata/,14/09/2026
+desis-l2a,output_storage_bit_depth,null,16,https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis/products/pav-dlr-tn-004.pdf/@@download/file,14/09/2026
+enmap-l2a,output_storage_bit_depth,null,16,https://www.enmap.org/data/test_data/EN-PCV-ICD-2009-2_HSI_Product_Specification_Level1_Level2_v1.5_excerpt_draft_public.pdf,14/09/2026
+proba-v-l3-toc,output_storage_bit_depth,null,16,https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+earthdaily-constellation,output_storage_bit_depth,null,16,https://earthdaily.com/hubfs/NGEOS%20PDFs/Next%20Generation%20EO%20Forum%20-%20EDC%20DATA%20PRODUCTS.pdf?hsLang=en,14/09/2026
+landsat-c2-sr,output_storage_display,null,"""16-bit""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-st,output_storage_display,null,"""16-bit""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-usard-sr,output_storage_display,null,"""16-bit""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+landsat-c2-usard-st,output_storage_display,null,"""16-bit""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+sentinel2-level2a,output_storage_display,null,"""16-bit""",https://sentiwiki.copernicus.eu/web/s2-mission,14/09/2026
+alos2-palsar2-25m-scansar-nrb,output_storage_display,null,"""16-bit""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,output_storage_display,null,"""16-bit""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,output_storage_display,null,"""32-bit""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+opera-rtc-sentinel1,output_storage_display,null,"""32-bit""",https://d2pn8kiwq2w21t.cloudfront.net/documents/ProductSpec_RTC_FXo4L08.pdf,14/09/2026
+opera-disp-sentinel1,output_storage_display,null,"""32-bit""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+constellr-lstprecision,output_storage_display,null,"""16-bit""",https://constellr.github.io/product-lst/LST-precision-metadata/,14/09/2026
+desis-l2a,output_storage_display,null,"""16-bit""",https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis/products/pav-dlr-tn-004.pdf/@@download/file,14/09/2026
+enmap-l2a,output_storage_display,null,"""16-bit""",https://www.enmap.org/data/test_data/EN-PCV-ICD-2009-2_HSI_Product_Specification_Level1_Level2_v1.5_excerpt_draft_public.pdf,14/09/2026
+proba-v-l3-toc,output_storage_display,null,"""16-bit""",https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+earthdaily-constellation,output_storage_display,null,"""16-bit""",https://earthdaily.com/hubfs/NGEOS%20PDFs/Next%20Generation%20EO%20Forum%20-%20EDC%20DATA%20PRODUCTS.pdf?hsLang=en,14/09/2026
+,,,,,
+alos2-palsar2-25m-scansar-nrb,product_update_frequency_display,null,"""Processed in 10-day batches within each month; published sequentially""",https://www.eorc.jaxa.jp/ALOS/en/dataset/palsar2_l22_e.htm,14/09/2026
+dea-sentinel1-rtc,product_update_frequency_display,null,"""Daily archive updates""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+,,,,,
+,,,,,
+,,,,,
+landsat-c2-sr,radiometric_bit_depth_display,"""INT16 product storage; not treated as radiometric resolution""","""16-bit product storage; not treated as radiometric resolution""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-st,radiometric_bit_depth_display,"""INT16 product storage; not treated as radiometric resolution""","""16-bit product storage; not treated as radiometric resolution""",https://www.usgs.gov/faqs/how-do-i-use-a-scale-factor-landsat-level-2-science-products,14/09/2026
+landsat-c2-usard-sr,radiometric_bit_depth_display,"""INT16 product storage; not treated as radiometric resolution""","""16-bit product storage; not treated as radiometric resolution""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+landsat-c2-usard-st,radiometric_bit_depth_display,"""INT16 product storage; not treated as radiometric resolution""","""16-bit product storage; not treated as radiometric resolution""",https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products,14/09/2026
+sentinel2-level2a,radiometric_bit_depth_display,"""DN range uses a 15-bit-scale encoding with offsets; not treated as radiometric bit depth""","""16-bit product storage; not treated as radiometric resolution""",https://sentiwiki.copernicus.eu/web/s2-mission,14/09/2026
+alos2-palsar2-25m-scansar-nrb,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/PALSAR2_CARD4L_L2.2_Geotiff_Format_Description_E_20220715.pdf,14/09/2026
+alos2-palsar2-global-mosaics-rtc,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf,14/09/2026
+dea-sentinel1-rtc,radiometric_bit_depth_display,null,"""32-bit product storage; not treated as radiometric resolution""",https://docs.digitalearthafrica.org/en/latest/data_specs/Sentinel-1_specs.html,14/09/2026
+opera-rtc-sentinel1,radiometric_bit_depth_display,null,"""32-bit product storage; not treated as radiometric resolution""",https://d2pn8kiwq2w21t.cloudfront.net/documents/ProductSpec_RTC_FXo4L08.pdf,14/09/2026
+opera-disp-sentinel1,radiometric_bit_depth_display,null,"""32-bit product storage; not treated as radiometric resolution""",https://d2pn8kiwq2w21t.cloudfront.net/documents/OPERA_DISP_S1_Final_Product_Spec.pdf,14/09/2026
+constellr-lstprecision,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://constellr.github.io/product-lst/LST-precision-metadata/,14/09/2026
+desis-l2a,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis/products/pav-dlr-tn-004.pdf/@@download/file,14/09/2026
+enmap-l2a,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://www.enmap.org/data/test_data/EN-PCV-ICD-2009-2_HSI_Product_Specification_Level1_Level2_v1.5_excerpt_draft_public.pdf,14/09/2026
+proba-v-l3-toc,radiometric_bit_depth_display,null,"""16-bit product storage; not treated as radiometric resolution""",https://proba-v.vgt.vito.be/sites/probavvgt/files/downloads/PROBA-V_C2_Products_User_Manual.pdf,14/09/2026
+earthdaily-constellation,radiometric_bit_depth_display,"""UInt16 output storage (not sensor quantisation)""","""16-bit product storage; not treated as radiometric resolution""",https://earthdaily.com/hubfs/NGEOS%20PDFs/Next%20Generation%20EO%20Forum%20-%20EDC%20DATA%20PRODUCTS.pdf?hsLang=en,14/09/2026
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,

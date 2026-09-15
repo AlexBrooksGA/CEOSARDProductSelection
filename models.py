@@ -37,6 +37,9 @@ class Product:
     radiometric_bit_depth: int | None = None
     radiometric_bit_depth_display: str | None = None
     bit_depth_basis: str = "unknown"
+    output_storage_bit_depth: int | None = None
+    output_storage_display: str | None = None
+    output_data_type: str | None = None
     geographic_coverage: str = "Unknown"
     geographic_coverage_display: str | None = None
     coverage_basis: str = "unknown"

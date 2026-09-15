@@ -1,6 +1,7 @@
 # CEOS-ARD catalogue population summary
 
-Checked: 2026-07-12
+Catalogue synthesis checked: 2026-07-12
+Approved review document: reports/ceos_ard_changes_2026-09-14.csv
 
 ## Outcome
 
@@ -9,12 +10,15 @@ Checked: 2026-07-12
 - Existing demo records matched: **7 of 7** (consolidated into 5 canonical assessment records)
 - Existing values silently overwritten: **0**
 - Manual-review issues: **7**
-- Products with an explicitly confirmed overall tier: **10**
+- Products with an explicitly confirmed overall tier: **26**
 - Products with confirmed product-level primary spatial resolution: **19**
-- Products with confirmed product-level revisit or update information: **5**
+- Products with confirmed product-level revisit or update information: **7**
 - Products with confirmed output-product bit-depth information: **1**
 - Products with geometric accuracy information: **2**
 - Products with radiometric/temperature accuracy information: **1**
+- User-approved review rows applied: **156**
+- Blank rows in the edited review document ignored: **intentional removals**
+- Review before-value conflicts: **0**
 
 ## Existing-record matching and duplicate handling
 

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import csv
 import json
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 
@@ -17,6 +17,7 @@ DATA = ROOT / "data"
 REPORTS = ROOT / "reports"
 CHECKED = date(2026, 7, 12).isoformat()
 REGISTER = "https://ceos.org/ard/"
+APPROVED_REVIEW = REPORTS / "ceos_ard_changes_2026-09-14.csv"
 
 
 def item(identifier, name, pfs, version, agency, missions, approved, *, access=None,
@@ -63,6 +64,9 @@ def item(identifier, name, pfs, version, agency, missions, approved, *, access=N
         "radiometric_bit_depth": None,
         "radiometric_bit_depth_display": None,
         "bit_depth_basis": "unknown",
+        "output_storage_bit_depth": None,
+        "output_storage_display": None,
+        "output_data_type": None,
         "geometric_accuracy_display": None,
         "geometric_accuracy_metric": None,
         "geometric_accuracy_value": None,
@@ -126,6 +130,8 @@ item("synspective-strix-nrb", "Synspective StriX Series NRB", "SAR-NRB", "v1.2",
 
 BY_ID = {p["id"]: p for p in P}
 FIELD_PROVENANCE = {}
+FIELD_CHECKED = {}
+REVIEW_CONFLICTS = []
 
 
 def enrich(identifier, source_title, source_url, confidence="confirmed_product_level",
@@ -141,6 +147,60 @@ def tier(identifier, value="Threshold"):
     p.update(ard_tier=value, ard_tier_display=value, ceos_ard_assessment_level=value,
              ard_tier_notes="The linked official peer-review assessment explicitly identifies this level.")
     FIELD_PROVENANCE[(identifier, "ard_tier")] = ("Official CEOS-ARD peer-review assessment", p["peer_review_url"], "peer_review_summary", "confirmed_product_level", "Tier stated in the linked assessment title or document.")
+
+
+def _review_value(raw):
+    """Decode the JSON-encoded before/after cells in the review CSV."""
+    raw = (raw or "").strip()
+    if not raw:
+        return None
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return raw
+
+
+def apply_approved_review_changes():
+    """Apply only non-empty rows from the user-edited review document.
+
+    Empty rows are intentional removals from the approval list and are ignored.
+    The CSV before value is checked against the generated catalogue so stale
+    approvals are visible in the generated summary/provenance.
+    """
+    if not APPROVED_REVIEW.exists():
+        return
+    with APPROVED_REVIEW.open(newline="", encoding="utf-8-sig") as handle:
+        for row_number, row in enumerate(csv.DictReader(handle), start=2):
+            if not any((value or "").strip() for value in row.values()):
+                continue
+            identifier = (row.get("product_id") or "").strip()
+            field = (row.get("field") or "").strip()
+            if not identifier or not field:
+                continue
+            if identifier not in BY_ID:
+                REVIEW_CONFLICTS.append(f"row {row_number}: unknown product {identifier}")
+                continue
+            before = _review_value(row.get("before"))
+            after = _review_value(row.get("after"))
+            current = BY_ID[identifier].get(field)
+            if current != before:
+                REVIEW_CONFLICTS.append(
+                    f"row {row_number}: {identifier}.{field} expected {before!r}, found {current!r}"
+                )
+            BY_ID[identifier][field] = after
+            checked = row.get("date_checked") or ""
+            try:
+                checked = datetime.strptime(checked, "%d/%m/%Y").date().isoformat()
+            except ValueError:
+                checked = CHECKED
+            FIELD_CHECKED[(identifier, field)] = checked
+            FIELD_PROVENANCE[(identifier, field)] = (
+                "User-approved CEOS-ARD change review",
+                row.get("source_url") or BY_ID[identifier].get("information_url") or REGISTER,
+                "approved_review_document",
+                "confirmed_product_level",
+                f"Applied from non-empty row {row_number}; blank rows were excluded.",
+            )
 
 
 for identifier in ["alos2-palsar2-25m-scansar-nrb", "alos2-palsar2-global-mosaics-rtc", "catalyst-sentinel1-rtc", "enmap-l2a", "novasar1-rtc", "nrcan-rcm-nrb", "nrcan-rcm-pol", "proba-v-l3-toc", "risat1a-eos04-india-mosaic", "sentinel2-level2a"]:
@@ -183,6 +243,8 @@ enrich("dea-sentinel1-rtc", "Digital Earth Africa Sentinel-1 NRB specification",
 enrich("sentinel2-level2a", "Copernicus SentiWiki Sentinel-2 L2A", "https://sentiwiki.copernicus.eu/web/s2-products", spatial_resolution_m=10, spatial_resolution_options_m=[10, 20, 60], spatial_resolution_display="10 m, 20 m and 60 m band products", spatial_resolution_basis="product", nominal_revisit_days=5, nominal_revisit_display="5 days with Sentinel-2A/2B (constellation-level)", revisit_days=5, revisit_display="5 days (constellation-level)", revisit_basis="constellation", geographic_coverage="Global", geographic_coverage_display="Global systematic L2A coverage", coverage_basis="product", radiometric_bit_depth_display="DN range uses a 15-bit-scale encoding with offsets; not treated as radiometric bit depth", bit_depth_basis="output_product", swath_width="290 km (instrument-level)", atmospheric_correction="Operational L2A processing / Sen2Cor", coordinate_system="UTM / WGS84 tiled grid", data_format="SAFE with JPEG2000 imagery", operational_status="Operational")
 enrich("synspective-strix-nrb", "Synspective StriX data products", "https://synspective.com/data/synspective-sar-data/", spatial_resolution_options_m=[0.25, 0.46, 0.5, 0.9, 2.6, 3.6], spatial_resolution_display="Mode-dependent provider specifications (~0.46–3.6 m ground/azimuth; exact assessed NRB configurations not confirmed)", spatial_resolution_basis="instrument", nominal_revisit_display="Daily visits stated for constellation (mission-level)", revisit_display="Daily visits (constellation-level)", revisit_basis="constellation", geographic_coverage="Local or targeted", geographic_coverage_display="Commercial tasked acquisitions", coverage_basis="product", swath_width="10–30 km depending mode (instrument-level)", elevation_model="Copernicus DEM GLO-30 for current ORT products", coordinate_system="Fixed UTM grid for ORT", data_format="Cloud Optimized GeoTIFF + XML", atmospheric_correction="Not applicable (SAR); gamma-nought RTC available", operational_status="Commercial constellation operating")
 
+apply_approved_review_changes()
+
 INSTRUMENTS = {
     "constellr-lstprecision": ["SkyBee VNIR camera", "SkyBee TIR camera"],
     "earthdaily-constellation": ["VNIR/SWIR/TIR imaging payload"],
@@ -212,10 +274,10 @@ for identifier, names in INSTRUMENTS.items():
 
 RESEARCHED_FIELDS = [
     "ceos_ard_status", "pfs_type", "pfs_version", "approval_date", "agency", "missions", "instruments",
-    "ard_tier", "spatial_resolution_m", "spatial_resolution_options_m", "spatial_resolution_display", "spatial_resolution_basis",
+    "ard_tier", "ard_tier_display", "ard_tier_notes", "ceos_ard_assessment_level", "spatial_resolution_m", "spatial_resolution_options_m", "spatial_resolution_display", "spatial_resolution_basis",
     "nominal_revisit_days", "nominal_revisit_display", "product_update_frequency_days",
     "product_update_frequency_display", "revisit_basis", "geographic_coverage", "geographic_coverage_display", "coverage_basis",
-    "radiometric_bit_depth", "radiometric_bit_depth_display", "bit_depth_basis", "geometric_accuracy_display",
+    "radiometric_bit_depth", "radiometric_bit_depth_display", "bit_depth_basis", "output_storage_bit_depth", "output_storage_display", "output_data_type", "geometric_accuracy_display",
     "geometric_accuracy_metric", "geometric_accuracy_value", "geometric_accuracy_unit", "radiometric_accuracy_display",
     "radiometric_accuracy_metric", "radiometric_accuracy_value", "radiometric_accuracy_unit", "operational_status", "swath_width", "atmospheric_correction",
     "elevation_model", "coordinate_system", "data_format", "access_url", "information_url",
@@ -250,7 +312,8 @@ def research_rows():
                 "product_id": p["id"], "official_product_name": p["official_product_name"],
                 "field_name": field, "recorded_value": rendered(value), "source_title": title,
                 "source_url": url or "", "source_type": "primary" if evidence != "other_authoritative_source" else "authoritative_supplementary",
-                "evidence_level": evidence, "confidence": confidence, "notes": note, "date_checked": CHECKED,
+                "evidence_level": evidence, "confidence": confidence, "notes": note,
+                "date_checked": FIELD_CHECKED.get((p["id"], field), CHECKED),
             })
     return rows
 
@@ -286,7 +349,8 @@ def write_outputs():
     rad_count = sum(bool(p["radiometric_accuracy_display"]) for p in P)
     summary = f"""# CEOS-ARD catalogue population summary
 
-Checked: {CHECKED}
+Catalogue synthesis checked: {CHECKED}
+Approved review document: reports/ceos_ard_changes_2026-09-14.csv
 
 ## Outcome
 
@@ -301,6 +365,9 @@ Checked: {CHECKED}
 - Products with confirmed output-product bit-depth information: **{bit_count}**
 - Products with geometric accuracy information: **{geom_count}**
 - Products with radiometric/temperature accuracy information: **{rad_count}**
+- User-approved review rows applied: **{sum(1 for value in FIELD_PROVENANCE.values() if value[0] == 'User-approved CEOS-ARD change review')}**
+- Blank rows in the edited review document ignored: **intentional removals**
+- Review before-value conflicts: **{len(REVIEW_CONFLICTS)}**
 
 ## Existing-record matching and duplicate handling
 
@@ -328,6 +395,8 @@ No MIM fields were used. `MIMS_API_BASE_URL`, `MIMS_API_USERNAME`, and `MIMS_API
 
 The live CEOS Analysis-Ready Datasets register was used for every assessment's official status, PFS type/version, organisation, mission/instrument links, approval date, and assessment-package URLs. Product details were supplemented from JAXA EORC, USGS Landsat, ESA/Copernicus SentiWiki, NASA/JPL OPERA, DLR/EnMAP/DESIS, VITO PROBA-V, NRCan/CSA, NRSC/Bhoonidhi, CSIRO, Digital Earth Africa, Constellr, EarthDaily, Catalyst, and Synspective primary documentation. Every researched field, including failed lookups, is represented in `data/ceos_ard_research_log.csv`.
 """
+    if REVIEW_CONFLICTS:
+        summary += "\n## Review conflicts\n\n" + "\n".join(f"- {item}" for item in REVIEW_CONFLICTS) + "\n"
     (REPORTS / "ceos_ard_population_summary.md").write_text(summary, encoding="utf-8")
     (REPORTS / "possible_additional_products.md").write_text("""# Possible additional products
 

@@ -680,10 +680,24 @@ def render_product_card(result: MatchResult, fedeo_match: object | None = None) 
     else:
         temporal_label = "Nominal revisit"
         revisit = display_value(product.revisit_display or product.revisit_days, "" if product.revisit_display else " days")
-    bit_depth = display_value(
-        product.radiometric_bit_depth_display or product.radiometric_bit_depth,
-        "" if product.radiometric_bit_depth_display else "-bit",
-    )
+    if product.radiometric_bit_depth is not None:
+        bit_depth_label = "Radiometric bit depth"
+        bit_depth = display_value(
+            product.radiometric_bit_depth_display or product.radiometric_bit_depth,
+            "" if product.radiometric_bit_depth_display else "-bit",
+        )
+    elif product.output_storage_display or product.output_storage_bit_depth is not None:
+        bit_depth_label = "Output storage"
+        bit_depth = display_value(
+            product.output_storage_display or product.output_storage_bit_depth,
+            "" if product.output_storage_display else "-bit",
+        )
+    elif product.radiometric_bit_depth_display:
+        bit_depth_label = "Radiometric bit depth note"
+        bit_depth = display_value(product.radiometric_bit_depth_display)
+    else:
+        bit_depth_label = "Bit depth"
+        bit_depth = "Unknown"
     source_label = display_source_type(product.source_type)
     instrument_resolution = ""
     if product.instrument_spatial_resolution_display:
@@ -725,7 +739,7 @@ def render_product_card(result: MatchResult, fedeo_match: object | None = None) 
             <div class="metric-row">
               <div class="mini-metric" title="{escape(resolution)}"><div class="mini-label">{escape(resolution_label)}</div><div class="mini-value">{escape(resolution)}</div></div>
               <div class="mini-metric" title="{escape(revisit)}"><div class="mini-label">{escape(temporal_label)}</div><div class="mini-value">{escape(revisit)}</div></div>
-              <div class="mini-metric" title="{escape(bit_depth)}"><div class="mini-label">Bit depth</div><div class="mini-value">{escape(bit_depth)}</div></div>
+              <div class="mini-metric" title="{escape(bit_depth)}"><div class="mini-label">{escape(bit_depth_label)}</div><div class="mini-value">{escape(bit_depth)}</div></div>
             </div>
             {instrument_resolution}
             <div class="criterion">{escape(result.summary)}</div>
@@ -765,6 +779,8 @@ def render_product_card(result: MatchResult, fedeo_match: object | None = None) 
                 "Finest reported instrument spatial resolution": product.instrument_spatial_resolution_display,
                 "Instrument spatial-resolution note": product.instrument_resolution_note,
                 "Radiometric bit-depth basis": product.bit_depth_basis,
+                "Output storage": product.output_storage_display or product.output_storage_bit_depth,
+                "Output data type": product.output_data_type,
                 "Reported geometric accuracy / uncertainty": product.geometric_accuracy_display,
                 "Reported radiometric accuracy / uncertainty": product.radiometric_accuracy_display,
                 "Reported coverage detail": product.geographic_coverage_display,
@@ -810,7 +826,8 @@ def render_comparison(products: list[Product], profile: Profile) -> None:
         ("Finest reported instrument spatial resolution", "instrument_spatial_resolution_display"),
         ("Nominal revisit", "revisit_display"),
         ("Geographic coverage", "geographic_coverage"), ("Swath width", "swath_width"),
-        ("Radiometric bit depth", "radiometric_bit_depth"), ("Operational status", "operational_status"),
+        ("Radiometric bit depth", "radiometric_bit_depth"), ("Output storage", "output_storage_display"),
+        ("Output data type", "output_data_type"), ("Operational status", "operational_status"),
         ("Atmospheric correction", "atmospheric_correction"), ("Digital elevation model", "elevation_model"),
         ("Coordinate reference system", "coordinate_system"), ("Data format", "data_format"), ("Record source", "source_type"),
     ]
