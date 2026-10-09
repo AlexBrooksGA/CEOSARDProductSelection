@@ -29,6 +29,9 @@ test('keyboard-only: discover, shortlist, compare and reach an access link', asy
 	await open(page, '/?v=1');
 	await page.keyboard.press('Tab');
 	await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused();
+	// The purpose entry can be skipped from the keyboard.
+	await page.getByRole('button', { name: 'Skip to catalogue' }).focus();
+	await page.keyboard.press('Enter');
 	await page.getByLabel('Search product and mission names').focus();
 	await page.keyboard.type('sentinel-2');
 	await page.waitForTimeout(600);

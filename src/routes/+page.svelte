@@ -2,10 +2,18 @@
 	import CriteriaPanel from '$lib/components/CriteriaPanel.svelte';
 	import ProfilesDialog from '$lib/components/ProfilesDialog.svelte';
 	import ResultsList from '$lib/components/ResultsList.svelte';
+	import PurposeJourney from '$lib/components/purpose/PurposeJourney.svelte';
+	import PurposeSummary from '$lib/components/purpose/PurposeSummary.svelte';
 	import { app } from '$lib/state/app.svelte';
 
 	const store = app();
 	let profilesOpen = $state(false);
+	function focusResults() {
+		// Land on the purpose summary so the applied context and Undo are seen first, then the results.
+		const target = document.getElementById('purpose-summary-heading') ?? document.getElementById('results-heading');
+		target?.focus({ preventScroll: true });
+		(target?.closest('section') ?? target)?.scrollIntoView({ block: 'start' });
+	}
 	let unresolved = $derived(store.explorer.shortlist.filter((id) => !store.productsById[id]));
 	// On narrow screens the criteria collapse so results come first; active restrictions stay visible above results.
 	let criteriaOpen = $derived(store.isOpen('narrow-criteria', false));
@@ -16,6 +24,9 @@
 	<title>Discover · CEOS-ARD Product Explorer</title>
 </svelte:head>
 
+{#if store.journeyOpen}
+	<PurposeJourney onapplied={focusResults} />
+{:else}
 <div class="frame page">
 	<header class="page-head">
 		<p class="eyebrow">Discover</p>
@@ -43,6 +54,7 @@
 			</div>
 		</aside>
 		<section class="results-area" aria-labelledby="results-heading">
+			<PurposeSummary />
 			<ResultsList />
 			<div class="shortlist-bar panel-subtle spread">
 				<p>
@@ -54,6 +66,7 @@
 		</section>
 	</div>
 </div>
+{/if}
 <ProfilesDialog bind:open={profilesOpen} />
 
 <style>
@@ -71,6 +84,7 @@
 	}
 	.results-area {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-3);
 		min-width: 0;
 	}

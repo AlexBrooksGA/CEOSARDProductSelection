@@ -62,7 +62,7 @@
 <div class="results stack">
 	<div class="summary-strip">
 		<div class="spread">
-			<h2 id="results-heading">
+			<h2 id="results-heading" tabindex="-1">
 				{presented.mode === 'browse' ? 'Browse products' : 'Results'}
 				<span class="count mono">{presented.counts.total} {presented.counts.total === 1 ? 'product' : 'products'}</span>
 			</h2>

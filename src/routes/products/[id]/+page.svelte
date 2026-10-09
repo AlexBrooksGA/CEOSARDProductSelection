@@ -6,6 +6,8 @@
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import FactList from '$lib/components/FactList.svelte';
 	import FamilyMark from '$lib/components/FamilyMark.svelte';
+	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
+	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import {
 		accessAction,
 		coverageFact,
@@ -175,12 +177,15 @@
 				</Disclosure>
 			</section>
 
-			<section class="panel stack" aria-labelledby="requirements-heading">
+			<section class="panel stack" class:wide={Boolean(store.purposeAnswers)} aria-labelledby="requirements-heading">
 				<h2 id="requirements-heading">My requirements and open checks</h2>
+				{#if store.purposeAnswers}
+					<p class="small secondary">For your purpose: <strong>{purposeSentence(store.purposeAnswers, store.guidance, { includePrivate: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' })}</strong> · {guidanceStatus(store.guidance, store.purposeAnswers).label}</p>
+				{/if}
 				{#if presented && presented.reasons.length}
 					<ul class="reasons">
 						{#each presented.reasons as reason (reason.name)}
-							<li><span class="state {reason.state}">{reason.state === 'met' ? '✓ Meets' : reason.state === 'outside' ? '△ Outside' : '? Needs evidence'}</span> — {reason.text}</li>
+							<li><span class="state {reason.state}" aria-hidden="true">{reason.state === 'met' ? '✓' : reason.state === 'outside' ? '△' : '?'}</span> {reason.text}</li>
 						{/each}
 					</ul>
 				{:else}
@@ -192,6 +197,10 @@
 					<li>Task-specific geometric and radiometric accuracy and suitability for your application.</li>
 					{#if presented}{#each presented.requiredUnknown as reason (reason.name)}<li>{reason.label}: not reported — check the provider documentation.</li>{/each}{/if}
 				</ul>
+				{#if store.purposeAnswers}
+					<h3 class="purpose-checks-heading">Checks for your purpose</h3>
+					<PurposeChecks {product} detailHref={store.href(`/products/${encodeURIComponent(product.id)}`)} />
+				{/if}
 				<p class="hint">Meeting your criteria, or holding a CEOS-ARD assessment, does not establish suitability for your application.</p>
 			</section>
 		</div>
@@ -268,6 +277,12 @@
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
 		gap: var(--space-2);
 		align-items: start;
+	}
+	.wide {
+		grid-column: 1 / -1;
+	}
+	.purpose-checks-heading {
+		margin-top: var(--space-1);
 	}
 	.evidence + .evidence {
 		margin-top: var(--space-2);

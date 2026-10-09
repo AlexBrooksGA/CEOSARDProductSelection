@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { card, cards, open } from './helpers';
+import { browse, card, cards, open } from './helpers';
 
 // One Node process holds a process-local MIM cache, so these steps run in order.
 test.describe.configure({ mode: 'serial' });
@@ -12,7 +12,7 @@ async function includeMim(page: Page) {
 
 test('upstream failure leaves the curated catalogue usable with a clear message', async ({ page }) => {
 	await control('fail');
-	await open(page);
+	await browse(page);
 	await includeMim(page);
 	await page.getByRole('button', { name: 'Load MIM products' }).click();
 	await expect(page.getByText('The MIM service returned an error. The curated catalogue remains available.').first()).toBeVisible();

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { open } from './helpers';
+import { browse, open } from './helpers';
 
 test('custom profile create, validate (draft kept), apply, rename, update and delete — session only', async ({ page }) => {
 	await open(page, '/?v=1&fam=sar&res=req:20');
@@ -61,7 +61,7 @@ test('works in memory with a visible notice when session storage is unavailable'
 			}
 		});
 	});
-	await open(page, '/?v=1');
+	await browse(page, '/?v=1');
 	await expect(page.getByText(/Browser session storage is unavailable/)).toBeVisible();
 	await page.getByRole('button', { name: 'Add to shortlist Sentinel-2 Level-2A' }).click();
 	await expect(page.getByRole('link', { name: /Shortlist & compare \(1\)/ })).toBeVisible();

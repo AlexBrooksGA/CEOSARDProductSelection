@@ -23,6 +23,7 @@ import {
 	type Fact
 } from './facts';
 import { criterionReasons } from './presentation';
+import { CHECK_OUTCOME_LABELS, checkActions, productMeasurementNote, type CheckOutcome, type Guidance, type PurposeAnswers, type ResolvedCheck } from './purpose';
 import { evaluateProduct } from './matching';
 import type { Criteria, Product, ProvenanceRow } from './types';
 
@@ -32,7 +33,7 @@ export interface ComparisonCell {
 	missingText?: string;
 	detail?: string | null;
 	link?: { label: string; url: string } | null;
-	links?: { label: string; url: string }[];
+	links?: { label: string; url: string; internal?: boolean }[];
 	state?: 'met' | 'outside' | 'unknown';
 }
 
@@ -74,14 +75,78 @@ function row(id: string, label: string, cells: ComparisonCell[], help?: string):
 	return { id, label, help, cells, differs: new Set(comparable).size > 1 };
 }
 
+export interface ComparisonPurpose {
+	sentence: string;
+	statusLabel: string;
+	outputNote: string | null;
+	guidance: Guidance;
+	answers: PurposeAnswers;
+	checks: ResolvedCheck[];
+	outcome: (productId: string, checkId: string) => { outcome: CheckOutcome; note: string } | null;
+	detailHref: (product: Product) => string;
+}
+
 export function buildComparison(
 	products: Product[],
 	criteria: Criteria,
 	optionalGroups: string[],
-	provenance: Record<string, Record<string, ProvenanceRow>> = {}
+	provenance: Record<string, Record<string, ProvenanceRow>> = {},
+	purpose: ComparisonPurpose | null = null
 ): ComparisonGroup[] {
 	const prov = (product: Product) => provenance[product.id];
 	const groups: ComparisonGroup[] = [];
+
+	const active = activeCriteria(criteria);
+	groups.push({
+		id: 'requirements',
+		title: 'My requirements and open checks',
+		description: [
+			purpose ? `${purpose.sentence} (${purpose.statusLabel}.)` : null,
+			active.length
+				? 'Reported characteristics against your screening criteria. Meeting them does not establish suitability for your application.'
+				: 'No screening criteria are active. Area/period availability and task-specific checks remain open.',
+			purpose?.outputNote ?? null
+		]
+			.filter(Boolean)
+			.join(' '),
+		optional: false,
+		rows: [
+			...active.map(([name]) => {
+				const cells = products.map((product) => {
+					const reason = criterionReasons(evaluateProduct(product, { criteria }), criteria).find((item) => item.name === name);
+					return reason
+						? { text: reason.state === 'met' ? `Reported value meets your criterion (${reason.reported})` : reason.state === 'outside' ? `Outside your ${reason.mode === 'required' ? 'requirement' : 'preference'} (reported ${reason.reported})` : 'Evidence needed — not reported (manual check)', state: reason.state, detail: `${reason.target} · ${reason.mode === 'required' ? 'Required' : 'Preferred'}` }
+						: { text: null, missingText: 'Not evaluated' };
+				});
+				const label = criterionReasons(evaluateProduct(products[0]!, { criteria }), criteria).find((item) => item.name === name)?.label ?? name;
+				return row(`criterion-${name}`, label, cells);
+			}),
+			...(purpose
+				? [
+						row(
+							'purpose-measurement',
+							'Measurement for your purpose',
+							products.map((p) => ({ text: productMeasurementNote(purpose.guidance, purpose.answers, p), missingText: 'No guidance note for this measurement family' }))
+						),
+						...purpose.checks.map((check) =>
+							row(
+								`check-${check.id}`,
+								check.label,
+								products.map((p) => {
+									const outcome = purpose.outcome(p.id, check.id);
+									return {
+										text: outcome && outcome.outcome !== 'open' ? `Your record: ${CHECK_OUTCOME_LABELS[outcome.outcome]}` : 'Manual check — open',
+										detail: outcome?.note ? `Your note: ${outcome.note}` : null,
+										links: checkActions(check, p, purpose.guidance, purpose.detailHref(p))
+									};
+								}),
+								check.why
+							)
+						)
+					]
+				: [row('open-checks', 'Open checks', products.map(() => ({ text: 'Area and period availability; task-specific accuracy and suitability', detail: 'Not checked by this explorer' })))])
+		]
+	});
 
 	groups.push({
 		id: 'spatial-temporal',
@@ -95,29 +160,6 @@ export function buildComparison(
 			row('record-period', 'Observation record period', products.map(() => factCell(observationPeriodFact()))),
 			row('coverage', 'Reported coverage', products.map((p) => factCell(coverageFact(p, prov(p)))), 'Broad reported scope; not proof of coverage at a particular place.'),
 			row('local', 'Local availability', products.map(() => factCell(localAvailabilityFact())))
-		]
-	});
-
-	const active = activeCriteria(criteria);
-	groups.push({
-		id: 'requirements',
-		title: 'My requirements and open checks',
-		description: active.length
-			? 'Reported characteristics against your screening criteria. Meeting them does not establish suitability for your application.'
-			: 'No screening criteria are active. Area/period availability and task-specific checks remain open.',
-		optional: false,
-		rows: [
-			...active.map(([name]) => {
-				const cells = products.map((product) => {
-					const reason = criterionReasons(evaluateProduct(product, { criteria }), criteria).find((item) => item.name === name);
-					return reason
-						? { text: reason.state === 'met' ? `Meets — reported ${reason.reported}` : reason.state === 'outside' ? `Outside — reported ${reason.reported}` : 'Needs evidence — not reported', state: reason.state, detail: `${reason.target} · ${reason.mode === 'required' ? 'Required' : 'Preferred'}` }
-						: { text: null, missingText: 'Not evaluated' };
-				});
-				const label = criterionReasons(evaluateProduct(products[0]!, { criteria }), criteria).find((item) => item.name === name)?.label ?? name;
-				return row(`criterion-${name}`, label, cells);
-			}),
-			row('open-checks', 'Open checks', products.map(() => ({ text: 'Area and period availability; task-specific accuracy and suitability', detail: 'Not checked by this explorer' })))
 		]
 	});
 

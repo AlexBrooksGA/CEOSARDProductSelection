@@ -6,6 +6,7 @@
  */
 import { PRODUCT_ID_PATTERN } from '$lib/domain/catalogue';
 import { PROFILE_DESCRIPTION_MAX, PROFILE_NAME_MAX, validateStoredProfile } from '$lib/domain/profiles';
+import type { CheckOutcome, JourneySettings, PurposeAnswers } from '$lib/domain/purpose';
 import type { ProductNote } from '$lib/domain/summary';
 import type { Profile } from '$lib/domain/types';
 
@@ -17,6 +18,68 @@ export interface ProfileDraft {
 	editingId: string | null;
 	name: string;
 	description: string;
+}
+
+export interface AppliedPurpose {
+	answers: PurposeAnswers;
+	key: string | null;
+	guidanceVersion: string;
+	mappingVersion: number;
+	appliedAt: string;
+	/** The journey-managed settings as applied; later differences mean "adjusted since setup". */
+	settings: JourneySettings;
+}
+
+export interface PurposeSession {
+	/** Unapplied answers (validated against the guidance by the store on read). */
+	draft: unknown;
+	applied: AppliedPurpose | null;
+	/** The user chose "Skip to catalogue" in this session. */
+	skipped: boolean;
+	/** Private, user-entered outcomes per product and check. */
+	checks: Record<string, Record<string, { outcome: CheckOutcome; note: string; purpose: string | null }>>;
+}
+
+export function emptyPurpose(): PurposeSession {
+	return { draft: null, applied: null, skipped: false, checks: {} };
+}
+
+const OUTCOMES = new Set(['open', 'supports', 'concern', 'not-applicable']);
+
+function validatePurpose(raw: unknown): PurposeSession {
+	const purpose = emptyPurpose();
+	if (!raw || typeof raw !== 'object') return purpose;
+	const value = raw as Record<string, unknown>;
+	purpose.draft = value.draft && typeof value.draft === 'object' ? value.draft : null;
+	purpose.skipped = value.skipped === true;
+	const applied = value.applied as Record<string, unknown> | null | undefined;
+	if (applied && typeof applied === 'object' && applied.answers && typeof applied.answers === 'object' && applied.settings && typeof applied.settings === 'object') {
+		const settings = applied.settings as Record<string, unknown>;
+		const criterion = (c: unknown) => (c && typeof c === 'object' && typeof (c as Record<string, unknown>).value === 'number' && ['required', 'preferred', 'not_used'].includes(String((c as Record<string, unknown>).mode)) ? (c as JourneySettings['revisit_days']) : null);
+		purpose.applied = {
+			answers: applied.answers as PurposeAnswers,
+			key: typeof applied.key === 'string' ? applied.key.slice(0, 130) : null,
+			guidanceVersion: typeof applied.guidanceVersion === 'string' ? applied.guidanceVersion.slice(0, 20) : '',
+			mappingVersion: typeof applied.mappingVersion === 'number' ? applied.mappingVersion : 0,
+			appliedAt: typeof applied.appliedAt === 'string' ? applied.appliedAt.slice(0, 40) : '',
+			settings: {
+				family: typeof settings.family === 'string' ? settings.family : 'All product families',
+				spatial_resolution_m: criterion(settings.spatial_resolution_m),
+				revisit_days: criterion(settings.revisit_days)
+			}
+		};
+	}
+	if (value.checks && typeof value.checks === 'object') {
+		for (const [productId, checks] of Object.entries(value.checks as Record<string, unknown>)) {
+			if (!PRODUCT_ID_PATTERN.test(productId) || !checks || typeof checks !== 'object') continue;
+			for (const [checkId, entry] of Object.entries(checks as Record<string, unknown>)) {
+				const e = entry as Record<string, unknown> | null;
+				if (!/^[a-z0-9-]{1,60}$/.test(checkId) || !e || !OUTCOMES.has(String(e.outcome))) continue;
+				(purpose.checks[productId] ??= {})[checkId] = { outcome: e.outcome as CheckOutcome, note: text(e.note, NOTE_MAX), purpose: typeof e.purpose === 'string' ? e.purpose.slice(0, 130) : null };
+			}
+		}
+	}
+	return purpose;
 }
 
 export interface SessionData {
@@ -33,6 +96,8 @@ export interface SessionData {
 	theme: 'light' | 'dark' | null;
 	/** Whether MIM records were deliberately loaded in this session. */
 	mimLoaded: boolean;
+	/** Purpose journey: draft answers, applied purpose, skip flag and private check outcomes. */
+	purpose: PurposeSession;
 }
 
 export function emptySession(): SessionData {
@@ -46,7 +111,8 @@ export function emptySession(): SessionData {
 		appliedCustomProfileId: null,
 		profileDraft: null,
 		theme: null,
-		mimLoaded: false
+		mimLoaded: false,
+		purpose: emptyPurpose()
 	};
 }
 
@@ -107,6 +173,7 @@ export function validateSession(raw: unknown): { data: SessionData; issues: stri
 	}
 	data.theme = record.theme === 'light' || record.theme === 'dark' ? record.theme : null;
 	data.mimLoaded = record.mimLoaded === true;
+	data.purpose = validatePurpose(record.purpose);
 	return { data, issues };
 }
 

@@ -3,6 +3,9 @@
 	import AssessmentBadge from '$lib/components/AssessmentBadge.svelte';
 	import CompareTable from '$lib/components/CompareTable.svelte';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
+	import PurposeSummary from '$lib/components/purpose/PurposeSummary.svelte';
+	import { assumptions, guidanceStatus, outputLabel, outputNote, purposeSentence, qualitativeNotes } from '$lib/domain/purpose';
 	import { activeCriteria, describeCriterion } from '$lib/domain/criteria';
 	import { accessAction } from '$lib/domain/facts';
 	import { familyLabel } from '$lib/domain/guidance';
@@ -60,7 +63,24 @@
 			investigationNote: store.session.investigationNote,
 			currentFingerprint: store.fingerprint,
 			provenance: store.provenanceMap,
-			unresolvedReason: (id) => store.unresolvedReason(id)
+			unresolvedReason: (id) => store.unresolvedReason(id),
+			purpose: store.purposeAnswers
+				? {
+						sentence: purposeSentence(store.purposeAnswers, store.guidance, { includePrivate: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' }),
+						statusLabel: guidanceStatus(store.guidance, store.purposeAnswers).label,
+						guidance: store.guidance,
+						source: store.purposeContext?.kind === 'ok' ? store.purposeContext.source : 'link',
+						output: outputLabel(store.purposeAnswers, store.guidance),
+						area: store.purposeAnswers.area,
+						period: store.purposeAnswers.period,
+						assumptions: assumptions(store.guidance, store.purposeAnswers),
+						notes: qualitativeNotes(store.purposeAnswers),
+						outputNote: outputNote(store.guidance, store.purposeAnswers),
+						checks: store.purposeChecks,
+						outcome: (productId, checkId) => store.checkOutcome(productId, checkId),
+						adjusted: store.purposeAdjusted
+					}
+				: null
 		});
 		await copy(text, 'Selection summary');
 	}
@@ -80,6 +100,8 @@
 	{#if store.urlIssues.length}
 		<div class="notice warn" role="status"><p><strong>Some link settings could not be used.</strong></p><ul>{#each store.urlIssues as issue (issue)}<li>{issue}</li>{/each}</ul></div>
 	{/if}
+
+	<PurposeSummary compact />
 
 	<section class="panel stack" aria-labelledby="criteria-summary-heading">
 		<div class="spread">
@@ -130,6 +152,7 @@
 					{@const product = entry.product}
 					{@const note = store.noteFor(entry.id)}
 					{@const review = noteNeedsReview(store.session.notes[entry.id], store.fingerprint)}
+					{@const staleChecks = Object.values(store.session.purpose.checks[entry.id] ?? {}).some((record) => record.purpose !== explorer.purpose)}
 					{@const inCompare = explorer.compare.includes(entry.id)}
 					<li class="entry panel">
 						<div class="entry-head">
@@ -168,10 +191,13 @@
 							</div>
 						</div>
 						{#if !inCompare && explorer.compare.length >= COMPARE_MAX && product}<p class="hint">Comparison is full ({COMPARE_MAX}). Remove a comparison column to compare this product; nothing is replaced automatically.</p>{/if}
-						<details class="notes" open={store.isOpen(`notes:${entry.id}`, Boolean(note.rationale || note.openChecks))} ontoggle={(event) => store.setOpen(`notes:${entry.id}`, event.currentTarget.open)}>
-							<summary>Notes for this product{review ? ' — review needed' : ''}</summary>
+						<details class="notes" open={store.isOpen(`notes:${entry.id}`, Boolean(note.rationale || note.openChecks || staleChecks))} ontoggle={(event) => store.setOpen(`notes:${entry.id}`, event.currentTarget.open)}>
+							<summary>Notes for this product{review || staleChecks ? ' — review needed' : ''}</summary>
 							{#if review}
 								<p class="notice warn small">Review rationale: criteria changed since this note was written. <button type="button" class="button small plain" onclick={() => store.confirmNote(entry.id)}>Mark as reviewed</button></p>
+							{/if}
+							{#if staleChecks}
+								<p class="notice warn small">Some of your check records were made for a different purpose. Review them under “Checks for your purpose”.</p>
 							{/if}
 							<div class="notes-grid">
 								<div class="field">
@@ -184,6 +210,10 @@
 								</div>
 							</div>
 							<p class="hint">Does not filter results. Kept in this session only.</p>
+							{#if product && store.purposeAnswers}
+								<h4 class="checks-heading">Checks for your purpose</h4>
+								<PurposeChecks {product} detailHref={store.href(`/products/${encodeURIComponent(product.id)}`)} compact />
+							{/if}
 						</details>
 					</li>
 				{/each}
@@ -261,6 +291,10 @@
 	}
 	.status.outside strong {
 		color: var(--warn-fg);
+	}
+	.checks-heading {
+		margin: var(--space-1) 0 6px;
+		font-size: 0.95rem;
 	}
 	.notes summary {
 		cursor: pointer;

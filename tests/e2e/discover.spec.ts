@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { card, cardTitles, cards, open, settle } from './helpers';
+import { browse, card, cardTitles, cards, open, settle } from './helpers';
 
-test('opens in a neutral browse state with the assessed scope visibly selected', async ({ page }) => {
-	await open(page);
+test('skipping the purpose entry opens a neutral browse state with the assessed scope visibly selected', async ({ page }) => {
+	await browse(page);
 	await expect(page.getByRole('heading', { level: 2, name: /Browse products/ })).toBeVisible();
 	await expect(cards(page)).toHaveCount(26);
 	await expect(page.getByLabel('Catalogue scope')).toHaveValue('CEOS-ARD assessed only');
@@ -15,7 +15,7 @@ test('opens in a neutral browse state with the assessed scope visibly selected',
 });
 
 test('applies a built-in profile with preview, retained constraints and undo; values are unchanged', async ({ page }) => {
-	await open(page);
+	await browse(page);
 	await page.getByLabel('Search product and mission names').fill('sentinel');
 	await settle(page);
 	await page.getByRole('button', { name: 'Starting points and my profiles' }).click();
@@ -59,8 +59,8 @@ test('distinguishes reported mismatch from missing evidence and keeps manual-che
 	await expect(outside.locator('article.card')).toHaveCount(0);
 	await outside.getByRole('button', { name: /Show/ }).click();
 	const desis = card(page, 'DESIS L2A');
-	await expect(desis).toContainText('Reported outside: spatial resolution');
-	await expect(desis).toContainText('Needs evidence: nominal revisit');
+	await expect(desis).toContainText('Outside your requirement: spatial resolution');
+	await expect(desis).toContainText('Evidence needed: nominal revisit');
 	await evidence.getByRole('button', { name: /Show/ }).click();
 	const outsideCount = await outside.locator('article.card').count();
 	const evidenceCount = await evidence.locator('article.card').count();
@@ -80,7 +80,7 @@ test('clear criteria keeps the catalogue scope and shortlist; no-results state n
 });
 
 test('browser back and forward restore the represented state', async ({ page }) => {
-	await open(page);
+	await browse(page);
 	await page.getByRole('button', { name: 'Starting points and my profiles' }).click();
 	await page.getByRole('button', { name: 'Preview Map Land and Features' }).click();
 	await page.getByRole('button', { name: 'Apply profile' }).click();

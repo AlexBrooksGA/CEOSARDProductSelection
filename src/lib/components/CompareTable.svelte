@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { buildComparison, OPTIONAL_GROUPS } from '$lib/domain/comparison';
+	import { guidanceStatus, outputNote, purposeSentence } from '$lib/domain/purpose';
 	import type { Product } from '$lib/domain/types';
 	import { app } from '$lib/state/app.svelte';
 	import AssessmentBadge from './AssessmentBadge.svelte';
@@ -7,7 +8,26 @@
 
 	let { products }: { products: Product[] } = $props();
 	const store = app();
-	let groups = $derived(buildComparison(products, store.criteria, store.explorer.fields, store.provenanceMap));
+	let groups = $derived(
+		buildComparison(
+			products,
+			store.criteria,
+			store.explorer.fields,
+			store.provenanceMap,
+			store.purposeAnswers
+				? {
+						sentence: purposeSentence(store.purposeAnswers, store.guidance, { includePrivate: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' }),
+						statusLabel: guidanceStatus(store.guidance, store.purposeAnswers).label,
+						outputNote: outputNote(store.guidance, store.purposeAnswers),
+						guidance: store.guidance,
+						answers: store.purposeAnswers,
+						checks: store.purposeChecks,
+						outcome: (productId, checkId) => store.checkOutcome(productId, checkId),
+						detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`)
+					}
+				: null
+		)
+	);
 	$effect(() => {
 		void store.ensureProvenance(products.map((product) => product.id));
 	});
@@ -73,7 +93,7 @@
 									{#if cell.detail}<span class="detail small secondary">{cell.detail}</span>{/if}
 									{#if cell.link}<span class="detail"><ExternalLink href={cell.link.url} class="button small">{cell.link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></ExternalLink></span>{/if}
 									{#if cell.links?.length}
-										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}<ExternalLink href={link.url}>{link.label}</ExternalLink>{/each}</span>
+										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}{#if link.internal}<a href={link.url}>{link.label}</a>{:else}<ExternalLink href={link.url}>{link.label}</ExternalLink>{/if}{/each}</span>
 									{/if}
 								</td>
 							{/each}

@@ -52,6 +52,17 @@ Reconciles every item in the [audit inventory](AUDIT.md#4-feature--behaviour-inv
 | Bounded MIM loading (#4 audit) | No overall deadline. | 60 s deadline, 20 MB response and 5,000-product caps. | `mim.test.ts` |
 | Stricter catalogue validation | Field types unchecked; ID-less rows skipped silently. | Field types and stable-ID pattern validated; skipped rows reported as warnings. | `parity-catalogue.test.ts` |
 
+### Purpose-led entry add-on (October 2026)
+
+| Change | Before | Now | Test |
+|---|---|---|---|
+| Entry | Fresh visits opened Discover's neutral browse state. | Fresh visits (and bare `/?v=1`) open the purpose entry; **Skip to catalogue** gives the same neutral browse state. Links with criteria, restored sessions and product/shortlist links are unchanged. | `purpose.spec.ts` |
+| Requirement wording | "Reported outside: …", "Needs evidence: …". | "Outside your requirement: …", "Evidence needed: …"; comparison cells say "Reported value meets your criterion", "Outside your requirement/preference", "Evidence needed — not reported (manual check)". Matching results are unchanged (parity tests pass). | `domain.test.ts`, `discover.spec.ts` |
+| Comparison order | Spatial-temporal first, requirements later. | Requirements (and purpose checks) first, then spatial-temporal, assessment, quality, access, technical, provenance. | `domain.test.ts` |
+| URL contract v1 | — | Optional `pu` and `gv` added; existing links are unaffected. | `purpose.test.ts` |
+| Rationale fingerprint | Criteria only. | Criteria plus the public purpose key. | `purpose.spec.ts` |
+| Glossary source for SAR types | NASA ARSET radar training link (now redirects to a generic page). | CEOS-ARD page listing the SAR product family specifications. | — |
+
 ## Bug fixes (separate from parity)
 
 | Fix | Detail | Test |
@@ -69,4 +80,5 @@ Reconciles every item in the [audit inventory](AUDIT.md#4-feature--behaviour-inv
 - **Guided onboarding depth** (design brief §6) is left for real-user testing; family help, glossary and notes are provided.
 - **Legacy reference removal** happens after the owner accepts parity (see `legacy/streamlit-prototype/README.md`).
 - **`tmp/` review proposals** (for example Landsat `uint16`) were not applied; they need owner review through the population tool.
+- **Purpose guidance review.** Guidance version 1 is illustrative and unreviewed; a CEOS or domain-expert review should precede any change of status. See `docs/purpose-journey/GUIDANCE.md`.
 - **SvelteKit 3 upgrade** is deferred, because the release is only days old.

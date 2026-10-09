@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { card, open, settle } from './helpers';
+import { browse, card, open, settle } from './helpers';
 
 test('discovery → detail → shortlist → comparison → provider access', async ({ page }) => {
-	await open(page);
+	await browse(page);
 	await page.getByLabel('Search product and mission names').fill('landsat collection 2 surface reflectance');
 	await settle(page);
 	const landsat = card(page, 'Landsat Collection 2 Surface Reflectance');
@@ -58,7 +58,7 @@ test('retains four shortlist entries, compares three, keeps work across criteria
 	await expect(page.locator('li.entry')).toHaveCount(4);
 	await expect(page.getByText('Review rationale: criteria changed since this note was written.')).toBeVisible();
 	await expect(page.getByLabel('Why retained').first()).toHaveValue('Longest archive for change detection');
-	await expect(page.getByText('In current results: Reported outside: nominal revisit').first()).toBeVisible();
+	await expect(page.getByText('In current results: Outside your requirement: nominal revisit').first()).toBeVisible();
 	await page.getByRole('link', { name: 'Edit in Discover' }).click();
 	await page.getByLabel('Measurement family').selectOption('Synthetic Aperture Radar');
 	await page.getByRole('link', { name: /Shortlist & compare \(4\)/ }).click();

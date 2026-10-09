@@ -162,7 +162,7 @@ describe('Landsat C2 SR / Sentinel-2 L2A comparison example', () => {
 	const rowsById = Object.fromEntries(groups.flatMap((g) => g.rows.map((r) => [r.id, r])));
 
 	it('exposes assessment evidence, temporal distinctions, format/access and open checks without changing facts', () => {
-		expect(groups.map((g) => g.id)).toEqual(['spatial-temporal', 'requirements', 'assessment', 'quality', 'access', 'technical', 'provenance']);
+		expect(groups.map((g) => g.id)).toEqual(['requirements', 'spatial-temporal', 'assessment', 'quality', 'access', 'technical', 'provenance']);
 		expect(rowsById.pfs!.cells.map((c) => c.text)).toEqual(['Surface Reflectance v5.0', byId['sentinel2-level2a']!.ceos_ard_pfs]);
 		expect(rowsById.approval!.cells.map((c) => c.text)).toEqual(['2021-06-04', byId['sentinel2-level2a']!.approval_date]);
 		expect(rowsById.evidence!.cells.every((c) => c.links!.length === 2)).toBe(true);

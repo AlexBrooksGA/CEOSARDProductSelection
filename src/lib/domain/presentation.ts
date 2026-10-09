@@ -70,10 +70,10 @@ export function criterionReasons(result: MatchResult, criteria: Criteria): Crite
 		const prefix = `${definition.label} ${target} (${mode === 'required' ? 'Required' : 'Preferred'})`;
 		const text =
 			state === 'met'
-				? `${prefix}: reported ${reported} — meets`
+				? `${prefix}: reported ${reported} — reported value meets your criterion`
 				: state === 'outside'
-					? `${prefix}: reported ${reported} — outside`
-					: `${prefix}: not reported — needs evidence`;
+					? `${prefix}: reported ${reported} — outside your ${mode === 'required' ? 'requirement' : 'preference'}`
+					: `${prefix}: not reported — evidence needed (manual check)`;
 		reasons.push({ name, label: definition.label, mode, state, target, reported, text });
 	}
 	return reasons;
@@ -85,9 +85,9 @@ function headline(reasons: CriterionReason[]): string {
 	const requiredUnknown = reasons.filter((r) => r.mode === 'required' && r.state === 'unknown');
 	const preferred = reasons.filter((r) => r.mode === 'preferred');
 	const parts: string[] = [];
-	if (requiredOutside.length) parts.push(`Reported outside: ${requiredOutside.map((r) => r.label.toLowerCase()).join(', ')}`);
-	if (requiredUnknown.length) parts.push(`Needs evidence: ${requiredUnknown.map((r) => r.label.toLowerCase()).join(', ')}`);
-	if (!requiredOutside.length && !requiredUnknown.length && reasons.some((r) => r.mode === 'required')) parts.push('Meets reported required criteria');
+	if (requiredOutside.length) parts.push(`Outside your requirement: ${requiredOutside.map((r) => r.label.toLowerCase()).join(', ')}`);
+	if (requiredUnknown.length) parts.push(`Evidence needed: ${requiredUnknown.map((r) => r.label.toLowerCase()).join(', ')}`);
+	if (!requiredOutside.length && !requiredUnknown.length && reasons.some((r) => r.mode === 'required')) parts.push('Reported values meet your required criteria');
 	if (preferred.length) {
 		const met = preferred.filter((r) => r.state === 'met').length;
 		const unknown = preferred.filter((r) => r.state === 'unknown').length;

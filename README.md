@@ -57,13 +57,15 @@ Credentials are read only on the server, never sent to the browser, put in URLs 
 
 ## Using the explorer
 
-- **Discover** opens in a neutral browse state: all measurement families, the **CEOS-ARD assessed products** scope, no screening criteria and no launch-year cut-off.
+- **Start with your purpose.** A fresh visit opens a short sentence builder — *I want to [monitor change] in [wetlands], to understand [seasonal changes in inundation]* — with optional output, measurement, detail and frequency. A live preview shows the proposed filters and why, what the catalogue can't check, the checks you'll see on each product (with sources) and what stays unchanged. Nothing changes until **Find candidate products**; **Skip to catalogue** (top right) goes straight to browsing. Afterwards **Your purpose** above the results offers Edit, Clear purpose and Undo, and flags *Filters adjusted since setup*. Qualitative answers ("small features", "across each season") never become numeric limits; only values you type do. The guidance is illustrative and not reviewed by CEOS or domain experts (see [`docs/purpose-journey/GUIDANCE.md`](docs/purpose-journey/GUIDANCE.md)).
+- **Discover** (after skipping, or from any link with criteria) shows the catalogue; with no criteria it is a neutral browse state: all measurement families, the **CEOS-ARD assessed products** scope, no screening criteria and no launch-year cut-off.
 - Add **Spatial resolution** or **Nominal revisit** criteria (more under **More filters**) and set each to **Required**, **Preferred** or **Ignore** inline. Required criteria separate products that meet reported values from those **reported outside a requirement** or **needing evidence**; both groups are counted and can be opened. Preferences only change the order, which is never a quality ranking.
 - **Profiles** offer illustrative starting points and session-only custom profiles, with a preview of what changes, undo, a *Modified* marker and explicit saving.
 - **Clear criteria** removes search, family and technical restrictions but keeps the catalogue scope; **Restore profile defaults** re-applies the applied profile.
 - **Product details** separate *CEOS-ARD assessment*, *Measured quality evidence* and *My requirements and open checks*, with sourced access, documentation and provenance.
 - **Shortlist & compare** keeps any number of candidates (up to 60), compares two or three in aligned rows, and holds optional notes. **Copy selection summary** produces a dated, provisional decision record.
-- Links reproduce criteria and selections (see [`docs/STATE_CONTRACT.md`](docs/STATE_CONTRACT.md)); notes and profiles stay in the browser tab's session.
+- Links reproduce criteria and selections (see [`docs/STATE_CONTRACT.md`](docs/STATE_CONTRACT.md)) and, when a purpose is applied, its public key and guidance version; notes, profiles, purpose descriptions, area, period and check records stay in the browser tab's session.
+- With a purpose applied, product details, the comparison (requirements and purpose checks first) and the copied summary include the purpose checks, next actions and your own check records.
 
 ## Repository layout
 
@@ -101,4 +103,5 @@ Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceo
 - Broad coverage categories (Local → Global) are preserved for compatibility; they describe operating scope, not coverage at a place or time.
 - The MIM cache is process-local: it resets on restart and is not shared across replicas.
 - Profiles, notes and drafts are session-only (no accounts).
+- Purpose guidance version 1 is illustrative and **not reviewed**; it covers wetlands in detail and gives general checks elsewhere. The entry imagery is illustrative, not satellite data.
 - Live MIM integration was validated against controlled fixtures and a mock server in this rebuild, not against the live service.

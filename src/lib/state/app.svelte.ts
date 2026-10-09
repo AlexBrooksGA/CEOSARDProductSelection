@@ -18,10 +18,26 @@ import { groupAndSort } from '$lib/domain/matching';
 import { presentResults, presentResult, type PresentedResult } from '$lib/domain/presentation';
 import { buildCustomProfile, customInputFromState, newCustomProfileId, previewProfile, profileModified, profileNameError, type CustomProfileInput } from '$lib/domain/profiles';
 import { addToCompare, addToShortlist, removeFromCompare, removeFromShortlist, type Selection } from '$lib/domain/selection';
+import {
+	answersFromKey,
+	currentJourneySettings,
+	EMPTY_ANSWERS,
+	guidanceStatus,
+	parsePurposeKey,
+	proposePurpose,
+	purposeKey,
+	resolveChecks,
+	sameSettings,
+	sanitiseAnswers,
+	visualState,
+	type CheckOutcome,
+	type PurposeAnswers
+} from '$lib/domain/purpose';
 import type { ProductNote } from '$lib/domain/summary';
+import { GUIDANCE } from '$lib/guidance';
 import type { Product, Profile, ProvenanceRow } from '$lib/domain/types';
-import { browserStorage, createSessionAdapter, emptySession, type SessionAdapter, type SessionData } from './session';
-import { parseUrlState, queryString } from './url';
+import { browserStorage, createSessionAdapter, emptySession, type AppliedPurpose, type SessionAdapter, type SessionData } from './session';
+import { hasMeaningfulState, parseUrlState, queryString } from './url';
 
 export interface MimStatusView {
 	configured: boolean;
@@ -66,7 +82,7 @@ export class AppStore {
 	mimProducts = $state<Product[]>([]);
 	mimBusy = $state(false);
 	announcement = $state('');
-	undo = $state<{ query: string; label: string; path: string } | null>(null);
+	undo = $state<{ query: string; label: string; path: string; purposeBefore?: AppliedPurpose | null } | null>(null);
 	provenanceCache = $state<Record<string, Record<string, ProvenanceRow>>>({});
 
 	private adapter: SessionAdapter = createSessionAdapter(null);
@@ -78,6 +94,8 @@ export class AppStore {
 		this.catalogueSource = payload.catalogueSource;
 		this.notFound = payload.notFound;
 		this.mimStatus = payload.mim;
+		// Server rendering and first paint: the entry journey shows only on a URL without meaningful state.
+		this.journeyOpen = !hasMeaningfulState(parseUrlState(page.url.searchParams));
 	}
 
 	// ------------------------------------------------------------ public URL state
@@ -111,7 +129,8 @@ export class AppStore {
 	mimLoaded = $derived(this.mimProducts.length > 0);
 	available = $derived(this.explorer.includeMim ? this.allProducts : this.curated);
 	criteria = $derived(matchingCriteria(this.explorer));
-	fingerprint = $derived(criteriaFingerprint(this.explorer.criteria));
+	/** Criteria plus purpose: a change to either flags existing rationale and checks for review. */
+	fingerprint = $derived(`${criteriaFingerprint(this.explorer.criteria)}|purpose=${this.explorer.purpose ?? ''}`);
 	filterState = $derived(toFilterState(this.explorer));
 	filtered = $derived(metadataFilter(this.available, this.filterState));
 	grouped = $derived(groupAndSort(this.filtered, { criteria: this.criteria }));
@@ -189,8 +208,13 @@ export class AppStore {
 
 	async undoLast(): Promise<void> {
 		if (!this.undo) return;
-		const { query, label, path } = this.undo;
+		const { query, label, path, purposeBefore } = this.undo;
 		this.undo = null;
+		if (purposeBefore !== undefined) {
+			this.updateSession((s) => {
+				s.purpose.applied = purposeBefore;
+			});
+		}
 		await goto(`${path}?${query}`, { keepFocus: true, noScroll: true });
 		this.announce(`Undid: ${label}.`);
 	}
@@ -348,6 +372,122 @@ export class AppStore {
 
 	provenanceMap = $derived(Object.fromEntries(this.allProducts.map((p) => [p.id, this.provenanceFor(p.id)]).filter(([, v]) => v)) as Record<string, Record<string, ProvenanceRow>>);
 
+	// ------------------------------------------------------------ purpose journey
+	readonly guidance = GUIDANCE;
+	/** Whether the large entry journey is shown on Discover. */
+	journeyOpen = $state(false);
+	/** Unapplied answers. Changing them never changes live filters or selections. */
+	draft = $state<PurposeAnswers>(structuredClone(EMPTY_ANSWERS));
+	proposal = $derived(proposePurpose(this.draft, GUIDANCE, this.explorer));
+	visual = $derived(visualState(this.draft, GUIDANCE));
+	draftStatus = $derived(guidanceStatus(GUIDANCE, this.draft));
+
+	/** The purpose currently attached to the public state, resolved against the guidance. */
+	purposeContext = $derived.by(() => {
+		const key = this.explorer.purpose;
+		if (!key) return null;
+		if (this.explorer.guidanceVersion && this.explorer.guidanceVersion !== GUIDANCE.version) {
+			return { kind: 'version-mismatch' as const, key, version: this.explorer.guidanceVersion };
+		}
+		const parsed = parsePurposeKey(key, GUIDANCE);
+		if (!parsed) return { kind: 'unknown' as const, key, version: this.explorer.guidanceVersion };
+		const applied = this.session.purpose.applied;
+		const own = applied && applied.key === key ? applied : null;
+		const answers = own ? sanitiseAnswers(own.answers, GUIDANCE) : answersFromKey(parsed);
+		return { kind: 'ok' as const, key, answers, source: own ? ('session' as const) : ('link' as const), applied: own };
+	});
+	purposeAnswers = $derived(this.purposeContext?.kind === 'ok' ? this.purposeContext.answers : null);
+	purposeChecks = $derived(this.purposeAnswers ? resolveChecks(GUIDANCE, this.purposeAnswers) : []);
+	/** Journey-managed filters differ from what was applied (manual edits are authoritative). */
+	purposeAdjusted = $derived(
+		this.purposeContext?.kind === 'ok' && this.purposeContext.applied ? !sameSettings(this.purposeContext.applied.settings, currentJourneySettings(this.explorer)) : false
+	);
+
+	updateDraft(patch: Partial<PurposeAnswers>): void {
+		this.draft = { ...this.draft, ...patch };
+		this.updateSession((s) => {
+			s.purpose.draft = $state.snapshot(this.draft);
+		});
+	}
+
+	resetDraft(): void {
+		this.draft = structuredClone(EMPTY_ANSWERS);
+		this.updateSession((s) => {
+			s.purpose.draft = null;
+		});
+	}
+
+	/** Open the journey to start or edit; the current shortlist, notes and filters are untouched. */
+	openJourney(): void {
+		const current = this.purposeAnswers;
+		if (current && this.session.purpose.applied?.key === this.explorer.purpose) this.draft = structuredClone($state.snapshot(current));
+		else if (current && !purposeKey(this.draft)) this.draft = structuredClone($state.snapshot(current));
+		this.journeyOpen = true;
+	}
+
+	closeJourney(): void {
+		this.journeyOpen = false;
+	}
+
+	/** "Skip to catalogue": changes no criteria; the draft stays in the session. */
+	skipJourney(): void {
+		this.updateSession((s) => {
+			s.purpose.skipped = true;
+		});
+		this.journeyOpen = false;
+		this.announce('Showing the catalogue. Your draft purpose is kept; use “Start with your purpose” to return.');
+	}
+
+	/** "Find candidate products": apply the reviewed settings exactly once (push history, Undo offered). */
+	async applyPurpose(): Promise<void> {
+		const before = this.query;
+		const purposeBefore = this.session.purpose.applied ? structuredClone($state.snapshot(this.session.purpose.applied)) : null;
+		const proposal = this.proposal;
+		const answers = structuredClone($state.snapshot(this.draft)) as PurposeAnswers;
+		this.updateSession((s) => {
+			s.purpose.applied = {
+				answers,
+				key: purposeKey(answers),
+				guidanceVersion: GUIDANCE.version,
+				mappingVersion: GUIDANCE.mapping_version,
+				appliedAt: new Date().toISOString(),
+				settings: structuredClone($state.snapshot(proposal.settings))
+			};
+			s.purpose.skipped = false;
+			s.appliedCustomProfileId = null;
+		});
+		this.undo = { query: before, label: 'Applied your purpose', path: '/', purposeBefore };
+		this.journeyOpen = false;
+		await this.setExplorer(proposal.next, 'push', '/');
+		this.announce('Applied your purpose. Showing candidate products; your filters are now editable. Undo is available.');
+	}
+
+	/** Remove the task context but keep filters, shortlist and notes. */
+	async clearPurpose(): Promise<void> {
+		const before = this.query;
+		const purposeBefore = this.session.purpose.applied ? structuredClone($state.snapshot(this.session.purpose.applied)) : null;
+		this.undo = { query: before, label: 'Cleared your purpose', path: page.url.pathname, purposeBefore };
+		this.updateSession((s) => {
+			s.purpose.applied = null;
+		});
+		await this.patch((draft) => {
+			draft.purpose = null;
+			draft.guidanceVersion = null;
+		}, 'push');
+		this.announce('Cleared your purpose. Filters, shortlist and notes are unchanged. Undo is available.');
+	}
+
+	checkOutcome(productId: string, checkId: string) {
+		return this.session.purpose.checks[productId]?.[checkId] ?? null;
+	}
+
+	setCheckOutcome(productId: string, checkId: string, outcome: CheckOutcome, note?: string): void {
+		this.updateSession((s) => {
+			const current = s.purpose.checks[productId]?.[checkId];
+			(s.purpose.checks[productId] ??= {})[checkId] = { outcome, note: note ?? current?.note ?? '', purpose: this.explorer.purpose };
+		});
+	}
+
 	// ------------------------------------------------------------ session lifecycle
 	updateSession(mutator: (draft: SessionData) => void): void {
 		mutator(this.session);
@@ -384,6 +524,11 @@ export class AppStore {
 		this.persist();
 		if (data.theme) document.documentElement.dataset.theme = data.theme;
 		if (data.mimLoaded && this.mimStatus.configured) void this.mimRequest('load', true);
+		this.draft = sanitiseAnswers(data.purpose.draft ?? data.purpose.applied?.answers ?? {}, GUIDANCE);
+		const restored = !parsed.explicit && data.lastQuery ? parseUrlState(new URLSearchParams(data.lastQuery)) : null;
+		const meaningful = hasMeaningfulState(parsed) || (restored ? hasMeaningfulState(restored) : false);
+		// Fresh visit only: never in front of meaningful links, restored sessions, a skip or an applied purpose.
+		this.journeyOpen = !meaningful && !data.purpose.skipped && !data.purpose.applied && data.customProfiles.length === 0;
 		if (!parsed.explicit && data.lastQuery) {
 			await goto(`${page.url.pathname}?${data.lastQuery}`, { replaceState: true, keepFocus: true, noScroll: true });
 		}

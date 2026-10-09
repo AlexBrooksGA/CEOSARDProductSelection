@@ -53,7 +53,8 @@ const CRITERION_PARAMS: Record<string, CriterionName> = {
 };
 const CRITERION_TO_PARAM = Object.fromEntries(Object.entries(CRITERION_PARAMS).map(([param, name]) => [name, param]));
 
-export const KNOWN_PARAMS = new Set(['v', 'q', 'fam', 'scope', 'mim', 'unk', 'prov', 'sensor', 'ops', 'src', 'sl', 'cmp', 'fields', 'p', ...Object.keys(CRITERION_PARAMS)]);
+export const KNOWN_PARAMS = new Set(['v', 'q', 'fam', 'scope', 'mim', 'unk', 'prov', 'sensor', 'ops', 'src', 'sl', 'cmp', 'fields', 'p', 'pu', 'gv', ...Object.keys(CRITERION_PARAMS)]);
+export const PURPOSE_KEY_PATTERN = /^[a-z0-9-]{1,40}(~[a-z0-9-]{1,40}){0,2}$/;
 
 export interface ParsedUrlState {
 	state: ExplorerState;
@@ -189,7 +190,20 @@ export function parseUrlState(params: URLSearchParams): ParsedUrlState {
 		if (/^[a-z0-9-]{1,64}$/.test(profileId) && !profileId.startsWith('custom-')) state.profileId = profileId;
 		else issues.push('Custom profiles are not shared by links; the criteria in the link were used instead.');
 	}
+	const purpose = params.get('pu');
+	if (purpose) {
+		if (PURPOSE_KEY_PATTERN.test(purpose)) {
+			state.purpose = purpose;
+			const version = params.get('gv');
+			state.guidanceVersion = version && /^[0-9A-Za-z.-]{1,20}$/.test(version) ? version : null;
+		} else issues.push('The purpose in this link was not recognised and was ignored; the criteria in the link were kept.');
+	}
 	return { state, explicit, issues };
+}
+
+/** True when the URL carries anything beyond the baseline version parameter. */
+export function hasMeaningfulState(parsed: ParsedUrlState): boolean {
+	return queryString(parsed.state) !== `v=${URL_VERSION}`;
 }
 
 function formatValue(value: number): string {
@@ -222,6 +236,10 @@ export function serialiseUrlState(state: ExplorerState): URLSearchParams {
 	if (state.compare.length) params.set('cmp', state.compare.join(','));
 	if (state.fields.length) params.set('fields', state.fields.join(','));
 	if (state.profileId && !state.profileId.startsWith('custom-')) params.set('p', state.profileId);
+	if (state.purpose) {
+		params.set('pu', state.purpose);
+		if (state.guidanceVersion) params.set('gv', state.guidanceVersion);
+	}
 	return params;
 }
 

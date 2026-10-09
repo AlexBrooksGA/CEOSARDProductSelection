@@ -31,6 +31,10 @@ export interface ExplorerState {
 	fields: string[];
 	/** Built-in profile last applied (informational; criteria are authoritative). */
 	profileId: string | null;
+	/** Public purpose key (`goal~context~question`, fixed ids only) set by the purpose journey. */
+	purpose: string | null;
+	/** Guidance version the purpose key refers to. */
+	guidanceVersion: string | null;
 }
 
 /** Neutral initial browse state: all families, assessed scope, no criteria, no launch-year cut-off. */
@@ -48,7 +52,9 @@ export const NEUTRAL_STATE: ExplorerState = Object.freeze({
 	shortlist: [],
 	compare: [],
 	fields: [],
-	profileId: null
+	profileId: null,
+	purpose: null,
+	guidanceVersion: null
 }) as ExplorerState;
 
 export function cloneState(state: ExplorerState): ExplorerState {
@@ -102,7 +108,11 @@ export function hasRefinements(state: ExplorerState): boolean {
 	);
 }
 
-/** Clear criteria: removes search, family and technical restrictions; keeps scope, sources toggle and selections. */
+/**
+ * Clear criteria: removes search, family and technical restrictions. It keeps the catalogue
+ * scope, the MIM toggle, selections and the purpose (task context) — clearing a filter never
+ * erases why the user is searching. "Clear purpose" is a separate action.
+ */
 export function clearCriteria(state: ExplorerState): ExplorerState {
 	return {
 		...cloneState(state),

@@ -6,7 +6,6 @@ import { ALL_FAMILIES } from './filters';
 
 export const CEOS_ARD_URL = 'https://ceos.org/ard/';
 export const CEOS_ARD_USER_GUIDE_URL = 'https://ceos.org/ard/files/User%20Guide/CEOS_ARD%20User%20Guide%20v1_4.pdf';
-export const ARSET_RADAR_URL = 'https://appliedsciences.nasa.gov/get-involved/training/english/arset-radar-remote-sensing-land-water-disaster-applications';
 
 export interface FamilyInfo {
 	value: string;
@@ -158,8 +157,8 @@ export const GLOSSARY: GlossaryTerm[] = [
 	{
 		id: 'sar-types',
 		term: 'NRB, RTC, POL, InSAR',
-		definition: 'SAR product types: normalised radar backscatter, radiometric terrain correction, polarimetric and interferometric products.',
-		source: { label: 'NASA ARSET radar training', url: ARSET_RADAR_URL }
+		definition: 'SAR product types: normalised radar backscatter (NRB; RTC means radiometric terrain correction, applied in producing such backscatter), polarimetric (POL) and interferometric (InSAR) products. The combined CEOS-ARD for SAR also covers ocean radar backscatter, geocoded single-look complex and composite backscatter.',
+		source: { label: 'CEOS-ARD product family specifications', url: CEOS_ARD_URL }
 	},
 	{
 		id: 'dem-crs',
