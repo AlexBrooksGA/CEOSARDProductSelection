@@ -302,3 +302,24 @@ describe('experience, region and period', () => {
 		expect(EXPERIENCE_DISCLOSURE.familiar).toEqual({});
 	});
 });
+
+describe('depth scene geometry', async () => {
+	const { coverTransform, pickWidth, LANDSCAPE_WIDTHS } = await import('../../src/lib/components/purpose/depth-scene');
+	it('picks the smallest image that covers the drawing buffer', () => {
+		expect(pickWidth(1100)).toBe(1280);
+		expect(pickWidth(1700)).toBe(1920);
+		expect(pickWidth(2160)).toBe(2560);
+		expect(pickWidth(5000)).toBe(LANDSCAPE_WIDTHS.at(-1));
+	});
+	it('covers any window without stretching and keeps the subject in narrow windows', () => {
+		const wide = coverTransform(2400, 900);
+		expect(wide.scale[0]).toBeCloseTo(1 / 1.07);
+		expect(wide.scale[1]).toBeLessThan(wide.scale[0]);
+		const narrow = coverTransform(800, 1000);
+		expect(narrow.scale[1]).toBeCloseTo(1 / 1.07);
+		expect(narrow.focus[0]).toBeCloseTo(0.64);
+		expect(narrow.focus[0] + narrow.scale[0] / 2).toBeLessThanOrEqual(1);
+		const extreme = coverTransform(300, 1000);
+		expect(extreme.focus[0] - extreme.scale[0] / 2).toBeGreaterThanOrEqual(0);
+	});
+});

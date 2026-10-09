@@ -99,7 +99,7 @@
 					Illustrative imagery <span aria-hidden="true">ⓘ</span>
 				</button>
 				<p id="imagery-info" class="imagery-info" hidden={!imageryInfo}>
-					AI-generated picture of a fictional landscape. It is not satellite data, not a calibrated resolution and not evidence about any product. It changes with the measurement and detail you choose only as a visual cue, and it does not show your area or dates.
+					AI-generated picture of a fictional wetland. The radar and thermal looks are stylised from the same picture. None of it is satellite data, a calibrated resolution or evidence about any product; it changes with the measurement and detail you choose only as a visual cue, and it does not show your area or dates.
 				</p>
 			</div>
 			{#if editing}

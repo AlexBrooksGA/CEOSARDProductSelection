@@ -231,10 +231,11 @@ test('links with an unknown guidance version or malformed purpose keep their fil
 test('imagery failure falls back to the gradient; the journey still works', async ({ page }) => {
 	const errors: string[] = [];
 	page.on('pageerror', (error) => errors.push(error.message));
-	await page.route('**/images/purpose-journey/*.webp', (route) => route.abort());
+	await page.route('**/images/purpose-journey/*', (route) => route.abort());
 	await open(page);
 	await describeWetlandPurpose(page);
 	await expect(page.locator('.backdrop img')).toHaveCount(0);
+	await expect(page.locator('.backdrop canvas.visible')).toHaveCount(0);
 	await expect(page.locator('.backdrop .gradient')).toBeAttached();
 	await page.screenshot({ path: 'test-results/screens/journey-image-failure.png' });
 	await find(page).click();
@@ -242,12 +243,16 @@ test('imagery failure falls back to the gradient; the journey still works', asyn
 	expect(errors).toEqual([]);
 });
 
-test('reduced motion swaps imagery without animation', async ({ page }) => {
+test('reduced motion shows still imagery that swaps without animation', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await open(page);
 	await choose(page, 'What do you want to do?', 'monitor change');
 	await choose(page, 'Measurement', 'thermal');
-	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-fine\.webp/);
+	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-1920\.webp/);
+	// No cursor-driven scene with reduced motion.
+	await expect(page.locator('.backdrop canvas.visible')).toHaveCount(0);
+	await choose(page, 'Spatial detail', 'broad patterns');
+	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-coarse\.png/);
 	const running = await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length);
 	expect(running).toBe(0);
 	await expect(page.locator('.backdrop img')).toHaveCount(1);
@@ -271,13 +276,14 @@ test('works in memory when session storage is unavailable', async ({ page }) => 
 
 for (const theme of ['light', 'dark'] as const) {
 	test(`purpose entry and results have no detectable accessibility violations (${theme})`, async ({ page }) => {
+		test.slow();
 		await page.setViewportSize({ width: 1440, height: 900 });
 		await page.emulateMedia({ colorScheme: theme });
 		await open(page);
 		await page.screenshot({ path: `test-results/screens/journey-empty-${theme}.png` });
 		await describeWetlandPurpose(page, 'Okavango Delta');
 		await page.getByRole('button', { name: 'Illustrative imagery' }).click();
-		await expect(page.getByText(/not satellite data/)).toBeVisible();
+		await expect(page.getByText(/None of it is satellite data/)).toBeVisible();
 		expect(await axe(page)).toEqual([]);
 		await page.screenshot({ path: `test-results/screens/journey-filled-${theme}.png` });
 		await page.screenshot({ path: `test-results/screens/journey-filled-full-${theme}.png`, fullPage: true });
@@ -289,6 +295,8 @@ for (const theme of ['light', 'dark'] as const) {
 }
 
 test('narrow screens stack the sentence with visible labels and no horizontal scrolling', async ({ browser }) => {
+	// Two contexts, axe and full-page screenshots; the WebGL scene renders in software here.
+	test.slow();
 	for (const theme of ['light', 'dark'] as const) {
 		const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, colorScheme: theme });
 		const page = await context.newPage();
