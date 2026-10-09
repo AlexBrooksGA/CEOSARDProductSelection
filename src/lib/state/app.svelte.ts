@@ -30,7 +30,9 @@ import {
 	sameSettings,
 	sanitiseAnswers,
 	visualState,
+	EXPERIENCE_DISCLOSURE,
 	type CheckOutcome,
+	type ExperienceLevel,
 	type PurposeAnswers
 } from '$lib/domain/purpose';
 import type { ProductNote } from '$lib/domain/summary';
@@ -301,7 +303,7 @@ export class AppStore {
 
 	// ------------------------------------------------------------ disclosure and theme
 	isOpen(key: string, fallback = false): boolean {
-		return this.session.disclosure[key] ?? fallback;
+		return this.session.disclosure[key] ?? (this.experience ? EXPERIENCE_DISCLOSURE[this.experience][key] : undefined) ?? fallback;
 	}
 
 	setOpen(key: string, open: boolean): void {
@@ -397,6 +399,8 @@ export class AppStore {
 		return { kind: 'ok' as const, key, answers, source: own ? ('session' as const) : ('link' as const), applied: own };
 	});
 	purposeAnswers = $derived(this.purposeContext?.kind === 'ok' ? this.purposeContext.answers : null);
+	/** Self-described experience (applied purpose first, then the draft); sets disclosure defaults only. */
+	experience = $derived<ExperienceLevel | null>(this.purposeAnswers?.experience ?? this.draft.experience ?? null);
 	purposeChecks = $derived(this.purposeAnswers ? resolveChecks(GUIDANCE, this.purposeAnswers) : []);
 	/** Journey-managed filters differ from what was applied (manual edits are authoritative). */
 	purposeAdjusted = $derived(
@@ -410,10 +414,11 @@ export class AppStore {
 		});
 	}
 
+	/** Clears the answers but keeps the self-described experience. */
 	resetDraft(): void {
-		this.draft = structuredClone(EMPTY_ANSWERS);
+		this.draft = { ...structuredClone(EMPTY_ANSWERS), experience: this.draft.experience };
 		this.updateSession((s) => {
-			s.purpose.draft = null;
+			s.purpose.draft = this.draft.experience ? $state.snapshot(this.draft) : null;
 		});
 	}
 

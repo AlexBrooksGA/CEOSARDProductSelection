@@ -34,6 +34,8 @@ export interface GuidanceSource {
 export interface Option {
 	id: string;
 	label: string;
+	/** Optional one-line explanation shown in the choice menu. */
+	hint?: string;
 }
 export interface GoalOption extends Option {
 	kind: 'change' | 'mapping' | 'explore' | 'custom';
@@ -47,6 +49,8 @@ export interface QuestionOption extends Option {
 	default_output: string;
 }
 export interface MeasurementOption extends Option {
+	/** Longer label naming the CEOS-ARD family, used in explanations. */
+	family_label?: string;
 	family: string | null;
 	visual: VisualFamily;
 	explanation: string;
@@ -54,6 +58,26 @@ export interface MeasurementOption extends Option {
 export interface DetailOption extends Option {
 	visual: VisualDetail;
 }
+export type RegionIcon = 'GL' | 'AF' | 'AS' | 'EU' | 'NA' | 'SA' | 'OC' | 'AN' | 'PIN';
+export interface RegionOption extends Option {
+	icon: RegionIcon;
+}
+export interface TimeframeOption extends Option {
+	/** Whole years back from the current year, used only to show an example range. */
+	years_back?: number;
+}
+export type ExperienceLevel = 'new' | 'familiar' | 'specialist';
+
+/**
+ * Default open state of disclosures by self-described experience. Only defaults: anything
+ * the user opens or closes is remembered and wins. Filters are never changed.
+ */
+export const EXPERIENCE_DISCLOSURE: Record<ExperienceLevel, Record<string, boolean>> = {
+	new: { 'family-help': true, 'more-filters': false, 'detail:qualifications': true },
+	familiar: {},
+	specialist: { 'more-filters': true, 'detail:technical': true, 'detail:instrument': true, 'detail:provenance': true, 'purpose:setup': true }
+};
+
 export interface GuidanceCheck {
 	id: string;
 	label: string;
@@ -87,6 +111,9 @@ export interface Guidance {
 	measurements: MeasurementOption[];
 	details: DetailOption[];
 	frequencies: Option[];
+	experience: (Option & { id: ExperienceLevel })[];
+	regions: RegionOption[];
+	timeframes: TimeframeOption[];
 	guidance: GuidanceEntry[];
 }
 
@@ -98,7 +125,7 @@ export function loadGuidance(raw: unknown): Guidance {
 	const g = raw as Guidance;
 	if (g.schema !== 1) throw new GuidanceError('Unsupported guidance schema.');
 	if (typeof g.version !== 'string' || !g.version) throw new GuidanceError('Guidance version is missing.');
-	for (const key of ['sources', 'goals', 'contexts', 'questions', 'outputs', 'measurements', 'details', 'frequencies', 'guidance'] as const) {
+	for (const key of ['sources', 'goals', 'contexts', 'questions', 'outputs', 'measurements', 'details', 'frequencies', 'experience', 'regions', 'timeframes', 'guidance'] as const) {
 		if (!Array.isArray(g[key])) throw new GuidanceError(`Guidance "${key}" must be a list.`);
 		const ids = (g[key] as { id: string }[]).map((item) => item.id);
 		if (ids.some((id) => typeof id !== 'string' || !/^[a-z0-9-]+$/.test(id))) throw new GuidanceError(`Guidance "${key}" has an invalid id.`);
@@ -109,6 +136,9 @@ export function loadGuidance(raw: unknown): Guidance {
 			throw new GuidanceError(`Source ${source.id} needs a short label, title, publisher, year and https URL.`);
 		}
 	}
+	const icons = new Set(['GL', 'AF', 'AS', 'EU', 'NA', 'SA', 'OC', 'AN', 'PIN']);
+	for (const region of g.regions) if (!icons.has(region.icon)) throw new GuidanceError(`Region ${region.id} has an unknown icon.`);
+	if (g.experience.some((e) => !['new', 'familiar', 'specialist'].includes(e.id))) throw new GuidanceError('Unknown experience level.');
 	const sourceIds = new Set(g.sources.map((s) => s.id));
 	const families = new Set(['Surface Reflectance', 'Surface Temperature', 'Synthetic Aperture Radar', 'Aquatic Reflectance', 'Night-time Lights']);
 	for (const m of g.measurements) if (m.family !== null && !families.has(m.family)) throw new GuidanceError(`Unknown family ${m.family}.`);
@@ -143,7 +173,15 @@ export interface PurposeAnswers {
 	measurement: string | null;
 	detail: string | null;
 	frequency: string | null;
-	/** Private context: never used for search, geocoding or availability, never put in URLs. */
+	/** Self-described experience. Changes only which details open by default; never filters. */
+	experience: ExperienceLevel | null;
+	/**
+	 * Private context: never used for search, geocoding or availability, never put in URLs.
+	 * `region`/`timeframe` are coarse fixed choices; `area`/`period` hold typed text for the
+	 * "a specific place…" and "a specific period…" choices.
+	 */
+	region: string | null;
+	timeframe: string | null;
 	area: string;
 	period: string;
 	/** Optional technical settings the user typed. */
@@ -162,6 +200,9 @@ export const EMPTY_ANSWERS: PurposeAnswers = Object.freeze({
 	measurement: null,
 	detail: null,
 	frequency: null,
+	experience: null,
+	region: null,
+	timeframe: null,
 	area: '',
 	period: '',
 	resolution: null,
@@ -205,11 +246,19 @@ export function sanitiseAnswers(raw: unknown, g: Guidance): PurposeAnswers {
 		measurement: id(g.measurements, value.measurement),
 		detail: id(g.details, value.detail),
 		frequency: id(g.frequencies, value.frequency),
+		experience: id(g.experience, value.experience) as ExperienceLevel | null,
+		region: id(g.regions, value.region),
+		timeframe: id(g.timeframes, value.timeframe),
 		area: text(value.area),
 		period: text(value.period),
 		resolution: criterion(value.resolution, 'spatial_resolution_m'),
 		revisit: criterion(value.revisit, 'revisit_days')
 	};
+	// Sessions from before region/period choices: typed text becomes the "specific" choice.
+	if (!answers.region && answers.area.trim() && g.regions.some((r) => r.id === 'custom')) answers.region = 'custom';
+	if (!answers.timeframe && answers.period.trim() && g.timeframes.some((t) => t.id === 'custom')) answers.timeframe = 'custom';
+	if (answers.region !== 'custom') answers.area = '';
+	if (answers.timeframe !== 'custom') answers.period = '';
 	if (answers.question && !questionsFor(g, answers.goal, answers.context).some((q) => q.id === answers.question)) answers.question = null;
 	return answers;
 }
@@ -261,7 +310,40 @@ export function purposeSentence(answers: PurposeAnswers, g: Guidance, { includeP
 	if (question && question.id !== 'unsure') {
 		questionText = question.id === 'custom' ? (includePrivate && answers.questionText.trim() ? `, to understand ${answers.questionText.trim()}` : '') : `, to understand ${question.label}`;
 	}
-	return `I want to ${goalText}${contextText}${questionText}.`;
+	const place = includePrivate ? placeAndTime(answers, g) : '';
+	return `I want to ${goalText}${contextText}${questionText}${place ? `, ${place}` : ''}.`;
+}
+
+/** Private region and period wording, e.g. "across Africa over the past decade". */
+export function placeAndTime(answers: PurposeAnswers, g: Guidance): string {
+	const region = byId(g.regions, answers.region);
+	const timeframe = byId(g.timeframes, answers.timeframe);
+	const parts: string[] = [];
+	if (region) {
+		if (region.id !== 'custom') parts.push(`across ${region.label}`);
+		else if (answers.area.trim()) parts.push(`in ${answers.area.trim()}`);
+	}
+	if (timeframe) {
+		if (timeframe.id !== 'custom') parts.push(`over ${timeframe.label}`);
+		else if (answers.period.trim()) parts.push(`during ${answers.period.trim()}`);
+	}
+	return parts.join(' ');
+}
+
+/** Private context lines for summaries ("Area: Africa", "Period: the past decade (2016–2026)"). */
+export function contextLines(answers: PurposeAnswers, g: Guidance, now = new Date()): { area: string; period: string } {
+	const region = byId(g.regions, answers.region);
+	const timeframe = byId(g.timeframes, answers.timeframe);
+	const area = region ? (region.id === 'custom' ? answers.area.trim() : region.label) : '';
+	const period = timeframe ? (timeframe.id === 'custom' ? answers.period.trim() : `${timeframe.label}${timeframeRange(timeframe, now) ? ` (${timeframeRange(timeframe, now)})` : ''}`) : '';
+	return { area, period };
+}
+
+/** Example year range for a relative timeframe, e.g. "2016–2026". */
+export function timeframeRange(timeframe: TimeframeOption, now = new Date()): string | null {
+	if (!timeframe.years_back) return null;
+	const year = now.getFullYear();
+	return `${year - timeframe.years_back}–${year}`;
 }
 
 export function outputLabel(answers: PurposeAnswers, g: Guidance): string | null {
@@ -376,7 +458,7 @@ export function qualitativeNotes(answers: PurposeAnswers): string[] {
 	const notes: string[] = [];
 	if (answers.detail && DETAIL_EXPLANATIONS[answers.detail]) notes.push(DETAIL_EXPLANATIONS[answers.detail]!);
 	if (answers.frequency && FREQUENCY_EXPLANATIONS[answers.frequency]) notes.push(FREQUENCY_EXPLANATIONS[answers.frequency]!);
-	if (answers.area.trim() || answers.period.trim()) {
+	if (answers.region || answers.timeframe || answers.area.trim() || answers.period.trim()) {
 		notes.push('Your area and period are kept as context for your record. The explorer does not search, map or check acquisitions for them.');
 	}
 	return notes;
@@ -445,7 +527,7 @@ export function proposePurpose(answers: PurposeAnswers, g: Guidance, state: Expl
 		value: familyLabel(settings.family),
 		mode: settings.family === ALL_FAMILIES ? '—' : 'Filter',
 		reason: measurement?.family
-			? `You chose ${measurement.label}.`
+			? `You chose ${measurement.family_label ?? measurement.label}.`
 			: measurement
 				? `${measurement.explanation}`
 				: 'No measurement chosen, so all families stay in the results.'

@@ -5,14 +5,34 @@ import { open } from './helpers';
 const journeyHeading = (page: Page) => page.getByRole('heading', { level: 1, name: 'Find Earth observation data for your purpose.' });
 const find = (page: Page) => page.getByRole('button', { name: 'Find candidate products' });
 
+const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** The inline choice button whose accessible name starts with its question. */
+const choice = (page: Page, label: string) => page.getByRole('button', { name: new RegExp(`^${escape(label)}`) });
+
+async function choose(page: Page, label: string, option: string) {
+	await choice(page, label).click();
+	await page.getByRole('listbox', { name: label }).getByRole('option', { name: new RegExp(`^${escape(option)}`) }).click();
+	await expect(page.getByRole('listbox')).toHaveCount(0);
+}
+
 async function describeWetlandPurpose(page: Page, area = '') {
-	await page.getByLabel('What do you want to do?').selectOption('monitor-change');
-	await page.getByLabel('Where, or in what setting?').selectOption('wetlands');
-	await page.getByLabel('What do you want to understand?').selectOption('seasonal-inundation');
-	if (area) await page.getByLabel('Area (optional)').fill(area);
-	await page.getByLabel('Measurement').selectOption('sar');
-	await page.getByLabel('Spatial detail').selectOption('small');
-	await page.getByLabel('How often').selectOption('seasonal');
+	await choose(page, 'What do you want to do?', 'monitor change');
+	await choose(page, 'Where, or in what setting?', 'wetlands');
+	await choose(page, 'What do you want to understand?', 'seasonal changes in inundation');
+	if (area) {
+		await choose(page, 'Region (optional)', 'a specific place');
+		await page.getByLabel('Place (optional)').fill(area);
+	}
+	await choose(page, 'Measurement', 'radar');
+	await choose(page, 'Spatial detail', 'small features');
+	await choose(page, 'How often', 'across each season');
+}
+
+async function reviewSetup(page: Page) {
+	await page.getByRole('button', { name: 'Review starting setup' }).click();
+	const preview = page.getByRole('region', { name: 'Your starting setup' });
+	await expect(preview).toBeVisible();
+	return preview;
 }
 
 async function axe(page: Page) {
@@ -26,8 +46,10 @@ test('a fresh visit shows the purpose entry; the preview is live but changes not
 	await expect(page.getByText('Illustrative imagery')).toBeVisible();
 	await expect(find(page)).toHaveCount(0);
 	await describeWetlandPurpose(page);
-	const preview = page.getByRole('region', { name: 'Your starting setup' });
-	await expect(preview).toBeVisible();
+	// The starting setup is summarised in one line; the detail stays collapsed until asked for.
+	await expect(page.getByText('Starts with radar products, no numeric limits, and 9 checks to make on each product.')).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Your starting setup' })).toHaveCount(0);
+	const preview = await reviewSetup(page);
 	await expect(preview.getByText(/Illustrative guidance v1 — not reviewed/)).toBeVisible();
 	await expect(preview.getByRole('row', { name: /Measurement family Combined CEOS-ARD for Synthetic Aperture Radar/ })).toBeVisible();
 	// Qualitative answers never become numeric limits.
@@ -36,15 +58,16 @@ test('a fresh visit shows the purpose entry; the preview is live but changes not
 	await expect(preview.getByText('Whether water under vegetation must be detected')).toBeVisible();
 	await expect(preview.getByRole('link', { name: /Ramsar Technical Report 10 \(2018\)/ })).toHaveAttribute('target', '_blank');
 	// Pressing Enter in a text field does not apply.
-	await page.getByLabel('Area (optional)').fill('Test area');
-	await page.getByLabel('Area (optional)').press('Enter');
+	await choose(page, 'Region (optional)', 'a specific place');
+	await page.getByLabel('Place (optional)').fill('Test area');
+	await page.getByLabel('Place (optional)').press('Enter');
 	await expect(journeyHeading(page)).toBeVisible();
 	expect(new URL(page.url()).search).not.toContain('fam=');
 });
 
 test('Skip to catalogue gives the neutral catalogue and is remembered for the session', async ({ page }) => {
 	await open(page);
-	await page.getByLabel('What do you want to do?').selectOption('map-features');
+	await choose(page, 'What do you want to do?', 'map features');
 	await page.getByRole('button', { name: 'Skip to catalogue' }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Find CEOS-ARD data products' })).toBeVisible();
 	await expect(page.getByLabel('Measurement family')).toHaveValue('All product families');
@@ -55,7 +78,7 @@ test('Skip to catalogue gives the neutral catalogue and is remembered for the se
 	await expect(journeyHeading(page)).toHaveCount(0);
 	// The skipped draft is kept for later.
 	await page.getByRole('region', { name: 'Start with your purpose' }).getByRole('button', { name: 'Start with your purpose' }).click();
-	await expect(page.getByLabel('What do you want to do?')).toHaveValue('map-features');
+	await expect(choice(page, 'What do you want to do?')).toHaveAccessibleName('What do you want to do? map features');
 });
 
 test('meaningful links bypass the entry; a bare version-only link does not', async ({ page }) => {
@@ -81,8 +104,7 @@ test('applies exactly once, lands on the purpose summary, keeps private text out
 	await expect(page).toHaveURL(/gv=1/);
 	expect(page.url()).not.toMatch(/Okavango|res=|rev=/);
 	const summary = page.getByRole('region', { name: 'Your purpose' });
-	await expect(summary.getByText('I want to monitor change in wetlands, to understand seasonal changes in inundation.')).toBeVisible();
-	await expect(summary.getByText(/Okavango Delta/)).toBeVisible();
+	await expect(summary.getByText('I want to monitor change in wetlands, to understand seasonal changes in inundation, in Okavango Delta.')).toBeVisible();
 	await expect(page.getByLabel('Measurement family')).toHaveValue('Synthetic Aperture Radar');
 
 	// Manual edits are respected and flagged; the purpose never re-applies itself.
@@ -96,6 +118,8 @@ test('applies exactly once, lands on the purpose summary, keeps private text out
 	// Edit shows the difference against the current filters, then re-applies once.
 	await page.getByRole('button', { name: 'Edit purpose' }).click();
 	await expect(page.getByRole('button', { name: 'Back to results' })).toBeVisible();
+	await expect(page.getByText('This changes one of your current filters; review the starting setup to see which.')).toBeVisible();
+	await reviewSetup(page);
 	await expect(page.getByText('Changes from your current filters')).toBeVisible();
 	await expect(page.getByText(/Measurement family:.*Surface Reflectance.*→.*Synthetic Aperture Radar/)).toBeVisible();
 	await find(page).click();
@@ -160,14 +184,14 @@ test('purpose checks follow into details, comparison and the copied summary; cha
 
 	await page.getByRole('button', { name: 'Copy selection summary' }).click();
 	const text = await page.evaluate(() => navigator.clipboard.readText());
-	for (const expected of ['Purpose (your context — not a CEOS suitability assessment)', 'I want to monitor change in wetlands', 'Area (your description; not searched or checked): Okavango Delta', 'guidance version 1, mapping version 1', 'Ramsar', 'Purpose checks (outcomes are your own records, not sourced facts)', 'C-band, open water only']) {
+	for (const expected of ['Purpose (your context — not a CEOS suitability assessment)', 'I want to monitor change in wetlands', 'Area (your context; not searched or checked): Okavango Delta', 'guidance version 1, mapping version 1', 'Ramsar', 'Purpose checks (outcomes are your own records, not sourced facts)', 'C-band, open water only']) {
 		expect(text).toContain(expected);
 	}
 
 	// A different purpose marks earlier rationale and outcomes for review.
 	await page.getByRole('link', { name: 'Discover', exact: true }).click();
 	await page.getByRole('button', { name: 'Edit purpose' }).click();
-	await page.getByLabel('What do you want to understand?').selectOption('extent-change');
+	await choose(page, 'What do you want to understand?', 'longer-term change in extent');
 	await find(page).click();
 	await page.getByRole('link', { name: /Shortlist & compare \(2\)/ }).click();
 	await expect(page.getByText('Review rationale: criteria changed since this note was written.')).toBeVisible();
@@ -179,13 +203,12 @@ test('purpose checks follow into details, comparison and the copied summary; cha
 
 test('custom and not-sure routes give general guidance without inventing filters', async ({ page }) => {
 	await open(page);
-	await page.getByLabel('What do you want to do?').selectOption('custom');
+	await choose(page, 'What do you want to do?', 'do something else');
 	await page.getByLabel('Describe your purpose').fill('estimate reservoir storage');
-	await page.getByLabel('Where, or in what setting?').selectOption('any');
-	await page.getByLabel('What do you want to understand?').selectOption('unsure');
-	const preview = page.getByRole('region', { name: 'Your starting setup' });
-	await expect(preview).toBeVisible();
-	await expect(preview.getByText('estimate reservoir storage')).toBeVisible();
+	await choose(page, 'Where, or in what setting?', 'any setting');
+	await choose(page, 'What do you want to understand?', 'not sure yet');
+	await expect(page.getByText(/Starts with all measurement families, no numeric limits/)).toBeVisible();
+	const preview = await reviewSetup(page);
 	await expect(preview.getByRole('row', { name: /Measurement family All measurement families/ })).toBeVisible();
 	await expect(preview.getByText('Water under vegetation')).toHaveCount(0);
 	await find(page).click();
@@ -222,8 +245,8 @@ test('imagery failure falls back to the gradient; the journey still works', asyn
 test('reduced motion swaps imagery without animation', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await open(page);
-	await page.getByLabel('What do you want to do?').selectOption('monitor-change');
-	await page.getByLabel('Measurement').selectOption('st');
+	await choose(page, 'What do you want to do?', 'monitor change');
+	await choose(page, 'Measurement', 'thermal');
 	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-fine\.webp/);
 	const running = await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length);
 	expect(running).toBe(0);
@@ -272,6 +295,7 @@ test('narrow screens stack the sentence with visible labels and no horizontal sc
 		await open(page);
 		await expect(page.getByText('What do you want to do?')).toBeVisible();
 		await describeWetlandPurpose(page);
+		await expect(find(page)).toBeInViewport();
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 		expect(await axe(page)).toEqual([]);
 		await page.screenshot({ path: `test-results/screens/journey-390-${theme}.png`, fullPage: true });
@@ -281,4 +305,69 @@ test('narrow screens stack the sentence with visible labels and no horizontal sc
 		await page.screenshot({ path: `test-results/screens/journey-390-results-${theme}.png` });
 		await context.close();
 	}
+});
+
+test('region and period are quick choices with private, readable wording', async ({ page }) => {
+	await open(page);
+	await choose(page, 'What do you want to do?', 'map features');
+	await choice(page, 'Region (optional)').click();
+	const regions = page.getByRole('listbox', { name: 'Region (optional)' });
+	await expect(regions.getByRole('option')).toHaveText([/the whole world/, /Africa/, /Asia/, /Europe/, /North and Central America/, /South America/, /Australia and Oceania/, /Antarctica/, /a specific place/]);
+	await regions.getByRole('option', { name: 'Africa' }).click();
+	await choice(page, 'Period (optional)').click();
+	const year = new Date().getFullYear();
+	await expect(page.getByRole('option', { name: new RegExp(`the past decade ${year - 10}–${year}`) })).toBeVisible();
+	await page.getByRole('option', { name: /the past decade/ }).click();
+	await expect(choice(page, 'Region (optional)')).toHaveAccessibleName('Region (optional) Africa');
+	await find(page).click();
+	const summary = page.getByRole('region', { name: 'Your purpose' });
+	await expect(summary.getByText('I want to map features, across Africa over the past decade.')).toBeVisible();
+	expect(page.url()).not.toMatch(/africa|decade|past/i);
+});
+
+test('choices work from the keyboard: arrows, type-ahead, Enter and Escape', async ({ page }) => {
+	await open(page);
+	const goal = choice(page, 'What do you want to do?');
+	await goal.focus();
+	await page.keyboard.press('Enter');
+	const list = page.getByRole('listbox', { name: 'What do you want to do?' });
+	await expect(list).toBeFocused();
+	await page.keyboard.press('ArrowDown');
+	await page.keyboard.press('Enter');
+	await expect(list).toHaveCount(0);
+	await expect(goal).toBeFocused();
+	await expect(goal).toHaveAccessibleName('What do you want to do? map features');
+	await page.keyboard.press('ArrowDown');
+	await page.keyboard.press('e');
+	await page.keyboard.press('Escape');
+	await expect(goal).toHaveAccessibleName('What do you want to do? map features');
+	await page.keyboard.press('Space');
+	await page.keyboard.press('e');
+	await page.keyboard.press('Enter');
+	await expect(goal).toHaveAccessibleName('What do you want to do? explore my options');
+	await expect(goal).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('self-described experience sets which details open by default, never the filters', async ({ page }) => {
+	await open(page);
+	await choose(page, 'Your experience with Earth observation data', 'an Earth observation specialist');
+	await choose(page, 'What do you want to do?', 'map features');
+	// Specialists see the starting setup and technical limits open.
+	await expect(page.getByRole('region', { name: 'Your starting setup' })).toBeVisible();
+	await expect(page.getByLabel('Spatial resolution ≤ (m)')).toBeVisible();
+	await find(page).click();
+	await expect(page.getByRole('button', { name: /^More filters/ })).toHaveAttribute('aria-expanded', 'true');
+	expect(page.url()).not.toContain('specialist');
+
+	await page.getByRole('button', { name: 'Edit purpose' }).click();
+	await choose(page, 'Your experience with Earth observation data', 'new to Earth observation data');
+	await find(page).click();
+	await expect(page.getByRole('button', { name: /^More filters/ })).toHaveAttribute('aria-expanded', 'false');
+	await expect(page.getByRole('button', { name: 'What the measurement families mean' })).toHaveAttribute('aria-expanded', 'true');
+	await expect(page.getByText(/New to Earth observation data\? Open Details/)).toBeVisible();
+	// A disclosure the user toggles is remembered over the default.
+	await page.getByRole('button', { name: /^More filters/ }).click();
+	await page.reload();
+	await expect(page.locator('body[data-hydrated="true"]')).toBeAttached();
+	await expect(page.getByRole('button', { name: /^More filters/ })).toHaveAttribute('aria-expanded', 'true');
 });

@@ -41,7 +41,7 @@ Example: `/shortlist?v=1&fam=sr&rev=req:5&res=pref:30&sl=landsat-c2-sr,sentinel2
 - **Custom profiles are not shared.** Links carry the resolved criteria, not session-local profile IDs.
 - **Meaningful state.** `v=1` on its own is not meaningful state. Any other valid parameter is.
 - **Purpose entry rule.** The purpose entry (hero) is shown on `/` only when the URL has no meaningful state **and** the session has no restored query, no applied purpose, no *Skip to catalogue* choice and no custom profiles. Product and shortlist links never show it.
-- **Purpose privacy.** `pu` and `gv` carry only fixed IDs and a version. Purpose descriptions, area, period, notes and check outcomes stay in the session. A recipient of a link sees the public purpose sentence and a note that private details are not shared.
+- **Purpose privacy.** `pu` and `gv` carry only fixed IDs and a version. Experience level, region, period, purpose descriptions, notes and check outcomes stay in the session. A recipient of a link sees the public purpose sentence and a note that private details are not shared.
 - A link reproduces selections and criteria. It does not reproduce an immutable historical catalogue, and it does not guarantee live availability.
 
 ### History
@@ -57,12 +57,12 @@ Example: `/shortlist?v=1&fam=sr&rev=req:5&res=pref:30&sl=landsat-c2-sr,sentinel2
 | `customProfiles` | Session profiles in the prototype's `Profile.to_dict` shape. Each is validated on read: name ≥ 3 characters, criteria ranges, enums. |
 | `notes` | Per product ID: `rationale`, `openChecks`, the criteria fingerprint at last edit, and `updatedAt`. A changed fingerprint shows **Review rationale: criteria changed**. The fingerprint includes the public purpose key, so changing the purpose also flags rationale. |
 | `investigationNote` | Free text, labelled **Does not filter results**. |
-| `disclosure` | Remembered open/closed state of disclosures and result sections. |
+| `disclosure` | Remembered open/closed state of disclosures and result sections. Where nothing is remembered, the self-described experience level supplies the default. |
 | `lastQuery` | Last explicit public query string, for same-tab restoration. |
 | `appliedCustomProfileId` | Custom profile last applied. It is cleared when a link from elsewhere is opened. |
 | `profileDraft` | Unsaved profile name and description. This keeps the draft when a name is rejected or the page reloads. |
 | `theme` | `light` or `dark` once chosen. Before that, the operating-system preference applies. |
-| `purpose` | `draft` (unapplied answers, validated against the guidance on read), `applied` (answers, key, guidance and mapping versions, time, and the journey-managed settings as applied — later differences show **Filters adjusted since setup**), `skipped`, and `checks` (per product and check: the user's outcome, note, and the purpose key it was recorded under; a different current purpose shows **Recorded for a different purpose**). |
+| `purpose` | `draft` (unapplied answers, including experience, region and period choices, validated against the guidance on read; older typed area/period text becomes the "specific place/period" choice), `applied` (answers, key, guidance and mapping versions, time, and the journey-managed settings as applied — later differences show **Filters adjusted since setup**), `skipped`, and `checks` (per product and check: the user's outcome, note, and the purpose key it was recorded under; a different current purpose shows **Recorded for a different purpose**). |
 | `mimLoaded` | Whether MIM was deliberately loaded. On reload, records are re-read from the server cache only, with no upstream request. |
 
 **Failure behaviour**

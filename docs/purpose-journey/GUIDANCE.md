@@ -31,13 +31,25 @@ The mapping is deliberately small and explicit.
 | *Small features* / *broad patterns* | **No numeric criterion.** An explanation and a manual check are added; the backdrop image changes. |
 | *Frequently* / *across each season* / *over many years* | **No numeric criterion.** An explanation and a manual check are added. |
 | A spatial resolution or revisit value **typed by the user** | Becomes that criterion, with the importance the user chooses (Preferred by default). |
-| Goal, context, question, output, area, period | No filter. They select guidance, wording and checks. Area and period are kept as private context only. |
+| Goal, context, question, output | No filter. They select guidance, wording and checks. |
+| Region (continent, the whole world, or a typed place) and period (past year, 5 years, decade, 20+ years, ongoing, or typed dates) | No filter and no search. Private context for the user's record and the copied summary; never in links. |
+| Experience (new, familiar, specialist) | No filter. Sets which details open by default (see below); never in links. |
 
 Applying sets only the journey-managed settings (family, `spatial_resolution_m`, `revisit_days`), clears the built-in profile marker and records the purpose key and guidance version. Everything else in the public state is retained and listed in the preview. The built-in profiles, including *Monitor Change Over Time* (5-day nominal revisit), are unchanged and are not used by the mapping.
 
 ### No invented thresholds
 
 The cited wetlands case-study notes (for example a preference for fine-resolution data) are context, not limits. No metre or day value is derived from any qualitative answer. Pixel spacing is not feature detectability or positional accuracy, and nominal revisit is not a count of usable observations; the preview says so next to the optional technical limits.
+
+## Experience level
+
+`EXPERIENCE_DISCLOSURE` in `domain/purpose.ts` sets default open states only. Anything the user opens or closes is remembered in the session and wins.
+
+| Level | Opens by default | Closes by default |
+|---|---|---|
+| New | Measurement family explanations; scope and qualifications on product details | More filters |
+| Familiar | (standard view) | |
+| Specialist | Starting setup and technical limits in the entry; More filters; processing, instrument and provenance sections on product details | |
 
 ## Three concepts kept apart
 

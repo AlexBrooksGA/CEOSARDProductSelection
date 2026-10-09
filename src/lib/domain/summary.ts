@@ -63,8 +63,8 @@ export function buildSelectionSummary(input: SummaryInput): string {
 		lines.push('Purpose (your context — not a CEOS suitability assessment)');
 		lines.push(`- ${purpose.sentence}`);
 		if (purpose.output) lines.push(`- Intended output: ${purpose.output}`);
-		if (purpose.area.trim()) lines.push(`- Area (your description; not searched or checked): ${purpose.area.trim()}`);
-		if (purpose.period.trim()) lines.push(`- Period (your description; not checked): ${purpose.period.trim()}`);
+		if (purpose.area.trim()) lines.push(`- Area (your context; not searched or checked): ${purpose.area.trim()}`);
+		if (purpose.period.trim()) lines.push(`- Period (your context; not checked): ${purpose.period.trim()}`);
 		lines.push(`- Guidance: ${purpose.statusLabel}; guidance version ${purpose.guidance.version}, mapping version ${purpose.guidance.mapping_version}${purpose.source === 'link' ? '; purpose from a shared link (private details are not shared)' : ''}`);
 		if (purpose.adjusted) lines.push('- Filters were adjusted after the purpose was applied.');
 		for (const assumption of purpose.assumptions) lines.push(`- Assumption: ${assumption}`);

@@ -65,7 +65,7 @@
     { "id": "where-features", "label": "where features are", "goals": ["map-features"], "contexts": null, "default_output": "map" },
     { "id": "whats-available", "label": "which products could help", "goals": ["explore", "custom"], "contexts": null, "default_output": "unsure" },
     { "id": "custom", "label": "something else…", "goals": null, "contexts": null, "default_output": "unsure" },
-    { "id": "unsure", "label": "— not sure yet", "goals": null, "contexts": null, "default_output": "unsure" }
+    { "id": "unsure", "label": "not sure yet", "goals": null, "contexts": null, "default_output": "unsure" }
   ],
   "outputs": [
     { "id": "map", "label": "a map" },
@@ -75,20 +75,44 @@
     { "id": "unsure", "label": "something — not sure yet" }
   ],
   "measurements": [
-    { "id": "decide", "label": "help me decide", "family": null, "visual": "neutral", "explanation": "No measurement family filter is applied. Guidance below explains what each measurement can and cannot show for your purpose." },
-    { "id": "sr", "label": "optical — Surface Reflectance (SR)", "family": "Surface Reflectance", "visual": "optical", "explanation": "Sunlight reflected by the surface, corrected for the atmosphere. Useful for colour and vegetation; clouds and darkness limit observations." },
-    { "id": "sar", "label": "radar — Synthetic Aperture Radar (SAR)", "family": "Synthetic Aperture Radar", "visual": "radar", "explanation": "Microwave signals the satellite sends and receives. Works day or night and through cloud; responds to surface roughness, structure and moisture rather than colour." },
-    { "id": "st", "label": "thermal — Surface Temperature (ST)", "family": "Surface Temperature", "visual": "thermal", "explanation": "Thermal-infrared measurements expressed as land surface temperature. Clouds limit observations." },
-    { "id": "optical-radar", "label": "optical and radar together", "family": null, "visual": "neutral", "explanation": "Both families stay in the results. The explorer has a single family filter, so no family filter is applied." }
+    { "id": "decide", "label": "help me decide", "hint": "No family filter; see what each measurement can show", "family": null, "visual": "neutral", "explanation": "No measurement family filter is applied. Guidance below explains what each measurement can and cannot show for your purpose." },
+    { "id": "sr", "label": "optical", "hint": "Surface Reflectance (SR); colour and vegetation, limited by cloud", "family_label": "optical — Surface Reflectance (SR)", "family": "Surface Reflectance", "visual": "optical", "explanation": "Sunlight reflected by the surface, corrected for the atmosphere. Useful for colour and vegetation; clouds and darkness limit observations." },
+    { "id": "sar", "label": "radar", "hint": "Synthetic Aperture Radar (SAR); through cloud, day or night", "family_label": "radar — Synthetic Aperture Radar (SAR)", "family": "Synthetic Aperture Radar", "visual": "radar", "explanation": "Microwave signals the satellite sends and receives. Works day or night and through cloud; responds to surface roughness, structure and moisture rather than colour." },
+    { "id": "st", "label": "thermal", "hint": "Surface Temperature (ST); limited by cloud", "family_label": "thermal — Surface Temperature (ST)", "family": "Surface Temperature", "visual": "thermal", "explanation": "Thermal-infrared measurements expressed as land surface temperature. Clouds limit observations." },
+    { "id": "optical-radar", "label": "optical and radar", "hint": "Both families stay in the results", "family": null, "visual": "neutral", "explanation": "Both families stay in the results. The explorer has a single family filter, so no family filter is applied." }
   ],
   "details": [
     { "id": "decide", "label": "help me decide", "visual": "fine" },
-    { "id": "small", "label": "small features", "visual": "fine" },
-    { "id": "broad", "label": "broad patterns", "visual": "coarse" }
+    { "id": "small", "label": "small features", "hint": "Fine detail matters", "visual": "fine" },
+    { "id": "broad", "label": "broad patterns", "hint": "Overall patterns matter more than detail", "visual": "coarse" }
+  ],
+  "experience": [
+    { "id": "new", "label": "new to Earth observation data", "hint": "Show the essentials first" },
+    { "id": "familiar", "label": "familiar with Earth observation data", "hint": "The standard view" },
+    { "id": "specialist", "label": "an Earth observation specialist", "hint": "Open technical filters and details by default" }
+  ],
+  "regions": [
+    { "id": "global", "label": "the whole world", "icon": "GL" },
+    { "id": "africa", "label": "Africa", "icon": "AF" },
+    { "id": "asia", "label": "Asia", "icon": "AS" },
+    { "id": "europe", "label": "Europe", "icon": "EU" },
+    { "id": "north-america", "label": "North and Central America", "icon": "NA" },
+    { "id": "south-america", "label": "South America", "icon": "SA" },
+    { "id": "oceania", "label": "Australia and Oceania", "icon": "OC" },
+    { "id": "antarctica", "label": "Antarctica", "icon": "AN" },
+    { "id": "custom", "label": "a specific place…", "icon": "PIN" }
+  ],
+  "timeframes": [
+    { "id": "past-year", "label": "the past year", "years_back": 1 },
+    { "id": "past-5", "label": "the past 5 years", "years_back": 5 },
+    { "id": "past-10", "label": "the past decade", "years_back": 10 },
+    { "id": "past-20", "label": "the past 20 years or more", "years_back": 20 },
+    { "id": "ongoing", "label": "the coming years", "hint": "Ongoing monitoring from now" },
+    { "id": "custom", "label": "a specific period…" }
   ],
   "frequencies": [
-    { "id": "unsure", "label": "— not sure yet" },
-    { "id": "frequent", "label": "frequently (days to weeks)" },
+    { "id": "unsure", "label": "not sure yet" },
+    { "id": "frequent", "label": "frequently", "hint": "Days to weeks apart" },
     { "id": "seasonal", "label": "across each season" },
     { "id": "years", "label": "over many years" }
   ],

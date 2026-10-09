@@ -5,7 +5,9 @@ import { previewProfile } from '../../src/lib/domain/profiles';
 import {
 	answersFromKey,
 	checkActions,
+	contextLines,
 	EMPTY_ANSWERS,
+	EXPERIENCE_DISCLOSURE,
 	GuidanceError,
 	guidanceStatus,
 	loadGuidance,
@@ -19,6 +21,7 @@ import {
 	resolveChecks,
 	sameSettings,
 	sanitiseAnswers,
+	timeframeRange,
 	currentJourneySettings,
 	visualState,
 	type PurposeAnswers
@@ -254,5 +257,48 @@ describe('purpose carried into comparison and summary', () => {
 		for (const expected of ['not a CEOS suitability assessment', 'seasonal changes in inundation', 'guidance version 1, mapping version 1', 'Illustrative guidance', 'Macquarie Marshes', 'Filters were adjusted', 'Ramsar', 'Cloud-free optical observations in your wet season — Checked — concern (Wet season is cloudy)', 'next: Check acquisitions in the provider portal: https://earthexplorer.usgs.gov/']) {
 			expect(text).toContain(expected);
 		}
+	});
+});
+
+describe('experience, region and period', () => {
+	it('offers continent regions with icons and simple period ranges', () => {
+		expect(g.regions.map((r) => r.id)).toEqual(['global', 'africa', 'asia', 'europe', 'north-america', 'south-america', 'oceania', 'antarctica', 'custom']);
+		expect(g.timeframes.map((t) => t.id)).toEqual(['past-year', 'past-5', 'past-10', 'past-20', 'ongoing', 'custom']);
+		expect(timeframeRange(g.timeframes.find((t) => t.id === 'past-10')!, new Date('2026-10-09'))).toBe('2016–2026');
+		expect(timeframeRange(g.timeframes.find((t) => t.id === 'ongoing')!)).toBeNull();
+		expect(() => loadGuidance({ ...structuredClone(g), regions: [{ id: 'mars', label: 'Mars', icon: 'MARS' }] })).toThrow(GuidanceError);
+	});
+
+	it('words region and period readably, only when private details are included', () => {
+		const a = answers({ goal: 'map-features', region: 'africa', timeframe: 'past-10' });
+		expect(purposeSentence(a, g)).toBe('I want to map features, across Africa over the past decade.');
+		expect(purposeSentence(a, g, { includePrivate: false })).toBe('I want to map features.');
+		const typed = answers({ goal: 'map-features', region: 'custom', area: 'Kakadu', timeframe: 'custom', period: '2019–2024' });
+		expect(purposeSentence(typed, g)).toBe('I want to map features, in Kakadu during 2019–2024.');
+		expect(contextLines(a, g, new Date('2026-10-09'))).toEqual({ area: 'Africa', period: 'the past decade (2016–2026)' });
+	});
+
+	it('never puts experience, region or period in the public key or filters', () => {
+		const a = answers({ ...wetlands, experience: 'specialist', region: 'oceania', timeframe: 'past-5' });
+		expect(purposeKey(a)).toBe('monitor-change~wetlands~seasonal-inundation');
+		const next = proposePurpose(a, g, state()).next;
+		expect(queryString(next)).not.toMatch(/specialist|oceania|past/);
+		expect(proposePurpose(a, g, state()).settings).toEqual(proposePurpose(wetlands, g, state()).settings);
+	});
+
+	it('validates stored choices and migrates typed area and period from earlier sessions', () => {
+		const clean = sanitiseAnswers({ goal: 'map-features', experience: 'guru', region: 'atlantis', timeframe: 'past-5' }, g);
+		expect(clean).toMatchObject({ experience: null, region: null, timeframe: 'past-5' });
+		const old = sanitiseAnswers({ goal: 'map-features', area: 'Macquarie Marshes', period: '2019–2024' }, g);
+		expect(old).toMatchObject({ region: 'custom', area: 'Macquarie Marshes', timeframe: 'custom', period: '2019–2024' });
+		// Typed text is dropped when a fixed choice replaces it.
+		expect(sanitiseAnswers({ goal: 'map-features', region: 'asia', area: 'leftover' }, g).area).toBe('');
+	});
+
+	it('changes only disclosure defaults by experience', () => {
+		expect(EXPERIENCE_DISCLOSURE.specialist['more-filters']).toBe(true);
+		expect(EXPERIENCE_DISCLOSURE.new['family-help']).toBe(true);
+		expect(EXPERIENCE_DISCLOSURE.new['more-filters']).toBe(false);
+		expect(EXPERIENCE_DISCLOSURE.familiar).toEqual({});
 	});
 });

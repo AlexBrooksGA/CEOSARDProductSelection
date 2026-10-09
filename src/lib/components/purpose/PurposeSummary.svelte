@@ -19,10 +19,10 @@
 			{#if store.purposeAdjusted}<span class="badge info">Filters adjusted since setup</span>{/if}
 		</div>
 		<p class="sentence">{purposeSentence(answers, g, { includePrivate: context.source === 'session' })}{#if outputLabel(answers, g)}{' '}<span class="secondary">Output: {outputLabel(answers, g)}.</span>{/if}</p>
-		{#if context.source === 'session' && (answers.area.trim() || answers.period.trim())}
-			<p class="small secondary">Your context (not searched or checked): {[answers.area.trim(), answers.period.trim()].filter(Boolean).join(' · ')}</p>
-		{/if}
 		{#if context.source === 'link'}<p class="small secondary">Purpose from a shared link. Private details such as descriptions, area and period are not shared.</p>{/if}
+		{#if !compact && store.experience === 'new'}
+			<p class="small secondary">New to Earth observation data? Open <strong>Details</strong> on a product to see what was reported and what is still to check; the <strong>Glossary</strong> at the top explains the terms.</p>
+		{/if}
 		{#if !compact}
 			<p class="small secondary">{store.purposeChecks.length} purpose checks appear on each product’s details and in the comparison. Results are screened only by your filters, not by the purpose.</p>
 		{/if}

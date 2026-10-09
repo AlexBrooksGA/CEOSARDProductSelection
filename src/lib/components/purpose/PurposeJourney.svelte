@@ -1,11 +1,26 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { CRITERION_BY_NAME, MODE_LABELS } from '$lib/domain/criteria';
-	import { hasPurpose, outputLabel, outputNote, assumptions, measurementNote, purposeSentence, questionsFor, resolveChecks, sourcesFor, defaultOutput, TEXT_MAX } from '$lib/domain/purpose';
+	import {
+		assumptions,
+		defaultOutput,
+		hasPurpose,
+		measurementNote,
+		outputNote,
+		questionsFor,
+		resolveChecks,
+		sourcesFor,
+		timeframeRange,
+		TEXT_MAX,
+		type RegionOption
+	} from '$lib/domain/purpose';
 	import type { CriterionMode } from '$lib/domain/types';
 	import { app } from '$lib/state/app.svelte';
 	import ExternalLink from '../ExternalLink.svelte';
+	import Choice from './Choice.svelte';
 	import PurposeBackdrop from './PurposeBackdrop.svelte';
+	import RegionIcon from './RegionIcon.svelte';
+	import RegionSprite from './RegionSprite.svelte';
 
 	let { onapplied }: { onapplied: () => void } = $props();
 	const store = app();
@@ -20,7 +35,19 @@
 	let checks = $derived(resolveChecks(g, draft));
 	let editing = $derived(Boolean(store.session.purpose.applied) || Boolean(store.explorer.purpose));
 	let connective = $derived(context && context.id !== 'custom' ? context.phrase.split(' ')[0] : 'in');
+	let setupOpen = $derived(store.isOpen('purpose:setup', false));
 	let showTechnical = $state(false);
+	let technicalOpen = $derived(showTechnical || store.experience === 'specialist' || Boolean(draft.resolution || draft.revisit));
+	let imageryInfo = $state(false);
+	const timeframes = g.timeframes.map((t) => ({ ...t, hint: timeframeRange(t) ?? t.hint }));
+
+	/** One plain sentence describing where the catalogue will start. */
+	let setupSummary = $derived.by(() => {
+		const family = proposal.settings.family === 'All product families' ? 'all measurement families' : `${measurement?.label ?? 'one measurement family'} products`;
+		const limits = [proposal.settings.spatial_resolution_m, proposal.settings.revisit_days].filter(Boolean).length;
+		const limitText = limits ? `${limits} technical limit${limits > 1 ? 's' : ''} you set` : 'no numeric limits';
+		return `Starts with ${family}, ${limitText}, and ${checks.length} checks to make on each product.`;
+	});
 
 	function set<K extends keyof typeof draft>(key: K, value: (typeof draft)[K]) {
 		const patch: Partial<typeof draft> = { [key]: value };
@@ -57,292 +84,266 @@
 	}
 </script>
 
+{#snippet regionIcon(option: RegionOption)}<RegionIcon icon={option.icon} />{/snippet}
+
 <section class="journey" aria-labelledby="journey-title">
 	<PurposeBackdrop family={store.visual.family} detail={store.visual.detail} />
-	<div class="journey-inner frame">
+	<RegionSprite />
+	<form class="journey-inner frame" onsubmit={apply}>
+		<!-- Disabled default button: pressing Enter in a field never submits (implicit submission is blocked). -->
+		<button type="submit" disabled hidden aria-hidden="true" tabindex="-1"></button>
+
 		<div class="journey-top">
-			<p class="kicker">CEOS-ARD Product Explorer</p>
+			<div class="imagery">
+				<button type="button" class="imagery-button" aria-expanded={imageryInfo} aria-controls="imagery-info" onclick={() => (imageryInfo = !imageryInfo)}>
+					Illustrative imagery <span aria-hidden="true">ⓘ</span>
+				</button>
+				<p id="imagery-info" class="imagery-info" hidden={!imageryInfo}>
+					AI-generated picture of a fictional landscape. It is not satellite data, not a calibrated resolution and not evidence about any product. It changes with the measurement and detail you choose only as a visual cue, and it does not show your area or dates.
+				</p>
+			</div>
 			{#if editing}
-				<button type="button" class="skip" onclick={() => store.closeJourney()}>Back to results <span aria-hidden="true">→</span></button>
+				<button type="button" class="skip" onclick={() => store.closeJourney()}>Back to results</button>
 			{:else}
-				<button type="button" class="skip" onclick={() => store.skipJourney()}>Skip to catalogue <span aria-hidden="true">→</span></button>
+				<button type="button" class="skip" onclick={() => store.skipJourney()}>Skip to catalogue</button>
 			{/if}
 		</div>
 
 		<h1 id="journey-title">Find Earth observation data for your purpose.</h1>
-		<p class="intro">Describe what you need. We’ll suggest a starting set of filters and the checks worth making — nothing changes until you choose <strong>Find candidate products</strong>.</p>
+		<p class="intro">Answer in your own words. We’ll suggest where to start in the catalogue. Nothing changes until you choose <strong>Find candidate products</strong>.</p>
 
-		<form class="sentence" onsubmit={apply} aria-describedby="sentence-help">
-			<!-- Disabled default button: pressing Enter in a field never submits (implicit submission is blocked). -->
-			<button type="submit" disabled hidden aria-hidden="true" tabindex="-1"></button>
-			<p id="sentence-help" class="visually-hidden">Complete the sentence. Only the first choice is needed; everything else is optional.</p>
-			<div class="line">
-				<span class="connective" aria-hidden="true">I want to</span>
-				<label class="blank">
-					<span class="blank-label">What do you want to do?</span>
-					<select value={draft.goal ?? ''} onchange={(e) => set('goal', val(e.currentTarget.value))} class:empty={!draft.goal}>
-						<option value="">choose…</option>
-						{#each g.goals as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-					</select>
-				</label>
-				{#if draft.goal === 'custom'}
-					<label class="blank text">
-						<span class="blank-label">Describe your purpose</span>
-						<input type="text" value={draft.goalText} maxlength={TEXT_MAX} placeholder="describe your purpose" oninput={(e) => set('goalText', e.currentTarget.value)} />
-					</label>
-				{/if}
-				<span class="connective" aria-hidden="true">{connective}</span>
-				<label class="blank">
-					<span class="blank-label">Where, or in what setting?</span>
-					<select value={draft.context ?? ''} onchange={(e) => set('context', val(e.currentTarget.value))} class:empty={!draft.context}>
-						<option value="">choose a setting…</option>
-						{#each g.contexts as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-					</select>
-				</label>
-				{#if draft.context === 'custom'}
-					<label class="blank text">
-						<span class="blank-label">Describe the setting</span>
-						<input type="text" value={draft.contextText} maxlength={TEXT_MAX} placeholder="e.g. mangroves" oninput={(e) => set('contextText', e.currentTarget.value)} />
-					</label>
-				{/if}
-				<span class="connective punct" aria-hidden="true">, to understand</span>
-				<label class="blank">
-					<span class="blank-label">What do you want to understand?</span>
-					<select value={draft.question ?? ''} onchange={(e) => set('question', val(e.currentTarget.value))} class:empty={!draft.question}>
-						<option value="">choose…</option>
-						{#each questions as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-					</select>
-				</label>
-				{#if draft.question === 'custom'}
-					<label class="blank text">
-						<span class="blank-label">Describe your question</span>
-						<input type="text" value={draft.questionText} maxlength={TEXT_MAX} placeholder="your question" oninput={(e) => set('questionText', e.currentTarget.value)} />
-					</label>
-				{/if}
-				<span class="connective punct" aria-hidden="true">.</span>
-			</div>
+		<p class="aside visually-hidden" id="sentence-help">Complete the sentence. Only what you want to do is needed; everything else is optional.</p>
 
-			{#if draft.goal}
-				<div class="line follow">
-					<span class="connective" aria-hidden="true">My area is</span>
-					<label class="blank text">
-						<span class="blank-label">Area (optional)</span>
-						<input type="text" value={draft.area} maxlength={TEXT_MAX} placeholder="optional place or description" oninput={(e) => set('area', e.currentTarget.value)} aria-describedby="private-help" />
-					</label>
-					<span class="connective" aria-hidden="true">and my period is</span>
-					<label class="blank text">
-						<span class="blank-label">Period (optional)</span>
-						<input type="text" value={draft.period} maxlength={TEXT_MAX} placeholder="optional dates" oninput={(e) => set('period', e.currentTarget.value)} aria-describedby="private-help" />
-					</label>
-					<span class="connective punct" aria-hidden="true">.</span>
+		<p class="line lead">
+			<span class="conn" aria-hidden="true">I’m{' '}</span><Choice label="Your experience with Earth observation data" value={draft.experience} options={g.experience} placeholder="new, familiar or a specialist" onchange={(id) => set('experience', val(id) as typeof draft.experience)} /><span class="conn" aria-hidden="true">.</span>
+		</p>
+
+		<p class="line sentence">
+			<span class="conn" aria-hidden="true">I want to{' '}</span><Choice label="What do you want to do?" value={draft.goal} options={g.goals} placeholder="choose an aim" describedby="sentence-help" onchange={(id) => set('goal', val(id))} />{#if draft.goal === 'custom'}<span class="conn" aria-hidden="true">:{' '}</span><label class="inline-text"><span class="text-label">Describe your purpose</span><input type="text" value={draft.goalText} maxlength={TEXT_MAX} size="18" placeholder="describe your purpose" oninput={(e) => set('goalText', e.currentTarget.value)} /></label>{/if}
+			<span class="conn" aria-hidden="true">{connective}{' '}</span><Choice label="Where, or in what setting?" value={draft.context} options={g.contexts} placeholder="a setting" onchange={(id) => set('context', val(id))} />{#if draft.context === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe the setting</span><input type="text" value={draft.contextText} maxlength={TEXT_MAX} size="12" placeholder="e.g. mangroves" oninput={(e) => set('contextText', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">, to understand{' '}</span><Choice label="What do you want to understand?" value={draft.question} options={questions} placeholder="something specific" onchange={(id) => set('question', val(id))} />{#if draft.question === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe your question</span><input type="text" value={draft.questionText} maxlength={TEXT_MAX} size="16" placeholder="your question" oninput={(e) => set('questionText', e.currentTarget.value)} /></label>{/if}{#if draft.goal}<span class="conn" aria-hidden="true">, across{' '}</span><Choice label="Region (optional)" value={draft.region} options={g.regions} placeholder="any region" icon={regionIcon} describedby="private-help" onchange={(id) => set('region', val(id))} />{#if draft.region === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Place (optional)</span><input type="text" value={draft.area} maxlength={TEXT_MAX} size="14" placeholder="name the place" aria-describedby="private-help" oninput={(e) => set('area', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">{' '}over{' '}</span><Choice label="Period (optional)" value={draft.timeframe} options={timeframes} placeholder="any period" describedby="private-help" onchange={(id) => set('timeframe', val(id))} />{#if draft.timeframe === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Dates (optional)</span><input type="text" value={draft.period} maxlength={TEXT_MAX} size="12" placeholder="e.g. 2015–2024" aria-describedby="private-help" oninput={(e) => set('period', e.currentTarget.value)} /></label>{/if}{/if}<span class="conn" aria-hidden="true">.</span>
+		</p>
+
+		{#if draft.goal}
+			<p class="line details">
+				<span class="conn" aria-hidden="true">I’d like to produce{' '}</span><Choice label="Intended output" value={draft.output ?? defaultOutput(draft, g)} options={g.outputs} placeholder="an output" onchange={(id) => set('output', val(id))} /><span class="conn" aria-hidden="true">{' '}from{' '}</span><Choice label="Measurement" value={draft.measurement ?? 'decide'} options={g.measurements} placeholder="help me decide" onchange={(id) => set('measurement', val(id))} /><span class="conn" aria-hidden="true">{' '}data, distinguishing{' '}</span><Choice label="Spatial detail" value={draft.detail ?? 'decide'} options={g.details} placeholder="help me decide" onchange={(id) => set('detail', val(id))} />{#if goal?.kind === 'change'}<span class="conn" aria-hidden="true">{' '}and observing change{' '}</span><Choice label="How often" value={draft.frequency ?? 'unsure'} options={g.frequencies} placeholder="not sure yet" onchange={(id) => set('frequency', val(id))} />{/if}<span class="conn" aria-hidden="true">.</span>
+			</p>
+			{#if measurement && measurement.id !== 'decide'}<p class="aside">{measurement.explanation}</p>{/if}
+			<p id="private-help" class="aside">Your experience, region, period and anything you type stay in this browser tab. They are not searched, mapped or shared in links.</p>
+		{/if}
+
+		{#if ready}
+			<section id="setup-details" class="preview" aria-labelledby="preview-heading" hidden={!setupOpen}>
+				<div class="preview-head">
+					<h2 id="preview-heading">Your starting setup</h2>
+					<span class="status">{store.draftStatus.label}</span>
 				</div>
-				<p id="private-help" class="aside">Kept privately in this browser tab for your record. It is not searched, mapped, shared in links or checked against acquisitions.</p>
 
-				<div class="line follow">
-					<span class="connective" aria-hidden="true">I’d like to produce</span>
-					<label class="blank">
-						<span class="blank-label">Intended output</span>
-						<select value={draft.output ?? defaultOutput(draft, g) ?? ''} onchange={(e) => set('output', val(e.currentTarget.value))}>
-							<option value="">choose…</option>
-							{#each g.outputs as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-						</select>
-					</label>
-					<span class="connective punct" aria-hidden="true">, using</span>
-					<label class="blank">
-						<span class="blank-label">Measurement</span>
-						<select value={draft.measurement ?? 'decide'} onchange={(e) => set('measurement', val(e.currentTarget.value))}>
-							{#each g.measurements as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-						</select>
-					</label>
-					<span class="connective" aria-hidden="true">data.</span>
-				</div>
-				{#if measurement && measurement.id !== 'decide'}<p class="aside">{measurement.explanation}</p>{/if}
-
-				<div class="line follow">
-					<span class="connective" aria-hidden="true">I need to distinguish</span>
-					<label class="blank">
-						<span class="blank-label">Spatial detail</span>
-						<select value={draft.detail ?? 'decide'} onchange={(e) => set('detail', val(e.currentTarget.value))}>
-							{#each g.details as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-						</select>
-					</label>
-					{#if goal?.kind === 'change'}
-						<span class="connective" aria-hidden="true">and observe changes</span>
-						<label class="blank">
-							<span class="blank-label">How often</span>
-							<select value={draft.frequency ?? 'unsure'} onchange={(e) => set('frequency', val(e.currentTarget.value))}>
-								{#each g.frequencies as option (option.id)}<option value={option.id}>{option.label}</option>{/each}
-							</select>
-						</label>
-					{/if}
-					<span class="connective punct" aria-hidden="true">.</span>
-				</div>
-			{/if}
-
-			{#if ready}
-				<section class="preview" aria-labelledby="preview-heading">
-					<div class="preview-head">
-						<h2 id="preview-heading">Your starting setup</h2>
-						<span class="status">{store.draftStatus.label}</span>
-					</div>
-					<p class="echo">{purposeSentence(draft, g)}{#if outputLabel(draft, g)}{' '}Output: {outputLabel(draft, g)}.{/if}</p>
-
-					<table class="proposed">
-						<caption class="visually-hidden">Proposed filters, their importance and why</caption>
-						<thead><tr><th scope="col">Filter</th><th scope="col">Proposed</th><th scope="col">Importance</th><th scope="col">Why</th></tr></thead>
-						<tbody>
-							{#each proposal.proposed as item (item.label)}
-								<tr><th scope="row">{item.label}</th><td>{item.value}</td><td>{item.mode}</td><td>{item.reason}</td></tr>
-							{/each}
-						</tbody>
-					</table>
-
-					<button type="button" class="link" aria-expanded={showTechnical || Boolean(draft.resolution || draft.revisit)} aria-controls="technical-limits" onclick={() => (showTechnical = !showTechnical)}>
-						Set a technical limit yourself (optional)
-					</button>
-					<div id="technical-limits" class="technical" hidden={!(showTechnical || draft.resolution || draft.revisit)}>
-						{#each [['resolution', 'spatial_resolution_m'], ['revisit', 'revisit_days']] as const as [name, criterion] (name)}
-							{@const definition = CRITERION_BY_NAME[criterion]}
-							{@const setting = draft[name]}
-							<div class="limit">
-								<label for="limit-{name}">{definition.label} {definition.comparator} ({definition.unit})</label>
-								<input id="limit-{name}" type="number" inputmode="decimal" min={definition.kind === 'number' ? definition.min : undefined} max={definition.kind === 'number' ? definition.max : undefined} step="any" value={setting?.value ?? ''} placeholder="not set" onchange={(e) => setCriterion(name, 'value', e.currentTarget.value)} />
-								<label class="visually-hidden" for="limit-{name}-mode">{definition.label} importance</label>
-								<select id="limit-{name}-mode" value={setting?.mode ?? 'preferred'} disabled={!setting} onchange={(e) => setCriterion(name, 'mode', e.currentTarget.value)}>
-									{#each ['required', 'preferred', 'not_used'] as const as mode (mode)}<option value={mode}>{MODE_LABELS[mode]}</option>{/each}
-								</select>
-							</div>
+				<table class="proposed">
+					<caption class="visually-hidden">Proposed filters, their importance and why</caption>
+					<thead><tr><th scope="col">Filter</th><th scope="col">Proposed</th><th scope="col">Importance</th><th scope="col">Why</th></tr></thead>
+					<tbody>
+						{#each proposal.proposed as item (item.label)}
+							<tr><th scope="row">{item.label}</th><td>{item.value}</td><td>{item.mode}</td><td>{item.reason}</td></tr>
 						{/each}
-						<p class="aside">Only values you enter become filters. Pixel spacing is not feature detectability or positional accuracy; nominal revisit is not a count of usable observations.</p>
-					</div>
+					</tbody>
+				</table>
 
-					<div class="preview-grid">
-						<div>
-							<h3>The catalogue can’t check this for you</h3>
-							<ul>
-								{#each proposal.notes as note (note)}<li>{note}</li>{/each}
-								{#each assumptions(g, draft) as note (note)}<li>{note}</li>{/each}
-								{#if outputNote(g, draft)}<li>{outputNote(g, draft)}</li>{/if}
-								{#if draft.measurement && measurementNote(g, draft, draft.measurement)}<li>{measurementNote(g, draft, draft.measurement)}</li>{/if}
-							</ul>
+				<button type="button" class="link" aria-expanded={technicalOpen} aria-controls="technical-limits" onclick={() => (showTechnical = !technicalOpen)}>Set a technical limit yourself (optional)</button>
+				<div id="technical-limits" class="technical" hidden={!technicalOpen}>
+					{#each [['resolution', 'spatial_resolution_m'], ['revisit', 'revisit_days']] as const as [name, criterion] (name)}
+						{@const definition = CRITERION_BY_NAME[criterion]}
+						{@const setting = draft[name]}
+						<div class="limit">
+							<label for="limit-{name}">{definition.label} {definition.comparator} ({definition.unit})</label>
+							<input id="limit-{name}" type="number" inputmode="decimal" min={definition.kind === 'number' ? definition.min : undefined} max={definition.kind === 'number' ? definition.max : undefined} step="any" value={setting?.value ?? ''} placeholder="not set" onchange={(e) => setCriterion(name, 'value', e.currentTarget.value)} />
+							<label class="visually-hidden" for="limit-{name}-mode">{definition.label} importance</label>
+							<select id="limit-{name}-mode" value={setting?.mode ?? 'preferred'} disabled={!setting} onchange={(e) => setCriterion(name, 'mode', e.currentTarget.value)}>
+								{#each ['required', 'preferred', 'not_used'] as const as mode (mode)}<option value={mode}>{MODE_LABELS[mode]}</option>{/each}
+							</select>
 						</div>
-						<div>
-							<h3>Checks you’ll see on each product ({checks.length})</h3>
-							<ul class="checks">{#each checks as check (check.id)}<li>{check.label}</li>{/each}</ul>
-							{#if sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]).length}
-								<p class="aside">
-									Drawn from:
-									{#each sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]) as source, index (source.id)}{#if index}{'; '}{/if}<ExternalLink href={source.url}>{source.short} ({source.year})</ExternalLink>{/each}
-								</p>
-							{/if}
-						</div>
-					</div>
+					{/each}
+					<p class="aside">Only values you enter become filters. Pixel spacing is not feature detectability or positional accuracy; nominal revisit is not a count of usable observations.</p>
+				</div>
 
-					{#if proposal.changes.length && editing}
-						<div class="changes">
-							<h3>Changes from your current filters</h3>
-							<ul>{#each proposal.changes as change (change.label)}<li><strong>{change.label}:</strong> {change.from} → {change.to}</li>{/each}</ul>
-						</div>
-					{/if}
-					<p class="aside"><strong>Stays as it is:</strong> {proposal.retained.join('; ')}. Your shortlist, comparison, profiles and notes are never changed.</p>
-
-					<div class="actions">
-						<button type="submit" class="cta">Find candidate products</button>
-						<button type="button" class="secondary-action" onclick={() => store.resetDraft()}>Reset answers</button>
+				<div class="preview-grid">
+					<div>
+						<h3>The catalogue can’t check this for you</h3>
+						<ul>
+							{#each proposal.notes as note (note)}<li>{note}</li>{/each}
+							{#each assumptions(g, draft) as note (note)}<li>{note}</li>{/each}
+							{#if outputNote(g, draft)}<li>{outputNote(g, draft)}</li>{/if}
+							{#if draft.measurement && measurementNote(g, draft, draft.measurement)}<li>{measurementNote(g, draft, draft.measurement)}</li>{/if}
+						</ul>
 					</div>
-					<p class="aside">Applies once. Afterwards the filters are yours to change, and you can undo.</p>
-				</section>
-			{:else}
-				<p class="aside start-hint">Choose what you want to do to see a suggested setup — or skip straight to the catalogue.</p>
+					<div>
+						<h3>Checks you’ll see on each product ({checks.length})</h3>
+						<ul class="checks">{#each checks as check (check.id)}<li>{check.label}</li>{/each}</ul>
+						{#if sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]).length}
+							<p class="aside">
+								Drawn from:
+								{#each sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]) as source, index (source.id)}{#if index}{'; '}{/if}<ExternalLink href={source.url}>{source.short} ({source.year})</ExternalLink>{/each}
+							</p>
+						{/if}
+					</div>
+				</div>
+
+				{#if proposal.changes.length && editing}
+					<div class="changes">
+						<h3>Changes from your current filters</h3>
+						<ul>{#each proposal.changes as change (change.label)}<li><strong>{change.label}:</strong> {change.from} → {change.to}</li>{/each}</ul>
+					</div>
+				{/if}
+				<p class="aside"><strong>Stays as it is:</strong> {proposal.retained.join('; ')}. Your shortlist, comparison, profiles and notes are never changed.</p>
+			</section>
+
+			<div class="action-bar">
+				<div class="setup-summary">
+					<p class="summary-text">{setupSummary}</p>
+					<p class="summary-meta">
+						{store.draftStatus.label}.
+						<button type="button" class="link" aria-expanded={setupOpen} aria-controls="setup-details" onclick={() => store.setOpen('purpose:setup', !setupOpen)}>{setupOpen ? 'Hide starting setup' : 'Review starting setup'}</button>
+					</p>
+				</div>
+				<div class="bar-actions">
+					<button type="button" class="quiet" onclick={() => store.resetDraft()}>Reset answers</button>
+					<button type="submit" class="cta">Find candidate products</button>
+				</div>
+			</div>
+			{#if editing && proposal.changes.length && !setupOpen}
+				<p class="aside">This changes {proposal.changes.length === 1 ? 'one of your current filters' : `${proposal.changes.length} of your current filters`}; review the starting setup to see which.</p>
 			{/if}
-		</form>
-	</div>
+		{:else}
+			<p class="aside start-hint">Choose what you want to do to see where to start, or skip straight to the catalogue.</p>
+		{/if}
+	</form>
 </section>
 
 <style>
-	.punct {
-		margin-left: -8px;
-	}
 	.journey {
+		--pj-ink: #d5dfe8;
+		--pj-ink-strong: #ffffff;
+		--pj-muted: #93a6b8;
+		--pj-placeholder: #9fb6c6;
+		--pj-label: #9fd8d1;
+		--pj-accent: #5eead4;
 		position: relative;
 		isolation: isolate;
-		color: #eef4f8;
-		min-height: min(78vh, 720px);
-		padding-block: var(--space-4) calc(var(--space-6) + 24px);
+		min-height: calc(100svh - var(--nav-height));
+		padding-block: clamp(20px, 3vh, 32px) clamp(40px, 8vh, 96px);
 		background: #060b16;
+		color: var(--pj-ink);
 	}
 	.journey-inner {
 		position: relative;
 		z-index: 1;
-		display: grid;
-		gap: var(--space-2);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 	.journey-top {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-1);
+		align-self: stretch;
+		align-items: flex-start;
+		justify-content: flex-end;
+		gap: 12px;
 	}
-	.kicker {
-		font-family: var(--font-mono);
-		font-size: 12px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: #9fd8d1;
-	}
-	.skip {
-		display: inline-flex;
-		align-items: center;
+	.imagery {
+		display: grid;
+		justify-items: end;
 		gap: 8px;
-		min-height: 44px;
-		padding: 8px 16px;
-		border: 1px solid rgb(158 222 214 / 0.55);
+		max-width: 340px;
+	}
+	.imagery-button {
+		min-height: 40px;
+		padding: 6px 12px;
+		border: 0;
 		border-radius: var(--radius-pill);
-		background: rgb(6 11 22 / 0.6);
-		color: #eef4f8;
-		font-weight: 600;
+		background: transparent;
+		color: var(--pj-muted);
+		font-size: 0.85rem;
 		cursor: pointer;
 	}
+	.imagery-button:hover {
+		color: var(--pj-ink-strong);
+	}
+	.imagery-info {
+		margin: 0;
+		padding: 12px 14px;
+		border: 1px solid rgb(255 255 255 / 0.1);
+		border-radius: 12px;
+		background: rgb(11 20 36 / 0.94);
+		color: var(--pj-ink);
+		font-size: 0.85rem;
+		line-height: 1.5;
+	}
+	.skip {
+		min-height: 40px;
+		padding: 8px 18px;
+		border: 1px solid rgb(255 255 255 / 0.22);
+		border-radius: var(--radius-pill);
+		background: rgb(6 11 22 / 0.5);
+		color: var(--pj-ink-strong);
+		font-weight: 500;
+		cursor: pointer;
+		backdrop-filter: blur(6px);
+	}
 	.skip:hover {
-		background: rgb(94 234 212 / 0.14);
+		border-color: rgb(255 255 255 / 0.45);
 	}
 	h1 {
 		max-width: 18ch;
-		margin-top: var(--space-3);
-		font-size: clamp(2rem, 1.3rem + 2.6vw, 3.4rem);
-		line-height: 1.05;
-		letter-spacing: -0.02em;
-		color: #ffffff;
+		margin: clamp(24px, 7vh, 72px) 0 0;
+		font-size: clamp(2.3rem, 1.5rem + 2.4vw, 3.6rem);
+		font-weight: 600;
+		line-height: 1.02;
+		letter-spacing: -0.03em;
+		color: var(--pj-ink-strong);
+		text-wrap: balance;
 	}
 	.intro {
-		max-width: 58ch;
-		color: #c9d6e2;
-		font-size: 1.05rem;
+		max-width: 50ch;
+		margin: 18px 0 0;
+		font-size: 1.0625rem;
+		line-height: 1.55;
+		color: #aebdcb;
+	}
+	.intro strong {
+		color: var(--pj-ink);
+		font-weight: 600;
+	}
+
+	/* The sentence: real prose with inline choices, so it wraps like text. */
+	.line {
+		margin: 0;
+		max-width: 34em;
+		text-wrap: pretty;
+	}
+	.lead {
+		margin-top: clamp(32px, 6vh, 56px);
+		font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
+		line-height: 1.7;
+		color: #b9c8d5;
 	}
 	.sentence {
-		display: grid;
-		gap: var(--space-1);
-		max-width: 980px;
-		margin-top: var(--space-2);
+		margin-top: 10px;
+		max-width: 26em;
+		font-size: clamp(1.55rem, 1.05rem + 1.45vw, 2.35rem);
+		font-weight: 400;
+		line-height: 1.5;
+		letter-spacing: -0.012em;
+		color: var(--pj-ink);
 	}
-	.line {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 6px 10px;
-		font-size: clamp(1.25rem, 0.95rem + 1.1vw, 1.85rem);
-		line-height: 1.6;
-		color: #f4f8fb;
+	.details {
+		margin-top: 22px;
+		max-width: 36em;
+		font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
+		line-height: 1.75;
+		color: #b9c8d5;
 	}
-	.line.follow {
-		font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.35rem);
-		color: #dbe6ee;
+	.inline-text {
+		display: inline-block;
 	}
-	.blank {
-		display: inline-flex;
-		flex-direction: column;
-	}
-	.blank-label {
+	.text-label {
 		position: absolute;
 		width: 1px;
 		height: 1px;
@@ -350,75 +351,153 @@
 		clip: rect(0, 0, 0, 0);
 		white-space: nowrap;
 	}
-	.blank select,
-	.blank input {
+	.inline-text input {
 		field-sizing: content;
 		min-width: 6ch;
-		max-width: 100%;
-		min-height: 44px;
-		padding: 2px 34px 2px 12px;
+		max-width: 22ch;
+		min-height: 0;
+		padding: 0 0.15em;
 		border: 0;
-		border-bottom: 2px solid #5eead4;
-		border-radius: 8px 8px 2px 2px;
-		background: rgb(94 234 212 / 0.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235eead4' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 12px center;
-		color: #ffffff;
+		border-bottom: 1px dashed var(--pj-accent);
+		border-radius: 0;
+		background: transparent;
+		color: var(--pj-ink-strong);
 		font: inherit;
-		font-weight: 600;
-		appearance: none;
-		cursor: pointer;
-		transition: background-color 0.2s ease, border-color 0.2s ease;
+		font-weight: 500;
+		line-height: 1.2;
 	}
-	.blank input {
-		padding-right: 12px;
-		background-image: none;
-		cursor: text;
-		min-width: 14ch;
-	}
-	.blank input::placeholder {
-		color: #93a9bb;
+	.inline-text input::placeholder {
+		color: var(--pj-placeholder);
 		font-weight: 400;
 	}
-	.blank select.empty {
-		color: #a9e9df;
-		font-weight: 400;
-		font-style: italic;
-	}
-	.blank select:hover,
-	.blank input:hover {
-		background-color: rgb(94 234 212 / 0.18);
-	}
-	.blank select:focus-visible,
-	.blank input:focus-visible {
-		outline: 2px solid #ffffff;
+	.inline-text input:focus-visible {
+		outline: 2px solid var(--pj-accent);
 		outline-offset: 3px;
-		background-color: rgb(94 234 212 / 0.22);
-	}
-	.blank option {
-		color: #0f1626;
-		background: #ffffff;
-		font-style: normal;
 	}
 	.aside {
-		max-width: 70ch;
+		max-width: 62ch;
+		margin: 12px 0 0;
 		font-size: 0.9rem;
-		color: #b8c8d6;
+		line-height: 1.55;
+		color: var(--pj-muted);
 	}
 	.aside :global(a),
 	.preview :global(a) {
 		color: #8ff0e1;
 	}
 	.start-hint {
-		margin-top: var(--space-1);
+		margin-top: 28px;
 	}
+
+	/* Sticky action bar: the next step is always one click away. */
+	.action-bar {
+		position: sticky;
+		bottom: 16px;
+		z-index: 5;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 14px 24px;
+		align-self: stretch;
+		max-width: 960px;
+		margin-top: 32px;
+		padding: 14px 14px 14px 22px;
+		border: 1px solid rgb(255 255 255 / 0.1);
+		border-radius: 20px;
+		background: rgb(9 16 30 / 0.82);
+		box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.8);
+		backdrop-filter: blur(14px) saturate(1.2);
+	}
+	.setup-summary {
+		display: grid;
+		gap: 2px;
+		flex: 1 1 320px;
+		min-width: 0;
+	}
+	.summary-text {
+		margin: 0;
+		color: var(--pj-ink-strong);
+		font-weight: 500;
+	}
+	.summary-meta {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--pj-muted);
+	}
+	.bar-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+	.cta {
+		min-height: 48px;
+		padding: 12px 24px;
+		white-space: nowrap;
+		border: 0;
+		border-radius: 14px;
+		background: var(--pj-accent);
+		color: #04201c;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color 160ms ease;
+	}
+	.cta:hover {
+		background: #8ff0e1;
+	}
+	.quiet {
+		min-height: 44px;
+		padding: 8px 14px;
+		border: 0;
+		border-radius: 12px;
+		background: transparent;
+		color: var(--pj-muted);
+		font-weight: 500;
+		cursor: pointer;
+	}
+	.quiet:hover {
+		color: var(--pj-ink-strong);
+	}
+	.link {
+		justify-self: start;
+		min-height: 32px;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: #8ff0e1;
+		font: inherit;
+		font-weight: 500;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		cursor: pointer;
+	}
+	.cta:focus-visible,
+	.skip:focus-visible,
+	.quiet:focus-visible,
+	.link:focus-visible,
+	.imagery-button:focus-visible {
+		outline: 2px solid #ffffff;
+		outline-offset: 3px;
+	}
+
+	/* Starting setup: optional detail, glass over the scene. */
 	.preview {
 		display: grid;
-		gap: var(--space-2);
-		margin-top: var(--space-3);
-		padding: var(--space-3);
-		border: 1px solid rgb(158 222 214 / 0.28);
-		border-radius: var(--radius-panel);
-		background: rgb(8 14 28 / 0.9);
-		box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.7);
+		gap: 18px;
+		align-self: stretch;
+		max-width: 960px;
+		margin-top: 32px;
+		padding: clamp(18px, 3vw, 28px);
+		border: 1px solid rgb(255 255 255 / 0.08);
+		border-radius: 20px;
+		background: rgb(9 16 30 / 0.78);
+		backdrop-filter: blur(16px) saturate(1.2);
+		color: var(--pj-ink);
+	}
+	.preview[hidden] {
+		display: none;
 	}
 	.preview-head {
 		display: flex;
@@ -428,24 +507,22 @@
 		gap: 8px;
 	}
 	.preview h2 {
-		font-size: 1.3rem;
-		color: #ffffff;
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--pj-ink-strong);
 	}
 	.preview h3 {
+		margin-bottom: 8px;
 		font-size: 0.95rem;
-		margin-bottom: 6px;
-		color: #ffffff;
+		font-weight: 600;
+		color: var(--pj-ink-strong);
 	}
 	.status {
 		padding: 2px 10px;
-		border: 1px solid rgb(251 191 36 / 0.55);
+		border: 1px solid rgb(251 191 36 / 0.5);
 		border-radius: var(--radius-pill);
 		color: #fcd98a;
 		font-size: 0.8rem;
-	}
-	.echo {
-		font-size: 1.05rem;
-		color: #f4f8fb;
 	}
 	.proposed {
 		width: 100%;
@@ -454,42 +531,31 @@
 	}
 	.proposed th,
 	.proposed td {
-		padding: 8px 10px;
-		border-top: 1px solid rgb(158 222 214 / 0.18);
+		padding: 9px 10px;
+		border-top: 1px solid rgb(255 255 255 / 0.08);
 		text-align: left;
 		vertical-align: top;
-		color: #dbe6ee;
+		color: var(--pj-ink);
 	}
 	.proposed thead th {
-		font-family: var(--font-mono);
-		font-size: 11.5px;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
-		color: #9fb3c4;
 		border-top: 0;
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: var(--pj-muted);
 	}
 	.proposed tbody th {
-		color: #ffffff;
+		color: var(--pj-ink-strong);
 		font-weight: 600;
-	}
-	.link {
-		justify-self: start;
-		min-height: 36px;
-		padding: 0;
-		border: 0;
-		background: none;
-		color: #8ff0e1;
-		font-weight: 600;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-		cursor: pointer;
 	}
 	.technical {
 		display: grid;
 		gap: 10px;
-		padding: var(--space-1) var(--space-2);
-		border: 1px solid rgb(158 222 214 / 0.2);
-		border-radius: var(--radius-card);
+		padding: 14px 16px;
+		border: 1px solid rgb(255 255 255 / 0.08);
+		border-radius: 14px;
+	}
+	.technical[hidden] {
+		display: none;
 	}
 	.limit {
 		display: flex;
@@ -499,8 +565,8 @@
 	}
 	.limit label {
 		min-width: 16ch;
-		color: #dbe6ee;
-		font-weight: 600;
+		color: var(--pj-ink);
+		font-weight: 500;
 	}
 	.limit input,
 	.limit select {
@@ -508,7 +574,7 @@
 		min-height: 40px;
 		background: #0f1a2e;
 		color: #ffffff;
-		border: 1px solid rgb(158 222 214 / 0.35);
+		border: 1px solid rgb(255 255 255 / 0.18);
 	}
 	.limit input {
 		width: 9rem;
@@ -516,84 +582,59 @@
 	.preview-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-		gap: var(--space-3);
+		gap: 24px;
 	}
 	.preview ul {
-		margin: 0;
-		padding-left: 18px;
 		display: grid;
 		gap: 6px;
-		color: #c9d6e2;
+		margin: 0;
+		padding-left: 18px;
 		font-size: 0.9rem;
+		line-height: 1.5;
+		color: #c3d0db;
 	}
 	.changes {
-		padding: var(--space-1) var(--space-2);
+		padding: 12px 16px;
 		border-left: 3px solid #fbbf24;
 		background: rgb(251 191 36 / 0.08);
-	}
-	.actions {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--space-1);
-	}
-	.cta {
-		min-height: 52px;
-		padding: 12px 26px;
-		border: 0;
-		border-radius: var(--radius-pill);
-		background: #5eead4;
-		color: #04201c;
-		font-size: 1.05rem;
-		font-weight: 700;
-		cursor: pointer;
-		box-shadow: 0 10px 30px -12px rgb(94 234 212 / 0.7);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-	.cta:hover {
-		transform: translateY(-1px);
-		box-shadow: 0 14px 34px -12px rgb(94 234 212 / 0.85);
-	}
-	.cta:focus-visible,
-	.skip:focus-visible,
-	.secondary-action:focus-visible,
-	.link:focus-visible {
-		outline: 2px solid #ffffff;
-		outline-offset: 3px;
-	}
-	.secondary-action {
-		min-height: 44px;
-		padding: 8px 16px;
-		border: 1px solid rgb(158 222 214 / 0.4);
-		border-radius: var(--radius-pill);
-		background: transparent;
-		color: #dbe6ee;
-		font-weight: 600;
-		cursor: pointer;
 	}
 
 	@media (max-width: 767px) {
 		.journey {
-			min-height: auto;
-			padding-block: var(--space-2) calc(var(--space-6) + 16px);
+			padding-block: 16px 48px;
+		}
+		.journey-top {
+			justify-content: space-between;
+		}
+		.imagery {
+			justify-items: start;
 		}
 		h1 {
-			margin-top: var(--space-1);
+			margin-top: 20px;
 		}
-		/* On narrow screens the sentence becomes a sequence of labelled controls. */
+		/* The sentence becomes a sequence of labelled fields. */
 		.line {
 			display: grid;
-			gap: var(--space-1);
+			gap: 14px;
+			width: 100%;
 			font-size: 1.05rem;
+			line-height: 1.4;
 		}
-		.connective {
+		.lead {
+			margin-top: 28px;
+		}
+		.sentence,
+		.details {
+			margin-top: 14px;
+		}
+		.conn {
 			display: none;
 		}
-		.blank {
+		.inline-text {
 			display: grid;
-			gap: 4px;
+			gap: 6px;
 		}
-		.blank-label {
+		.text-label {
 			position: static;
 			width: auto;
 			height: auto;
@@ -602,12 +643,39 @@
 			white-space: normal;
 			font-size: 0.85rem;
 			font-weight: 600;
-			color: #9fd8d1;
+			color: var(--pj-label);
 		}
-		.blank select,
-		.blank input {
-			width: 100%;
+		.inline-text input {
 			field-sizing: fixed;
+			width: 100%;
+			max-width: none;
+			min-height: 48px;
+			padding: 10px 14px;
+			border: 1px solid rgb(255 255 255 / 0.14);
+			border-radius: 12px;
+			background: rgb(255 255 255 / 0.04);
+		}
+		.action-bar {
+			bottom: 8px;
+			gap: 10px;
+			padding: 12px;
+		}
+		.summary-text {
+			font-size: 0.92rem;
+		}
+		.summary-meta {
+			font-size: 0.8rem;
+		}
+		.bar-actions {
+			flex-wrap: nowrap;
+			width: 100%;
+		}
+		.quiet {
+			padding-inline: 6px;
+		}
+		.cta {
+			flex: 1;
+			padding-inline: 16px;
 		}
 		.proposed thead {
 			display: none;
@@ -615,20 +683,16 @@
 		.proposed tr {
 			display: grid;
 			padding: 8px 0;
-			border-top: 1px solid rgb(158 222 214 / 0.18);
+			border-top: 1px solid rgb(255 255 255 / 0.08);
 		}
 		.proposed th,
 		.proposed td {
-			border: 0;
 			padding: 2px 0;
-		}
-		.skip {
-			padding-inline: 12px;
+			border: 0;
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.cta,
-		.blank select {
+		.cta {
 			transition: none;
 		}
 	}

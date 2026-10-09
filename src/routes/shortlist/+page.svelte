@@ -5,7 +5,7 @@
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
 	import PurposeSummary from '$lib/components/purpose/PurposeSummary.svelte';
-	import { assumptions, guidanceStatus, outputLabel, outputNote, purposeSentence, qualitativeNotes } from '$lib/domain/purpose';
+	import { assumptions, contextLines, guidanceStatus, outputLabel, outputNote, purposeSentence, qualitativeNotes } from '$lib/domain/purpose';
 	import { activeCriteria, describeCriterion } from '$lib/domain/criteria';
 	import { accessAction } from '$lib/domain/facts';
 	import { familyLabel } from '$lib/domain/guidance';
@@ -71,8 +71,8 @@
 						guidance: store.guidance,
 						source: store.purposeContext?.kind === 'ok' ? store.purposeContext.source : 'link',
 						output: outputLabel(store.purposeAnswers, store.guidance),
-						area: store.purposeAnswers.area,
-						period: store.purposeAnswers.period,
+						area: contextLines(store.purposeAnswers, store.guidance).area,
+						period: contextLines(store.purposeAnswers, store.guidance).period,
 						assumptions: assumptions(store.guidance, store.purposeAnswers),
 						notes: qualitativeNotes(store.purposeAnswers),
 						outputNote: outputNote(store.guidance, store.purposeAnswers),
