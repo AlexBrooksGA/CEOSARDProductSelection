@@ -7,6 +7,9 @@ Inputs (see assets/purpose-imagery/SOURCE.txt and manifest.json):
     optical.png            3840 x 2160 sRGB (AI-generated, upscaled from 1672 x 941)
     depth.png              3840 x 2160 16-bit greyscale relative height, white = near
     optical-portrait.png   1440 x 2560 centre-right crop
+    (When the upscaled working masters are absent — they are not kept in git — the native
+    optical-native.png and depth-native.png are upscaled and smoothed here instead, the same
+    way tools/prepare_purpose_imagery.py does.)
     manifest.json          portrait_crop_box on the 3840 x 2160 frame
 
 Outputs (static/images/purpose-journey/):
@@ -138,15 +141,22 @@ def save_webp(image: Image.Image, path: Path) -> None:
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = json.loads((MASTERS / 'manifest.json').read_text(encoding='utf-8'))
-    optical_img = Image.open(MASTERS / 'optical.png').convert('RGB')
-    depth_img = Image.open(MASTERS / 'depth.png')
+    target = tuple(manifest.get('landscape_dimensions', (3840, 2160)))
+    if (MASTERS / 'optical.png').exists() and (MASTERS / 'depth.png').exists():
+        optical_img = Image.open(MASTERS / 'optical.png').convert('RGB')
+        depth_img = Image.open(MASTERS / 'depth.png')
+    else:
+        optical_img = Image.open(MASTERS / 'optical-native.png').convert('RGB').resize(target, Image.LANCZOS)
+        native = np.asarray(Image.open(MASTERS / 'depth-native.png').convert('L'), dtype=np.float32) / 255
+        upscaled = np.asarray(Image.fromarray(native, mode='F').resize(target, Image.BICUBIC), dtype=np.float32)
+        depth_img = Image.fromarray(normalise(blur(upscaled, manifest.get('depth_blur_sigma_px', 4)), 0, 100), mode='F')
     if optical_img.size != depth_img.size:
         raise SystemExit('optical.png and depth.png must have the same size')
     # Work at 2560 x 1440: the masters are upscaled from 1672 x 941, so nothing is lost.
     work = (2560, 1440)
     optical = np.asarray(optical_img.resize(work, Image.LANCZOS), dtype=np.float32) / 255
     depth16 = np.asarray(depth_img, dtype=np.float32)
-    depth_full = depth16 / (65535 if depth16.max() > 255 else 255)
+    depth_full = depth16 if depth_img.mode == 'F' else depth16 / (65535 if depth16.max() > 255 else 255)
     depth = np.asarray(Image.fromarray(depth_full, mode='F').resize(work, Image.BILINEAR), dtype=np.float32)
     depth = normalise(blur(depth, 2), 0.5, 99.5)
 
@@ -167,7 +177,10 @@ def main() -> None:
             report.append(path)
         portrait = image.crop(crop)
         if name == 'optical':
-            portrait = Image.open(MASTERS / 'optical-portrait.png').convert('RGB')
+            if (MASTERS / 'optical-portrait.png').exists():
+                portrait = Image.open(MASTERS / 'optical-portrait.png').convert('RGB')
+            else:
+                portrait = optical_img.crop(tuple(manifest['portrait_crop_box'])).resize((1440, 2560), Image.LANCZOS)
         for width in PORTRAIT_WIDTHS:
             path = OUT / f'{name}-portrait-{width}.webp'
             save_webp(portrait.resize((width, round(width * 16 / 9)), Image.LANCZOS), path)

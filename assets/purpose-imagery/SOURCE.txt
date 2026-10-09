@@ -1,0 +1,44 @@
+Purpose entry imagery handoff
+Created: 9 October 2026 (Australia/Sydney)
+Creator/tool: OpenAI built-in image_gen, through Codex.
+Scene: AI-generated fictional wetland floodplain. No real site or observation data.
+
+optical-native.png preserves the unmodified generated output (1672 x 941).
+optical.png is the same framing resampled to 3840 x 2160 in sRGB.
+IMPORTANT: The generator did not deliver the requested native 4K resolution.
+The 4K file is upscaled and does not contain native 4K spatial detail.
+PROMPT.txt records the exact generation prompt.
+
+depth-native.png: image-guided greyscale relative height map created with the
+built-in image_gen tool using optical-native.png as the edit reference.
+depth.png: same framing, resampled to 3840 x 2160, with Gaussian smoothing at
+sigma 4 pixels and full-range normalisation, stored as a 16-bit greyscale PNG.
+White nearer (higher); black farther (lower). Channels are dark; raised tree
+cover and the right-hand escarpment are brighter. No top-to-bottom distance ramp.
+The native map has 8-bit values; 16-bit export preserves the interpolated and
+smoothed values but does not add measured depth accuracy.
+This is an artistic decorative depth estimate, not a terrain elevation model.
+Same framing and shared crop/resizing are preserved, but an image-to-image
+generator can introduce local feature deviations. Pixel-perfect geometric
+registration is not guaranteed. Use subtle displacement and inspect in the app.
+See manifest.json for dimensions, crop coordinates and export details.
+PROMPT.txt includes the optical and depth prompts.
+
+optical-portrait.png and depth-portrait.png: 1440 x 2560, the same centre-right
+crop of the landscape pair (centre at 65% of image width). Portrait depth keeps
+the landscape depth range; it is not normalised independently.
+
+Use in the explorer: the optical asset is generated Output under the user's
+applicable OpenAI terms. OpenAI's Terms of Use state that, as between the user
+and OpenAI and to the extent permitted by law, the user owns the Output.
+https://openai.com/policies/terms-of-use/
+Use remains subject to the applicable terms and policies. This is not a claim
+that the image has an exclusive copyright or that it is a real satellite image.
+Local resizing and smoothing were prepared by Codex for this
+project; no third-party imagery was used as input.
+
+Keep the app's visible Illustrative imagery note and fictional/AI origin wording.
+No baked-in labels, logos, borders, clouds, legends or geographic coordinates.
+Radar, thermal and cloud files are optional and were not included in this handoff.
+Full-quality PNG masters are provided; browser format/size optimisation is left
+to the integration step. No application source or current background was replaced.

@@ -21,3 +21,11 @@ __pycache__/
 *.log
 output/
 tmp/
+
+# Purpose-entry imagery: upscaled working masters (optional; made by
+# tools/prepare_purpose_imagery.py) stay local. Web versions are built from them or the native files
+# into static/images/purpose-journey/ with `python tools/build_purpose_imagery.py`.
+assets/purpose-imagery/optical.png
+assets/purpose-imagery/depth.png
+assets/purpose-imagery/optical-portrait.png
+assets/purpose-imagery/depth-portrait.png
