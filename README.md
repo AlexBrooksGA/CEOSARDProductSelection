@@ -1,117 +1,104 @@
 # CEOS-ARD Product Explorer
 
-A Streamlit proof of concept for discovering, shortlisting and comparing Earth observation data product records. It supports transparent application-screening criteria, session-only custom profiles, a bundled catalogue, and optional CEOS Missions, Instruments and Measurements (MIM) records.
+A web application for discovering, shortlisting and comparing Earth observation data products assessed against a CEOS Analysis Ready Data (CEOS-ARD) Product Family Specification (PFS). It bundles a researched catalogue of 26 assessed products and can optionally load product records from the CEOS Missions, Instruments and Measurements (MIM) database.
 
-This prototype supports dataset discovery and comparison. CEOS-ARD assessment describes product preparation, metadata and measurement-specific requirements against a Product Family Specification (PFS); it does not certify application suitability. Built-in task profiles are illustrative application-screening starting points, not official CEOS application requirements.
+CEOS-ARD assessment describes conformance with a PFS; it does not certify suitability for a particular application. Built-in profiles are illustrative starting points, not official CEOS requirements. The explorer does not download or validate imagery.
 
-## Project structure
+**Stack:** SvelteKit 2 + Svelte 5 + TypeScript, plain CSS, one Node.js process (`@sveltejs/adapter-node`). Filtering, matching and comparison run in the browser; MIM requests, credentials, validation and caching run on the server. No database, accounts or Python at runtime. The reasons for this choice are in [`docs/rebuild/AUDIT.md`](docs/rebuild/AUDIT.md#6-stack-decision).
 
-- `app.py` — three-tab Streamlit workflow and session state
-- `product_selection_framework.py` — legacy Streamlit entry point forwarding to `app.py`
-- `components.py` — cards, badges, comparison view, and educational content
-- `models.py` — typed product and profile models
-- `catalogue.py` — local JSON loading, validation, status overlay, and deduplication
-- `matching.py` — required/preferred/unknown evaluation and deterministic grouping
-- `mims_api.py` — authenticated, cached-at-call-site, schema-driven MIM adapter
-- `fedeo_api.py` — optional, failure-isolated FedEO collection client
-- `fedeo_normalisation.py` — provider-tolerant FedEO field mapping with raw-response retention
-- `fedeo_matching.py` — conservative collection matching and display-only sidecar orchestration
-- `fedeo_discovery.py` — bounded collection discovery and conservative known-product overlap screening
-- `fedeo_ui.py` — optional FedEO enrichment and separate discovery expanders
-- `data/ceos_ard_products.json` — 26 researched, normalised CEOS-ARD assessed data product records loaded offline
-- `data/ceos_ard_research_log.csv` — field-level provenance, confidence, and failed-look-up records
-- `data/demo_products.json` — original prototype values retained as matching history/fallback input
-- `data/ceos_ard_status.json` — explicit, editable CEOS-ARD status mapping
-- `data/default_profiles.json` — illustrative built-in profiles
-- `tests/test_matching.py` — lightweight core-logic tests
-- `run_app.bat` — Windows launcher
+## Quick start
 
-Python 3.11 or newer is required.
+Requires **Node.js 22.12 or newer**.
 
-## Run on Windows
-
-Double-click `run_app.bat`, or run it from Command Prompt. It creates `.venv` when needed, installs requirements when `requirements.txt` changes, and runs `streamlit run app.py`. Streamlit is allowed to open the browser automatically.
-
-Manual setup:
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-streamlit run app.py
+```bash
+npm ci            # exact locked dependencies
+npm run dev       # development server at http://localhost:5173
 ```
 
-Run the tests with:
+Production build and run (the same as deployment):
 
-```powershell
-python -m unittest discover -s tests -v
+```bash
+npm run build
+npm start         # node --env-file-if-exists=.env build → http://localhost:3000
 ```
 
-The same test and compile checks run automatically for pushes and pull requests
-through GitHub Actions in `.github/workflows/ci.yml`.
+On Windows, double-click `run_app.bat` (installs, builds and starts, then opens the browser).
 
-## Optional MIM API configuration
+A clean setup **without MIM credentials** supports the complete curated-catalogue journey.
 
-Create the local configuration file, then replace the placeholders with the credentials supplied by the MIM service administrator:
+## Optional MIM configuration
 
-```powershell
-Copy-Item .env.example .env
-notepad .env
+```bash
+cp .env.example .env   # then edit; .env is git-ignored
 ```
 
-Keep `MIMS_API_BASE_URL=https://eo-explorer-demo.diamondsky.au/api`; use the API root, not the Swagger URL ending in `/docs#/`. `.env` is ignored by Git. Credentials are read only from the environment, are not displayed, and are not included in error messages.
+| Variable | Purpose |
+|---|---|
+| `MIMS_API_USERNAME`, `MIMS_API_PASSWORD` | Server-only credentials (names unchanged from the prototype). |
+| `MIMS_API_BASE_URL` | API root, e.g. `https://eo-explorer-demo.diamondsky.au/api`. HTTPS required (http only for localhost). |
+| `MIMS_CACHE_TTL_SECONDS` | Cache freshness, default 21600 (6 hours, as before). |
+| `MIMS_REFRESH_COOLDOWN_SECONDS` | Minimum gap between upstream refreshes, default 60. |
+| `MIMS_FAILURE_BACKOFF_SECONDS` | Pause after a failed load before retrying upstream, default 30. |
 
-The authenticated OpenAPI schema was validated against CEOS Database API v0.1.0. The current adapter uses:
+Credentials are read only on the server, never sent to the browser, put in URLs or logged. Requests and schema-discovered URLs are restricted to the configured origin and API path. Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#mim-integration).
 
-1. `GET /docs/` to discover the declared schema URL.
-2. `GET /openapi.json` to validate paths and parameters.
-3. `GET /products` to load the API's product, certification, access-link, and stable instrument-link records.
-4. `GET /instruments` once to load the bulk instrument catalogue, including `spatial_resolution_best`.
+## Scripts
 
-The product and instrument collections are joined locally using the API's stable `instrument_id`; names are not used for fuzzy matching. The live API returned 56 products during validation. The legacy mission adapter remains available in `mims_api.py` but is no longer used by the Streamlit interface.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server. |
+| `npm run check` | `svelte-kit sync` + `svelte-check` (TypeScript and Svelte), warnings fail. |
+| `npm test` | Vitest unit and Python-parity tests. |
+| `npm run build` | Production build into `build/`. |
+| `npm start` | Run the built Node app (loads `.env` if present). |
+| `npm run test:e2e` | Playwright tests against the **built** app (run `npm run build` first; `npx playwright install chromium` once). Uses a local mock MIM API — no live credentials. |
+| `npm run verify` | All of the above in order. |
+| `npm run parity:fixtures` | Regenerate parity fixtures from the legacy Python reference (development only). |
 
-The joined product and bulk-instrument response is cached with `st.cache_data` for six hours. Loading occurs only after the checkbox is enabled and **Load MIM product records** is pressed. **Refresh MIM data** clears only that cache. Most filtering is then local. The browser initially renders 24 MIM tiles, with a control to increase or remove that display limit; the loaded data and matching results are not truncated. If credentials, authentication, timeouts, schema structure, or the service fail, the bundled catalogue continues to work.
+## Using the explorer
 
-Data-product spatial resolution remains separate from instrument resolution. An explicit metre value in an API product name, such as `25m` or `2.5m`, is treated as reported product resolution and may influence matching. When product resolution is absent, the card displays the linked instrument's `spatial_resolution_best` as a clearly labelled **display fallback**. That fallback is not assigned to `spatial_resolution_m` and does not influence product matching. Instrument values can differ from delivered-product resolution, processing grid size, or mode-specific resolution.
+- **Discover** opens in a neutral browse state: all measurement families, the **CEOS-ARD assessed products** scope, no screening criteria and no launch-year cut-off.
+- Add **Spatial resolution** or **Nominal revisit** criteria (more under **More filters**) and set each to **Required**, **Preferred** or **Ignore** inline. Required criteria separate products that meet reported values from those **reported outside a requirement** or **needing evidence**; both groups are counted and can be opened. Preferences only change the order, which is never a quality ranking.
+- **Profiles** offer illustrative starting points and session-only custom profiles, with a preview of what changes, undo, a *Modified* marker and explicit saving.
+- **Clear criteria** removes search, family and technical restrictions but keeps the catalogue scope; **Restore profile defaults** re-applies the applied profile.
+- **Product details** separate *CEOS-ARD assessment*, *Measured quality evidence* and *My requirements and open checks*, with sourced access, documentation and provenance.
+- **Shortlist & compare** keeps any number of candidates (up to 60), compares two or three in aligned rows, and holds optional notes. **Copy selection summary** produces a dated, provisional decision record.
+- Links reproduce criteria and selections (see [`docs/STATE_CONTRACT.md`](docs/STATE_CONTRACT.md)); notes and profiles stay in the browser tab's session.
 
-## Optional FedEO collection metadata
+## Repository layout
 
-FedEO (Federated Earth Observation missions access) collection metadata is an experimental, display-only sidecar. The sidebar control **Enable FedEO collection metadata (experimental)** is off by default. When it is off, no FedEO lookup function is called, no FedEO section is rendered, and the existing catalogue, MIM, filtering, matching, and comparison paths are unchanged.
-
-`ENABLE_FEDEO_INTEGRATION=true` permits the sidebar control to appear; set it to `false` to remove the control and disable the code path. Enabling it performs two separate optional operations:
-
-1. **Metadata enrichment** searches a bounded set of currently filtered products, caches each successful product lookup independently for six hours, and renders a collapsed **FedEO collection metadata** section only for an exact or unique high-confidence metadata match. Possible matches remain diagnostics and are never attached to products.
-2. **Additional collection discovery** is controlled by the nested **Show additional FedEO collections** checkbox, which is on when enrichment is first enabled but can be turned off independently. It makes one cached, one-page search for the selected family (at most 20 returned collections), screens the response against all 26 local products plus every session-loaded MIM product, and shows at most eight candidates in a separate collapsed section.
-
-Discovery candidates are not converted into `Product`, added to existing filters, assigned a CEOS-ARD status, or presented as globally new. They are FedEO collections for which no reliable overlap with the currently known product metadata was identified. Exact, high-confidence, and possible overlaps are withheld conservatively; materially different variants such as static layers or mosaics may remain separate candidates.
-
-FedEO values do not modify `Product` records. Curated CEOS-ARD assessment, PFS, approval, review, note, and accuracy fields are protected explicitly. FedEO ground sample distance is not used as product resolution, and raster `uint16` is labelled only as **16-bit output storage**, never as sensor quantisation or radiometric bit depth. A timeout, service error, malformed response, or unavailable FedEO service leaves the existing application usable.
-
-See [`reports/fedeo_integration.md`](reports/fedeo_integration.md) for architecture, field mapping, matching rules, provenance, live validation, limitations, and rollback instructions.
-
-## CEOS-ARD badges
-
-- **CEOS-ARD assessed** — green treatment only when `ceos_ard_verified` is explicitly `true` in `data/ceos_ard_status.json`.
-- **Assessment in progress** — amber informational treatment; not a completed assessment.
-- **Not assessed / Status unknown** — neutral treatment.
-- **Curated CEOS-ARD record** — a provenance label, not an application-suitability claim.
-
-MIM products are displayed as CEOS-ARD assessed only when their API product link reports `product_status=CEOS-ARD` and the associated certification contains an approval date or review URL. Status is not inferred from provider, instrument, or apparent technical suitability.
+```
+src/lib/domain/        Pure TypeScript: models, catalogue normalisation, matching, filters,
+                       presentation, comparison, profiles, summary (no UI, network or storage)
+src/lib/server/        Server-only: bundled data loading, MIM client/cache (src/lib/server/mim)
+src/lib/state/         URL contract, sessionStorage adapter, per-tab client store
+src/lib/components/    Svelte components
+src/routes/            Pages (/, /products/[id], /shortlist) and API endpoints (/api/mim/*, /api/provenance)
+data/                  Version-controlled catalogue, profiles, research log, fallback/status files
+assets/agency_logos/   Vendored agency marks + manifest
+tests/unit/            Vitest unit and parity tests; tests/fixtures/parity holds Python-generated fixtures
+tests/e2e/             Playwright tests and the mock MIM server
+tools/                 Python dev-time catalogue and logo maintenance (not needed at runtime)
+legacy/streamlit-prototype/  Original Streamlit app and tests, kept as a migration reference
+docs/                  Architecture, state contract, deployment, rebuild audit and compatibility
+```
 
 ## Editing the catalogue
 
-Edit the compact source declarations in `tools/populate_ceos_ard.py`, then rebuild `data/ceos_ard_products.json`, the provenance log, and reports with that script. The application prefers the researched catalogue and falls back to the original demo/status files only if it is absent. Keep product IDs stable. Custom profiles are intentionally held only in `st.session_state` and are never written to disk.
+Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceos_ard.py`, run `python tools/populate_ceos_ard.py` to regenerate `data/ceos_ard_products.json`, the research log and reports, then run `npm test` (the catalogue is validated on load: stable unique IDs, field types, ISO dates, http(s) URLs, one research-log row per product and field). Keep product IDs stable. If `data/ceos_ard_products.json` is absent, the app falls back to `demo_products.json` with the `ceos_ard_status.json` overlay, as before. Rebuild and restart the server to publish changes.
+
+## CEOS-ARD labels
+
+- **CEOS-ARD assessed** — only when `ceos_ard_verified` is `true` in the curated data, or, for MIM records, when the product link reports `product_status=CEOS-ARD` **and** a CEOS-ARD certification has an approval date or review URL.
+- **Assessment in progress** — informational, not a completed assessment.
+- Other statuses are neutral. Status is never inferred from the provider, instrument or apparent suitability.
 
 ## Current limitations
 
-- Public documentation remains uneven: overall tier, scalar uncertainty, output encoding, and product-specific update cadence are frequently not reported. Missing values remain null and display as `Not reported`.
-- Instrument characteristics are labelled through basis fields and are not silently presented as product characteristics or used for matching.
-- The MIM product endpoint does not provide a dedicated product-resolution field; only explicit values in product names are currently recognised as product-level resolution.
-- Product-family keyword mapping is approximate where the API lacks a direct category.
-- MIM joins are by stable IDs only; uncertain fuzzy matches are not silently merged.
-- FedEO provider coverage and collection schemas are uneven. An enabled lookup may legitimately produce no match or a diagnostic-only possible match.
-- FedEO discovery is a bounded contextual search, not a complete catalogue synchronisation. A displayed candidate is not proof that the collection is globally new or absent under another identifier.
-- FedEO item/granule records are not queried; item-only technical values are not generalised to a collection.
-- Nominal revisit describes an expected observation opportunity; it does not guarantee usable observations, update frequency, delivery time or latency.
-- No application-suitability certification, numerical quality or suitability score, data processing, downloads, or persistent accounts are provided.
-- Geometric and radiometric uncertainty controls are read-only future capability; uncertainty filtering is future work.
+- Public documentation is uneven: tiers, uncertainty, encoding and update cadence are often unreported; missing values are labelled, never treated as zero or as a pass.
+- Observation record periods and local availability are not established by this catalogue; provider portals perform those checks.
+- MIM provides no product-resolution field; only explicit values (or a metre value in the product name) count as product resolution. Instrument resolution is a labelled display fallback.
+- Broad coverage categories (Local → Global) are preserved for compatibility; they describe operating scope, not coverage at a place or time.
+- The MIM cache is process-local: it resets on restart and is not shared across replicas.
+- Profiles, notes and drafts are session-only (no accounts).
+- Live MIM integration was validated against controlled fixtures and a mock server in this rebuild, not against the live service.

@@ -1,0 +1,1525 @@
+{
+ "instruments": {
+  "183": {
+   "instrument_id": 183,
+   "name_short": "HRG",
+   "operator": "Catalyst",
+   "spatial_resolution_best": 5,
+   "instrument_types": "Optical imager"
+  },
+  "1734": {
+   "instrument_id": 1734,
+   "name_short": "DESIS",
+   "operator": "DLR",
+   "spatial_resolution_best": 79,
+   "spatial_resolution_description": "79 m instrument value"
+  },
+  "9": {
+   "instrument_id": 9,
+   "name_full": "Example full",
+   "operator": "ESA",
+   "spatial_resolution_best": 20.5,
+   "instrument_types": "SAR"
+  },
+  "10": {
+   "instrument_id": 10,
+   "name_short": "B",
+   "operator": "ESA",
+   "spatial_resolution_best": 1234567,
+   "instrument_types": "Radar altimeter"
+  },
+  "11": {
+   "instrument_id": 11,
+   "name_short": "NoRes",
+   "operator": "NASA"
+  },
+  "12": {
+   "instrument_id": 12,
+   "name_short": "Tiny",
+   "operator": "JAXA",
+   "spatial_resolution_best": 1e-05
+  }
+ },
+ "normalise_product": [
+  {
+   "input": {
+    "product_id": 158,
+    "product_name": "Catalyst SPOT 5 HRG 2.5m",
+    "category": "Optical",
+    "type": "Surface Reflectance",
+    "instruments": [
+     {
+      "instrument_id": 183,
+      "instrument_name": "HRG",
+      "product_status": "CEOS-ARD"
+     }
+    ],
+    "certifications": [
+     {
+      "scheme": "CEOS-ARD",
+      "spec_version": "v5.0.1",
+      "approval_date": "2024-12-04"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:158",
+    "product_name": "Catalyst SPOT 5 HRG 2.5m",
+    "official_product_name": "Catalyst SPOT 5 HRG 2.5m",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "Optical",
+    "provider": "Catalyst",
+    "product_family": "Surface Reflectance",
+    "spatial_resolution_m": 2.5,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": "2.5 m (reported in API product name)",
+    "spatial_resolution_basis": "Explicit metre value reported in the MIM API product name",
+    "instrument_spatial_resolution_best_m": 5.0,
+    "instrument_spatial_resolution_display": "5 m (HRG)",
+    "instrument_resolution_note": "Instrument-level value: HRG — 5 m.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "CEOS-ARD",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": "Optical imager",
+    "ceos_ard_status": "CEOS-ARD assessed",
+    "ceos_ard_verified": true,
+    "ceos_ard_pfs": "Surface Reflectance",
+    "ceos_ard_assessment_level": "CEOS-ARD",
+    "ceos_ard_record_url": null,
+    "pfs_type": "Surface Reflectance",
+    "pfs_version": "v5.0.1",
+    "approval_date": "2024-12-04",
+    "agency": "Catalyst",
+    "missions": [],
+    "instruments": [
+     "HRG"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/158",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_id": 106,
+    "product_name": "DESIS L2A",
+    "category": "Optical",
+    "type": "Surface Reflectance",
+    "instruments": [
+     {
+      "instrument_id": 1734,
+      "instrument_name": "DESIS",
+      "product_status": "CEOS-ARD"
+     }
+    ],
+    "certifications": [
+     {
+      "scheme": "CEOS-ARD",
+      "approval_date": "2025-02-12"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:106",
+    "product_name": "DESIS L2A",
+    "official_product_name": "DESIS L2A",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "Optical",
+    "provider": "DLR",
+    "product_family": "Surface Reflectance",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": 79.0,
+    "instrument_spatial_resolution_display": "79 m (DESIS)",
+    "instrument_resolution_note": "Instrument-level value: DESIS — 79 m instrument value.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "CEOS-ARD",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "CEOS-ARD assessed",
+    "ceos_ard_verified": true,
+    "ceos_ard_pfs": "Surface Reflectance",
+    "ceos_ard_assessment_level": "CEOS-ARD",
+    "ceos_ard_record_url": null,
+    "pfs_type": "Surface Reflectance",
+    "pfs_version": null,
+    "approval_date": "2025-02-12",
+    "agency": "DLR",
+    "missions": [],
+    "instruments": [
+     "DESIS"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/106",
+    "notes": "Display fallback: the card shows the linked instrument's finest reported spatial resolution because the MIM data product record does not report product-level resolution. This instrument value is not used for product matching."
+   }
+  },
+  {
+   "input": {
+    "product_id": 1,
+    "product_name": "Status without evidence",
+    "type": "Normalised Radar Backscatter",
+    "instruments": [
+     {
+      "instrument_id": 9,
+      "product_status": "CEOS-ARD"
+     }
+    ],
+    "certifications": [
+     {
+      "scheme": "CEOS-ARD",
+      "spec_version": "v1"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:1",
+    "product_name": "Status without evidence",
+    "official_product_name": "Status without evidence",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": "ESA",
+    "product_family": "Synthetic Aperture Radar",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": 20.5,
+    "instrument_spatial_resolution_display": "20.5 m (Example full)",
+    "instrument_resolution_note": "Instrument-level value: Example full — 20.5 m.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "CEOS-ARD",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": "SAR",
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": "Normalised Radar Backscatter",
+    "ceos_ard_assessment_level": "CEOS-ARD",
+    "ceos_ard_record_url": null,
+    "pfs_type": "Normalised Radar Backscatter",
+    "pfs_version": "v1",
+    "approval_date": null,
+    "agency": "ESA",
+    "missions": [],
+    "instruments": [],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/1",
+    "notes": "Display fallback: the card shows the linked instrument's finest reported spatial resolution because the MIM data product record does not report product-level resolution. This instrument value is not used for product matching."
+   }
+  },
+  {
+   "input": {
+    "product_id": 2,
+    "product_name": "Evidence without status",
+    "category": "SAR",
+    "instruments": [
+     {
+      "instrument_id": 9,
+      "product_status": "Under Development"
+     }
+    ],
+    "certifications": [
+     {
+      "scheme": "ceos-ard",
+      "review_url": "https://example.test/review"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:2",
+    "product_name": "Evidence without status",
+    "official_product_name": "Evidence without status",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "SAR",
+    "provider": "ESA",
+    "product_family": "Synthetic Aperture Radar",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": 20.5,
+    "instrument_spatial_resolution_display": "20.5 m (Example full)",
+    "instrument_resolution_note": "Instrument-level value: Example full — 20.5 m.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "Under Development",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": "SAR",
+    "ceos_ard_status": "Assessment in progress",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": null,
+    "ceos_ard_assessment_level": "Under Development",
+    "ceos_ard_record_url": null,
+    "pfs_type": null,
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": "ESA",
+    "missions": [],
+    "instruments": [],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": "https://example.test/review",
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/2",
+    "notes": "Display fallback: the card shows the linked instrument's finest reported spatial resolution because the MIM data product record does not report product-level resolution. This instrument value is not used for product matching."
+   }
+  },
+  {
+   "input": {
+    "product_id": 3,
+    "name": "Two instruments 10 m",
+    "type": "ARD/AR",
+    "documentation_url": "https://example.test/doc",
+    "instruments": [
+     {
+      "instrument_id": 9,
+      "product_status": "In Progress",
+      "access_url": "https://example.test/access"
+     },
+     {
+      "instrument_id": 10.0,
+      "product_status": "CEOS-ARD",
+      "documentation_url": "https://example.test/link-doc"
+     }
+    ],
+    "certifications": [
+     {
+      "scheme": "Other",
+      "approval_date": "2020-01-01"
+     },
+     {
+      "scheme": "CEOS-ARD",
+      "approval_date": "2023-03-03",
+      "spec_version": "v2"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:3",
+    "product_name": "Two instruments 10 m",
+    "official_product_name": "Two instruments 10 m",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": "ESA",
+    "product_family": "Aquatic Reflectance",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": 20.5,
+    "instrument_spatial_resolution_display": "20.5 m best across 2 linked instruments",
+    "instrument_resolution_note": "Instrument-level values: Example full — 20.5 m; B — 1.23457e+06 m.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "CEOS-ARD, In Progress",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": "Radar altimeter, SAR",
+    "ceos_ard_status": "CEOS-ARD assessed",
+    "ceos_ard_verified": true,
+    "ceos_ard_pfs": "ARD/AR",
+    "ceos_ard_assessment_level": "CEOS-ARD, In Progress",
+    "ceos_ard_record_url": "https://example.test/doc",
+    "pfs_type": "ARD/AR",
+    "pfs_version": "v2",
+    "approval_date": "2023-03-03",
+    "agency": "ESA",
+    "missions": [],
+    "instruments": [
+     "B"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": "https://example.test/access",
+    "information_url": "https://example.test/doc",
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/doc",
+    "notes": "Display fallback: the card shows the linked instrument's finest reported spatial resolution because the MIM data product record does not report product-level resolution. This instrument value is not used for product matching."
+   }
+  },
+  {
+   "input": {
+    "id": "abc",
+    "title": "Thermal thing",
+    "category": "thermal infrared",
+    "instruments": [
+     {
+      "instrument_id": 11,
+      "instrument_name": "NoRes"
+     },
+     {
+      "instrument_id": 999,
+      "instrument_name": "Missing"
+     },
+     "not a dict"
+    ]
+   },
+   "output": {
+    "id": "mim-product:abc",
+    "product_name": "Thermal thing",
+    "official_product_name": "Thermal thing",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "thermal infrared",
+    "provider": "NASA",
+    "product_family": "Surface Temperature",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": null,
+    "instrument_spatial_resolution_display": null,
+    "instrument_resolution_note": "No linked instrument resolution is reported by the MIM API.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": null,
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": null,
+    "ceos_ard_assessment_level": null,
+    "ceos_ard_record_url": null,
+    "pfs_type": null,
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": "NASA",
+    "missions": [],
+    "instruments": [
+     "NoRes",
+     "Missing"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/abc",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_id": 4,
+    "product_name": "Explicit field",
+    "spatial_resolution_m": 15,
+    "product_spatial_resolution_m": 12.5,
+    "type": "Night-time Lights"
+   },
+   "output": {
+    "id": "mim-product:4",
+    "product_name": "Explicit field",
+    "official_product_name": "Explicit field",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": null,
+    "product_family": "Night-time Lights",
+    "spatial_resolution_m": 12.5,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": "12.5 m",
+    "spatial_resolution_basis": "Explicit product-resolution field from the MIM API",
+    "instrument_spatial_resolution_best_m": null,
+    "instrument_spatial_resolution_display": null,
+    "instrument_resolution_note": "No linked instrument resolution is reported by the MIM API.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": null,
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": "Night-time Lights",
+    "ceos_ard_assessment_level": null,
+    "ceos_ard_record_url": null,
+    "pfs_type": "Night-time Lights",
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": null,
+    "missions": [],
+    "instruments": [],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/4",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_id": 5,
+    "product_name": "Decimal .5m and 2000m",
+    "type": "Other kind",
+    "format": "NetCDF",
+    "instruments": [
+     {
+      "instrument_id": 12,
+      "product_status": "Operational"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:5",
+    "product_name": "Decimal .5m and 2000m",
+    "official_product_name": "Decimal .5m and 2000m",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": "JAXA",
+    "product_family": "Other kind",
+    "spatial_resolution_m": 2000.0,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": "2000 m (reported in API product name)",
+    "spatial_resolution_basis": "Explicit metre value reported in the MIM API product name",
+    "instrument_spatial_resolution_best_m": 1e-05,
+    "instrument_spatial_resolution_display": "1e-05 m (Tiny)",
+    "instrument_resolution_note": "Instrument-level value: Tiny — 1e-05 m.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": "Operational",
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": "NetCDF",
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": "Other kind",
+    "ceos_ard_assessment_level": "Operational",
+    "ceos_ard_record_url": null,
+    "pfs_type": "Other kind",
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": "JAXA",
+    "missions": [],
+    "instruments": [
+     "Tiny"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/5",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_id": 6,
+    "product_name": "Name 25 metres approx 30m2",
+    "category": "",
+    "instruments": [
+     {
+      "instrument_id": "183",
+      "instrument_name": "string id"
+     }
+    ]
+   },
+   "output": {
+    "id": "mim-product:6",
+    "product_name": "Name 25 metres approx 30m2",
+    "official_product_name": "Name 25 metres approx 30m2",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": null,
+    "product_family": "MIM product family unavailable",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": null,
+    "instrument_spatial_resolution_display": null,
+    "instrument_resolution_note": "No linked instrument resolution is reported by the MIM API.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": null,
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": null,
+    "ceos_ard_assessment_level": null,
+    "ceos_ard_record_url": null,
+    "pfs_type": null,
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": null,
+    "missions": [],
+    "instruments": [
+     "string id"
+    ],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/6",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_id": 7,
+    "product_name": "Night lights radar sar",
+    "type": null,
+    "category": null
+   },
+   "output": {
+    "id": "mim-product:7",
+    "product_name": "Night lights radar sar",
+    "official_product_name": "Night lights radar sar",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": null,
+    "product_family": "Synthetic Aperture Radar",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": null,
+    "instrument_spatial_resolution_display": null,
+    "instrument_resolution_note": "No linked instrument resolution is reported by the MIM API.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": null,
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": null,
+    "ceos_ard_assessment_level": null,
+    "ceos_ard_record_url": null,
+    "pfs_type": null,
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": null,
+    "missions": [],
+    "instruments": [],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/7",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  },
+  {
+   "input": {
+    "product_name": "No id"
+   },
+   "output": null
+  },
+  {
+   "input": {
+    "product_id": 8
+   },
+   "output": null
+  },
+  {
+   "input": {
+    "product_id": 0,
+    "product_name": "Zero id",
+    "type": "Surface Temperature"
+   },
+   "output": {
+    "id": "mim-product:0",
+    "product_name": "Zero id",
+    "official_product_name": "Zero id",
+    "display_name": null,
+    "ceos_ard_assessment_id": null,
+    "mission_name": "Not reported by MIM product endpoint",
+    "family": "MIM API products",
+    "provider": null,
+    "product_family": "Surface Temperature",
+    "spatial_resolution_m": null,
+    "spatial_resolution_options_m": [],
+    "spatial_resolution_display": null,
+    "spatial_resolution_basis": "Product-level resolution not reported by the MIM API",
+    "instrument_spatial_resolution_best_m": null,
+    "instrument_spatial_resolution_display": null,
+    "instrument_resolution_note": "No linked instrument resolution is reported by the MIM API.",
+    "revisit_days": null,
+    "revisit_display": null,
+    "revisit_basis": "unknown",
+    "product_update_frequency_days": null,
+    "product_update_frequency_display": null,
+    "radiometric_bit_depth": null,
+    "radiometric_bit_depth_display": null,
+    "bit_depth_basis": "unknown",
+    "output_storage_bit_depth": null,
+    "output_storage_display": null,
+    "output_data_type": null,
+    "geographic_coverage": "Unknown",
+    "geographic_coverage_display": null,
+    "coverage_basis": "unknown",
+    "swath_width": null,
+    "operational_status": null,
+    "atmospheric_correction": null,
+    "elevation_model": null,
+    "coordinate_system": null,
+    "data_format": null,
+    "launch_or_start_year": null,
+    "sensor_or_instrument_type": null,
+    "ceos_ard_status": "Status unknown",
+    "ceos_ard_verified": false,
+    "ceos_ard_pfs": "Surface Temperature",
+    "ceos_ard_assessment_level": null,
+    "ceos_ard_record_url": null,
+    "pfs_type": "Surface Temperature",
+    "pfs_version": null,
+    "approval_date": null,
+    "agency": null,
+    "missions": [],
+    "instruments": [],
+    "ard_tier": null,
+    "ard_tier_display": null,
+    "ard_tier_notes": null,
+    "geometric_accuracy_display": null,
+    "geometric_accuracy_metric": null,
+    "geometric_accuracy_value": null,
+    "geometric_accuracy_unit": null,
+    "radiometric_accuracy_display": null,
+    "radiometric_accuracy_metric": null,
+    "radiometric_accuracy_value": null,
+    "radiometric_accuracy_unit": null,
+    "access_url": null,
+    "information_url": null,
+    "self_assessment_url": null,
+    "peer_review_url": null,
+    "sample_product_url": null,
+    "existing_demo_record_ids": [],
+    "source_type": "MIM API product",
+    "source_url": "https://example.test/api/product/0",
+    "notes": "MIM API product joined to linked instruments by stable instrument ID."
+   }
+  }
+ ],
+ "product_family": [
+  {
+   "input": {
+    "type": "Surface Reflectance"
+   },
+   "family": "Surface Reflectance"
+  },
+  {
+   "input": {
+    "category": "ARD/SR"
+   },
+   "family": "Surface Reflectance"
+  },
+  {
+   "input": {
+    "product_name": "Ocean aquatic reflectance"
+   },
+   "family": "Aquatic Reflectance"
+  },
+  {
+   "input": {
+    "type": "Land Surface Temperature"
+   },
+   "family": "Surface Temperature"
+  },
+  {
+   "input": {
+    "product_name": "Thermal"
+   },
+   "family": "Surface Temperature"
+  },
+  {
+   "input": {
+    "type": "Synthetic Aperture Radar"
+   },
+   "family": "Synthetic Aperture Radar"
+  },
+  {
+   "input": {
+    "product_name": "Sarcophagus"
+   },
+   "family": "Synthetic Aperture Radar"
+  },
+  {
+   "input": {
+    "product_name": "Radar"
+   },
+   "family": "Synthetic Aperture Radar"
+  },
+  {
+   "input": {
+    "product_name": "Nighttime"
+   },
+   "family": "Night-time Lights"
+  },
+  {
+   "input": {
+    "product_name": "Night-time lights"
+   },
+   "family": "Night-time Lights"
+  },
+  {
+   "input": {
+    "type": "Other",
+    "category": "X"
+   },
+   "family": "Other"
+  },
+  {
+   "input": {
+    "category": "Only cat"
+   },
+   "family": "Only cat"
+  },
+  {
+   "input": {},
+   "family": "MIM product family unavailable"
+  }
+ ],
+ "explicit_resolution": [
+  {
+   "input": {
+    "product_name": "A 2.5m product"
+   },
+   "value": 2.5,
+   "display": "2.5 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "A 10 m product"
+   },
+   "value": 10.0,
+   "display": "10 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "Version1.5m"
+   },
+   "value": 1.5,
+   "display": "1.5 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "x 25M y"
+   },
+   "value": 25.0,
+   "display": "25 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "25mm"
+   },
+   "value": null,
+   "display": null,
+   "basis": "Product-level resolution not reported by the MIM API"
+  },
+  {
+   "input": {
+    "product_name": "1.2.3m"
+   },
+   "value": null,
+   "display": null,
+   "basis": "Product-level resolution not reported by the MIM API"
+  },
+  {
+   "input": {
+    "product_name": "no number"
+   },
+   "value": null,
+   "display": null,
+   "basis": "Product-level resolution not reported by the MIM API"
+  },
+  {
+   "input": {
+    "product_spatial_resolution_m": 3
+   },
+   "value": 3.0,
+   "display": "3 m",
+   "basis": "Explicit product-resolution field from the MIM API"
+  },
+  {
+   "input": {
+    "spatial_resolution_m": true,
+    "product_name": "7m"
+   },
+   "value": 7.0,
+   "display": "7 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "30 m and 10 m"
+   },
+   "value": 30.0,
+   "display": "30 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "100m-class"
+   },
+   "value": 100.0,
+   "display": "100 m (reported in API product name)",
+   "basis": "Explicit metre value reported in the MIM API product name"
+  },
+  {
+   "input": {
+    "product_name": "25m_grid"
+   },
+   "value": null,
+   "display": null,
+   "basis": "Product-level resolution not reported by the MIM API"
+  }
+ ],
+ "collection_path": [
+  {
+   "schema": {
+    "paths": {
+     "/products": {
+      "get": {
+       "tags": [
+        "products"
+       ]
+      }
+     },
+     "/instruments": {
+      "get": {
+       "summary": "List instruments"
+      }
+     },
+     "/missions": {
+      "get": {
+       "operationId": "list_missions",
+       "parameters": [
+        {
+         "name": "limit"
+        },
+        {
+         "name": "offset"
+        },
+        {
+         "name": "include_non_eo"
+        }
+       ]
+      }
+     },
+     "/product/{id}": {
+      "get": {}
+     },
+     "/products/search": {
+      "get": {
+       "summary": "Search products"
+      }
+     }
+    }
+   },
+   "products": "/products",
+   "instruments": "/instruments"
+  },
+  {
+   "schema": {
+    "paths": {
+     "/v1/eo/products/": {
+      "get": {}
+     },
+     "/v1/eo/instruments/": {
+      "get": {}
+     },
+     "/v1/missions": {
+      "get": {}
+     },
+     "/v1/mission-instruments": {
+      "get": {
+       "summary": "mission instruments"
+      }
+     }
+    }
+   },
+   "products": "/v1/eo/products/",
+   "instruments": "/v1/eo/instruments/"
+  },
+  {
+   "schema": {
+    "paths": {
+     "/catalogue": {
+      "get": {
+       "tags": [
+        "product"
+       ]
+      }
+     },
+     "/devices": {
+      "get": {
+       "summary": "instrument list"
+      }
+     },
+     "/m": {
+      "get": {
+       "summary": "Mission"
+      }
+     }
+    }
+   },
+   "products": "/catalogue",
+   "instruments": "/devices"
+  },
+  {
+   "schema": {
+    "paths": {
+     "/products": {
+      "post": {}
+     },
+     "/instruments": {
+      "get": {}
+     },
+     "/missions": {
+      "get": {}
+     }
+    }
+   },
+   "products": {
+    "error": "No products collection endpoint was identified in the authenticated schema."
+   },
+   "instruments": "/instruments"
+  },
+  {
+   "schema": {
+    "paths": {
+     "/instruments": {
+      "get": {}
+     },
+     "/products": {
+      "get": {}
+     }
+    }
+   },
+   "products": "/products",
+   "instruments": "/instruments"
+  }
+ ],
+ "mission_inspection": [
+  {
+   "schema": {
+    "paths": {
+     "/products": {
+      "get": {
+       "tags": [
+        "products"
+       ]
+      }
+     },
+     "/instruments": {
+      "get": {
+       "summary": "List instruments"
+      }
+     },
+     "/missions": {
+      "get": {
+       "operationId": "list_missions",
+       "parameters": [
+        {
+         "name": "limit"
+        },
+        {
+         "name": "offset"
+        },
+        {
+         "name": "include_non_eo"
+        }
+       ]
+      }
+     },
+     "/product/{id}": {
+      "get": {}
+     },
+     "/products/search": {
+      "get": {
+       "summary": "Search products"
+      }
+     }
+    }
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "mission_path": "/missions",
+   "parameters": [
+    "limit",
+    "offset",
+    "include_non_eo"
+   ]
+  },
+  {
+   "schema": {
+    "paths": {
+     "/v1/eo/products/": {
+      "get": {}
+     },
+     "/v1/eo/instruments/": {
+      "get": {}
+     },
+     "/v1/missions": {
+      "get": {}
+     },
+     "/v1/mission-instruments": {
+      "get": {
+       "summary": "mission instruments"
+      }
+     }
+    }
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "mission_path": "/v1/missions",
+   "parameters": []
+  },
+  {
+   "schema": {
+    "paths": {
+     "/catalogue": {
+      "get": {
+       "tags": [
+        "product"
+       ]
+      }
+     },
+     "/devices": {
+      "get": {
+       "summary": "instrument list"
+      }
+     },
+     "/m": {
+      "get": {
+       "summary": "Mission"
+      }
+     }
+    }
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "mission_path": "/m",
+   "parameters": []
+  },
+  {
+   "schema": {
+    "paths": {
+     "/products": {
+      "post": {}
+     },
+     "/instruments": {
+      "get": {}
+     },
+     "/missions": {
+      "get": {}
+     }
+    }
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "mission_path": "/missions",
+   "parameters": []
+  },
+  {
+   "schema": {
+    "paths": {
+     "/instruments": {
+      "get": {}
+     },
+     "/products": {
+      "get": {}
+     }
+    }
+   },
+   "error": "No mission collection endpoint was identified in the authenticated schema."
+  }
+ ],
+ "docs_regex": [
+  {
+   "html": "url: \"openapi.json\"",
+   "match": "openapi.json"
+  },
+  {
+   "html": "spec-url='/api/v2/spec.json'",
+   "match": "/api/v2/spec.json"
+  },
+  {
+   "html": "URL = \"https://elsewhere.test/x.json\"",
+   "match": "https://elsewhere.test/x.json"
+  },
+  {
+   "html": "no declaration",
+   "match": null
+  },
+  {
+   "html": "url:\"/api/openapi.json?x=1\"",
+   "match": "/api/openapi.json?x=1"
+  }
+ ],
+ "server_root": [
+  {
+   "schema": {},
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "root": "https://mim.example.test/api/"
+  },
+  {
+   "schema": {
+    "servers": [
+     {
+      "url": "/api"
+     }
+    ]
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "root": "https://mim.example.test/api/"
+  },
+  {
+   "schema": {
+    "servers": [
+     {
+      "url": "https://mim.example.test/api/v1/"
+     }
+    ]
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "root": "https://mim.example.test/api/v1/"
+  },
+  {
+   "schema": {
+    "servers": []
+   },
+   "schema_url": "https://mim.example.test/api/openapi.json",
+   "root": "https://mim.example.test/api/"
+  }
+ ]
+}

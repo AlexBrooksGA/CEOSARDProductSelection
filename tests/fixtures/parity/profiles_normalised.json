@@ -1,0 +1,109 @@
+[
+ {
+  "id": "explore-ceos-ard",
+  "name": "Explore CEOS-ARD Products",
+  "description": "Broad discovery across CEOS-ARD assessed optical, thermal and radar products.",
+  "use_case_category": "Explore CEOS-ARD Products",
+  "product_families": [
+   "Surface Reflectance",
+   "Surface Temperature",
+   "Synthetic Aperture Radar"
+  ],
+  "criteria": {
+   "spatial_resolution_m": {
+    "mode": "preferred",
+    "value": 30
+   },
+   "revisit_days": {
+    "mode": "not_used",
+    "value": 30
+   },
+   "radiometric_bit_depth": {
+    "mode": "not_used",
+    "value": 12
+   },
+   "geographic_coverage": {
+    "mode": "not_used",
+    "value": "Regional"
+   }
+  },
+  "default_product_family": "All product families",
+  "filter_defaults": {},
+  "radiometric_screening": "PFS baseline",
+  "geometric_screening": "Manual task check",
+  "notes": "This profile is deliberately inclusive. Unreported optional metadata is flagged for a manual task check.",
+  "assumptions": "CEOS-ARD assessment describes product preparation and documentation, not fitness for a specific application.",
+  "built_in": true
+ },
+ {
+  "id": "map-land-features",
+  "name": "Map Land and Features",
+  "description": "Fine-detail mapping with CEOS-ARD assessed land-observation products.",
+  "use_case_category": "Map Land and Features",
+  "product_families": [
+   "Surface Reflectance",
+   "Synthetic Aperture Radar"
+  ],
+  "criteria": {
+   "spatial_resolution_m": {
+    "mode": "required",
+    "value": 10
+   },
+   "revisit_days": {
+    "mode": "required",
+    "value": 30
+   },
+   "radiometric_bit_depth": {
+    "mode": "not_used",
+    "value": 12
+   },
+   "geographic_coverage": {
+    "mode": "not_used",
+    "value": "Regional"
+   }
+  },
+  "default_product_family": "Surface Reflectance",
+  "filter_defaults": {},
+  "radiometric_screening": "PFS baseline",
+  "geometric_screening": "Manual task check",
+  "notes": "Product family and profile criteria remain editable. Review task-specific geometric accuracy and suitability manually.",
+  "assumptions": "Fine spatial detail does not establish cadastral, engineering, survey-grade or precision-mapping suitability.",
+  "built_in": true
+ },
+ {
+  "id": "monitor-change",
+  "name": "Monitor Change Over Time",
+  "description": "Time-series and change monitoring with CEOS-ARD assessed products.",
+  "use_case_category": "Monitor Change Over Time",
+  "product_families": [
+   "Surface Reflectance",
+   "Surface Temperature",
+   "Synthetic Aperture Radar"
+  ],
+  "criteria": {
+   "spatial_resolution_m": {
+    "mode": "preferred",
+    "value": 30
+   },
+   "revisit_days": {
+    "mode": "required",
+    "value": 5
+   },
+   "radiometric_bit_depth": {
+    "mode": "not_used",
+    "value": 12
+   },
+   "geographic_coverage": {
+    "mode": "not_used",
+    "value": "Regional"
+   }
+  },
+  "default_product_family": "Surface Reflectance",
+  "filter_defaults": {},
+  "radiometric_screening": "PFS baseline",
+  "geometric_screening": "Manual task check",
+  "notes": "Nominal revisit does not prove operational latency, cloud-free availability, acquisition priority or delivery frequency.",
+  "assumptions": "Geometry and long-term co-registration suitability require a manual task check.",
+  "built_in": true
+ }
+]

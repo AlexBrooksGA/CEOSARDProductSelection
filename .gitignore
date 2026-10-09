@@ -1,12 +1,23 @@
 .env
+.env.*
+!.env.example
+
+# Node / SvelteKit
+node_modules/
+build/
+.svelte-kit/
+test-results/
+playwright-report/
+
+# Legacy Python reference
 .venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .streamlit/secrets.toml
+.streamlit/cache/
 
 # Local runtime and generated review artifacts
-.streamlit/cache/
 *.log
 output/
 tmp/

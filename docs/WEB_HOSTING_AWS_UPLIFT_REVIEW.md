@@ -1,3 +1,5 @@
+> **Historical document (Streamlit era).** The application is now a single Node.js process (`node build`). FedEO has been removed. See [`DEPLOYMENT.md`](DEPLOYMENT.md) for current instructions; the infrastructure guidance below still applies in principle.
+
 # Web Hosting, AWS Deployment and Git-Based Development Review
 
 Review date: 24 August 2026

@@ -1,3 +1,5 @@
+> **Historical document.** FedEO enrichment and collection discovery were removed in the October 2026 web rebuild. The live application has no FedEO integration. This report is kept only as a record of the prototype; it must not drive live functionality.
+
 # Optional FedEO integration assessment
 
 Validation date: 20 July 2026 (Australia/Sydney)

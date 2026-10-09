@@ -1,0 +1,1392 @@
+{
+ "extra_products": [
+  {
+   "id": "mim-like",
+   "product_name": "MIM thing",
+   "official_product_name": null,
+   "display_name": null,
+   "ceos_ard_assessment_id": null,
+   "mission_name": "Not reported by MIM product endpoint",
+   "family": "Other",
+   "provider": "QA Agency",
+   "product_family": "Surface Reflectance",
+   "spatial_resolution_m": null,
+   "spatial_resolution_options_m": [],
+   "spatial_resolution_display": null,
+   "spatial_resolution_basis": "unknown",
+   "instrument_spatial_resolution_best_m": null,
+   "instrument_spatial_resolution_display": null,
+   "instrument_resolution_note": null,
+   "revisit_days": null,
+   "revisit_display": null,
+   "revisit_basis": "unknown",
+   "product_update_frequency_days": null,
+   "product_update_frequency_display": null,
+   "radiometric_bit_depth": null,
+   "radiometric_bit_depth_display": null,
+   "bit_depth_basis": "unknown",
+   "output_storage_bit_depth": null,
+   "output_storage_display": null,
+   "output_data_type": null,
+   "geographic_coverage": "Unknown",
+   "geographic_coverage_display": null,
+   "coverage_basis": "unknown",
+   "swath_width": null,
+   "operational_status": "Under Development",
+   "atmospheric_correction": null,
+   "elevation_model": null,
+   "coordinate_system": null,
+   "data_format": null,
+   "launch_or_start_year": null,
+   "sensor_or_instrument_type": "Multispectral imager",
+   "ceos_ard_status": "Assessment in progress",
+   "ceos_ard_verified": false,
+   "ceos_ard_pfs": null,
+   "ceos_ard_assessment_level": null,
+   "ceos_ard_record_url": null,
+   "pfs_type": null,
+   "pfs_version": null,
+   "approval_date": null,
+   "agency": null,
+   "missions": [],
+   "instruments": [],
+   "ard_tier": null,
+   "ard_tier_display": null,
+   "ard_tier_notes": null,
+   "geometric_accuracy_display": null,
+   "geometric_accuracy_metric": null,
+   "geometric_accuracy_value": null,
+   "geometric_accuracy_unit": null,
+   "radiometric_accuracy_display": null,
+   "radiometric_accuracy_metric": null,
+   "radiometric_accuracy_value": null,
+   "radiometric_accuracy_unit": null,
+   "access_url": null,
+   "information_url": null,
+   "self_assessment_url": null,
+   "peer_review_url": null,
+   "sample_product_url": null,
+   "existing_demo_record_ids": [],
+   "source_type": "MIM API product",
+   "source_url": null,
+   "notes": null
+  },
+  {
+   "id": "old-mission",
+   "product_name": "Old mission",
+   "official_product_name": null,
+   "display_name": null,
+   "ceos_ard_assessment_id": null,
+   "mission_name": "Heritage-1",
+   "family": "Other",
+   "provider": "Old Agency",
+   "product_family": "Synthetic Aperture Radar",
+   "spatial_resolution_m": 20,
+   "spatial_resolution_options_m": [],
+   "spatial_resolution_display": null,
+   "spatial_resolution_basis": "unknown",
+   "instrument_spatial_resolution_best_m": null,
+   "instrument_spatial_resolution_display": null,
+   "instrument_resolution_note": null,
+   "revisit_days": null,
+   "revisit_display": null,
+   "revisit_basis": "unknown",
+   "product_update_frequency_days": null,
+   "product_update_frequency_display": null,
+   "radiometric_bit_depth": null,
+   "radiometric_bit_depth_display": null,
+   "bit_depth_basis": "unknown",
+   "output_storage_bit_depth": null,
+   "output_storage_display": null,
+   "output_data_type": null,
+   "geographic_coverage": "Unknown",
+   "geographic_coverage_display": null,
+   "coverage_basis": "unknown",
+   "swath_width": null,
+   "operational_status": null,
+   "atmospheric_correction": null,
+   "elevation_model": null,
+   "coordinate_system": null,
+   "data_format": null,
+   "launch_or_start_year": 2010,
+   "sensor_or_instrument_type": null,
+   "ceos_ard_status": "CEOS-ARD assessed",
+   "ceos_ard_verified": true,
+   "ceos_ard_pfs": null,
+   "ceos_ard_assessment_level": null,
+   "ceos_ard_record_url": null,
+   "pfs_type": null,
+   "pfs_version": null,
+   "approval_date": null,
+   "agency": null,
+   "missions": [],
+   "instruments": [],
+   "ard_tier": null,
+   "ard_tier_display": null,
+   "ard_tier_notes": null,
+   "geometric_accuracy_display": null,
+   "geometric_accuracy_metric": null,
+   "geometric_accuracy_value": null,
+   "geometric_accuracy_unit": null,
+   "radiometric_accuracy_display": null,
+   "radiometric_accuracy_metric": null,
+   "radiometric_accuracy_value": null,
+   "radiometric_accuracy_unit": null,
+   "access_url": null,
+   "information_url": null,
+   "self_assessment_url": null,
+   "peer_review_url": null,
+   "sample_product_url": null,
+   "existing_demo_record_ids": [],
+   "source_type": "Curated demo record",
+   "source_url": null,
+   "notes": null
+  },
+  {
+   "id": "new-mission",
+   "product_name": "New mission",
+   "official_product_name": null,
+   "display_name": null,
+   "ceos_ard_assessment_id": null,
+   "mission_name": "Modern-2",
+   "family": "Other",
+   "provider": "New Agency",
+   "product_family": "Surface Temperature",
+   "spatial_resolution_m": null,
+   "spatial_resolution_options_m": [],
+   "spatial_resolution_display": null,
+   "spatial_resolution_basis": "unknown",
+   "instrument_spatial_resolution_best_m": null,
+   "instrument_spatial_resolution_display": null,
+   "instrument_resolution_note": null,
+   "revisit_days": null,
+   "revisit_display": null,
+   "revisit_basis": "unknown",
+   "product_update_frequency_days": null,
+   "product_update_frequency_display": null,
+   "radiometric_bit_depth": null,
+   "radiometric_bit_depth_display": null,
+   "bit_depth_basis": "unknown",
+   "output_storage_bit_depth": null,
+   "output_storage_display": null,
+   "output_data_type": null,
+   "geographic_coverage": "Unknown",
+   "geographic_coverage_display": null,
+   "coverage_basis": "unknown",
+   "swath_width": null,
+   "operational_status": null,
+   "atmospheric_correction": null,
+   "elevation_model": null,
+   "coordinate_system": null,
+   "data_format": null,
+   "launch_or_start_year": 2020,
+   "sensor_or_instrument_type": "Thermal infrared",
+   "ceos_ard_status": "Status unknown",
+   "ceos_ard_verified": false,
+   "ceos_ard_pfs": null,
+   "ceos_ard_assessment_level": null,
+   "ceos_ard_record_url": null,
+   "pfs_type": null,
+   "pfs_version": null,
+   "approval_date": null,
+   "agency": null,
+   "missions": [],
+   "instruments": [],
+   "ard_tier": null,
+   "ard_tier_display": null,
+   "ard_tier_notes": null,
+   "geometric_accuracy_display": null,
+   "geometric_accuracy_metric": null,
+   "geometric_accuracy_value": null,
+   "geometric_accuracy_unit": null,
+   "radiometric_accuracy_display": null,
+   "radiometric_accuracy_metric": null,
+   "radiometric_accuracy_value": null,
+   "radiometric_accuracy_unit": null,
+   "access_url": null,
+   "information_url": null,
+   "self_assessment_url": null,
+   "peer_review_url": null,
+   "sample_product_url": null,
+   "existing_demo_record_ids": [],
+   "source_type": "Curated demo record",
+   "source_url": null,
+   "notes": null
+  }
+ ],
+ "filters": [
+  {
+   "name": "default",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "CEOS-ARD assessed only",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "alos2-palsar2-25m-scansar-nrb",
+    "alos2-palsar2-global-mosaics-rtc",
+    "catalyst-sentinel1-rtc",
+    "catalyst-spot5-hrg-2-5m",
+    "constellr-lstprecision",
+    "desis-l2a",
+    "earthdaily-constellation",
+    "enmap-l2a",
+    "aircas-l8-sr",
+    "aircas-l8-st",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "novasar1-rtc",
+    "nrcan-rcm-nrb",
+    "nrcan-rcm-pol",
+    "opera-rtc-sentinel1",
+    "proba-v-l3-toc",
+    "risat1a-eos04-nrb",
+    "risat1a-eos04-india-mosaic",
+    "ga-sentinel1-nrb",
+    "opera-disp-sentinel1",
+    "dea-sentinel1-rtc",
+    "sentinel2-level2a",
+    "synspective-strix-nrb"
+   ]
+  },
+  {
+   "name": "family-sr",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "CEOS-ARD assessed only",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "Surface Reflectance",
+   "ids": [
+    "catalyst-spot5-hrg-2-5m",
+    "desis-l2a",
+    "earthdaily-constellation",
+    "enmap-l2a",
+    "aircas-l8-sr",
+    "landsat-c2-sr",
+    "landsat-c2-usard-sr",
+    "proba-v-l3-toc",
+    "sentinel2-level2a"
+   ]
+  },
+  {
+   "name": "all-statuses",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "alos2-palsar2-25m-scansar-nrb",
+    "alos2-palsar2-global-mosaics-rtc",
+    "catalyst-sentinel1-rtc",
+    "catalyst-spot5-hrg-2-5m",
+    "constellr-lstprecision",
+    "desis-l2a",
+    "earthdaily-constellation",
+    "enmap-l2a",
+    "aircas-l8-sr",
+    "aircas-l8-st",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "novasar1-rtc",
+    "nrcan-rcm-nrb",
+    "nrcan-rcm-pol",
+    "opera-rtc-sentinel1",
+    "proba-v-l3-toc",
+    "risat1a-eos04-nrb",
+    "risat1a-eos04-india-mosaic",
+    "ga-sentinel1-nrb",
+    "opera-disp-sentinel1",
+    "dea-sentinel1-rtc",
+    "sentinel2-level2a",
+    "synspective-strix-nrb",
+    "eq-boundary",
+    "just-over",
+    "fine",
+    "Fine-upper",
+    "eszett",
+    "ss",
+    "accent",
+    "odd-coverage",
+    "zero",
+    "bits-float",
+    "all-unknown",
+    "astral",
+    "bmp-high",
+    "mim-like",
+    "new-mission"
+   ]
+  },
+  {
+   "name": "in-progress",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "Assessment in progress",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "mim-like"
+   ]
+  },
+  {
+   "name": "not-assessed",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "Not assessed or status unknown",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "eq-boundary",
+    "just-over",
+    "fine",
+    "Fine-upper",
+    "eszett",
+    "ss",
+    "accent",
+    "odd-coverage",
+    "zero",
+    "bits-float",
+    "all-unknown",
+    "astral",
+    "bmp-high",
+    "mim-like",
+    "new-mission"
+   ]
+  },
+  {
+   "name": "search-landsat",
+   "state": {
+    "advanced_search": "  LANDSAT ",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "CEOS-ARD assessed only",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "aircas-l8-sr",
+    "aircas-l8-st",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st"
+   ]
+  },
+  {
+   "name": "search-mission",
+   "state": {
+    "advanced_search": "sentinel-1",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "catalyst-sentinel1-rtc",
+    "opera-rtc-sentinel1",
+    "ga-sentinel1-nrb",
+    "opera-disp-sentinel1",
+    "dea-sentinel1-rtc"
+   ]
+  },
+  {
+   "name": "search-strasse",
+   "state": {
+    "advanced_search": "STRASSE",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "eszett",
+    "ss"
+   ]
+  },
+  {
+   "name": "search-endpoint-quirk",
+   "state": {
+    "advanced_search": "endpoint",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "mim-like"
+   ]
+  },
+  {
+   "name": "provider",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [
+     "USGS",
+     "ESA"
+    ],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "CEOS-ARD assessed only",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "sentinel2-level2a"
+   ]
+  },
+  {
+   "name": "sensor",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "THERMAL",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "new-mission"
+   ]
+  },
+  {
+   "name": "operational",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [
+     "Operational"
+    ],
+    "source_filter": [],
+    "ceos_filter": "CEOS-ARD assessed only",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "enmap-l2a",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "sentinel2-level2a"
+   ]
+  },
+  {
+   "name": "source",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [
+     "MIM API product"
+    ],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "mim-like"
+   ]
+  },
+  {
+   "name": "launch-2015",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "alos2-palsar2-25m-scansar-nrb",
+    "alos2-palsar2-global-mosaics-rtc",
+    "catalyst-sentinel1-rtc",
+    "catalyst-spot5-hrg-2-5m",
+    "constellr-lstprecision",
+    "desis-l2a",
+    "earthdaily-constellation",
+    "enmap-l2a",
+    "aircas-l8-sr",
+    "aircas-l8-st",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "novasar1-rtc",
+    "nrcan-rcm-nrb",
+    "nrcan-rcm-pol",
+    "opera-rtc-sentinel1",
+    "proba-v-l3-toc",
+    "risat1a-eos04-nrb",
+    "risat1a-eos04-india-mosaic",
+    "ga-sentinel1-nrb",
+    "opera-disp-sentinel1",
+    "dea-sentinel1-rtc",
+    "sentinel2-level2a",
+    "synspective-strix-nrb",
+    "eq-boundary",
+    "just-over",
+    "fine",
+    "Fine-upper",
+    "eszett",
+    "ss",
+    "accent",
+    "odd-coverage",
+    "zero",
+    "bits-float",
+    "all-unknown",
+    "astral",
+    "bmp-high",
+    "mim-like",
+    "new-mission"
+   ]
+  },
+  {
+   "name": "launch-none",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 1900,
+    "show_unknown": true,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "alos2-palsar2-25m-scansar-nrb",
+    "alos2-palsar2-global-mosaics-rtc",
+    "catalyst-sentinel1-rtc",
+    "catalyst-spot5-hrg-2-5m",
+    "constellr-lstprecision",
+    "desis-l2a",
+    "earthdaily-constellation",
+    "enmap-l2a",
+    "aircas-l8-sr",
+    "aircas-l8-st",
+    "landsat-c2-sr",
+    "landsat-c2-st",
+    "landsat-c2-usard-sr",
+    "landsat-c2-usard-st",
+    "novasar1-rtc",
+    "nrcan-rcm-nrb",
+    "nrcan-rcm-pol",
+    "opera-rtc-sentinel1",
+    "proba-v-l3-toc",
+    "risat1a-eos04-nrb",
+    "risat1a-eos04-india-mosaic",
+    "ga-sentinel1-nrb",
+    "opera-disp-sentinel1",
+    "dea-sentinel1-rtc",
+    "sentinel2-level2a",
+    "synspective-strix-nrb",
+    "eq-boundary",
+    "just-over",
+    "fine",
+    "Fine-upper",
+    "eszett",
+    "ss",
+    "accent",
+    "odd-coverage",
+    "zero",
+    "bits-float",
+    "all-unknown",
+    "astral",
+    "bmp-high",
+    "mim-like",
+    "old-mission",
+    "new-mission"
+   ]
+  },
+  {
+   "name": "hide-unknown-no-criteria",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 2015,
+    "show_unknown": false,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "new-mission"
+   ]
+  },
+  {
+   "name": "hide-unknown-spatial",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 1900,
+    "show_unknown": false,
+    "use_spatial": true,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "No requirement"
+   },
+   "family": "All product families",
+   "ids": [
+    "old-mission"
+   ]
+  },
+  {
+   "name": "hide-unknown-coverage",
+   "state": {
+    "advanced_search": "",
+    "sensor_filter": "",
+    "provider_filter": [],
+    "operational_filter": [],
+    "source_filter": [],
+    "ceos_filter": "All statuses",
+    "launch_year_filter": 1900,
+    "show_unknown": false,
+    "use_spatial": false,
+    "use_revisit": false,
+    "use_bit_depth": false,
+    "coverage_filter": "Global"
+   },
+   "family": "All product families",
+   "ids": []
+  }
+ ],
+ "active_profiles": [
+  {
+   "profile_id": "explore-ceos-ard",
+   "session": {
+    "use_spatial": true,
+    "spatial_limit": 25.5,
+    "use_revisit": false,
+    "revisit_limit": 16.0,
+    "use_bit_depth": true,
+    "min_bit_depth": 10,
+    "coverage_filter": "National"
+   },
+   "active": {
+    "id": "explore-ceos-ard",
+    "name": "Explore CEOS-ARD Products",
+    "description": "Broad discovery across CEOS-ARD assessed optical, thermal and radar products.",
+    "use_case_category": "Explore CEOS-ARD Products",
+    "product_families": [
+     "Surface Reflectance",
+     "Surface Temperature",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "preferred",
+      "value": 25.5
+     },
+     "revisit_days": {
+      "mode": "not_used",
+      "value": 16.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "preferred",
+      "value": 10
+     },
+     "geographic_coverage": {
+      "mode": "preferred",
+      "value": "National"
+     }
+    },
+    "default_product_family": "All product families",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "This profile is deliberately inclusive. Unreported optional metadata is flagged for a manual task check.",
+    "assumptions": "CEOS-ARD assessment describes product preparation and documentation, not fitness for a specific application.",
+    "built_in": true
+   }
+  },
+  {
+   "profile_id": "explore-ceos-ard",
+   "session": {
+    "use_spatial": false,
+    "spatial_limit": 30.0,
+    "use_revisit": true,
+    "revisit_limit": 2.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "coverage_filter": "No requirement"
+   },
+   "active": {
+    "id": "explore-ceos-ard",
+    "name": "Explore CEOS-ARD Products",
+    "description": "Broad discovery across CEOS-ARD assessed optical, thermal and radar products.",
+    "use_case_category": "Explore CEOS-ARD Products",
+    "product_families": [
+     "Surface Reflectance",
+     "Surface Temperature",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "not_used",
+      "value": 30.0
+     },
+     "revisit_days": {
+      "mode": "preferred",
+      "value": 2.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "not_used",
+      "value": 12
+     },
+     "geographic_coverage": {
+      "mode": "not_used",
+      "value": "No requirement"
+     }
+    },
+    "default_product_family": "All product families",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "This profile is deliberately inclusive. Unreported optional metadata is flagged for a manual task check.",
+    "assumptions": "CEOS-ARD assessment describes product preparation and documentation, not fitness for a specific application.",
+    "built_in": true
+   }
+  },
+  {
+   "profile_id": "map-land-features",
+   "session": {
+    "use_spatial": true,
+    "spatial_limit": 25.5,
+    "use_revisit": false,
+    "revisit_limit": 16.0,
+    "use_bit_depth": true,
+    "min_bit_depth": 10,
+    "coverage_filter": "National"
+   },
+   "active": {
+    "id": "map-land-features",
+    "name": "Map Land and Features",
+    "description": "Fine-detail mapping with CEOS-ARD assessed land-observation products.",
+    "use_case_category": "Map Land and Features",
+    "product_families": [
+     "Surface Reflectance",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "required",
+      "value": 25.5
+     },
+     "revisit_days": {
+      "mode": "not_used",
+      "value": 16.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "preferred",
+      "value": 10
+     },
+     "geographic_coverage": {
+      "mode": "preferred",
+      "value": "National"
+     }
+    },
+    "default_product_family": "Surface Reflectance",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "Product family and profile criteria remain editable. Review task-specific geometric accuracy and suitability manually.",
+    "assumptions": "Fine spatial detail does not establish cadastral, engineering, survey-grade or precision-mapping suitability.",
+    "built_in": true
+   }
+  },
+  {
+   "profile_id": "map-land-features",
+   "session": {
+    "use_spatial": false,
+    "spatial_limit": 30.0,
+    "use_revisit": true,
+    "revisit_limit": 2.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "coverage_filter": "No requirement"
+   },
+   "active": {
+    "id": "map-land-features",
+    "name": "Map Land and Features",
+    "description": "Fine-detail mapping with CEOS-ARD assessed land-observation products.",
+    "use_case_category": "Map Land and Features",
+    "product_families": [
+     "Surface Reflectance",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "not_used",
+      "value": 30.0
+     },
+     "revisit_days": {
+      "mode": "required",
+      "value": 2.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "not_used",
+      "value": 12
+     },
+     "geographic_coverage": {
+      "mode": "not_used",
+      "value": "No requirement"
+     }
+    },
+    "default_product_family": "Surface Reflectance",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "Product family and profile criteria remain editable. Review task-specific geometric accuracy and suitability manually.",
+    "assumptions": "Fine spatial detail does not establish cadastral, engineering, survey-grade or precision-mapping suitability.",
+    "built_in": true
+   }
+  },
+  {
+   "profile_id": "monitor-change",
+   "session": {
+    "use_spatial": true,
+    "spatial_limit": 25.5,
+    "use_revisit": false,
+    "revisit_limit": 16.0,
+    "use_bit_depth": true,
+    "min_bit_depth": 10,
+    "coverage_filter": "National"
+   },
+   "active": {
+    "id": "monitor-change",
+    "name": "Monitor Change Over Time",
+    "description": "Time-series and change monitoring with CEOS-ARD assessed products.",
+    "use_case_category": "Monitor Change Over Time",
+    "product_families": [
+     "Surface Reflectance",
+     "Surface Temperature",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "preferred",
+      "value": 25.5
+     },
+     "revisit_days": {
+      "mode": "not_used",
+      "value": 16.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "preferred",
+      "value": 10
+     },
+     "geographic_coverage": {
+      "mode": "preferred",
+      "value": "National"
+     }
+    },
+    "default_product_family": "Surface Reflectance",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "Nominal revisit does not prove operational latency, cloud-free availability, acquisition priority or delivery frequency.",
+    "assumptions": "Geometry and long-term co-registration suitability require a manual task check.",
+    "built_in": true
+   }
+  },
+  {
+   "profile_id": "monitor-change",
+   "session": {
+    "use_spatial": false,
+    "spatial_limit": 30.0,
+    "use_revisit": true,
+    "revisit_limit": 2.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "coverage_filter": "No requirement"
+   },
+   "active": {
+    "id": "monitor-change",
+    "name": "Monitor Change Over Time",
+    "description": "Time-series and change monitoring with CEOS-ARD assessed products.",
+    "use_case_category": "Monitor Change Over Time",
+    "product_families": [
+     "Surface Reflectance",
+     "Surface Temperature",
+     "Synthetic Aperture Radar"
+    ],
+    "criteria": {
+     "spatial_resolution_m": {
+      "mode": "not_used",
+      "value": 30.0
+     },
+     "revisit_days": {
+      "mode": "required",
+      "value": 2.0
+     },
+     "radiometric_bit_depth": {
+      "mode": "not_used",
+      "value": 12
+     },
+     "geographic_coverage": {
+      "mode": "not_used",
+      "value": "No requirement"
+     }
+    },
+    "default_product_family": "Surface Reflectance",
+    "filter_defaults": {},
+    "radiometric_screening": "PFS baseline",
+    "geometric_screening": "Manual task check",
+    "notes": "Nominal revisit does not prove operational latency, cloud-free availability, acquisition priority or delivery frequency.",
+    "assumptions": "Geometry and long-term co-registration suitability require a manual task check.",
+    "built_in": true
+   }
+  }
+ ],
+ "profile_names": [
+  {
+   "raw": "  Radar   shortlist ",
+   "clean": "Radar shortlist",
+   "exclude": null,
+   "error": null
+  },
+  {
+   "raw": "ab",
+   "clean": "ab",
+   "exclude": null,
+   "error": "Enter a profile name with at least three characters."
+  },
+  {
+   "raw": "Map land and FEATURES",
+   "clean": "Map land and FEATURES",
+   "exclude": null,
+   "error": "A profile with that name already exists."
+  },
+  {
+   "raw": "map land and features",
+   "clean": "map land and features",
+   "exclude": "map-land-features",
+   "error": null
+  },
+  {
+   "raw": "New\tprofile\nname",
+   "clean": "New profile name",
+   "exclude": null,
+   "error": null
+  },
+  {
+   "raw": "STRASSE",
+   "clean": "STRASSE",
+   "exclude": null,
+   "error": "A profile with that name already exists."
+  }
+ ],
+ "filters_changed": [
+  {
+   "label": "unchanged",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": false
+  },
+  {
+   "label": "value",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 20.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": true
+  },
+  {
+   "label": "disabled-value-change",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 3.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": false
+  },
+  {
+   "label": "coverage-only",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "Global"
+   },
+   "changed": false
+  },
+  {
+   "label": "family",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "Surface Reflectance",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": true
+  },
+  {
+   "label": "search",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "CEOS-ARD assessed only",
+    "show_unknown": true,
+    "advanced_search": "x",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": true
+  },
+  {
+   "label": "scope",
+   "profile_id": "explore-ceos-ard",
+   "state": {
+    "use_spatial": true,
+    "spatial_limit": 30.0,
+    "use_revisit": false,
+    "revisit_limit": 30.0,
+    "use_bit_depth": false,
+    "min_bit_depth": 12,
+    "family_filter": "All product families",
+    "ceos_filter": "All statuses",
+    "show_unknown": true,
+    "advanced_search": "",
+    "provider_filter": [],
+    "sensor_filter": "",
+    "operational_filter": [],
+    "source_filter": [],
+    "coverage_filter": "No requirement"
+   },
+   "changed": true
+  }
+ ],
+ "nearest_slider": [
+  {
+   "value": 25.5,
+   "options": "SPATIAL_SLIDER_OPTIONS",
+   "nearest": 25.0
+  },
+  {
+   "value": 7,
+   "options": "REVISIT_SLIDER_OPTIONS",
+   "nearest": 7.0
+  },
+  {
+   "value": 3000,
+   "options": "SPATIAL_SLIDER_OPTIONS",
+   "nearest": 2500.0
+  },
+  {
+   "value": 12.4,
+   "options": "BIT_DEPTH_SLIDER_OPTIONS",
+   "nearest": 12
+  }
+ ],
+ "constants": {
+  "PRODUCT_FAMILIES": [
+   "All product families",
+   "Surface Reflectance",
+   "Surface Temperature",
+   "Synthetic Aperture Radar",
+   "Aquatic Reflectance",
+   "Night-time Lights"
+  ],
+  "SPATIAL_SLIDER_OPTIONS": [
+   0.1,
+   0.2,
+   0.5,
+   1.0,
+   2.5,
+   5.0,
+   10.0,
+   15.0,
+   20.0,
+   25.0,
+   30.0,
+   50.0,
+   60.0,
+   100.0,
+   250.0,
+   500.0,
+   1000.0,
+   2500.0,
+   5000.0,
+   10000.0,
+   25000.0,
+   50000.0,
+   100000.0
+  ],
+  "REVISIT_SLIDER_OPTIONS": [
+   0.1,
+   0.25,
+   0.5,
+   1.0,
+   2.0,
+   3.0,
+   4.0,
+   5.0,
+   7.0,
+   10.0,
+   12.0,
+   16.0,
+   20.0,
+   30.0,
+   45.0,
+   60.0,
+   90.0,
+   120.0,
+   180.0,
+   365.0
+  ],
+  "BIT_DEPTH_SLIDER_OPTIONS": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32
+  ],
+  "COVERAGE_OPTIONS": [
+   "No requirement",
+   "Global",
+   "Continental or multi-country",
+   "National",
+   "Regional",
+   "Local or targeted"
+  ]
+ }
+}

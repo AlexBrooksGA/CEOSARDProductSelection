@@ -8,29 +8,48 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  web:
+    name: Web app (check, unit, build, end-to-end)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11", "3.12"]
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Type and framework checks
+        run: npm run check
+      - name: Unit and parity tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end tests against the production build (no live MIM credentials)
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7
+
+  legacy-parity:
+    name: Legacy reference and parity fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
           cache: pip
-          cache-dependency-path: requirements.txt
-
-      - name: Install dependencies
-        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
-
-      - name: Compile Python modules
-        run: python -m compileall -q -f .
-
-      - name: Run tests
+          cache-dependency-path: legacy/streamlit-prototype/requirements.txt
+      - run: python -m pip install -r legacy/streamlit-prototype/requirements.txt
+      - name: Legacy Python tests (migration reference)
+        working-directory: legacy/streamlit-prototype
         run: python -m unittest discover -s tests -v
+      - name: Parity fixtures are current
+        run: |
+          python legacy/streamlit-prototype/generate_parity_fixtures.py
+          git diff --exit-code -- tests/fixtures/parity

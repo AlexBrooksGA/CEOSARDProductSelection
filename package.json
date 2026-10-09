@@ -1,0 +1,42 @@
+{
+  "name": "ceos-ard-product-explorer",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Discover, shortlist and compare CEOS-ARD assessed Earth observation data products.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node --env-file-if-exists=.env build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "validate:data": "vitest run tests/unit/parity-catalogue.test.ts tests/unit/domain.test.ts -t \"catalogue|research log\"",
+    "parity:fixtures": "python legacy/streamlit-prototype/generate_parity_fixtures.py",
+    "verify": "npm run check && npm run test && npm run build && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@fontsource/space-grotesk": "5.3.0",
+    "@fontsource/space-mono": "5.3.0",
+    "@playwright/test": "1.63.0",
+    "@sveltejs/adapter-node": "5.5.7",
+    "@sveltejs/kit": "2.70.3",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@types/node": "22.20.3",
+    "svelte": "5.57.1",
+    "svelte-check": "4.7.6",
+    "typescript": "6.0.3",
+    "vite": "8.1.5",
+    "vitest": "5.0.1"
+  },
+  "overrides": {
+    "@axe-core/playwright": {
+      "playwright-core": "$@playwright/test"
+    }
+  }
+}
