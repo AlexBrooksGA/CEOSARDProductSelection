@@ -154,6 +154,9 @@
 		display: inline-block;
 		vertical-align: baseline;
 	}
+	.choice.open {
+		z-index: 30;
+	}
 	.choice-label {
 		position: absolute;
 		width: 1px;

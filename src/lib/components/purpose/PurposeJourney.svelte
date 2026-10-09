@@ -41,6 +41,36 @@
 	let imageryInfo = $state(false);
 	const timeframes = g.timeframes.map((t) => ({ ...t, hint: timeframeRange(t) ?? t.hint }));
 
+	/*
+	 * The sentence builds up one part at a time: what you want to do, the setting, the
+	 * question, region and period, then output and measurement, then detail and frequency.
+	 * A part appears once the one before it is answered or skipped; answers restored from the
+	 * session reveal everything up to them. "Find candidate products" is available as soon as
+	 * the first part is answered, so people can stop at any point.
+	 */
+	const STEP_LABELS = ['What do you want to do?', 'Where, or in what setting?', 'What do you want to understand?', 'Region and period', 'Output and measurement', 'Spatial detail'];
+	const LAST_STEP = STEP_LABELS.length - 1;
+	function answered(step: number, a = draft): boolean {
+		return [hasPurpose(a), Boolean(a.context), Boolean(a.question), Boolean(a.region || a.timeframe), Boolean(a.output || a.measurement), Boolean(a.detail || a.frequency)][step] ?? false;
+	}
+	let revealed = $state(0);
+	$effect(() => {
+		let furthest = 0;
+		for (let step = 0; step <= LAST_STEP; step++) if (answered(step, draft)) furthest = Math.min(LAST_STEP, step + 1);
+		if (furthest > revealed) {
+			if (furthest === revealed + 1) store.announce(`Next: ${STEP_LABELS[furthest]}`);
+			revealed = furthest;
+		}
+	});
+	function skipStep() {
+		revealed = Math.min(LAST_STEP, revealed + 1);
+		store.announce(`Skipped. Next: ${STEP_LABELS[revealed]}`);
+	}
+	function resetAnswers() {
+		store.resetDraft();
+		revealed = 0;
+	}
+
 	/** One plain sentence describing where the catalogue will start. */
 	let setupSummary = $derived.by(() => {
 		const family = proposal.settings.family === 'All product families' ? 'all measurement families' : `${measurement?.label ?? 'one measurement family'} products`;
@@ -85,6 +115,7 @@
 </script>
 
 {#snippet regionIcon(option: RegionOption)}<RegionIcon icon={option.icon} />{/snippet}
+{#snippet skip(step: number)}{#if revealed === step && step > 0 && step < LAST_STEP && !answered(step)}<span class="conn" aria-hidden="true">{' '}</span><button type="button" class="skip-step" onclick={skipStep}>Skip<span class="visually-hidden"> this question</span></button>{/if}{/snippet}
 
 <section class="journey" aria-labelledby="journey-title">
 	<PurposeBackdrop family={store.visual.family} detail={store.visual.detail} />
@@ -119,15 +150,16 @@
 		</p>
 
 		<p class="line sentence">
-			<span class="conn" aria-hidden="true">I want to{' '}</span><Choice label="What do you want to do?" value={draft.goal} options={g.goals} placeholder="choose an aim" describedby="sentence-help" onchange={(id) => set('goal', val(id))} />{#if draft.goal === 'custom'}<span class="conn" aria-hidden="true">:{' '}</span><label class="inline-text"><span class="text-label">Describe your purpose</span><input type="text" value={draft.goalText} maxlength={TEXT_MAX} size="18" placeholder="describe your purpose" oninput={(e) => set('goalText', e.currentTarget.value)} /></label>{/if}
-			<span class="conn" aria-hidden="true">{connective}{' '}</span><Choice label="Where, or in what setting?" value={draft.context} options={g.contexts} placeholder="a setting" onchange={(id) => set('context', val(id))} />{#if draft.context === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe the setting</span><input type="text" value={draft.contextText} maxlength={TEXT_MAX} size="12" placeholder="e.g. mangroves" oninput={(e) => set('contextText', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">, to understand{' '}</span><Choice label="What do you want to understand?" value={draft.question} options={questions} placeholder="something specific" onchange={(id) => set('question', val(id))} />{#if draft.question === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe your question</span><input type="text" value={draft.questionText} maxlength={TEXT_MAX} size="16" placeholder="your question" oninput={(e) => set('questionText', e.currentTarget.value)} /></label>{/if}{#if draft.goal}<span class="conn" aria-hidden="true">, across{' '}</span><Choice label="Region (optional)" value={draft.region} options={g.regions} placeholder="any region" icon={regionIcon} describedby="private-help" onchange={(id) => set('region', val(id))} />{#if draft.region === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Place (optional)</span><input type="text" value={draft.area} maxlength={TEXT_MAX} size="14" placeholder="name the place" aria-describedby="private-help" oninput={(e) => set('area', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">{' '}over{' '}</span><Choice label="Period (optional)" value={draft.timeframe} options={timeframes} placeholder="any period" describedby="private-help" onchange={(id) => set('timeframe', val(id))} />{#if draft.timeframe === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Dates (optional)</span><input type="text" value={draft.period} maxlength={TEXT_MAX} size="12" placeholder="e.g. 2015–2024" aria-describedby="private-help" oninput={(e) => set('period', e.currentTarget.value)} /></label>{/if}{/if}<span class="conn" aria-hidden="true">.</span>
+			<span class="conn" aria-hidden="true">I want to{' '}</span><Choice label="What do you want to do?" value={draft.goal} options={g.goals} placeholder="choose an aim" describedby="sentence-help" onchange={(id) => set('goal', val(id))} />{#if draft.goal === 'custom'}<span class="conn" aria-hidden="true">:{' '}</span><label class="inline-text"><span class="text-label">Describe your purpose</span><input type="text" value={draft.goalText} maxlength={TEXT_MAX} size="18" placeholder="describe your purpose" oninput={(e) => set('goalText', e.currentTarget.value)} /></label>{/if}{#if revealed >= 1}<span class="step"><span class="conn" aria-hidden="true">{' '}{connective}{' '}</span><Choice label="Where, or in what setting?" value={draft.context} options={g.contexts} placeholder="a setting" onchange={(id) => set('context', val(id))} />{#if draft.context === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe the setting</span><input type="text" value={draft.contextText} maxlength={TEXT_MAX} size="12" placeholder="e.g. mangroves" oninput={(e) => set('contextText', e.currentTarget.value)} /></label>{/if}</span>{/if}{#if revealed >= 2}<span class="step"><span class="conn" aria-hidden="true">, to understand{' '}</span><Choice label="What do you want to understand?" value={draft.question} options={questions} placeholder="something specific" onchange={(id) => set('question', val(id))} />{#if draft.question === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe your question</span><input type="text" value={draft.questionText} maxlength={TEXT_MAX} size="16" placeholder="your question" oninput={(e) => set('questionText', e.currentTarget.value)} /></label>{/if}</span>{/if}{#if revealed >= 3}<span class="step"><span class="conn" aria-hidden="true">, across{' '}</span><Choice label="Region (optional)" value={draft.region} options={g.regions} placeholder="any region" icon={regionIcon} describedby="private-help" onchange={(id) => set('region', val(id))} />{#if draft.region === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Place (optional)</span><input type="text" value={draft.area} maxlength={TEXT_MAX} size="14" placeholder="name the place" aria-describedby="private-help" oninput={(e) => set('area', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">{' '}over{' '}</span><Choice label="Period (optional)" value={draft.timeframe} options={timeframes} placeholder="any period" describedby="private-help" onchange={(id) => set('timeframe', val(id))} />{#if draft.timeframe === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Dates (optional)</span><input type="text" value={draft.period} maxlength={TEXT_MAX} size="12" placeholder="e.g. 2015–2024" aria-describedby="private-help" oninput={(e) => set('period', e.currentTarget.value)} /></label>{/if}</span>{/if}<span class="conn" aria-hidden="true">.</span>{#if revealed <= 3}{@render skip(revealed)}{/if}
 		</p>
 
-		{#if draft.goal}
-			<p class="line details">
-				<span class="conn" aria-hidden="true">I’d like to produce{' '}</span><Choice label="Intended output" value={draft.output ?? defaultOutput(draft, g)} options={g.outputs} placeholder="an output" onchange={(id) => set('output', val(id))} /><span class="conn" aria-hidden="true">{' '}from{' '}</span><Choice label="Measurement" value={draft.measurement ?? 'decide'} options={g.measurements} placeholder="help me decide" onchange={(id) => set('measurement', val(id))} /><span class="conn" aria-hidden="true">{' '}data, distinguishing{' '}</span><Choice label="Spatial detail" value={draft.detail ?? 'decide'} options={g.details} placeholder="help me decide" onchange={(id) => set('detail', val(id))} />{#if goal?.kind === 'change'}<span class="conn" aria-hidden="true">{' '}and observing change{' '}</span><Choice label="How often" value={draft.frequency ?? 'unsure'} options={g.frequencies} placeholder="not sure yet" onchange={(id) => set('frequency', val(id))} />{/if}<span class="conn" aria-hidden="true">.</span>
+		{#if revealed >= 4}
+			<p class="line details step">
+				<span class="conn" aria-hidden="true">I’d like to produce{' '}</span><Choice label="Intended output" value={draft.output ?? defaultOutput(draft, g)} options={g.outputs} placeholder="an output" onchange={(id) => set('output', val(id))} /><span class="conn" aria-hidden="true">{' '}from{' '}</span><Choice label="Measurement" value={draft.measurement ?? 'decide'} options={g.measurements} placeholder="help me decide" onchange={(id) => set('measurement', val(id))} /><span class="conn" aria-hidden="true">{' '}data</span>{#if revealed >= 5}<span class="step"><span class="conn" aria-hidden="true">, distinguishing{' '}</span><Choice label="Spatial detail" value={draft.detail ?? 'decide'} options={g.details} placeholder="help me decide" onchange={(id) => set('detail', val(id))} />{#if goal?.kind === 'change'}<span class="conn" aria-hidden="true">{' '}and observing change{' '}</span><Choice label="How often" value={draft.frequency ?? 'unsure'} options={g.frequencies} placeholder="not sure yet" onchange={(id) => set('frequency', val(id))} />{/if}</span>{/if}<span class="conn" aria-hidden="true">.</span>{@render skip(4)}
 			</p>
 			{#if measurement && measurement.id !== 'decide'}<p class="aside">{measurement.explanation}</p>{/if}
+		{/if}
+		{#if revealed >= 3}
 			<p id="private-help" class="aside">Your experience, region, period and anything you type stay in this browser tab. They are not searched, mapped or shared in links.</p>
 		{/if}
 
@@ -205,7 +237,7 @@
 					</p>
 				</div>
 				<div class="bar-actions">
-					<button type="button" class="quiet" onclick={() => store.resetDraft()}>Reset answers</button>
+					<button type="button" class="quiet" onclick={resetAnswers}>Reset answers</button>
 					<button type="submit" class="cta">Find candidate products</button>
 				</div>
 			</div>
@@ -342,6 +374,45 @@
 	}
 	.inline-text {
 		display: inline-block;
+	}
+	/* Each newly revealed part of the sentence fades in where it will stay. */
+	.step {
+		/* No fill mode: once finished the part keeps no opacity or filter, so it creates no
+		   stacking context and its menus open above the action bar. */
+		animation: step-in 480ms ease;
+	}
+	@keyframes step-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	.skip-step {
+		margin-left: 0.4em;
+		padding: 0 0.3em;
+		border: 0;
+		border-radius: 6px;
+		background: transparent;
+		color: var(--pj-muted);
+		font-size: 0.55em;
+		font-weight: 500;
+		vertical-align: 0.35em;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		cursor: pointer;
+	}
+	.details .skip-step {
+		font-size: 0.75em;
+		vertical-align: 0.1em;
+	}
+	.skip-step:hover {
+		color: var(--pj-ink-strong);
+	}
+	.skip-step:focus-visible {
+		outline: 2px solid #ffffff;
+		outline-offset: 2px;
 	}
 	.text-label {
 		position: absolute;
@@ -630,6 +701,18 @@
 		.conn {
 			display: none;
 		}
+		.step {
+			display: grid;
+			gap: 14px;
+		}
+		.skip-step,
+		.details .skip-step {
+			justify-self: start;
+			min-height: 36px;
+			margin: -6px 0 0;
+			font-size: 0.85rem;
+			vertical-align: baseline;
+		}
 		.inline-text {
 			display: grid;
 			gap: 6px;
@@ -655,8 +738,9 @@
 			border-radius: 12px;
 			background: rgb(255 255 255 / 0.04);
 		}
+		/* On phones the bar sits in the flow so it never covers the next question. */
 		.action-bar {
-			bottom: 8px;
+			position: static;
 			gap: 10px;
 			padding: 12px;
 		}
@@ -692,6 +776,9 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
+		.step {
+			animation: none;
+		}
 		.cta {
 			transition: none;
 		}

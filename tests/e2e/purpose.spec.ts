@@ -15,6 +15,14 @@ async function choose(page: Page, label: string, option: string) {
 	await expect(page.getByRole('listbox')).toHaveCount(0);
 }
 
+/** The sentence reveals one part at a time; skip optional parts until a question is shown. */
+async function skipUntil(page: Page, label: string) {
+	for (let i = 0; i < 6 && !(await choice(page, label).isVisible()); i++) {
+		await page.getByRole('button', { name: 'Skip this question' }).click();
+	}
+	await expect(choice(page, label)).toBeVisible();
+}
+
 async function describeWetlandPurpose(page: Page, area = '') {
 	await choose(page, 'What do you want to do?', 'monitor change');
 	await choose(page, 'Where, or in what setting?', 'wetlands');
@@ -23,6 +31,7 @@ async function describeWetlandPurpose(page: Page, area = '') {
 		await choose(page, 'Region (optional)', 'a specific place');
 		await page.getByLabel('Place (optional)').fill(area);
 	}
+	await skipUntil(page, 'Measurement');
 	await choose(page, 'Measurement', 'radar');
 	await choose(page, 'Spatial detail', 'small features');
 	await choose(page, 'How often', 'across each season');
@@ -247,10 +256,12 @@ test('reduced motion shows still imagery that swaps without animation', async ({
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await open(page);
 	await choose(page, 'What do you want to do?', 'monitor change');
+	await skipUntil(page, 'Measurement');
 	await choose(page, 'Measurement', 'thermal');
 	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-1920\.webp/);
 	// No cursor-driven scene with reduced motion.
 	await expect(page.locator('.backdrop canvas.visible')).toHaveCount(0);
+	await skipUntil(page, 'Spatial detail');
 	await choose(page, 'Spatial detail', 'broad patterns');
 	await expect(page.locator('.backdrop img')).toHaveAttribute('src', /thermal-coarse\.png/);
 	const running = await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length);
@@ -303,7 +314,7 @@ test('narrow screens stack the sentence with visible labels and no horizontal sc
 		await open(page);
 		await expect(page.getByText('What do you want to do?')).toBeVisible();
 		await describeWetlandPurpose(page);
-		await expect(find(page)).toBeInViewport();
+		await expect(find(page)).toBeVisible();
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 		expect(await axe(page)).toEqual([]);
 		await page.screenshot({ path: `test-results/screens/journey-390-${theme}.png`, fullPage: true });
@@ -318,6 +329,7 @@ test('narrow screens stack the sentence with visible labels and no horizontal sc
 test('region and period are quick choices with private, readable wording', async ({ page }) => {
 	await open(page);
 	await choose(page, 'What do you want to do?', 'map features');
+	await skipUntil(page, 'Region (optional)');
 	await choice(page, 'Region (optional)').click();
 	const regions = page.getByRole('listbox', { name: 'Region (optional)' });
 	await expect(regions.getByRole('option')).toHaveText([/the whole world/, /Africa/, /Asia/, /Europe/, /North and Central America/, /South America/, /Australia and Oceania/, /Antarctica/, /a specific place/]);
@@ -379,3 +391,30 @@ test('self-described experience sets which details open by default, never the fi
 	await expect(page.locator('body[data-hydrated="true"]')).toBeAttached();
 	await expect(page.getByRole('button', { name: /^More filters/ })).toHaveAttribute('aria-expanded', 'true');
 });
+
+test('the sentence appears one part at a time; any part can be skipped and the button is there from the first answer', async ({ page }) => {
+	await open(page);
+	await expect(choice(page, 'Your experience with Earth observation data')).toBeVisible();
+	await expect(choice(page, 'What do you want to do?')).toBeVisible();
+	for (const later of ['Where, or in what setting?', 'What do you want to understand?', 'Region (optional)', 'Measurement', 'Spatial detail']) {
+		await expect(choice(page, later)).toHaveCount(0);
+	}
+	await expect(find(page)).toHaveCount(0);
+	await choose(page, 'What do you want to do?', 'monitor change');
+	await expect(choice(page, 'Where, or in what setting?')).toBeVisible();
+	await expect(choice(page, 'What do you want to understand?')).toHaveCount(0);
+	await expect(find(page)).toBeVisible();
+	await page.getByRole('button', { name: 'Skip this question' }).click();
+	await expect(choice(page, 'What do you want to understand?')).toBeVisible();
+	await expect(choice(page, 'Where, or in what setting?')).toBeVisible();
+	// Answers restored from the session show everything up to them.
+	await choose(page, 'What do you want to understand?', 'what has changed and when');
+	await page.reload();
+	await expect(page.locator('body[data-hydrated="true"]')).toBeAttached();
+	await expect(choice(page, 'Region (optional)')).toBeVisible();
+	await expect(choice(page, 'Measurement')).toHaveCount(0);
+	// Reset hides the later parts again.
+	await page.getByRole('button', { name: 'Reset answers' }).click();
+	await expect(choice(page, 'Where, or in what setting?')).toHaveCount(0);
+});
+

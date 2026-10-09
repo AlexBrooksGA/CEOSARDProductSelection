@@ -7,7 +7,11 @@ import { defineConfig, devices } from '@playwright/test';
  * - "mim": credentials pointing at a local mock MIM API (no live service or secrets).
  * Set PW_CHROMIUM_PATH to use a preinstalled Chromium instead of `npx playwright install`.
  */
-const launchOptions = process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {};
+// WebGL is off by default: headless Chromium renders it in software, which makes every
+// purpose-entry test slow. The still-image path is what these tests exercise; the WebGL
+// scene has its own test in purpose.spec.ts that turns it back on.
+export const chromiumPath = process.env.PW_CHROMIUM_PATH;
+const launchOptions = { ...(chromiumPath ? { executablePath: chromiumPath } : {}), args: ['--disable-3d-apis'] };
 const base = { env: { HOST: '127.0.0.1', MIMS_API_USERNAME: '', MIMS_API_PASSWORD: '' } };
 
 export default defineConfig({
