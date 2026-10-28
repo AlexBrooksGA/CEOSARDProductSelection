@@ -28,6 +28,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: End-to-end tests against the production build (no live MIM credentials)
         run: npm run test:e2e
+      - name: Sites Worker build
+        run: npm run build:sites
+      - name: Sites restricted-cache regression
+        run: npm run test:hosting
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

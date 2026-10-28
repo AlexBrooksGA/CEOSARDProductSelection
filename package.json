@@ -17,7 +17,9 @@
     "test:e2e": "playwright test",
     "validate:data": "vitest run tests/unit/parity-catalogue.test.ts tests/unit/domain.test.ts -t \"catalogue|research log\"",
     "parity:fixtures": "python legacy/streamlit-prototype/generate_parity_fixtures.py",
-    "verify": "npm run check && npm run test && npm run build && npm run test:e2e"
+    "verify": "npm run check && npm run test && npm run build && npm run test:e2e",
+    "build:sites": "node scripts/build-sites.mjs",
+    "test:hosting": "node tests/hosting/worker.test.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
@@ -32,7 +34,10 @@
     "svelte-check": "4.7.6",
     "typescript": "6.0.3",
     "vite": "8.1.5",
-    "vitest": "5.0.1"
+    "vitest": "5.0.1",
+    "@sveltejs/adapter-cloudflare": "7.2.9",
+    "wrangler": "4.149.0",
+    "esbuild": "0.28.2"
   },
   "overrides": {
     "@axe-core/playwright": {

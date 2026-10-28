@@ -1,5 +1,7 @@
 # Deployment
 
+The public application runs on [Sites](https://ceos-ard-product-explorer.treetime.chatgpt.site/). See [Sites deployment](SITES_DEPLOYMENT.md) for the optional Worker build and hosting details. The following instructions describe the standard Node.js deployment.
+
 The explorer is **one Node.js process**. Build once, then run `node build`. Development dependencies are bundled into the build, so the runtime needs no `node_modules`; it needs only Node.js 22.12+ and the `build/` directory (`package.json` is useful for `npm start`).
 
 ## Build
@@ -62,4 +64,4 @@ explorer.example.org {
 - **Logs** record MIM failure categories (e.g. `MIM load failed (auth): HTTP 401`) and catalogue warnings. Credentials and payloads are never logged.
 - **Upgrading SvelteKit.** The build pins SvelteKit 2.70.3. SvelteKit 3 (released 1 October 2026) moves configuration into `vite.config` and removes the `ORIGIN` variable in favour of `paths.origin`. Migrate with `npx sv migrate sveltekit-3`, then retest.
 
-No deployment has been performed as part of the rebuild.
+The public Sites deployment and its source provenance are documented in [SITES_DEPLOYMENT.md](SITES_DEPLOYMENT.md).

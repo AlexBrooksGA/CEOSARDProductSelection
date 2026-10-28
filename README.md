@@ -1,5 +1,9 @@
 # CEOS-ARD Product Explorer
 
+**Public application:** [CEOS-ARD Product Explorer](https://ceos-ard-product-explorer.treetime.chatgpt.site/).
+
+This repository includes the application published as Sites version 3, with its guided purpose journey and hosting compatibility fix. One source tree supports the standard Node.js build (`npm run build`) and the Sites Worker build (`npm run build:sites`). See [Sites deployment](docs/SITES_DEPLOYMENT.md).
+
 A web application for discovering, shortlisting and comparing Earth observation data products assessed against a CEOS Analysis Ready Data (CEOS-ARD) Product Family Specification (PFS). It bundles a researched catalogue of 26 assessed products and can optionally load product records from the CEOS Missions, Instruments and Measurements (MIM) database.
 
 CEOS-ARD assessment describes conformance with a PFS; it does not certify suitability for a particular application. Built-in profiles are illustrative starting points, not official CEOS requirements. The explorer does not download or validate imagery.

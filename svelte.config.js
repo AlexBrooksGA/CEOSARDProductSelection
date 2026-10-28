@@ -1,6 +1,9 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
+const sitesBuild = process.env.DEPLOY_TARGET === 'sites';
+const sitesAdapter = sitesBuild ? (await import('@sveltejs/adapter-cloudflare')).default : null;
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: vitePreprocess(),
@@ -8,8 +11,8 @@ const config = {
 		runes: true
 	},
 	kit: {
-		// One Node.js process: `npm run build` then `node build`.
-		adapter: adapter({ out: 'build', precompress: true }),
+		// Default: one Node.js process. build:sites selects the hosted Worker output.
+		adapter: sitesBuild ? sitesAdapter() : adapter({ out: 'build', precompress: true }),
 		csp: {
 			mode: 'nonce',
 			directives: {

@@ -4,6 +4,9 @@
 
 # Node / SvelteKit
 node_modules/
+dist/
+.wrangler/
+.sites-runtime/
 build/
 .svelte-kit/
 test-results/

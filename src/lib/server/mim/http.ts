@@ -6,6 +6,7 @@
  * - Per-request timeout, overall deadline, limited retries (as the prototype: two retries
  *   for 429/502/503/504 and connection errors) and a response-size cap.
  */
+import { Buffer } from 'node:buffer';
 import { MimError } from './errors';
 
 export interface MimHttpConfig {
