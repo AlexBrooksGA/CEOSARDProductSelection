@@ -1,0 +1,178 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-OPERA-DISP-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "opera-disp-sentinel1",
+		"name": "Sentinel-1 OPERA InSAR Surface Displacement",
+		"short_name": "Sentinel-1 OPERA InSAR Surface Displacement"
+	},
+	"pfs": {
+		"name": "Interferometric SAR",
+		"short_name": "InSAR",
+		"version": "2.0.0",
+		"total_requirements": 70
+	},
+	"scene": {
+		"product_id": "OPERA_L3_DISP-S1_IW_F11115_VV_20240105T000000Z_20250812T000000Z_v1.0_20250820T121314Z",
+		"platform": "Sentinel-1A",
+		"instrument": "C-SAR",
+		"acquisition_date": "2025-08-12",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "ROSAMOND",
+			"name": "Rosamond, USA"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. Displacement frame covering the site; the date is the last acquisition in the stack."
+	},
+	"run": {
+		"code": "C031-I200-G2-R0-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "I200",
+				"part": "Check set",
+				"meaning": "Interferometric SAR PFS v2.0.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R0",
+				"part": "Radiometric method",
+				"meaning": "No radiometric test defined for this product type"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 70 Interferometric SAR PFS v2.0.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit-insar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "InSAR Pair",
+			"id": "prod-inspair",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Phase Unwrapping",
+			"id": "prod-phasun",
+			"threshold": "Not met",
+			"goal": "Not required",
+			"reason": "Phase unwrapping method not described in the metadata"
+		},
+		{
+			"requirement": "Atmospheric Phase Correction",
+			"id": "prod-catpha",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "1 Not met: Phase Unwrapping. It has missing supporting evidence.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Rosamond, USA reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.11,
+		"comparisons_px": [
+			0.09,
+			0.15,
+			0.1,
+			0.1,
+			0.11,
+			0.09,
+			0.11,
+			0.12,
+			0.09,
+			0.13
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 10,
+		"matches_total": 11,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±1.4 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": null,
+	"radiometric_note": "InSAR displacement is validated against GNSS displacement, which C-QAS does not test yet.",
+	"series": null,
+	"next_action": "Describe the phase unwrapping method in the metadata.",
+	"next_actions": [
+		"Describe the phase unwrapping method in the metadata.",
+		"To reach Goal, review the evidence for Data Collection Time."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

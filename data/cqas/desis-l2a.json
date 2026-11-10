@@ -1,0 +1,295 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-DESIS-001",
+	"report_date": "2026-10-12",
+	"domain": "optical",
+	"product": {
+		"explorer_id": "desis-l2a",
+		"name": "DESIS L2A",
+		"short_name": "DESIS L2A"
+	},
+	"pfs": {
+		"name": "Surface Reflectance",
+		"short_name": "SR",
+		"version": "5.0.2",
+		"total_requirements": 36
+	},
+	"scene": {
+		"product_id": "DESIS-HSI-L2A-DT0865788448_008-20250519T201515-V0220",
+		"platform": "ISS",
+		"instrument": "DESIS",
+		"acquisition_date": "2025-05-19",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "RadCalNet",
+			"code": "RVUS",
+			"name": "Railroad Valley Playa, USA"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. Hyperspectral: four channels near the multispectral bands are shown."
+	},
+	"run": {
+		"code": "C031-S502-G1-R1-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "S502",
+				"part": "Check set",
+				"meaning": "Surface Reflectance PFS v5.0.2"
+			},
+			{
+				"code": "G1",
+				"part": "Geometric method",
+				"meaning": "Relative image-to-image matching, demo-v1"
+			},
+			{
+				"code": "R1",
+				"part": "Radiometric method",
+				"meaning": "RadCalNet surface reflectance comparison, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "10 of the 36 Surface Reflectance PFS v5.0.2 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-optical",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sr",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Coordinate Reference System",
+			"id": "meta-crs-optical",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Spectral Bands",
+			"id": "meta-specband",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Access",
+			"id": "meta-daccess",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "No Data",
+			"id": "pxl-pinodat",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Cloud",
+			"id": "pxl-picloud",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurement",
+			"id": "rac-measur-sr",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Measurement Uncertainty",
+			"id": "rac-muncer-sr",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Correction",
+			"id": "gcor-geocorr-sr",
+			"threshold": "Not met",
+			"goal": "Not assessed",
+			"reason": "Grid / coverage evidence missing"
+		}
+	],
+	"findings_summary": "1 Not met: Geometric Correction. It has missing supporting evidence.",
+	"geometric": {
+		"label": "DEMO-G1",
+		"kind": "relative",
+		"method": "demo-v1",
+		"reference": "ISS repeat reference image",
+		"comparison": "Same-platform repeat image",
+		"method_notes": "phase correlation; offsets from the original grid",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.46,
+		"comparisons_px": [
+			0.51,
+			0.5,
+			0.44,
+			0.41,
+			0.47,
+			0.41
+		],
+		"limit_px": 0.5,
+		"limit_source": "PFS Threshold",
+		"matches_accepted": 82,
+		"matches_total": 107,
+		"match_unit": "image matches",
+		"positional_uncertainty": null,
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Met",
+		"requirement_result": "Not met",
+		"requirement_reason": "grid / coverage evidence missing"
+	},
+	"radiometric": {
+		"label": "DEMO-R1",
+		"method": "demo-v1",
+		"comparison": "Observed minus RadCalNet surface reference",
+		"reference": "RadCalNet RVUS surface reflectance",
+		"method_notes": "spectral response matched; time gap 548 s; 150 × 150 m window; DESIS covers 400–1000 nm, so no shortwave infrared channel",
+		"quantity": "surface reflectance",
+		"short_quantity": "SR",
+		"units": "1",
+		"decimals": 3,
+		"headline_channel": "665 nm",
+		"channels": [
+			{
+				"channel": "490 nm",
+				"name": "blue",
+				"difference": 0.007,
+				"uncertainty_k1": 0.005,
+				"reference_value": 0.229
+			},
+			{
+				"channel": "560 nm",
+				"name": "green",
+				"difference": 0.005,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.288
+			},
+			{
+				"channel": "665 nm",
+				"name": "red",
+				"difference": 0.006,
+				"uncertainty_k1": 0.005,
+				"reference_value": 0.35
+			},
+			{
+				"channel": "865 nm",
+				"name": "near infrared",
+				"difference": 0.008,
+				"uncertainty_k1": 0.005,
+				"reference_value": 0.333
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 22,
+		"samples_total": 25,
+		"sample_unit": "pixels in the site window",
+		"unique_exclusions": 3,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not met",
+		"uncertainty_goal_reason": "product estimate missing"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Red (665 nm) surface reflectance difference",
+		"channel": "665 nm",
+		"units": "1",
+		"decimals": 3,
+		"sites": [
+			{
+				"network": "RadCalNet",
+				"code": "RVUS",
+				"name": "Railroad Valley Playa, USA"
+			},
+			{
+				"network": "RadCalNet",
+				"code": "GONA",
+				"name": "Gobabeb, Namibia"
+			}
+		],
+		"points": [
+			{
+				"date": "2023-08-04",
+				"site": "RVUS",
+				"value": -0.0003,
+				"uncertainty_k1": 0.0057
+			},
+			{
+				"date": "2023-12-03",
+				"site": "GONA",
+				"value": 0.0106,
+				"uncertainty_k1": 0.0043
+			},
+			{
+				"date": "2024-02-28",
+				"site": "RVUS",
+				"value": 0.0109,
+				"uncertainty_k1": 0.0048
+			},
+			{
+				"date": "2024-05-12",
+				"site": "GONA",
+				"value": 0.0034,
+				"uncertainty_k1": 0.0058
+			},
+			{
+				"date": "2024-09-22",
+				"site": "RVUS",
+				"value": 0.0029,
+				"uncertainty_k1": 0.005
+			},
+			{
+				"date": "2024-12-25",
+				"site": "GONA",
+				"value": 0.0088,
+				"uncertainty_k1": 0.0055
+			},
+			{
+				"date": "2025-05-03",
+				"site": "RVUS",
+				"value": 0.0073,
+				"uncertainty_k1": 0.0045
+			},
+			{
+				"date": "2025-05-19",
+				"site": "RVUS",
+				"value": 0.006,
+				"uncertainty_k1": 0.005
+			},
+			{
+				"date": "2025-08-04",
+				"site": "GONA",
+				"value": 0.007,
+				"uncertainty_k1": 0.0059
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "Supply grid and coverage evidence for the geometric correction.",
+	"next_actions": [
+		"Supply grid and coverage evidence for the geometric correction.",
+		"To reach Goal, review the evidence for Data Collection Time."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

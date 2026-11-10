@@ -139,16 +139,16 @@ Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim
 
 ## C-QAS quality checks (proposed)
 
-Product pages for products with a C-QAS report show a **C-QAS quality checks** section after the three concept panels, a header badge and a cross-reference in *Measured quality evidence*.
+Every curated product has a C-QAS report. Its product page shows a **C-QAS quality checks** section after the three concept panels, a header badge and a cross-reference in *Measured quality evidence*.
 
 | Part | Location | Role |
 |---|---|---|
-| Report files | `data/cqas/<product-id>.json` | `cqas-report/1`, one per product and scene. The only report today is **example data** (`data_status: "example"`). Format: [`CQAS_REPORT_FORMAT.md`](CQAS_REPORT_FORMAT.md). |
-| Domain | `domain/cqas.ts` | Pure validation (`parseCqasReport`, `loadCqasReports`) and derived values (counts, headline, metres, signed values, PFS version check). |
-| Loading | `server/catalogue.ts` | Bundled with `import.meta.glob`, validated at server start. A bad report is skipped with a warning and never stops the explorer; `npm test` fails on any warning. Reports reach the browser through the layout data. |
-| UI | `components/cqas/*` | `CqasSection` (Simple and Advanced views; the level is the `cqas` URL parameter), chart components with keyboard access and data tables, `RunCode`, `StatusText`. Styles are `cq-` prefixed in `cqas.css`. |
+| Report files | `data/cqas/<product-id>.json` | `cqas-report/2`, one per product. All are **example data** (`data_status: "example"`) written by `tools/build_cqas_examples.mjs`. Format: [`CQAS_REPORT_FORMAT.md`](CQAS_REPORT_FORMAT.md). |
+| Domain | `domain/cqas.ts` | Pure validation (`parseCqasReport`, `loadCqasReports`) and derived values (counts, metres, values with units, series statistics, PFS version check, the compact summary). |
+| Loading | `server/catalogue.ts` | Bundled with `import.meta.glob`, validated at server start. A bad report is skipped with a warning and never stops the explorer; `npm test` fails on any warning. The layout sends a compact summary of every report (comparison and copied summary); the product page load sends that product's full report. |
+| UI | `components/cqas/*` | `CqasSection` (Simple and Advanced views; the level is the `cqas` URL parameter), chart components with keyboard access and data tables (including `SeriesChart` for results across scenes), `RunCode`, `StatusText`. Charts size their drawing to the box, so text stays readable on a phone. Styles are `cq-` prefixed in `cqas.css`. |
 
-C-QAS results describe one scene. They are labelled with their data status, never affect filtering, matching or ordering, and are kept separate from the CEOS-ARD assessment.
+C-QAS results describe one input scene and, where given, a series of scenes at cal/val sites. They are labelled with their data status, never affect filtering, matching or ordering, and are kept separate from the CEOS-ARD assessment.
 
 ## Security headers
 

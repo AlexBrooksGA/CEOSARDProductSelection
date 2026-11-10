@@ -64,7 +64,7 @@
 			currentFingerprint: store.fingerprint,
 			provenance: store.provenanceMap,
 			unresolvedReason: (id) => store.unresolvedReason(id),
-			cqasReports: store.cqasReports,
+			cqasSummaries: store.cqasSummaries,
 			mimSummaries: store.mimSummaries,
 			mimSource: store.mimSource,
 			purpose: store.purposeAnswers

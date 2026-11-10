@@ -6,7 +6,7 @@
  * session adapter (session.ts). Components consume derived domain results from here and
  * never implement their own matching rules.
  */
-import type { CqasReport } from '$lib/domain/cqas';
+import type { CqasSummary } from '$lib/domain/cqas';
 import type { MimSource, MimSummary, ProductVisual } from '$lib/domain/mim';
 import { getContext, setContext } from 'svelte';
 import { goto } from '$app/navigation';
@@ -64,7 +64,7 @@ export interface LayoutPayload {
 	products: Product[];
 	profiles: Profile[];
 	agencyMarks: Record<string, { url: string; monochrome: boolean }>;
-	cqasReports: Record<string, CqasReport>;
+	cqasSummaries: Record<string, CqasSummary>;
 	mimSummaries: Record<string, MimSummary>;
 	productVisuals: Record<string, ProductVisual>;
 	mimSource: MimSource | null;
@@ -83,8 +83,8 @@ export class AppStore {
 	curated = $state.raw<Product[]>([]);
 	builtInProfiles = $state.raw<Profile[]>([]);
 	agencyMarks = $state.raw<LayoutPayload['agencyMarks']>({});
-	/** C-QAS reports by product ID (example data until C-QAS produces real reports). */
-	cqasReports = $state.raw<LayoutPayload['cqasReports']>({});
+	/** C-QAS report summaries by product ID (example data until C-QAS produces real reports). */
+	cqasSummaries = $state.raw<LayoutPayload['cqasSummaries']>({});
 	/** CEOS MIM database facts for curated products (snapshot), and its source for the footnote. */
 	mimSummaries = $state.raw<LayoutPayload['mimSummaries']>({});
 	mimSource = $state.raw<LayoutPayload['mimSource']>(null);
@@ -109,7 +109,7 @@ export class AppStore {
 		this.curated = payload.products;
 		this.builtInProfiles = payload.profiles;
 		this.agencyMarks = payload.agencyMarks;
-		this.cqasReports = payload.cqasReports ?? {};
+		this.cqasSummaries = payload.cqasSummaries ?? {};
 		this.mimSummaries = payload.mimSummaries ?? {};
 		this.mimSource = payload.mimSource ?? null;
 		this.productVisuals = payload.productVisuals ?? {};

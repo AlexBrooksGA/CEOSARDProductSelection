@@ -38,7 +38,8 @@ To make the embed work, the explorer must allow the demo's origin. In `svelte.co
 |---|---|---|
 | MIM snapshot | `NODE_USE_ENV_PROXY=1 node tools/build_mim_snapshot.mjs` (the variable is needed only behind a proxy), then `npm test` | When `/api/meta` shows a new edition (currently `e574f0c2`, data as of 2026-10-23) |
 | Mission pictures | `node tools/fetch_mission_visuals.mjs` after the snapshot | With the snapshot |
-| C-QAS report | Replace `data/cqas/landsat-c2-sr.json`; copy it to the demo with `node tools/sync-report.mjs <path>` | When the C-QAS test system produces output (currently **example data**) |
+| C-QAS example reports | `node tools/build_cqas_examples.mjs`, then `npm test` | When the catalogue gains or loses a product, or a profile changes (currently **example data** for all 26 products) |
+| Real C-QAS reports | Write `data/cqas/<product-id>.json` (format `cqas-report/2`) and remove that product's profile from the generator | When the C-QAS test system produces output |
 
 ## 5. Follow-ups found during this work
 
@@ -47,5 +48,6 @@ To make the embed work, the explorer must allow the demo's origin. In `svelte.co
   - Radarsat-1 and THEOS-1 SR are CEOS-ARD in MIM but missing from the curated catalogue.
   - Three access links differ: ALOS-2 ScanSAR, and Landsat C2 SR and ST (DOI versus EarthExplorer).
   - MIM lists Sentinel-2C as operational; the curated Sentinel-2 L2A record names only 2A and 2B.
-- [ ] **C-QAS:** the report format (`docs/CQAS_REPORT_FORMAT.md`) is what the C-QAS system should write. Every view labels anything other than `reviewed` reports.
+- [ ] **C-QAS:** the report format (`docs/CQAS_REPORT_FORMAT.md`, now `cqas-report/2`) is what the C-QAS system should write. Every view labels anything other than `reviewed` reports.
+- [ ] **Reporting demo:** `CEOSARD-CQAS-Reporting` still reads `cqas-report/1`. Update it to v2 (channels, optional radiometric test, series) before refreshing its embedded copy of `landsat-c2-sr.json`, and refresh its explorer snapshots.
 - [ ] **Hosting:** the explorer stays on Sites and local runs for now. Moving to a CEOS domain means updating the demo's `EXPLORER_DEFAULT` and the `frame-ancestors` list.

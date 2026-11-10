@@ -28,7 +28,7 @@
 						detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`)
 					}
 				: null,
-			{ reports: store.cqasReports, detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`) },
+			{ summaries: store.cqasSummaries, detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`) },
 			store.mimSummaries
 		)
 	);
@@ -92,6 +92,7 @@
 								<td>
 									{#if cell.text}
 										<span class={cell.state ? `state ${cell.state}` : ''}>{cell.state === 'met' ? '✓ ' : cell.state === 'outside' ? '△ ' : cell.state === 'unknown' ? '? ' : ''}{cell.text}</span>{#if cell.mim}<MimMark />{/if}
+										{#each cell.lines ?? [] as line (line)}<span class="detail">{line}</span>{/each}
 									{:else}
 										<span class="missing">{cell.missingText ?? 'Not established in this catalogue'}</span>
 									{/if}

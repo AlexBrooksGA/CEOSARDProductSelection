@@ -12,7 +12,7 @@ export const load: LayoutServerLoad = () => {
 		products: data.catalogue.products,
 		profiles: data.profiles,
 		agencyMarks: data.agencyMarks,
-		cqasReports: data.cqasReports,
+		cqasSummaries: data.cqasSummaries,
 		mimSummaries: data.mimSummaries,
 		productVisuals: data.productVisuals,
 		mimSource: data.mimSnapshot?.source ?? null,

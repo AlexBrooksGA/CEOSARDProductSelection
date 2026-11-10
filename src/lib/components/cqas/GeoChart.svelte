@@ -4,11 +4,13 @@
 	import { niceTicks, type Tip } from './chart';
 
 	let { report, unit }: { report: CqasReport; unit: 'px' | 'm' } = $props();
-	const W = 460;
+	let width = $state(460);
+	let W = $derived(Math.max(280, Math.round(width)));
 	const H = 230;
 	const M = { l: 44, r: 14, t: 28, b: 42 };
 
 	let g = $derived(report.geometric);
+	let item = $derived(g.kind === 'absolute' ? 'Reflector' : 'Comparison');
 	let k = $derived(unit === 'px' ? 1 : g.pixel_size_m);
 	let unitName = $derived(unit === 'px' ? 'pixel' : 'm');
 	let values = $derived(g.comparisons_px.map((value) => value * k));
@@ -17,9 +19,8 @@
 	let n = $derived(values.length);
 	let x = $derived((i: number) => (n === 1 ? (M.l + W - M.r) / 2 : M.l + 14 + (i * (W - M.l - M.r - 28)) / (n - 1)));
 	let y = $derived((value: number) => H - M.b - (value / scale.hi) * (H - M.t - M.b));
-	let path = $derived(values.map((value, i) => `${i ? 'L' : 'M'}${x(i)} ${y(value)}`).join(' '));
 	let label = $derived(
-		`Radial error for ${n} ${g.comparison.toLowerCase()} comparisons in ${unitName}${limit === null ? '' : `; ${g.limit_source ?? 'Numeric'} limit ${formatNumber(limit, 2)} ${unitName}`}`
+		`Radial error for ${n} ${g.kind === 'absolute' ? 'corner reflectors' : `${g.comparison.toLowerCase()} comparisons`} in ${unitName}${limit === null ? '' : `; ${g.limit_source ?? 'Numeric'} limit ${formatNumber(limit, 2)} ${unitName}`}`
 	);
 	let current = $state(-1);
 	let tip = $derived<Tip | null>(
@@ -28,7 +29,7 @@
 			: {
 					x: (x(current) / W) * 100,
 					y: ((y(values[current]!) - 8) / H) * 100,
-					title: `Comparison ${current + 1}`,
+					title: `${item} ${current + 1}`,
 					lines: [`${g.comparisons_px[current]!.toFixed(2)} pixel · ${(g.comparisons_px[current]! * g.pixel_size_m).toFixed(1)} m`],
 					note: g.limit_px === null ? undefined : `${g.comparisons_px[current]! <= g.limit_px ? 'Within' : 'Above'} the ${g.limit_px} pixel numeric limit`
 				}
@@ -52,7 +53,7 @@
 	}
 </script>
 
-<div class="cq-chart">
+<div class="cq-chart" bind:clientWidth={width}>
 	<svg bind:this={svg} viewBox="0 0 {W} {H}" role="group" aria-label={label}>
 		<g class="grid">
 			{#each scale.ticks as t (t)}<line x1={M.l} x2={W - M.r} y1={y(t)} y2={y(t)} />{/each}
@@ -64,8 +65,7 @@
 			<text x={M.l + 4} y={y(limit) - 8} class="limit-lbl">{g.limit_source ?? 'Numeric'} limit: {formatNumber(limit, 2)} {unitName}</text>
 		{/if}
 		{#each values as _, i (i)}<text x={x(i)} y={H - M.b + 18} text-anchor="middle">{i + 1}</text>{/each}
-		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">{g.comparison} comparison</text>
-		<path d={path} class="series" />
+		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">{g.kind === 'absolute' ? 'Corner reflector (no order)' : `${g.comparison} comparison (no order)`}</text>
 		{#if current >= 0}<line x1={x(current)} x2={x(current)} y1={M.t} y2={H - M.b} class="cross" />{/if}
 		{#each values as value, i (i)}<circle cx={x(i)} cy={y(value)} r="5" class="pt" class:on={i === current} />{/each}
 		<rect
@@ -76,7 +76,7 @@
 			class="hit"
 			tabindex="0"
 			role="slider"
-			aria-label="Comparison; use the arrow keys, Home and End to step through comparisons"
+			aria-label="{item}; use the arrow keys, Home and End to step through them"
 			aria-valuemin={1}
 			aria-valuemax={n}
 			aria-valuenow={Math.max(current, 0) + 1}

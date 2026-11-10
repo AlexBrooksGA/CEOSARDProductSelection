@@ -12,7 +12,7 @@
 	import MimMark from '$lib/components/MimMark.svelte';
 	import MimPanel from '$lib/components/MimPanel.svelte';
 	import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimSwathFill, sameUrl } from '$lib/domain/mim';
-	import { formatNumber, headlineBand, signed, thresholdHeadline } from '$lib/domain/cqas';
+	import { channelLabel, formatNumber, geometricMetres, geometricTerm, headlineChannel, radValue } from '$lib/domain/cqas';
 	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import {
 		accessAction,
@@ -50,7 +50,8 @@
 	let compared = $derived(store.explorer.compare.includes(data.id));
 	let access = $derived(product ? accessAction(product) : null);
 	let links = $derived(product ? productLinks(product) : []);
-	let cqas = $derived(product ? (store.cqasReports[product.id] ?? null) : null);
+	// Full C-QAS report from this page's load (example data until C-QAS produces real reports).
+	let cqas = $derived(product && data.cqasReport && data.id === product.id ? data.cqasReport : null);
 	// CEOS MIM database: full details for curated products, compact summary for gap fills.
 	let mim = $derived(data.mimDetails && product && data.id === product.id ? data.mimDetails : null);
 	let mimSummary = $derived(product ? (store.mimSummaries[product.id] ?? null) : null);
@@ -132,7 +133,7 @@
 			</p>
 			<div class="row">
 				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record</span>{/if}
-				{#if cqas}<span><a class="badge info cq-badge" href="#cqas" onclick={jumpToCqas}><span aria-hidden="true">◉</span>{cqasLabel}: {thresholdHeadline(cqas)} <span aria-hidden="true">↓</span></a><span class="cq-proposed">Proposed</span></span>{/if}
+				{#if cqas}<span><a class="badge info cq-badge" href="#cqas" onclick={jumpToCqas}><span aria-hidden="true">◉</span>{cqasLabel} checks <span aria-hidden="true">↓</span></a><span class="cq-proposed">Proposed</span></span>{/if}
 			</div>
 			{#if outside}
 				<p class="notice warn">Outside current results: {outside.map((reason) => reason.reason).join(' ')}</p>
@@ -205,10 +206,10 @@
 					{/each}
 				</Disclosure>
 				{#if cqas}
-					{@const band = headlineBand(cqas)}
+					{@const channel = headlineChannel(cqas)}
 					<p class="notice">
-						<span><strong>{cqasLabel} scene check</strong><span class="cq-proposed">Proposed</span></span>
-						<span>{formatNumber(cqas.geometric.radial_rmse_px, 2)} pixel relative radial RMSE and a {signed(band.difference)} {cqas.pfs.short_name} difference ({band.band}) for one scene. <a href="#cqas" onclick={jumpToCqas}>See C-QAS quality checks ↓</a></span>
+						<span><strong>{cqasLabel} checks</strong><span class="cq-proposed">Proposed</span></span>
+						<span>On one example scene: {formatNumber(geometricMetres(cqas))} m {geometricTerm(cqas)}{#if cqas.radiometric && channel} and a {radValue(cqas.radiometric, channel.difference)} {cqas.radiometric.short_quantity} difference ({channelLabel(channel)}){/if}. <a href="#cqas" onclick={jumpToCqas}>See C-QAS quality checks ↓</a></span>
 					</p>
 				{/if}
 			</section>

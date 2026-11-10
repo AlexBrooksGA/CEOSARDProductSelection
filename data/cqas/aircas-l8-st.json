@@ -1,0 +1,286 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-AIRCAS-ST-001",
+	"report_date": "2026-10-12",
+	"domain": "thermal",
+	"product": {
+		"explorer_id": "aircas-l8-st",
+		"name": "L8 ST (Aerospace Information Research Institute)",
+		"short_name": "L8 ST (Aerospace Information Research Institute)"
+	},
+	"pfs": {
+		"name": "Surface Temperature",
+		"short_name": "ST",
+		"version": "6.0.0",
+		"total_requirements": 32
+	},
+	"scene": {
+		"product_id": "AIRCAS_L8ST_179076_20250411_V10",
+		"platform": "Landsat 8",
+		"instrument": "TIRS",
+		"acquisition_date": "2025-04-11",
+		"path": 179,
+		"row": 76,
+		"reference_site": {
+			"network": "KIT LST stations",
+			"code": "GBB",
+			"name": "Gobabeb, Namibia"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-T600-G1-R3-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "T600",
+				"part": "Check set",
+				"meaning": "Surface Temperature PFS v6.0.0"
+			},
+			{
+				"code": "G1",
+				"part": "Geometric method",
+				"meaning": "Relative image-to-image matching, demo-v1"
+			},
+			{
+				"code": "R3",
+				"part": "Radiometric method",
+				"meaning": "In situ surface temperature comparison, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "10 of the 32 Surface Temperature PFS v6.0.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-st",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Coordinate Reference System",
+			"id": "meta-crs-ar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Access",
+			"id": "meta-daccess-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurand Uncertainty",
+			"id": "meta-measurunc",
+			"threshold": "Not met",
+			"goal": "Not met",
+			"reason": "Per-pixel uncertainty layer not found"
+		},
+		{
+			"requirement": "No Data",
+			"id": "pxl-pinodat-st",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Cloud",
+			"id": "pxl-picloud-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurand",
+			"id": "rac-measur-st",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Measurand Uncertainty",
+			"id": "rac-muncer-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Correction",
+			"id": "gcor-geocorr-st",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "1 Not met: Measurand Uncertainty. It has missing supporting evidence.",
+	"geometric": {
+		"label": "DEMO-G1",
+		"kind": "relative",
+		"method": "demo-v1",
+		"reference": "Landsat 8 repeat reference image",
+		"comparison": "Same-platform repeat image",
+		"method_notes": "phase correlation; offsets from the original grid",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.39,
+		"comparisons_px": [
+			0.42,
+			0.37,
+			0.44,
+			0.31,
+			0.41,
+			0.39
+		],
+		"limit_px": 0.5,
+		"limit_source": "PFS Threshold",
+		"matches_accepted": 88,
+		"matches_total": 102,
+		"match_unit": "image matches",
+		"positional_uncertainty": null,
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Met",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R3",
+		"method": "demo-v1",
+		"comparison": "Observed minus in situ surface temperature",
+		"reference": "KIT LST stations: Gobabeb, Namibia",
+		"method_notes": "in situ skin temperature; time gap 3 min; emissivity from ASTER GED",
+		"quantity": "surface temperature",
+		"short_quantity": "ST",
+		"units": "K",
+		"decimals": 2,
+		"headline_channel": "LST",
+		"channels": [
+			{
+				"channel": "LST",
+				"name": "land surface temperature",
+				"difference": -0.83,
+				"uncertainty_k1": 0.49,
+				"reference_value": null
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 8,
+		"samples_total": 9,
+		"sample_unit": "pixels around the in situ radiometer",
+		"unique_exclusions": 1,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not met",
+		"uncertainty_goal_reason": "product estimate missing"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Land surface temperature (LST) surface temperature difference",
+		"channel": "LST",
+		"units": "K",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "KIT LST stations",
+				"code": "GBB",
+				"name": "Gobabeb, Namibia"
+			},
+			{
+				"network": "NASA/JPL buoys",
+				"code": "TAHOE",
+				"name": "Lake Tahoe, USA"
+			}
+		],
+		"points": [
+			{
+				"date": "2024-04-14",
+				"site": "GBB",
+				"value": -0.475,
+				"uncertainty_k1": 0.482
+			},
+			{
+				"date": "2024-05-24",
+				"site": "TAHOE",
+				"value": -0.1,
+				"uncertainty_k1": 0.54
+			},
+			{
+				"date": "2024-08-13",
+				"site": "GBB",
+				"value": -1.637,
+				"uncertainty_k1": 0.521
+			},
+			{
+				"date": "2024-09-18",
+				"site": "TAHOE",
+				"value": -0.255,
+				"uncertainty_k1": 0.497
+			},
+			{
+				"date": "2024-11-18",
+				"site": "GBB",
+				"value": -1.11,
+				"uncertainty_k1": 0.522
+			},
+			{
+				"date": "2025-02-01",
+				"site": "TAHOE",
+				"value": -0.987,
+				"uncertainty_k1": 0.565
+			},
+			{
+				"date": "2025-04-11",
+				"site": "GBB",
+				"value": -0.83,
+				"uncertainty_k1": 0.49
+			},
+			{
+				"date": "2025-04-27",
+				"site": "GBB",
+				"value": -0.54,
+				"uncertainty_k1": 0.584
+			},
+			{
+				"date": "2025-05-28",
+				"site": "TAHOE",
+				"value": -0.784,
+				"uncertainty_k1": 0.575
+			},
+			{
+				"date": "2025-08-14",
+				"site": "GBB",
+				"value": -0.64,
+				"uncertainty_k1": 0.452
+			},
+			{
+				"date": "2025-10-09",
+				"site": "TAHOE",
+				"value": -1.365,
+				"uncertainty_k1": 0.563
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "Supply the per-pixel uncertainty layer described in the metadata.",
+	"next_actions": [
+		"Supply the per-pixel uncertainty layer described in the metadata.",
+		"To reach Goal, review the evidence for Metadata Machine Readability."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

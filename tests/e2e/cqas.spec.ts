@@ -9,9 +9,12 @@ test('the Landsat product page shows the C-QAS section, labelled as example data
 	await open(page, LANDSAT);
 	const cqas = section(page);
 	await expect(cqas.getByRole('heading', { level: 2, name: 'C-QAS quality checks' })).toBeVisible();
-	await expect(cqas.getByText('Concept — example data')).toBeVisible();
+	await expect(cqas.getByRole('note').getByText('Example data', { exact: true })).toBeVisible();
 	await expect(cqas.getByText(/No scene has been assessed/)).toBeVisible();
-	await expect(cqas.getByText(/C-QAS checks use SR PFS v5\.0\.2; this product's CEOS-ARD assessment used v5\.0\./)).toBeVisible();
+	await expect(cqas.getByText(/These checks use the Surface Reflectance PFS v5\.0\.2\. This product's CEOS-ARD assessment used v5\.0/)).toBeVisible();
+	await expect(cqas.getByText(/Results for 9 of the 36 Surface Reflectance PFS v5\.0\.2 requirements/)).toBeVisible();
+	await expect(cqas.getByText('For the data provider')).toBeVisible();
+	await expect(cqas.getByText(/Over 17 scenes at 3 sites/)).toBeVisible();
 	await expect(cqas.getByRole('radio', { name: 'Simple' })).toBeChecked();
 	await expect(cqas.getByText('12.6 m')).toBeVisible();
 	await expect(cqas.locator('.cq-strip button')).toHaveCount(9);
@@ -24,7 +27,7 @@ test('the Landsat product page shows the C-QAS section, labelled as example data
 
 test('header badge and quality-evidence link jump to the section; Advanced is linkable', async ({ page }) => {
 	await open(page, LANDSAT);
-	const badge = page.getByRole('link', { name: /C-QAS example: 6 Met \/ 2 Not met/ });
+	const badge = page.getByRole('link', { name: /C-QAS example checks/ });
 	await expect(badge).toBeVisible();
 	await badge.click();
 	await expect(section(page)).toBeFocused();
@@ -34,7 +37,7 @@ test('header badge and quality-evidence link jump to the section; Advanced is li
 
 	await section(page).getByRole('radio', { name: 'Advanced' }).check();
 	await expect(page).toHaveURL(/[?&]cqas=advanced/);
-	await expect(section(page).getByRole('heading', { name: 'PFS findings — selected requirements' })).toBeVisible();
+	await expect(section(page).getByRole('heading', { name: 'PFS findings — checked requirements' })).toBeVisible();
 	await page.reload();
 	await expect(section(page).getByRole('radio', { name: 'Advanced' })).toBeChecked();
 });
@@ -46,39 +49,63 @@ test('Advanced view: filter findings, switch units and coverage factor, run code
 	await expect(rows).toHaveCount(9);
 	await cqas.getByRole('radiogroup', { name: 'Show rows with' }).getByRole('radio', { name: 'Not met' }).check();
 	await expect(rows).toHaveCount(6);
-	await expect(cqas.getByText(/6 of 36 requirements shown \(filtered from 9 selected\)/)).toBeVisible();
+	await expect(cqas.getByText(/6 of 9 checked requirements shown \(36 in the PFS\)/)).toBeVisible();
 	await cqas.getByRole('radiogroup', { name: 'Show rows with' }).getByRole('radio', { name: 'Not required' }).check();
 	await expect(rows).toHaveCount(1);
 
-	await cqas.getByRole('radio', { name: 'metres' }).check();
 	await expect(cqas.getByRole('group', { name: /in m; PFS Threshold limit 15 m/ })).toBeVisible();
+	await cqas.getByRole('radio', { name: 'pixel' }).check();
+	await expect(cqas.getByRole('group', { name: /in pixel; PFS Threshold limit 0\.5 pixel/ })).toBeVisible();
 	await cqas.getByRole('radio', { name: 'k = 2' }).check();
 	await expect(cqas.getByRole('group', { name: /whiskers, k = 2/ })).toBeVisible();
 
-	const slider = cqas.getByRole('slider');
+	const geoChart = cqas.locator('.cq-chart:has(svg[aria-label^="Radial error"])');
+	const slider = geoChart.getByRole('slider');
 	await slider.focus();
 	await page.keyboard.press('ArrowRight');
-	await expect(cqas.locator('.cq-tip')).toContainText('Comparison 2');
+	await expect(geoChart.locator('.cq-tip')).toContainText('Comparison 2');
 	await page.keyboard.press('End');
 	await expect(slider).toHaveAttribute('aria-valuenow', '6');
 	// The tooltip at the last point stays inside the chart.
-	const [tipBox, chartBox] = await Promise.all([cqas.locator('.cq-tip').boundingBox(), cqas.locator('.cq-chart:has([role="slider"])').boundingBox()]);
+	const [tipBox, chartBox] = await Promise.all([geoChart.locator('.cq-tip').boundingBox(), geoChart.boundingBox()]);
 	expect(tipBox!.x + tipBox!.width).toBeLessThanOrEqual(chartBox!.x + chartBox!.width + 1);
+	// The run code sits in the provenance section, closed by default.
+	await expect(cqas.getByRole('button', { name: /^C031: Software/ })).toBeHidden();
+	await cqas.getByText('Provenance: run code C031-S502-G1-R1-D01').click();
 	await expect(cqas.getByRole('button', { name: /^C031: Software/ })).toBeVisible();
-	await expect(cqas.getByText('Run C031-S502-G1-R1-D01', { exact: false })).toBeVisible();
 });
 
-test('products without a C-QAS report show no C-QAS section or badge', async ({ page }) => {
-	await open(page, '/products/sentinel2-level2a?v=1');
-	await expect(page.getByRole('heading', { level: 1, name: 'Sentinel-2 Level-2A' })).toBeVisible();
-	await expect(section(page)).toHaveCount(0);
-	await expect(page.getByText(/C-QAS/)).toHaveCount(0);
+test('Advanced view: the series can be limited to one site', async ({ page }) => {
+	await open(page, `${LANDSAT}&cqas=advanced`);
+	const cqas = section(page);
+	await expect(cqas.getByRole('heading', { name: 'Across scenes' })).toBeVisible();
+	const scenes = cqas.locator('.cq-stats .fact', { hasText: 'Scenes' }).locator('dd');
+	await expect(scenes).toHaveText('17');
+	await cqas.getByRole('radiogroup', { name: 'Site' }).getByRole('radio', { name: 'GONA' }).check();
+	await expect(scenes).not.toHaveText('17');
+	await expect(cqas.getByRole('group', { name: /Red \(B4\) surface reflectance difference for \d+ scenes/ })).toBeVisible();
 });
 
-test('switching to Advanced from the strip keeps keyboard focus in the section', async ({ page }) => {
+test('every product type shows its own plausible example values', async ({ page }) => {
+	await open(page, '/products/ga-sentinel1-nrb?v=1');
+	await expect(section(page).getByText(/RCS difference, co-polarised \(VV\)/)).toBeVisible();
+	await expect(section(page).getByText(/location error/).first()).toBeVisible();
+	await open(page, '/products/landsat-c2-st?v=1');
+	await expect(section(page).getByText(/ST difference, surface temperature from Band 10/)).toBeVisible();
+	await expect(section(page).locator('.cq-big', { hasText: ' K' }).first()).toBeVisible();
+	await open(page, '/products/alos2-palsar2-global-mosaics-rtc?v=1');
+	await expect(section(page).getByText('No test defined yet')).toBeVisible();
+	await expect(section(page).getByText(/A mosaic combines many acquisitions/)).toBeVisible();
+});
+
+test('a square in the strip names its requirement; the link to Advanced keeps focus in the section', async ({ page }) => {
 	await open(page, LANDSAT);
-	await section(page).locator('.cq-strip button').first().focus();
+	const square = section(page).getByRole('button', { name: /^Data Access: Threshold Not met/ });
+	await square.focus();
 	await page.keyboard.press('Enter');
+	await expect(square).toHaveAttribute('aria-pressed', 'true');
+	await expect(section(page).locator('.cq-strip-detail')).toContainText('Data Access · Threshold: Not met');
+	await section(page).getByRole('button', { name: /Show findings, plots and evidence/ }).click();
 	await expect(section(page).getByRole('radio', { name: 'Advanced' })).toBeChecked();
 	await expect(section(page)).toBeFocused();
 });
@@ -107,13 +134,15 @@ test('the C-QAS section fits a 390 px phone without horizontal page scroll', asy
 	expect(overflow).toBeLessThanOrEqual(0);
 });
 
-test('comparison shows a C-QAS row with "No C-QAS check" for the other product and links to the section', async ({ page }) => {
+test('comparison shows a C-QAS row for both products, one line per test, and links to the section', async ({ page }) => {
 	await open(page, '/shortlist?v=1&sl=landsat-c2-sr,sentinel2-level2a&cmp=landsat-c2-sr,sentinel2-level2a');
 	const table = page.getByRole('table', { name: /Side-by-side comparison of 2 products/ });
-	const row = table.getByRole('row', { name: /C-QAS scene check/ });
-	await expect(row).toContainText('6 Met / 2 Not met selected Threshold rows (9 of 36)');
-	await expect(row).toContainText('Concept — example data');
-	await expect(row).toContainText('No C-QAS check');
+	const row = table.getByRole('row', { name: /C-QAS checks/ });
+	await expect(row).toContainText('PFS: 6 Met / 2 Not met (9 of 36 requirements checked)');
+	await expect(row).toContainText('Geometric: 12.6 m relative geometric error (0.42 pixel)');
+	await expect(row).toContainText('Example data · PFS SR v5.0.2 · report DEMO-L8-001');
+	await expect(row).toContainText('report DEMO-S2-L2A-001');
+	await expect(row).toContainText('different scenes and sites');
 	await row.getByRole('link', { name: 'See C-QAS quality checks for Landsat Collection 2 Surface Reflectance' }).click();
 	// The shortlist and comparison survive in the link.
 	await expect(page).toHaveURL(/\/products\/landsat-c2-sr\?v=1&sl=landsat-c2-sr%2Csentinel2-level2a&cmp=landsat-c2-sr%2Csentinel2-level2a#cqas$/);

@@ -27,7 +27,7 @@ import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimM
 import { criterionReasons } from './presentation';
 import { CHECK_OUTCOME_LABELS, checkActions, productMeasurementNote, type CheckOutcome, type Guidance, type PurposeAnswers, type ResolvedCheck } from './purpose';
 import { evaluateProduct } from './matching';
-import { cqasOneLine, cqasProvenance, type CqasReport } from './cqas';
+import type { CqasSummary } from './cqas';
 import type { Criteria, Product, ProvenanceRow } from './types';
 
 export interface ComparisonCell {
@@ -37,6 +37,8 @@ export interface ComparisonCell {
 	detail?: string | null;
 	link?: { label: string; url: string } | null;
 	links?: { label: string; url: string; internal?: boolean }[];
+	/** Extra lines shown one per line under the text. */
+	lines?: string[];
 	state?: 'met' | 'outside' | 'unknown';
 	/** Value from the CEOS MIM database (purple asterisk). */
 	mim?: boolean;
@@ -92,13 +94,13 @@ export interface ComparisonPurpose {
 	detailHref: (product: Product) => string;
 }
 
-/** C-QAS reports for the compared products (proposed; example data until C-QAS produces real reports). */
+/** C-QAS report summaries for the compared products (proposed; example data until C-QAS produces real reports). */
 export interface ComparisonCqas {
-	reports: Record<string, CqasReport>;
+	summaries: Record<string, CqasSummary>;
 	detailHref: (product: Product) => string;
 }
 
-export const CQAS_ROW_HELP = 'Proposed. Checks on one scene, separate from the CEOS-ARD assessment; values from different scenes or PFS versions are not directly comparable.';
+export const CQAS_ROW_HELP = 'Proposed. Checks on example scenes at cal/val sites, separate from the CEOS-ARD assessment; values from different sites, sensors or PFS versions are not directly comparable.';
 
 export function buildComparison(
 	products: Product[],
@@ -224,19 +226,20 @@ export function buildComparison(
 	}
 	const qualityRows = [geometric, radiometric];
 	// Shown only when at least one compared product has a C-QAS report.
-	if (cqas && products.some((p) => cqas.reports[p.id])) {
+	if (cqas && products.some((p) => cqas.summaries[p.id])) {
 		const cqasRow = row(
 				'cqas',
-				'C-QAS scene check (proposed)',
+				'C-QAS checks (proposed)',
 				products.map((p) => {
-					const report = cqas.reports[p.id];
-					if (!report) return { text: null, missingText: 'No C-QAS check' };
-					return { text: cqasOneLine(report), detail: cqasProvenance(report), links: [{ label: 'See C-QAS quality checks', url: `${cqas.detailHref(p)}#cqas`, internal: true }] };
+					const summary = cqas.summaries[p.id];
+					if (!summary) return { text: null, missingText: 'No C-QAS check' };
+					const [first, ...rest] = summary.lines;
+					return { text: first ?? null, lines: rest, detail: summary.provenance, links: [{ label: 'See C-QAS quality checks', url: `${cqas.detailHref(p)}#cqas`, internal: true }] };
 				}),
 				CQAS_ROW_HELP
 			);
 		// Reports cover different scenes (and possibly PFS versions): flag them as not directly comparable.
-		if (products.filter((p) => cqas.reports[p.id]).length > 1) cqasRow.incomparable = 'Each C-QAS check covers a different scene; compare what was checked, not just the numbers.';
+		if (products.filter((p) => cqas.summaries[p.id]).length > 1) cqasRow.incomparable = 'Each C-QAS check uses different scenes and sites; compare what was checked, not just the numbers.';
 		qualityRows.push(cqasRow);
 	}
 	groups.push({

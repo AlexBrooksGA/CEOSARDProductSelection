@@ -1,31 +1,31 @@
 <script lang="ts">
-	import { headlineBand, signed, type CqasReport } from '$lib/domain/cqas';
+	import { channelLabel, radUncertainty, radValue, signed, type CqasChannel, type CqasRadiometric } from '$lib/domain/cqas';
 	import ChartTip from './ChartTip.svelte';
 	import { niceTicks, tickLabel, type Tip } from './chart';
 
-	let { report }: { report: CqasReport } = $props();
-	const W = 560;
+	let { rad, channel }: { rad: CqasRadiometric; channel: CqasChannel } = $props();
+	let width = $state(560);
+	let W = $derived(Math.max(280, Math.round(width)));
 	const H = 86;
 	const L = 8;
-	const R = W - 12;
+	let R = $derived(W - 12);
 	const Y = 38;
 
-	let band = $derived(headlineBand(report));
-	let v = $derived(band.difference);
-	let u = $derived(band.uncertainty_k1);
-	let scale = $derived(niceTicks(Math.min(0, v - u) - u, Math.max(0, v + u) + u, 3));
+	let v = $derived(channel.difference);
+	let u = $derived(channel.uncertainty_k1);
+	let scale = $derived(niceTicks(Math.min(0, v - u) - u, Math.max(0, v + u) + u, W < 420 ? 2 : 3));
 	let x = $derived((value: number) => L + ((value - scale.lo) / (scale.hi - scale.lo)) * (R - L));
-	let bandName = $derived(report.radiometric.headline_band_name ? `${report.radiometric.headline_band_name} band (${band.band})` : band.band);
-	let label = $derived(`Difference ${signed(v)} with uncertainty ±${u.toFixed(3)} (k = 1); zero means the same as the reference`);
+	let label = $derived(`Difference ${radValue(rad, v)} with uncertainty ${radUncertainty(rad, u)} (k = 1); zero means the same as the reference`);
 	let tip = $state<Tip | null>(null);
 
 	function show() {
+		const name = channelLabel(channel);
 		tip = {
 			x: (x(v) / W) * 100,
 			y: ((Y - 8) / H) * 100,
-			title: `${signed(v)} ${report.pfs.short_name} difference`,
-			lines: [`${bandName[0]!.toUpperCase()}${bandName.slice(1)}, ${report.radiometric.comparison.toLowerCase()}`],
-			note: `±${u.toFixed(3)} (k = 1): ${signed(v - u)} to ${signed(v + u)}`
+			title: `${radValue(rad, v)} ${rad.short_quantity} difference`,
+			lines: [`${name[0]!.toUpperCase()}${name.slice(1)}`],
+			note: `${radUncertainty(rad, u)} (k = 1): ${signed(v - u, rad.decimals)} to ${signed(v + u, rad.decimals)}`
 		};
 	}
 	function hide() {
@@ -33,8 +33,8 @@
 	}
 </script>
 
-<div class="cq-chart">
-	<svg viewBox="0 0 {W} {H}" role="group" aria-label="{report.pfs.short_name} difference from the reference, {band.band}">
+<div class="cq-chart" bind:clientWidth={width}>
+	<svg viewBox="0 0 {W} {H}" role="group" aria-label="{rad.short_quantity} difference from the reference, {channel.channel}">
 		<line x1={L} x2={R} y1={Y} y2={Y} class="zero" />
 		<line x1={x(0)} x2={x(0)} y1={Y - 15} y2={Y + 15} class="zero" />
 		<text x={x(0)} y={Y - 21} text-anchor="middle">0 = same as reference</text>

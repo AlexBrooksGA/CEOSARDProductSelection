@@ -80,7 +80,7 @@ export const load: LayoutLoad = () => {
 		products: data.catalogue.products,
 		profiles: data.profiles,
 		agencyMarks: data.agencyMarks,
-		cqasReports: data.cqasReports,
+		cqasSummaries: data.cqasSummaries,
 		mimSummaries: data.mimSummaries,
 		productVisuals: data.productVisuals,
 		mimSource: data.mimSnapshot?.source ?? null,
@@ -103,13 +103,14 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = ({ params }) => {
 	const id = params.id;
-	if (!PRODUCT_ID_PATTERN.test(id)) return { id, valid: false, provenance: null, mimProduct: null, mimDetails: null, missionVisuals: {} };
+	if (!PRODUCT_ID_PATTERN.test(id)) return { id, valid: false, provenance: null, mimProduct: null, mimDetails: null, missionVisuals: {}, cqasReport: null };
 	const result = bundledData();
 	const provenance = 'data' in result ? (result.data.provenance[id] ?? null) : null;
+	const cqasReport = 'data' in result ? (result.data.cqasReports[id] ?? null) : null;
 	const mimDetails = 'data' in result ? mimDetailsFor(result.data.mimSnapshot, id) : null;
 	const allVisuals = 'data' in result ? result.data.missionVisuals : {};
 	const missionVisuals = Object.fromEntries((mimDetails?.missions ?? []).filter((m) => allVisuals[String(m.mission_id)]).map((m) => [String(m.mission_id), allVisuals[String(m.mission_id)]!]));
-	return { id, valid: true, provenance, mimProduct: null, mimDetails, missionVisuals };
+	return { id, valid: true, provenance, mimProduct: null, mimDetails, missionVisuals, cqasReport };
 };
 `
 );

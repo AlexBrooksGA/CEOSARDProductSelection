@@ -1,0 +1,299 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-DEA-S1-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "dea-sentinel1-rtc",
+		"name": "Sentinel-1 RTC (Digital Earth Africa)",
+		"short_name": "Sentinel-1 RTC (Digital Earth Africa)"
+	},
+	"pfs": {
+		"name": "Normalised Radar Backscatter",
+		"short_name": "NRB",
+		"version": "5.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "s1_rtc_S1A_IW_20250819T171522_T150-321040_SURAT",
+		"platform": "Sentinel-1A",
+		"instrument": "C-SAR",
+		"acquisition_date": "2025-08-19",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "SURAT",
+			"name": "Surat Basin, Australia"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. Example scene over a corner reflector array outside Africa, which has no public array yet."
+	},
+	"run": {
+		"code": "C031-N560-G2-R4-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "N560",
+				"part": "Check set",
+				"meaning": "Normalised Radar Backscatter PFS v5.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R4",
+				"part": "Radiometric method",
+				"meaning": "Corner reflector radar cross-section, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Normalised Radar Backscatter PFS v5.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Backscatter Measurements (NRB)",
+			"id": "rcm-backsca-nrb",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Not met",
+			"goal": "Not met",
+			"reason": "Geolocation accuracy statement missing from metadata"
+		}
+	],
+	"findings_summary": "1 Not met: Geometric Accuracy. It has missing supporting evidence.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Surat Basin, Australia reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 20,
+		"radial_rmse_px": 0.19,
+		"comparisons_px": [
+			0.18,
+			0.18,
+			0.17,
+			0.2,
+			0.17,
+			0.23
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 6,
+		"matches_total": 7,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±1.5 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Not met",
+		"requirement_reason": "geolocation accuracy statement missing from metadata"
+	},
+	"radiometric": {
+		"label": "DEMO-R4",
+		"method": "demo-v1",
+		"comparison": "Measured minus theoretical corner reflector RCS",
+		"reference": "Surat Basin, Australia trihedral reflectors",
+		"method_notes": "integrated-energy method; signal-to-clutter ratio above 25 dB; cross-polarised channel not measurable on trihedrals",
+		"quantity": "radar cross-section",
+		"short_quantity": "RCS",
+		"units": "dB",
+		"decimals": 2,
+		"headline_channel": "VV",
+		"channels": [
+			{
+				"channel": "VV",
+				"name": "co-polarised",
+				"difference": 0.3,
+				"uncertainty_k1": 0.23,
+				"reference_value": null
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 9,
+		"samples_total": 10,
+		"sample_unit": "corner reflectors",
+		"unique_exclusions": 1,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not assessed",
+		"uncertainty_goal_reason": "no radar uncertainty requirement checked"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Co-polarised (VV) radar cross-section difference",
+		"channel": "VV",
+		"units": "dB",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "Corner reflector array",
+				"code": "SURAT",
+				"name": "Surat Basin, Australia"
+			}
+		],
+		"points": [
+			{
+				"date": "2024-03-10",
+				"site": "SURAT",
+				"value": 0.251,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2024-04-14",
+				"site": "SURAT",
+				"value": 0.5,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2024-06-14",
+				"site": "SURAT",
+				"value": 0.228,
+				"uncertainty_k1": 0.237
+			},
+			{
+				"date": "2024-08-25",
+				"site": "SURAT",
+				"value": 0.264,
+				"uncertainty_k1": 0.222
+			},
+			{
+				"date": "2024-10-03",
+				"site": "SURAT",
+				"value": 0.084,
+				"uncertainty_k1": 0.26
+			},
+			{
+				"date": "2024-11-23",
+				"site": "SURAT",
+				"value": 0.348,
+				"uncertainty_k1": 0.237
+			},
+			{
+				"date": "2025-01-20",
+				"site": "SURAT",
+				"value": 0.1,
+				"uncertainty_k1": 0.224
+			},
+			{
+				"date": "2025-03-14",
+				"site": "SURAT",
+				"value": 0.352,
+				"uncertainty_k1": 0.225
+			},
+			{
+				"date": "2025-05-14",
+				"site": "SURAT",
+				"value": 0.46,
+				"uncertainty_k1": 0.249
+			},
+			{
+				"date": "2025-07-06",
+				"site": "SURAT",
+				"value": 0.407,
+				"uncertainty_k1": 0.2
+			},
+			{
+				"date": "2025-08-19",
+				"site": "SURAT",
+				"value": 0.3,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2025-09-20",
+				"site": "SURAT",
+				"value": 0.077,
+				"uncertainty_k1": 0.237
+			},
+			{
+				"date": "2025-11-20",
+				"site": "SURAT",
+				"value": 0.421,
+				"uncertainty_k1": 0.206
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "Add the geolocation accuracy statement to the product metadata.",
+	"next_actions": [
+		"Add the geolocation accuracy statement to the product metadata.",
+		"To reach Goal, review the evidence for Metadata Machine Readability."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

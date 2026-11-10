@@ -6,14 +6,14 @@
  * prototype did: the researched catalogue wins; demo + status overlay is a fallback only.
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
-import { loadCqasReports, type CqasReport } from '$lib/domain/cqas';
+import { cqasSummary, loadCqasReports, type CqasReport, type CqasSummary } from '$lib/domain/cqas';
 import { mimDetailsFor, MimSnapshotError, mimSummary, parseMimSnapshot, productVisual, type MimCredit, type MimSnapshot, type MimSummary, type MissionVisual, type ProductVisual } from '$lib/domain/mim';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
 import type { Product, Profile, ProvenanceIndex } from '$lib/domain/types';
 
 const jsonFiles = import.meta.glob('/data/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 const csvFiles = import.meta.glob('/data/*.csv', { eager: true, query: '?raw', import: 'default' }) as Record<string, string>;
-// C-QAS reports (cqas-report/1), one file per product: data/cqas/<product-id>.json.
+// C-QAS reports (cqas-report/2), one file per product: data/cqas/<product-id>.json.
 const cqasFiles = import.meta.glob('/data/cqas/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 // CEOS MIM database snapshot for curated products (tools/build_mim_snapshot.mjs).
 const mimFiles = import.meta.glob('/data/mim/snapshot.json', { eager: true, import: 'default' }) as Record<string, unknown>;
@@ -31,6 +31,8 @@ export interface BundledData {
 	agencyMarks: Record<string, { url: string; monochrome: boolean }>;
 	/** C-QAS reports keyed by product ID. Example data until C-QAS produces real reports. */
 	cqasReports: Record<string, CqasReport>;
+	/** Compact form for every page; the full report goes to the product page only. */
+	cqasSummaries: Record<string, CqasSummary>;
 	cqasWarnings: string[];
 	/** MIM snapshot, or null when absent or invalid (MIM facts are then simply not shown). */
 	mimSnapshot: MimSnapshot | null;
@@ -92,7 +94,7 @@ function build(): BundledData {
 		const visual = productVisual(details, missionVisuals);
 		if (visual) productVisuals[product.id] = visual;
 	}
-	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, missionVisuals, productVisuals, mimWarnings };
+	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasSummaries: Object.fromEntries(Object.entries(cqas.reports).map(([id, report]) => [id, cqasSummary(report)])), cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, missionVisuals, productVisuals, mimWarnings };
 }
 
 /** Validated bundled data, or a clear error message when the bundled files are unusable. */

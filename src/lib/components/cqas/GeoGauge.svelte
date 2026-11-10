@@ -1,22 +1,24 @@
 <script lang="ts">
-	import { formatNumber, geometricMetres, type CqasReport } from '$lib/domain/cqas';
+	import { formatNumber, geometricMetres, geometricTerm, type CqasReport } from '$lib/domain/cqas';
 	import ChartTip from './ChartTip.svelte';
 	import { niceTicks, tickLabel, type Tip } from './chart';
 
 	let { report }: { report: CqasReport } = $props();
-	const W = 560;
+	// The drawing matches the box width, so text stays at its real size on a phone.
+	let width = $state(560);
+	let W = $derived(Math.max(280, Math.round(width)));
 	const H = 90;
 	const L = 8;
-	const R = W - 12;
+	let R = $derived(W - 12);
 	const Y = 40;
 
 	let g = $derived(report.geometric);
 	let value = $derived(geometricMetres(report));
 	let limit = $derived(g.limit_px === null ? null : g.limit_px * g.pixel_size_m);
-	let scale = $derived(niceTicks(0, Math.max(value, limit ?? 0) * 1.2, 4));
+	let scale = $derived(niceTicks(0, Math.max(value, limit ?? 0) * 1.2, W < 420 ? 3 : 4));
 	let x = $derived((v: number) => L + (v / scale.hi) * (R - L));
 	let label = $derived(
-		`${formatNumber(value)} metres relative error${limit === null ? '' : `; numeric limit ${formatNumber(limit)} metres (${g.limit_px} pixel)`}`
+		`${formatNumber(value)} metres ${geometricTerm(report)}${limit === null ? '; no numeric limit agreed' : `; numeric limit ${formatNumber(limit)} metres (${g.limit_px} pixel)`}`
 	);
 	let tip = $state<Tip | null>(null);
 	let active = $state(false);
@@ -26,7 +28,7 @@
 		const lines = [`${formatNumber(g.radial_rmse_px, 2)} pixel on a native ${g.pixel_size_m} m grid`];
 		let note: string | undefined;
 		if (limit !== null) note = value <= limit ? `${formatNumber(limit - value)} m inside the ${formatNumber(limit)} m numeric limit` : `${formatNumber(value - limit)} m above the ${formatNumber(limit)} m numeric limit`;
-		tip = { x: (x(value) / W) * 100, y: ((Y - 8) / H) * 100, title: `${formatNumber(value)} m relative error`, lines, note };
+		tip = { x: (x(value) / W) * 100, y: ((Y - 8) / H) * 100, title: `${formatNumber(value)} m ${geometricTerm(report)}`, lines, note };
 	}
 	function hide() {
 		active = false;
@@ -34,16 +36,16 @@
 	}
 </script>
 
-<div class="cq-chart">
-	<svg viewBox="0 0 {W} {H}" role="group" aria-label="Relative geometric error compared with the numeric limit">
+<div class="cq-chart" bind:clientWidth={width}>
+	<svg viewBox="0 0 {W} {H}" role="group" aria-label="{geometricTerm(report)} compared with the numeric limit">
 		<rect x={L} y={Y - 5} width={R - L} height="10" rx="5" class="track" />
 		<rect x={L} y={Y - 5} width={Math.max(0, x(value) - L)} height="10" rx="5" class="fill" />
 		{#if limit !== null}
 			<line x1={x(limit)} x2={x(limit)} y1={Y - 16} y2={Y + 16} class="limit" />
-			<text x={x(limit)} y={Y - 22} text-anchor="middle" class="limit-lbl">Limit {formatNumber(limit)} m ({g.limit_px} pixel)</text>
+			<text x={x(limit)} y={Y - 22} text-anchor={x(limit) > W - 90 ? 'end' : 'middle'} class="limit-lbl">Limit {formatNumber(limit)} m</text>
 		{/if}
-		{#each scale.ticks.filter((t) => t <= scale.hi) as t (t)}
-			<text x={x(t)} y={Y + 33} text-anchor={t ? 'middle' : 'start'}>{tickLabel(t)} m</text>
+		{#each scale.ticks.filter((t) => t <= scale.hi) as t, i (t)}
+			<text x={x(t)} y={Y + 33} text-anchor={i === 0 ? 'start' : t === scale.hi ? 'end' : 'middle'}>{tickLabel(t)} m</text>
 		{/each}
 		<circle cx={x(value)} cy={Y} r={active ? 7 : 6} class="pt" />
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->

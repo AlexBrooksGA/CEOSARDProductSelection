@@ -1,0 +1,172 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-RCM-POL-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "nrcan-rcm-pol",
+		"name": "NRCan RCM POL",
+		"short_name": "NRCan RCM POL"
+	},
+	"pfs": {
+		"name": "Polarimetric Radar",
+		"short_name": "POL",
+		"version": "3.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "RCM1_OK2981512_PK2981513_1_SC30MCPB_20250622_012955_CH_CV_POL",
+		"platform": "RCM-1",
+		"instrument": "C-band SAR",
+		"acquisition_date": "2025-06-22",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "ROSAMOND",
+			"name": "Rosamond, USA"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-P360-G2-R0-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "P360",
+				"part": "Check set",
+				"meaning": "Polarimetric Radar PFS v3.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R0",
+				"part": "Radiometric method",
+				"meaning": "No radiometric test defined for this product type"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Polarimetric Radar PFS v3.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Backscatter Measurements (POL)",
+			"id": "rcm-backsca-pol",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Rosamond, USA reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.16,
+		"comparisons_px": [
+			0.13,
+			0.16,
+			0.16,
+			0.16,
+			0.17,
+			0.18
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 6,
+		"matches_total": 6,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±1.8 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": null,
+	"radiometric_note": "Polarimetric outputs need a polarimetric calibration test (for example channel imbalance), which C-QAS does not define yet.",
+	"series": null,
+	"next_action": "To reach Goal, review the evidence for Metadata Machine Readability.",
+	"next_actions": [
+		"To reach Goal, review the evidence for Metadata Machine Readability."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

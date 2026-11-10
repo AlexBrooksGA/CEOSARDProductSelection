@@ -1,0 +1,310 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"report_id": "DEMO-GA-S1-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "ga-sentinel1-nrb",
+		"name": "Sentinel-1 NRB (Geoscience Australia)",
+		"short_name": "Sentinel-1 NRB (Geoscience Australia)"
+	},
+	"pfs": {
+		"name": "Normalised Radar Backscatter",
+		"short_name": "NRB",
+		"version": "5.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "ga_s1a_nrb_1-0-0_T150-321038-IW2_20250812T193412Z",
+		"platform": "Sentinel-1A",
+		"instrument": "C-SAR",
+		"acquisition_date": "2025-08-12",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "SURAT",
+			"name": "Surat Basin, Australia"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-N560-G2-R4-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "N560",
+				"part": "Check set",
+				"meaning": "Normalised Radar Backscatter PFS v5.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R4",
+				"part": "Radiometric method",
+				"meaning": "Corner reflector radar cross-section, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Normalised Radar Backscatter PFS v5.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Backscatter Measurements (NRB)",
+			"id": "rcm-backsca-nrb",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Surat Basin, Australia reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 20,
+		"radial_rmse_px": 0.17,
+		"comparisons_px": [
+			0.23,
+			0.13,
+			0.16,
+			0.16,
+			0.18,
+			0.19,
+			0.13
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 7,
+		"matches_total": 8,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±1.4 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R4",
+		"method": "demo-v1",
+		"comparison": "Measured minus theoretical corner reflector RCS",
+		"reference": "Surat Basin, Australia trihedral reflectors",
+		"method_notes": "integrated-energy method; signal-to-clutter ratio above 25 dB; cross-polarised channel not measurable on trihedrals",
+		"quantity": "radar cross-section",
+		"short_quantity": "RCS",
+		"units": "dB",
+		"decimals": 2,
+		"headline_channel": "VV",
+		"channels": [
+			{
+				"channel": "VV",
+				"name": "co-polarised",
+				"difference": 0.17,
+				"uncertainty_k1": 0.3,
+				"reference_value": null
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 7,
+		"samples_total": 8,
+		"sample_unit": "corner reflectors",
+		"unique_exclusions": 1,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not assessed",
+		"uncertainty_goal_reason": "no radar uncertainty requirement checked"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Co-polarised (VV) radar cross-section difference",
+		"channel": "VV",
+		"units": "dB",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "Corner reflector array",
+				"code": "SURAT",
+				"name": "Surat Basin, Australia"
+			}
+		],
+		"points": [
+			{
+				"date": "2024-02-05",
+				"site": "SURAT",
+				"value": 0.217,
+				"uncertainty_k1": 0.26
+			},
+			{
+				"date": "2024-04-05",
+				"site": "SURAT",
+				"value": 0.147,
+				"uncertainty_k1": 0.323
+			},
+			{
+				"date": "2024-05-25",
+				"site": "SURAT",
+				"value": 0.253,
+				"uncertainty_k1": 0.3
+			},
+			{
+				"date": "2024-07-12",
+				"site": "SURAT",
+				"value": 0.342,
+				"uncertainty_k1": 0.352
+			},
+			{
+				"date": "2024-09-08",
+				"site": "SURAT",
+				"value": 0.33,
+				"uncertainty_k1": 0.274
+			},
+			{
+				"date": "2024-10-12",
+				"site": "SURAT",
+				"value": 0.212,
+				"uncertainty_k1": 0.273
+			},
+			{
+				"date": "2024-12-10",
+				"site": "SURAT",
+				"value": -0.094,
+				"uncertainty_k1": 0.285
+			},
+			{
+				"date": "2025-02-01",
+				"site": "SURAT",
+				"value": 0.141,
+				"uncertainty_k1": 0.351
+			},
+			{
+				"date": "2025-03-20",
+				"site": "SURAT",
+				"value": 0.276,
+				"uncertainty_k1": 0.304
+			},
+			{
+				"date": "2025-05-14",
+				"site": "SURAT",
+				"value": 0.357,
+				"uncertainty_k1": 0.275
+			},
+			{
+				"date": "2025-06-12",
+				"site": "SURAT",
+				"value": 0.193,
+				"uncertainty_k1": 0.304
+			},
+			{
+				"date": "2025-08-03",
+				"site": "SURAT",
+				"value": 0.129,
+				"uncertainty_k1": 0.258
+			},
+			{
+				"date": "2025-08-12",
+				"site": "SURAT",
+				"value": 0.17,
+				"uncertainty_k1": 0.3
+			},
+			{
+				"date": "2025-10-01",
+				"site": "SURAT",
+				"value": 0.169,
+				"uncertainty_k1": 0.29
+			},
+			{
+				"date": "2025-12-05",
+				"site": "SURAT",
+				"value": 0.22,
+				"uncertainty_k1": 0.325
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "To reach Goal, review the evidence for Source Data Orbit Information.",
+	"next_actions": [
+		"To reach Goal, review the evidence for Source Data Orbit Information."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

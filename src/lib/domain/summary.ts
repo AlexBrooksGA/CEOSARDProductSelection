@@ -8,7 +8,7 @@ import { familyLabel } from './guidance';
 import { SCOPE_LABELS } from './profiles';
 import { CHECK_OUTCOME_LABELS, checkActions, type CheckOutcome, type Guidance, type ResolvedCheck } from './purpose';
 import type { Product, ProvenanceRow } from './types';
-import { cqasOneLine, cqasProvenance, type CqasReport } from './cqas';
+import type { CqasSummary } from './cqas';
 import { mimEditionText, mimMissionStatusText, mimMissionYearsText, type MimSource, type MimSummary } from './mim';
 
 export interface SummaryPurpose {
@@ -46,8 +46,8 @@ export interface SummaryInput {
 	provenance: Record<string, Record<string, ProvenanceRow>>;
 	unresolvedReason: (id: string) => string;
 	purpose?: SummaryPurpose | null;
-	/** C-QAS reports by product ID (proposed). */
-	cqasReports?: Record<string, CqasReport>;
+	/** C-QAS report summaries by product ID (proposed). */
+	cqasSummaries?: Record<string, CqasSummary>;
 	/** CEOS MIM database summaries by product ID and the snapshot source (for the footnote). */
 	mimSummaries?: Record<string, MimSummary>;
 	mimSource?: MimSource | null;
@@ -127,10 +127,10 @@ export function buildSelectionSummary(input: SummaryInput): string {
 			lines.push(`  Catalogue sources last checked: ${dates.length ? dates.join(', ') : 'not recorded'} (checking date, not observation date)`);
 			const mimFacts = input.mimSummaries?.[id];
 			if (mimFacts?.missions.length) lines.push(`  Missions*: ${mimMissionYearsText(mimFacts)} · ${mimMissionStatusText(mimFacts)}`);
-			const cqas = input.cqasReports?.[id];
+			const cqas = input.cqasSummaries?.[id];
 			if (cqas) {
-				lines.push(`  C-QAS scene check (proposed): ${cqasOneLine(cqas)}.`);
-				lines.push(`  C-QAS details: ${cqasProvenance(cqas)}. Not a CEOS-ARD assessment.`);
+				lines.push(`  C-QAS checks (proposed): ${cqas.lines.join('; ')}.`);
+				lines.push(`  C-QAS details: ${cqas.provenance}. Not a CEOS-ARD assessment.`);
 			}
 			lines.push('  Open by default: availability for the area and period; task-specific accuracy and suitability.');
 		}
