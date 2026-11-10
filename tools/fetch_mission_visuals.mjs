@@ -12,7 +12,7 @@
  * Generic illustrations are never used: they are not the actual spacecraft.
  * Behind a proxy, run with NODE_USE_ENV_PROXY=1 (Node 22.21+).
  */
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,6 +34,8 @@ async function download(api, path, kind) {
 			await sleep(1000 * (attempt + 1));
 			continue;
 		}
+		const declared = Number(response.headers.get('content-length'));
+		if (Number.isFinite(declared) && declared > 600_000) throw new Error(`${url}: larger than 600 KB`);
 		const type = response.headers.get('content-type') ?? '';
 		// The site answers unknown paths with its HTML shell and a 200, so check the type.
 		if (!response.ok || !type.startsWith(kind === 'svg' ? 'image/svg+xml' : 'image/png')) throw new Error(`${url}: HTTP ${response.status} ${type}`);
@@ -41,7 +43,10 @@ async function download(api, path, kind) {
 		await sleep(120);
 		if (kind === 'svg') {
 			const text = body.toString('utf8');
-			if (/<script|javascript:|\son[a-z]+\s*=|<foreignObject|href\s*=\s*["']https?:/i.test(text)) throw new Error(`${url}: SVG contains script, handlers or external references`);
+			// Inert inside <img>, but the file is also reachable directly on our own origin.
+			if (/<script|javascript:|data:text\/html|\son[a-z]+\s*=|<foreignObject|<!ENTITY|<!DOCTYPE|@import|url\(\s*["']?(https?:|\/\/)|href\s*=\s*["']?(https?:|\/\/)/i.test(text)) {
+				throw new Error(`${url}: SVG contains script, handlers or external references`);
+			}
 		} else if (!body.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
 			throw new Error(`${url}: not a PNG`);
 		}
@@ -54,8 +59,10 @@ async function download(api, path, kind) {
 async function main() {
 	const snapshot = JSON.parse(readFileSync(resolve(ROOT, 'data/mim/snapshot.json'), 'utf8'));
 	const api = snapshot.source.api.replace(/\/+$/, '');
-	mkdirSync(OUT, { recursive: true });
-	for (const file of readdirSync(OUT)) if (/\.(png|svg)$/.test(file)) rmSync(resolve(OUT, file));
+	// Download into a temporary folder and swap it in only when everything succeeded.
+	const TMP = `${OUT}.tmp`;
+	rmSync(TMP, { recursive: true, force: true });
+	mkdirSync(TMP, { recursive: true });
 
 	const missions = {};
 	for (const mission of Object.values(snapshot.missions)) {
@@ -63,22 +70,26 @@ async function main() {
 		if (!visual || visual.kind !== 'specific' || !visual.icon) continue;
 		const stem = `${mission.mission_id}-${(mission.slug ?? 'mission').replace(/[^a-z0-9-]/gi, '')}`;
 		const entry = { acronym: mission.acronym, icon: `${stem}-icon.svg`, image: null, image_credit: null };
-		writeFileSync(resolve(OUT, entry.icon), await download(api, visual.icon, 'svg'));
+		writeFileSync(resolve(TMP, entry.icon), await download(api, visual.icon, 'svg'));
 		const picture = visual.photo_512 ?? visual.colour_512;
 		if (visual.credit && visual.credit.rights_holder && visual.credit.license && picture) {
 			entry.image = `${stem}.png`;
 			entry.image_credit = visual.credit;
-			writeFileSync(resolve(OUT, entry.image), await download(api, picture, 'png'));
+			writeFileSync(resolve(TMP, entry.image), await download(api, picture, 'png'));
 		}
 		missions[mission.mission_id] = entry;
 	}
 	const manifest = {
 		schema: 'mission-visuals/1',
 		source: `${snapshot.source.attribution} (${snapshot.source.licence.name}), edition ${snapshot.source.edition}`,
+		// The API documents the icons as repository-original artwork with no third-party credit; the API's data
+		// licence is CC BY 4.0 and MIM credits its other original artwork that way, so CC BY 4.0 is inferred.
 		icon_credit: 'Silhouette: CEOS MIM Database, https://database.eohandbook.com (CC BY 4.0)',
 		missions
 	};
-	writeFileSync(resolve(OUT, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+	writeFileSync(resolve(TMP, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+	rmSync(OUT, { recursive: true, force: true });
+	renameSync(TMP, OUT);
 	const withImage = Object.values(missions).filter((m) => m.image).length;
 	console.log(`Vendored ${Object.keys(missions).length} mission icons and ${withImage} credited pictures into assets/mission_visuals/.`);
 }

@@ -110,15 +110,21 @@
 		transform: rotateY(180deg);
 		background: #fffdf8;
 	}
-	.flip:hover .inner,
 	.flip:focus-visible .inner,
 	.flip[aria-pressed='true'] .inner {
 		transform: rotateY(180deg);
+	}
+	/* Hover flips only with a real hovering pointer, so a tap on a touch screen cannot leave it stuck. */
+	@media (hover: hover) and (pointer: fine) {
+		.flip:hover .inner {
+			transform: rotateY(180deg);
+		}
 	}
 	.mim-corner {
 		position: absolute;
 		top: 0;
 		right: 3px;
+		/* The tile is always light (#fffdf8), so the light-theme MIM purple is used in both themes. */
 		color: #7c3aed;
 		font-weight: 700;
 		line-height: 1;
@@ -136,14 +142,20 @@
 			transform: none;
 			visibility: hidden;
 		}
-		.flip:hover .face.back,
 		.flip:focus-visible .face.back,
 		.flip[aria-pressed='true'] .face.back {
 			visibility: visible;
 		}
-		.flip:hover .face.front,
 		.flip:focus-visible .face.front,
 		.flip[aria-pressed='true'] .face.front {
+			visibility: hidden;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+		.flip:hover .face.back {
+			visibility: visible;
+		}
+		.flip:hover .face.front {
 			visibility: hidden;
 		}
 	}

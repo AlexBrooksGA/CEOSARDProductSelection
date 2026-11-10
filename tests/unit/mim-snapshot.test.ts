@@ -173,8 +173,11 @@ describe('mission end of life and link matching', () => {
 		expect(missionEnded({ status: 'Mission complete', eol_date: '2030-01-01' }, '2026-11-10')).toBe(true);
 		expect(missionEnded({ status: null, eol_date: '2020-01-01' }, '2026-11-10')).toBe(true);
 		expect(missionEnded({ status: 'Planned', eol_date: null }, '2026-11-10')).toBe(false);
+		expect(missionEnded({ status: 'Non-operational', eol_date: '2030-01-01' }, '2026-11-10')).toBe(true);
 		expect(sameUrl('http://www.example.org/a/#x', 'https://example.org/a')).toBe(true);
 		expect(sameUrl('https://example.org/a', 'https://example.org/b')).toBe(false);
+		expect(sameUrl('https://EXAMPLE.org/Path', 'https://example.org/Path')).toBe(true);
+		expect(sameUrl('https://example.org/Path', 'https://example.org/path')).toBe(false);
 		expect(sameUrl(null, 'https://example.org')).toBe(false);
 	});
 

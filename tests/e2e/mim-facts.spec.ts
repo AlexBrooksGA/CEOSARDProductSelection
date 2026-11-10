@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { devices, expect, test } from '@playwright/test';
 import { open } from './helpers';
 
 // CEOS MIM database values come from the committed snapshot, so these run with MIM turned off.
@@ -105,4 +105,20 @@ test('mission cards show credited pictures with their credit, and silhouettes ot
 	const alos = page.locator('section[aria-labelledby="mim-heading"] article', { has: page.getByRole('heading', { name: /^ALOS-2/ }) });
 	await expect(alos.getByRole('img', { name: 'ALOS-2 spacecraft silhouette' })).toBeVisible();
 	await expect(alos.locator('figcaption')).toHaveText('Silhouette: CEOS MIM Database (CC BY 4.0)');
+});
+
+test.describe('on a touch screen', () => {
+	const { defaultBrowserType: _ignored, ...iphone } = devices['iPhone 13'];
+	test.use(iphone);
+	test('a second tap flips the mark back (hover cannot leave it stuck)', async ({ page }) => {
+		await open(page, '/products/landsat-c2-sr?v=1');
+		const flip = page.locator('.detail-head button.flip');
+		const angle = () => flip.locator('.inner').evaluate((el) => getComputedStyle(el).transform);
+		await flip.tap();
+		await expect(flip).toHaveAttribute('aria-pressed', 'true');
+		await flip.tap();
+		await expect(flip).toHaveAttribute('aria-pressed', 'false');
+		await page.locator('h1').tap();
+		await expect.poll(angle).toBe('none');
+	});
 });

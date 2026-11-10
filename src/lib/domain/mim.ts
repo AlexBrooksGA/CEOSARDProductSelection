@@ -265,14 +265,20 @@ export const ICON_CREDIT = 'Silhouette: CEOS MIM Database (CC BY 4.0)';
  * is planned. A mission ends when MIM says so, or when its end-of-life date has passed.
  */
 export function missionEnded(mission: Pick<MimMission, 'status' | 'eol_date'>, today = new Date().toISOString().slice(0, 10)): boolean {
-	if (/\b(mission complete|decommissioned|inactive|failed|lost)\b/i.test(mission.status ?? '')) return true;
-	if (/\boperational\b/i.test(mission.status ?? '')) return false;
+	if (/\b(mission complete|decommissioned|inactive|failed|lost|non-operational)\b/i.test(mission.status ?? '')) return true;
+	if (/^operational\b/i.test(mission.status ?? '')) return false;
 	return Boolean(mission.eol_date && mission.eol_date < today);
 }
 
 /** Compare links regardless of scheme, "www.", trailing slash and fragment. */
 export function sameUrl(a: string | null | undefined, b: string | null | undefined): boolean {
-	const key = (url: string) => url.trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/\/+$/, '');
+	// Hosts are case-insensitive; paths are not.
+	const key = (url: string) =>
+		url
+			.trim()
+			.replace(/^https?:\/\/(www\.)?([^/?#]+)/i, (_, _www, host: string) => host.toLowerCase())
+			.replace(/#.*$/, '')
+			.replace(/\/+$/, '');
 	return Boolean(a && b) && key(a!) === key(b!);
 }
 
@@ -281,7 +287,7 @@ export function productVisual(details: MimDetails | null, visuals: Record<string
 	const candidates = details.missions.filter((m) => visuals[String(m.mission_id)]);
 	if (!candidates.length) return null;
 	const newest = candidates.reduce((a, b) => ((b.launch_date ?? '') > (a.launch_date ?? '') ? b : a));
-	return { ...visuals[String(newest.mission_id)]!, mission_count: details.missions.length + details.constellations.length };
+	return { ...visuals[String(newest.mission_id)]!, mission_count: details.missions.length };
 }
 
 // ---------------------------------------------------------------------------- compact summaries
