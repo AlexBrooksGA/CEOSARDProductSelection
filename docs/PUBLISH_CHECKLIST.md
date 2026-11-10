@@ -23,12 +23,13 @@ For the work on branch `claude/cqas-product-selection-planning-84nj2u` in both r
 
 ## 3. Live embed in the reporting demo (decision needed)
 
-The demo's **Product Explorer** tab embeds the live explorer page. The explorer's Content Security Policy currently sends `frame-ancestors 'none'`, so browsers block the embed and the tab shows its "open it in a new tab" fallback.
+The demo's **Product Explorer** tab offers the live explorer page and a saved snapshot of its C-QAS section (from `tools/snapshot-explorer.mjs` in the demo repository). It opens on the snapshot because the explorer's Content Security Policy sends `frame-ancestors 'none'`, which makes browsers block the live embed.
 
 To make the embed work, the explorer must allow the demo's origin. In `svelte.config.js`, change `'frame-ancestors': ['none']` to include `'self'` and `https://alexbrooksga.github.io` (and local preview origins if wanted). This relaxes a security header, so it is the owner's decision; it was not changed in this branch.
 
 - [ ] Decide on, and if agreed make, the `frame-ancestors` change.
 - [ ] If Sites adds its own framing headers, check that the embed then works.
+- [ ] Once the live embed works, set `EMBED_DEFAULT = 'live'` in the demo's `index.html`; refresh the snapshots whenever the report or the C-QAS section changes.
 - [ ] Publish the demo on GitHub Pages (merge to `main`).
 
 ## 4. Data to keep current
