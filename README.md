@@ -10,6 +10,8 @@ CEOS-ARD assessment describes conformance with a PFS; it does not certify suitab
 
 **Stack:** SvelteKit 2 + Svelte 5 + TypeScript, plain CSS, one Node.js process (`@sveltejs/adapter-node`). Filtering, matching and comparison run in the browser; MIM requests, credentials, validation and caching run on the server. No database, accounts or Python at runtime. The reasons for this choice are in [`docs/rebuild/AUDIT.md`](docs/rebuild/AUDIT.md#6-stack-decision).
 
+**Publishing the C-QAS and CEOS MIM changes:** see [`docs/PUBLISH_CHECKLIST.md`](docs/PUBLISH_CHECKLIST.md) (Sites secrets to change, the live-embed decision, data refresh and follow-ups).
+
 ## Quick start
 
 Requires **Node.js 22.12 or newer**.
