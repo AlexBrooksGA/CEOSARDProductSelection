@@ -132,3 +132,19 @@ describe('session storage adapter', () => {
 		expect(adapter.persistent).toBe(false);
 	});
 });
+
+describe('C-QAS level of detail in links', () => {
+	it('omits Simple, round-trips Advanced and ignores unknown values', async () => {
+		const { parseUrlState, serialiseUrlState, hasMeaningfulState } = await import('../../src/lib/state/url');
+		expect(parseUrlState(new URLSearchParams('v=1')).state.cqasDetail).toBe('simple');
+		const advanced = parseUrlState(new URLSearchParams('v=1&cqas=advanced'));
+		expect(advanced.state.cqasDetail).toBe('advanced');
+		expect(serialiseUrlState(advanced.state).toString()).toBe('v=1&cqas=advanced');
+		expect(serialiseUrlState(parseUrlState(new URLSearchParams('v=1&cqas=simple')).state).toString()).toBe('v=1');
+		const bad = parseUrlState(new URLSearchParams('v=1&cqas=expert'));
+		expect(bad.state.cqasDetail).toBe('simple');
+		expect(bad.issues.join(' ')).toMatch(/C-QAS level of detail was not recognised/);
+		// A view preference alone is not meaningful explorer state (the purpose entry still shows on /).
+		expect(hasMeaningfulState(advanced)).toBe(false);
+	});
+});

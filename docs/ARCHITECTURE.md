@@ -112,6 +112,19 @@ Journey-managed settings are the measurement family, `spatial_resolution_m` and 
 
 **Imagery.** One AI-generated fictional wetland scene with a depth map (masters, prompt, provenance and terms in `assets/purpose-imagery/`: `SOURCE.txt`, `PROMPT.txt`, `manifest.json`). `tools/build_purpose_imagery.py` turns the masters into `static/images/purpose-journey/`: optical, radar and thermal looks at 1280/1920/2560 px plus 720/1080 px portrait crops (WebP), 160 × 90 coarse versions (PNG) and a smoothed 1024 × 576 depth texture. The radar and thermal looks are stylisations derived from the optical picture, not data. On desktops with a fine pointer, `depth-scene.ts` (WebGL, no dependencies) draws the scene full-bleed in a sticky stage and displaces it by the depth map as the cursor and scroll move; looks crossfade (520 ms), "broad patterns" pixelates, and the neutral state is a navy/teal duotone. Touch devices, reduced motion, missing WebGL, a failed texture or a lost context get a still `<picture>` with the same framing; a failed image leaves the navy gradient. The WebGL scene requests the same file the still image's `srcset` picks, so the first view loads about 330–450 KB on desktop and 220 KB on a phone. The *Illustrative imagery* button says the pictures are AI-generated, stylised and not evidence.
 
+## C-QAS quality checks (proposed)
+
+Product pages for products with a C-QAS report show a **C-QAS quality checks** section after the three concept panels, a header badge and a cross-reference in *Measured quality evidence*.
+
+| Part | Location | Role |
+|---|---|---|
+| Report files | `data/cqas/<product-id>.json` | `cqas-report/1`, one per product and scene. The only report today is **example data** (`data_status: "example"`). Format: [`CQAS_REPORT_FORMAT.md`](CQAS_REPORT_FORMAT.md). |
+| Domain | `domain/cqas.ts` | Pure validation (`parseCqasReport`, `loadCqasReports`) and derived values (counts, headline, metres, signed values, PFS version check). |
+| Loading | `server/catalogue.ts` | Bundled with `import.meta.glob`, validated at server start. A bad report is skipped with a warning and never stops the explorer; `npm test` fails on any warning. Reports reach the browser through the layout data. |
+| UI | `components/cqas/*` | `CqasSection` (Simple and Advanced views; the level is the `cqas` URL parameter), chart components with keyboard access and data tables, `RunCode`, `StatusText`. Styles are `cq-` prefixed in `cqas.css`. |
+
+C-QAS results describe one scene. They are labelled with their data status, never affect filtering, matching or ordering, and are kept separate from the CEOS-ARD assessment.
+
 ## Security headers
 
 - `hooks.server.ts` sets `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy`.

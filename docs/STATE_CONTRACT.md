@@ -28,6 +28,7 @@ The same parameters are used on `/`, `/shortlist` and `/products/<id>`. Internal
 | `p` | Built-in profile last applied (informational) | built-in profile ID; custom profile IDs are rejected |
 | `pu` | Public purpose key from the purpose entry: `goal~context~question` built from fixed guidance IDs only (`-` for an unset part) | `[a-z0-9-]{1,40}` parts, at most three, joined by `~`. Invalid keys are ignored with a message; the link's criteria are kept. Typed text ("something else…") is **never** encoded |
 | `gv` | Purpose guidance version the key refers to | `[0-9A-Za-z.-]{1,20}`. A version this build doesn't have shows a notice and no purpose-specific checks |
+| `cqas` | Level of detail for the C-QAS section on product pages | `advanced`; `simple` (default) is omitted. A view preference only: it never changes results and on its own does not count as meaningful state |
 
 Example: `/shortlist?v=1&fam=sr&rev=req:5&res=pref:30&sl=landsat-c2-sr,sentinel2-level2a,enmap-l2a&cmp=landsat-c2-sr,sentinel2-level2a&fields=technical`
 

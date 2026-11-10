@@ -6,6 +6,7 @@
  * session adapter (session.ts). Components consume derived domain results from here and
  * never implement their own matching rules.
  */
+import type { CqasReport } from '$lib/domain/cqas';
 import { getContext, setContext } from 'svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
@@ -58,6 +59,7 @@ export interface LayoutPayload {
 	products: Product[];
 	profiles: Profile[];
 	agencyMarks: Record<string, { url: string; monochrome: boolean }>;
+	cqasReports: Record<string, CqasReport>;
 	notFound: Record<string, Record<string, string>>;
 	catalogueSource: 'researched' | 'demo-fallback';
 	mim: MimStatusView;
@@ -73,6 +75,8 @@ export class AppStore {
 	curated = $state.raw<Product[]>([]);
 	builtInProfiles = $state.raw<Profile[]>([]);
 	agencyMarks = $state.raw<LayoutPayload['agencyMarks']>({});
+	/** C-QAS reports by product ID (example data until C-QAS produces real reports). */
+	cqasReports = $state.raw<LayoutPayload['cqasReports']>({});
 	catalogueSource = $state.raw<LayoutPayload['catalogueSource']>('researched');
 	notFound = $state.raw<LayoutPayload['notFound']>({});
 
@@ -93,6 +97,7 @@ export class AppStore {
 		this.curated = payload.products;
 		this.builtInProfiles = payload.profiles;
 		this.agencyMarks = payload.agencyMarks;
+		this.cqasReports = payload.cqasReports ?? {};
 		this.catalogueSource = payload.catalogueSource;
 		this.notFound = payload.notFound;
 		this.mimStatus = payload.mim;

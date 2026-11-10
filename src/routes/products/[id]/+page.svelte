@@ -7,6 +7,8 @@
 	import FactList from '$lib/components/FactList.svelte';
 	import FamilyMark from '$lib/components/FamilyMark.svelte';
 	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
+	import CqasSection from '$lib/components/cqas/CqasSection.svelte';
+	import { formatNumber, headlineBand, signed, thresholdHeadline } from '$lib/domain/cqas';
 	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import {
 		accessAction,
@@ -43,6 +45,16 @@
 	let compared = $derived(store.explorer.compare.includes(data.id));
 	let access = $derived(product ? accessAction(product) : null);
 	let links = $derived(product ? productLinks(product) : []);
+	let cqas = $derived(product ? (store.cqasReports[product.id] ?? null) : null);
+	let cqasLabel = $derived(cqas ? (cqas.data_status === 'example' ? 'C-QAS example' : 'C-QAS') : '');
+	function jumpToCqas(event: MouseEvent) {
+		event.preventDefault();
+		const section = document.getElementById('cqas');
+		if (!section) return;
+		section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+		section.focus({ preventScroll: true });
+		history.replaceState(history.state, '', `${location.pathname}${location.search}#cqas`);
+	}
 	let cameFromResults = $state(false);
 	afterNavigate(({ from }) => {
 		cameFromResults = from?.url.pathname === '/';
@@ -104,7 +116,10 @@
 				{product.provider ?? 'Provider not reported'} · {familyLabel(product.product_family)}
 				{#if FAMILY_BY_VALUE[product.product_family ?? '']}<span class="small"> — {FAMILY_BY_VALUE[product.product_family ?? '']!.explanation}</span>{/if}
 			</p>
-			<div class="row"><AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record</span>{/if}</div>
+			<div class="row">
+				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record</span>{/if}
+				{#if cqas}<span><a class="badge info cq-badge" href="#cqas" onclick={jumpToCqas}><span aria-hidden="true">◉</span>{cqasLabel}: {thresholdHeadline(cqas)} <span aria-hidden="true">↓</span></a><span class="cq-proposed">Proposed</span></span>{/if}
+			</div>
 			{#if outside}
 				<p class="notice warn">Outside current results: {outside.map((reason) => reason.reason).join(' ')}</p>
 			{/if}
@@ -175,6 +190,13 @@
 						</div>
 					{/each}
 				</Disclosure>
+				{#if cqas}
+					{@const band = headlineBand(cqas)}
+					<p class="notice">
+						<span><strong>{cqasLabel} scene check</strong><span class="cq-proposed">Proposed</span></span>
+						<span>{formatNumber(cqas.geometric.radial_rmse_px, 2)} pixel relative radial RMSE and a {signed(band.difference)} {cqas.pfs.short_name} difference ({band.band}) for one scene. <a href="#cqas" onclick={jumpToCqas}>See C-QAS quality checks ↓</a></span>
+					</p>
+				{/if}
 			</section>
 
 			<section class="panel stack" class:wide={Boolean(store.purposeAnswers)} aria-labelledby="requirements-heading">
@@ -204,6 +226,8 @@
 				<p class="hint">Meeting your criteria, or holding a CEOS-ARD assessment, does not establish suitability for your application.</p>
 			</section>
 		</div>
+
+		{#if cqas}<CqasSection report={cqas} {product} />{/if}
 
 		<section class="panel stack" aria-labelledby="links-heading">
 			<h2 id="links-heading">Access, documentation and samples</h2>
