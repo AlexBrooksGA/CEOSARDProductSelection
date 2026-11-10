@@ -1,0 +1,32 @@
+{
+  "schema": "mim-links/1",
+  "description": "Links from curated catalogue products to records in the CEOS MIM database (CEOS Database API IDs). Maintained by hand; tools/build_mim_snapshot.mjs reads this file. mission_ids limits the missions shown to those the curated product covers.",
+  "links": [
+    { "product_id": "alos2-palsar2-25m-scansar-nrb", "mim_product_id": 133, "mission_ids": [629] },
+    { "product_id": "alos2-palsar2-global-mosaics-rtc", "mim_product_id": 35, "mission_ids": [629] },
+    { "product_id": "catalyst-sentinel1-rtc", "mim_product_id": 36, "mission_ids": [575, 576, 577, 814] },
+    { "product_id": "catalyst-spot5-hrg-2-5m", "mim_product_id": 112, "mission_ids": [253] },
+    { "product_id": "constellr-lstprecision", "mim_product_id": 140, "mission_ids": [1542], "note": "MIM records the satellites as the HiVE Constellation; the curated record names SkyBee A01 and A02." },
+    { "product_id": "desis-l2a", "mim_product_id": 38, "mission_ids": [776], "note": "MIM records DESIS as its own mission, DESIS-on-ISS." },
+    { "product_id": "earthdaily-constellation", "mim_product_id": 139, "mission_ids": [1514] },
+    { "product_id": "enmap-l2a", "mim_product_id": 39, "mission_ids": [600], "note": "MIM lists EnMAP Surface Reflectance (assessed) and Aquatic Reflectance (in development) separately; this curated record is the Surface Reflectance product." },
+    { "product_id": "aircas-l8-sr", "mim_product_id": 45, "mission_ids": [547] },
+    { "product_id": "aircas-l8-st", "mim_product_id": 118, "mission_ids": [547] },
+    { "product_id": "landsat-c2-sr", "mim_product_id": 46, "mission_ids": [88, 226, 349, 547, 772] },
+    { "product_id": "landsat-c2-st", "mim_product_id": 119, "mission_ids": [88, 226, 349, 547, 772] },
+    { "product_id": "landsat-c2-usard-sr", "mim_product_id": 47, "mission_ids": [88, 226, 349, 547, 772] },
+    { "product_id": "landsat-c2-usard-st", "mim_product_id": 120, "mission_ids": [88, 226, 349, 547, 772] },
+    { "product_id": "novasar1-rtc", "mim_product_id": 50, "mission_ids": [856] },
+    { "product_id": "nrcan-rcm-nrb", "mim_product_id": 51, "mission_ids": [584, 585, 586] },
+    { "product_id": "nrcan-rcm-pol", "mim_product_id": 52, "mission_ids": [584, 585, 586] },
+    { "product_id": "opera-rtc-sentinel1", "mim_product_id": 54, "mission_ids": [575, 576, 577, 814] },
+    { "product_id": "proba-v-l3-toc", "mim_product_id": 126, "mission_ids": [737] },
+    { "product_id": "risat1a-eos04-nrb", "mim_product_id": 58, "mission_ids": [712], "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only." },
+    { "product_id": "risat1a-eos04-india-mosaic", "mim_product_id": 59, "mission_ids": [712], "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only." },
+    { "product_id": "ga-sentinel1-nrb", "mim_product_id": 63, "mission_ids": [575, 576, 577, 814] },
+    { "product_id": "opera-disp-sentinel1", "mim_product_id": 64, "mission_ids": [575, 576, 577, 814] },
+    { "product_id": "dea-sentinel1-rtc", "mim_product_id": 65, "mission_ids": [575, 576, 577, 814] },
+    { "product_id": "sentinel2-level2a", "mim_product_id": 67, "mission_ids": [552, 553], "note": "Limited to Sentinel-2A and 2B, as in the curated record; the MIM instrument record also lists Sentinel-2C and 2D." },
+    { "product_id": "synspective-strix-nrb", "mim_product_id": 136, "mission_ids": [1357, 1358] }
+  ]
+}

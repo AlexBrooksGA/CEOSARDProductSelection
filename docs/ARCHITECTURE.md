@@ -51,6 +51,7 @@ The prototype's launch-year filter is retained only as `legacyLaunchYear` in `do
 
 - `data/*.json` and `data/ceos_ard_research_log.csv`
 - the agency-logo manifest and images
+- C-QAS reports (`data/cqas/*.json`) and the MIM snapshot (`data/mim/snapshot.json`); a bad file of either kind is skipped with a warning
 
 At server start it then:
 

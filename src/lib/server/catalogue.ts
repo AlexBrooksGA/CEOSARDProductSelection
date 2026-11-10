@@ -7,6 +7,7 @@
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
 import { loadCqasReports, type CqasReport } from '$lib/domain/cqas';
+import { MimSnapshotError, parseMimSnapshot, type MimSnapshot } from '$lib/domain/mim';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
 import type { Product, Profile, ProvenanceIndex } from '$lib/domain/types';
 
@@ -14,6 +15,8 @@ const jsonFiles = import.meta.glob('/data/*.json', { eager: true, import: 'defau
 const csvFiles = import.meta.glob('/data/*.csv', { eager: true, query: '?raw', import: 'default' }) as Record<string, string>;
 // C-QAS reports (cqas-report/1), one file per product: data/cqas/<product-id>.json.
 const cqasFiles = import.meta.glob('/data/cqas/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
+// CEOS MIM database snapshot for curated products (tools/build_mim_snapshot.mjs).
+const mimFiles = import.meta.glob('/data/mim/snapshot.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 const logoFiles = import.meta.glob('/assets/agency_logos/*.{png,svg,jpg,webp,ico}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 const logoManifest = import.meta.glob('/assets/agency_logos/manifest.json', { eager: true, import: 'default' }) as Record<string, { agencies?: Record<string, { file?: string; display_treatment?: string }> }>;
 
@@ -26,6 +29,9 @@ export interface BundledData {
 	/** C-QAS reports keyed by product ID. Example data until C-QAS produces real reports. */
 	cqasReports: Record<string, CqasReport>;
 	cqasWarnings: string[];
+	/** MIM snapshot, or null when absent or invalid (MIM facts are then simply not shown). */
+	mimSnapshot: MimSnapshot | null;
+	mimWarnings: string[];
 }
 
 let cached: { data: BundledData } | { error: string } | null = null;
@@ -52,7 +58,18 @@ function build(): BundledData {
 	}
 	// A bad C-QAS file is skipped with a warning; it never takes down discovery or matching.
 	const cqas = loadCqasReports(cqasFiles, known);
-	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings };
+	// Like C-QAS, a bad MIM snapshot is skipped with a warning; it never stops the explorer.
+	let mimSnapshot: MimSnapshot | null = null;
+	const mimWarnings: string[] = [];
+	const rawSnapshot = mimFiles['/data/mim/snapshot.json'];
+	if (rawSnapshot !== undefined) {
+		try {
+			mimSnapshot = parseMimSnapshot(rawSnapshot, known);
+		} catch (error) {
+			mimWarnings.push(error instanceof MimSnapshotError ? error.message : 'MIM snapshot could not be read.');
+		}
+	}
+	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimWarnings };
 }
 
 /** Validated bundled data, or a clear error message when the bundled files are unusable. */
@@ -60,7 +77,7 @@ export function bundledData(): { data: BundledData } | { error: string } {
 	if (!cached) {
 		try {
 			cached = { data: build() };
-			for (const warning of [...cached.data.catalogue.warnings, ...cached.data.provenanceWarnings, ...cached.data.cqasWarnings]) console.warn(`Catalogue: ${warning}`);
+			for (const warning of [...cached.data.catalogue.warnings, ...cached.data.provenanceWarnings, ...cached.data.cqasWarnings, ...cached.data.mimWarnings]) console.warn(`Catalogue: ${warning}`);
 		} catch (error) {
 			cached = { error: error instanceof CatalogueError ? error.message : 'The bundled catalogue could not be loaded.' };
 			console.error(`Catalogue: ${(cached as { error: string }).error}`);

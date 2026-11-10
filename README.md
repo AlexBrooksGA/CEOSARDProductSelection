@@ -94,6 +94,20 @@ docs/                  Architecture, state contract, deployment, rebuild audit a
 
 Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceos_ard.py`, run `python tools/populate_ceos_ard.py` to regenerate `data/ceos_ard_products.json`, the research log and reports, then run `npm test` (the catalogue is validated on load: stable unique IDs, field types, ISO dates, http(s) URLs, one research-log row per product and field). Keep product IDs stable. If `data/ceos_ard_products.json` is absent, the app falls back to `demo_products.json` with the `ceos_ard_status.json` overlay, as before. Rebuild and restart the server to publish changes.
 
+## MIM snapshot for curated products
+
+Each curated product is linked to its CEOS MIM records in `data/mim/links.json` (MIM product ID and the missions it covers). `tools/build_mim_snapshot.mjs` fetches the linked products, instruments (with radar parameters), missions and mission images from the public CEOS Database API and writes:
+
+- `data/mim/snapshot.json`: the values the explorer shows, with the database edition, data date, licence and attribution. It is validated when the server starts and by `npm test`; a bad snapshot is skipped with a warning.
+- `reports/mim_reconciliation.md`: where MIM and the curated catalogue differ, and MIM CEOS-ARD products not yet in the catalogue.
+
+```bash
+NODE_USE_ENV_PROXY=1 node tools/build_mim_snapshot.mjs   # NODE_USE_ENV_PROXY only behind a proxy
+npm test
+```
+
+Curated values always take precedence. MIM values fill gaps and add mission and instrument detail; they are marked with a purple asterisk and never affect filtering, matching or ordering.
+
 ## CEOS-ARD labels
 
 - **CEOS-ARD assessed** — only when `ceos_ard_verified` is `true` in the curated data, or, for MIM records, when the product link reports `product_status=CEOS-ARD` **and** a CEOS-ARD certification has an approval date or review URL.

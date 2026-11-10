@@ -1,0 +1,2508 @@
+{
+  "schema": "mim-snapshot/1",
+  "source": {
+    "api": "https://ceos-capabilities.org/api",
+    "edition": "e574f0c2",
+    "as_of": "2026-10-23",
+    "retrieved": "2026-11-10",
+    "licence": {
+      "name": "CC BY 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "attribution": "CEOS MIM Database, https://database.eohandbook.com"
+  },
+  "products": {
+    "alos2-palsar2-25m-scansar-nrb": {
+      "mim_product": {
+        "product_id": 133,
+        "product_name": "ALOS-2 PALSAR-2 25m ScanSAR Normalised Radar Backscatter",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": "Cloud Optimized GeoTIFF",
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS Analysis-Ready Datasets registry; JAXA sample package",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://gportal.jaxa.jp/gpr/?lang=en",
+        "instrument_ids": [
+          1589
+        ],
+        "certification": {
+          "spec_version": "v1.0",
+          "approval_date": "2024-04-17",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ALOS-2/JAXA%20PALSAR-2%2025m%20ScanSAR%20HH%20HV%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.pdf"
+        }
+      },
+      "mission_ids": [
+        629
+      ],
+      "note": null
+    },
+    "alos2-palsar2-global-mosaics-rtc": {
+      "mim_product": {
+        "product_id": 35,
+        "product_name": "ALOS-2 PALSAR-2 Global Mosaics (RTC)",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://www.eorc.jaxa.jp/ALOS/en/dataset/fnf_e.htm",
+        "instrument_ids": [
+          1589
+        ],
+        "certification": {
+          "spec_version": "v1.0",
+          "approval_date": "2024-04-17",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ALOS-2/JAXA%20PALSAR-2%2025m%20FineBeam%20Global%20Mosaic%20HH%20HV%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.pdf"
+        }
+      },
+      "mission_ids": [
+        629
+      ],
+      "note": null
+    },
+    "catalyst-sentinel1-rtc": {
+      "mim_product": {
+        "product_id": 36,
+        "product_name": "Catalyst Sentinel-1 RTC",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/",
+        "instrument_ids": [
+          939
+        ],
+        "certification": {
+          "spec_version": "v1.1",
+          "approval_date": "2024-10-17",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/Catalyst%20Sentinel1A%2010m%20VVVH%20WGCV%20Eval%20for%20SAR%28NRB%29%20Threshold%20v1.1.pdf"
+        }
+      },
+      "mission_ids": [
+        575,
+        576,
+        577,
+        814
+      ],
+      "note": null
+    },
+    "catalyst-spot5-hrg-2-5m": {
+      "mim_product": {
+        "product_id": 112,
+        "product_name": "Catalyst SPOT 5 HRG 2.5m",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-03 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/",
+        "instrument_ids": [
+          183
+        ],
+        "certification": {
+          "spec_version": "v5.0.1",
+          "approval_date": "2024-12-04",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/Catalyst-SPOT5-HRG/WGCV%20Assessment%20-%20Catalyst%20SPOT%205%20SR%20v5.pdf"
+        }
+      },
+      "mission_ids": [
+        253
+      ],
+      "note": null
+    },
+    "constellr-lstprecision": {
+      "mim_product": {
+        "product_id": 140,
+        "product_name": "Constellr LSTprecision",
+        "category": "Optical",
+        "level": "ARD/ST",
+        "type": "Surface Temperature",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry 2026-10-08 (QA 2026-10-08 gap)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          2264
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2026-05-19",
+          "review_url": null
+        }
+      },
+      "mission_ids": [
+        1542
+      ],
+      "note": "MIM records the satellites as the HiVE Constellation; the curated record names SkyBee A01 and A02."
+    },
+    "desis-l2a": {
+      "mim_product": {
+        "product_id": 38,
+        "product_name": "DESIS L2A",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://geoservice.dlr.de/web/datasets/desis_l2_hsi",
+        "instrument_ids": [
+          1734
+        ],
+        "certification": {
+          "spec_version": "v5.0.1",
+          "approval_date": "2025-02-12",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/DESIS%20HSI%20L2A/WGCV%20Assessment%20DLR%20DESIS%20HSI%20v501%20MT.pdf"
+        }
+      },
+      "mission_ids": [
+        776
+      ],
+      "note": "MIM records DESIS as its own mission, DESIS-on-ISS."
+    },
+    "earthdaily-constellation": {
+      "mim_product": {
+        "product_id": 139,
+        "product_name": "EarthDaily Constellation Surface Reflectance",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry 2026-10-08 (QA 2026-10-08 gap)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          2231
+        ],
+        "certification": {
+          "spec_version": "v5.0.1",
+          "approval_date": "2025-10-07",
+          "review_url": null
+        }
+      },
+      "mission_ids": [
+        1514
+      ],
+      "note": null
+    },
+    "enmap-l2a": {
+      "mim_product": {
+        "product_id": 39,
+        "product_name": "EnMAP (Surface Reflectance)",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://www.enmap.org/data_access/",
+        "instrument_ids": [
+          964
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2022-01-22",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_DLR_EnMAP_SR_Threshold_v5.pdf"
+        }
+      },
+      "mission_ids": [
+        600
+      ],
+      "note": "MIM lists EnMAP Surface Reflectance (assessed) and Aquatic Reflectance (in development) separately; this curated record is the Surface Reflectance product."
+    },
+    "aircas-l8-sr": {
+      "mim_product": {
+        "product_id": 45,
+        "product_name": "L8 SR (Aerospace Information Research Institute)",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.12237/casearth.RTU_Data_303",
+        "instrument_ids": [
+          897
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2023-12-06",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20SR%20v5.pdf"
+        }
+      },
+      "mission_ids": [
+        547
+      ],
+      "note": null
+    },
+    "aircas-l8-st": {
+      "mim_product": {
+        "product_id": 118,
+        "product_name": "L8 ST (Aerospace Information Research Institute)",
+        "category": "Optical",
+        "level": "ARD/ST",
+        "type": "Surface Temperature",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-03 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.12237/casearth.RTU_Data_302",
+        "instrument_ids": [
+          1524
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2023-12-06",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV%20Assessment%20-%20AIRCAS%20Landsat8%20ST%20v5.pdf"
+        }
+      },
+      "mission_ids": [
+        547
+      ],
+      "note": null
+    },
+    "landsat-c2-sr": {
+      "mim_product": {
+        "product_id": 46,
+        "product_name": "Landsat Collection 2 (Surface Reflectance)",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.5066/P9IAXOVV",
+        "instrument_ids": [
+          322,
+          897,
+          1769,
+          327
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2021-06-04",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Review_Panel_Assessment_USGS_SR_PFS_v5.pdf"
+        }
+      },
+      "mission_ids": [
+        88,
+        226,
+        349,
+        547,
+        772
+      ],
+      "note": null
+    },
+    "landsat-c2-st": {
+      "mim_product": {
+        "product_id": 119,
+        "product_name": "Landsat Collection 2 (Surface Temperature)",
+        "category": "Optical",
+        "level": "ARD/ST",
+        "type": "Surface Temperature",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-03 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.5066/P9IAXOVV",
+        "instrument_ids": [
+          322,
+          1524,
+          1746,
+          327
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2021-06-04",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Review_Panel_Assessment_for_USGS_ST_PFS_v5.pdf"
+        }
+      },
+      "mission_ids": [
+        88,
+        226,
+        349,
+        547,
+        772
+      ],
+      "note": null
+    },
+    "landsat-c2-usard-sr": {
+      "mim_product": {
+        "product_id": 47,
+        "product_name": "Landsat Collection 2 U.S. ARD (Surface Reflectance)",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.5066/P960F8OC",
+        "instrument_ids": [
+          322,
+          897,
+          1769,
+          327
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2022-05-23",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Reflectance-v5.0_Landsat_C2_US_ARD.pdf"
+        }
+      },
+      "mission_ids": [
+        88,
+        226,
+        349,
+        547,
+        772
+      ],
+      "note": null
+    },
+    "landsat-c2-usard-st": {
+      "mim_product": {
+        "product_id": 120,
+        "product_name": "Landsat Collection 2 U.S. ARD (Surface Temperature)",
+        "category": "Optical",
+        "level": "ARD/ST",
+        "type": "Surface Temperature",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-03 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://doi.org/10.5066/P960F8OC",
+        "instrument_ids": [
+          322,
+          1524,
+          1746,
+          327
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2022-05-23",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/ST/v5.0/WGCV_CARD4L_Assessment_for_USGS_Surface_Temperature-v5.0_Landsat_C2_US_ARD.pdf"
+        }
+      },
+      "mission_ids": [
+        88,
+        226,
+        349,
+        547,
+        772
+      ],
+      "note": null
+    },
+    "novasar1-rtc": {
+      "mim_product": {
+        "product_id": 50,
+        "product_name": "NovaSAR-1 RTC",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://data.novasar.csiro.au/#/home",
+        "instrument_ids": [
+          1797
+        ],
+        "certification": {
+          "spec_version": "v5.5",
+          "approval_date": "2023-10-05",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/NovaSAR_WGCVEval.zip"
+        }
+      },
+      "mission_ids": [
+        856
+      ],
+      "note": null
+    },
+    "nrcan-rcm-nrb": {
+      "mim_product": {
+        "product_id": 51,
+        "product_name": "NRCan RCM NRB",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
+        "instrument_ids": [
+          946
+        ],
+        "certification": {
+          "spec_version": "v1.1",
+          "approval_date": "2025-02-07",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/NRCan%20RCM/RCM 16m StripMap NRB WGCV Eval for SAR(NRB) Threshold v1.1.pdf"
+        }
+      },
+      "mission_ids": [
+        584,
+        585,
+        586
+      ],
+      "note": null
+    },
+    "nrcan-rcm-pol": {
+      "mim_product": {
+        "product_id": 52,
+        "product_name": "NRCan RCM POL",
+        "category": "SAR",
+        "level": "ARD/POL",
+        "type": "SAR-POL",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://registry.opendata.aws/rcm-ceos-ard/",
+        "instrument_ids": [
+          946
+        ],
+        "certification": {
+          "spec_version": "v1.1",
+          "approval_date": "2025-02-07",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/NRCan%20RCM/RCM 16m StripMap NRB POL WGCV Eval for SAR(NRB) Threshold v1.1.pdf"
+        }
+      },
+      "mission_ids": [
+        584,
+        585,
+        586
+      ],
+      "note": null
+    },
+    "opera-rtc-sentinel1": {
+      "mim_product": {
+        "product_id": 54,
+        "product_name": "Opera RTC Sentinel-1",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          939
+        ],
+        "certification": {
+          "spec_version": "v5.5",
+          "approval_date": "2024-10-22",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/NRB/v5.5/Opera%20RTC%20Sentinel-1%20peer%20review.zip"
+        }
+      },
+      "mission_ids": [
+        575,
+        576,
+        577,
+        814
+      ],
+      "note": null
+    },
+    "proba-v-l3-toc": {
+      "mim_product": {
+        "product_id": 126,
+        "product_name": "PROBA-V L3 (0.1/0.333/1 km) TOC",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-03 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://proba-v.vgt.vito.be/en/product-types/c2/level-3toc",
+        "instrument_ids": [
+          1664
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2023-03-21",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0/PROBA-V%20Assessment%20for%20SR%20S5TOC%20Threshold%20v5.pdf"
+        }
+      },
+      "mission_ids": [
+        737
+      ],
+      "note": null
+    },
+    "risat1a-eos04-nrb": {
+      "mim_product": {
+        "product_id": 58,
+        "product_name": "RISAT-1A (EOS-04) NRB",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_STUC00ZTD",
+        "instrument_ids": [
+          790
+        ],
+        "certification": {
+          "spec_version": "v1.0",
+          "approval_date": "2024-04-02",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.0/ISRO_EOS04_SAR_v1.0_WGCV_Assessment.zip"
+        }
+      },
+      "mission_ids": [
+        712
+      ],
+      "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only."
+    },
+    "risat1a-eos04-india-mosaic": {
+      "mim_product": {
+        "product_id": 59,
+        "product_name": "RISAT-1A (EOS-04) NRB India Mosaic",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_FIGC00ZTD",
+        "instrument_ids": [
+          790
+        ],
+        "certification": {
+          "spec_version": "v1.1",
+          "approval_date": "2025-01-06",
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.1/EOS04%2018m%20MRS%20ScanSAR%20HH%20HV%20Mosaic%20WGCV%20Eval%20for%20SAR(NRB)%20Threshold%20v1.1.pdf"
+        }
+      },
+      "mission_ids": [
+        712
+      ],
+      "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only."
+    },
+    "ga-sentinel1-nrb": {
+      "mim_product": {
+        "product_id": 63,
+        "product_name": "Sentinel-1 NRB (Geoscience Australia)",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          939
+        ],
+        "certification": {
+          "spec_version": "v1.2",
+          "approval_date": "2025-09-23",
+          "review_url": null
+        }
+      },
+      "mission_ids": [
+        575,
+        576,
+        577,
+        814
+      ],
+      "note": null
+    },
+    "opera-disp-sentinel1": {
+      "mim_product": {
+        "product_id": 64,
+        "product_name": "Sentinel-1 OPERA InSAR Surface Displacement",
+        "category": "SAR",
+        "level": "ARD/InSAR",
+        "type": "SAR-INSAR",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          939
+        ],
+        "certification": {
+          "spec_version": "v1.2",
+          "approval_date": "2026-01-05",
+          "review_url": null
+        }
+      },
+      "mission_ids": [
+        575,
+        576,
+        577,
+        814
+      ],
+      "note": null
+    },
+    "dea-sentinel1-rtc": {
+      "mim_product": {
+        "product_id": 65,
+        "product_name": "Sentinel-1 RTC (Digital Earth Africa)",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://apps.sentinel-hub.com/s1-card4l/",
+        "instrument_ids": [
+          939
+        ],
+        "certification": {
+          "spec_version": "v5.5",
+          "approval_date": "2022-05-20",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/NRB/v5.5/WGCV_CARD4L_Assessment_for_Sinergise_Sentinel-1_NRB_v5.5.pdf"
+        }
+      },
+      "mission_ids": [
+        575,
+        576,
+        577,
+        814
+      ],
+      "note": null
+    },
+    "sentinel2-level2a": {
+      "mim_product": {
+        "product_id": 67,
+        "product_name": "Sentinel-2 Level-2A",
+        "category": "Optical",
+        "level": "ARD/SR",
+        "type": "Surface Reflectance",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-02 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": "https://dataspace.copernicus.eu/",
+        "instrument_ids": [
+          940
+        ],
+        "certification": {
+          "spec_version": "v5.0",
+          "approval_date": "2022-01-22",
+          "review_url": "https://ceos.org/ard/files/Self%20Assessments/SR/v5.0/WGCV_CARD4L_Evaluation_for_ESA-S2_SR_at_Threshold_PFS_v5.pdf"
+        }
+      },
+      "mission_ids": [
+        552,
+        553
+      ],
+      "note": "Limited to Sentinel-2A and 2B, as in the curated record; the MIM instrument record also lists Sentinel-2C and 2D."
+    },
+    "synspective-strix-nrb": {
+      "mim_product": {
+        "product_id": 136,
+        "product_name": "Synspective StriX Series NRB",
+        "category": "SAR",
+        "level": "ARD/NRB",
+        "type": "SAR-NRB",
+        "format": null,
+        "documentation_url": "https://ceos.org/ard/index.html#datasets",
+        "source": "CEOS-ARD dataset registry scan 2026-07-31 (ceos.org/ard)",
+        "statuses": [
+          "CEOS-ARD"
+        ],
+        "access_url": null,
+        "instrument_ids": [
+          2254
+        ],
+        "certification": {
+          "spec_version": "v1.2",
+          "approval_date": "2026-05-04",
+          "review_url": null
+        }
+      },
+      "mission_ids": [
+        1357,
+        1358
+      ],
+      "note": null
+    }
+  },
+  "instruments": {
+    "183": {
+      "instrument_id": 183,
+      "slug": "hrg",
+      "name_short": "HRG",
+      "name_full": "HRG",
+      "instrument_types": "High resolution optical imagers",
+      "status": "No longer operational",
+      "maturity": null,
+      "operator": "CNES",
+      "spatial_resolution_best_m": 5,
+      "spatial_resolution_description": "Panchromatic: 5 m, Multispectral: 10 m",
+      "swath_width_max_km": 117,
+      "swath_width_description": "60 km (1 instrument), 117 km (2 instruments). Same as SPOT 4 with off-track steering capability (±27 deg)",
+      "waveband_description": "VIS: B1: 0.50 - 0.59 µm, B2: 0.61 - 0.68 µm, NIR: B3: 0.79 - 0.89 µm, SWIR: 1.50 - 1.75 µm, Panchromatic: 0.49 - 0.69 µm",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": null
+    },
+    "322": {
+      "instrument_id": 322,
+      "slug": "etm",
+      "name_short": "ETM+",
+      "name_full": "Enhanced Thematic Mapper Plus",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "No longer operational",
+      "maturity": "High Heritage - Operational",
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 15,
+      "spatial_resolution_description": "PAN: 15 m, VIS - SWIR: 30 m, TIR: 60 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "VIS - TIR: 8 bands: 0.45 - 12.5 µm",
+      "accuracy_description": "50 - 250 m systematically corrected geodetic accuracy",
+      "data_format_info": "COG, GeoTIFF",
+      "sar": null
+    },
+    "327": {
+      "instrument_id": 327,
+      "slug": "tm",
+      "name_short": "TM",
+      "name_full": "Thematic Mapper",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "No longer operational",
+      "maturity": "High Heritage - Operational",
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 30,
+      "spatial_resolution_description": "VIS - SWIR, 30 m; TIR: 120 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "VIS - TIR: 7 bands: 0.45 - 12.5 µm",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": null
+    },
+    "790": {
+      "instrument_id": 790,
+      "slug": "sar-risat",
+      "name_short": "SAR (RISAT)",
+      "name_full": "Synthetic Aperture Radar (RISAT)",
+      "instrument_types": "Imaging microwave radars",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "ISRO",
+      "spatial_resolution_best_m": 3,
+      "spatial_resolution_description": "3 - 6 m (FRS-1), 9 - 12 m (FRS-2), 25/50 m (MRS/CRS)",
+      "swath_width_max_km": 240,
+      "swath_width_description": "30 km (HRS), 30 km (FRS-1/FRS-2), 120/240 km (MRS/CRS)",
+      "waveband_description": "C-Band (5.350 Ghz)",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": {
+        "band": "C-Band",
+        "centre_frequency_ghz": 5.4,
+        "polarisations": [
+          "HH",
+          "HV",
+          "VV",
+          "VH"
+        ],
+        "polarisation_modes": [
+          "Single",
+          "Dual",
+          "Quad",
+          "Compact"
+        ],
+        "look_direction": "Both",
+        "imaging_modes": [
+          {
+            "name": "Coarse Resolution ScanSAR (CRS)",
+            "code": "CRS",
+            "azimuth_resolution_m": 55,
+            "range_resolution_m": 37.7,
+            "swath_km": 223,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          },
+          {
+            "name": "Fine Resolution Stripmap - 1",
+            "code": "FRS-1",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 2,
+            "swath_km": 25,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          },
+          {
+            "name": "Fine Resolution Stripmap - 1 (QuadPol)",
+            "code": "FRS-1 QP",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 2,
+            "swath_km": 20,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          },
+          {
+            "name": "Fine Resolution Stripmap - 2",
+            "code": "FRS-2",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 4,
+            "swath_km": 25,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          },
+          {
+            "name": "Fine Resolution Stripmap - 2 (QuadPol)",
+            "code": "FRS-2 QP",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 4,
+            "swath_km": 20,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          },
+          {
+            "name": "High Resolution Spotlight Mode",
+            "code": "HRS",
+            "azimuth_resolution_m": 1,
+            "range_resolution_m": 0.85,
+            "swath_km": 10,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": -15.99
+          },
+          {
+            "name": "Medium Resolution ScanSAR (MRS)",
+            "code": "MRS",
+            "azimuth_resolution_m": 23,
+            "range_resolution_m": 37.7,
+            "swath_km": 160,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": null
+          }
+        ],
+        "source": "NRSC EOS-04 (RISAT-1A) Hand Book, Doc. No. NRSC-DPA-NDC-OCT 2022-TG-0002110-V1.0; ARD context: ISRO EOS-04 CEOS-ARD NRB self-assessments v1.0/v1.1 (ceos.org/ard)"
+      }
+    },
+    "897": {
+      "instrument_id": 897,
+      "slug": "oli",
+      "name_short": "OLI",
+      "name_full": "Operational Land Imager",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": "High Heritage - Operational",
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 15,
+      "spatial_resolution_description": "Pan: 15 m, VIS - SWIR: 30 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "VIS - SWIR: 9 bands: 0.43 - 2.3 µm",
+      "accuracy_description": "Absolute geodetic accuracy of 32 m; relative geodetic accuracy of 18 m (excluding terrain effects); geometric accuracy of 12 m or better",
+      "data_format_info": "COG, GeoTIFF",
+      "sar": null
+    },
+    "939": {
+      "instrument_id": 939,
+      "slug": "c-band-sar",
+      "name_short": "C-Band SAR",
+      "name_full": "C-Band Synthetic Aperture Radar",
+      "instrument_types": "Imaging microwave radars",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "ESA (COM)",
+      "spatial_resolution_best_m": 9,
+      "spatial_resolution_description": "Strip mode: 9 m, Interferometric wide swath mode: 20 m, extra-wide swath mode: 50 m, wave mode: 50 m",
+      "swath_width_max_km": 400,
+      "swath_width_description": "Strip mode: 80 km; Interferometric wide swath mode: 250 km, extra-wide swath mode: 400 km, Wave mode: sampled images of 20 x 20 km at 100 km intervals",
+      "waveband_description": "C-band: 5.405 GHz; HH, VV, HH+HV, VV+VH; Incidence angle: 20-45",
+      "accuracy_description": "NESZ: -22 dB; PTAR: -25 dB; DTAR: -22 dB; Radiometric accuracy 1 dB (3 sigma); Radiometric stability: 0.5 dB (3 sigma)",
+      "data_format_info": null,
+      "sar": {
+        "band": "C-Band",
+        "centre_frequency_ghz": 5.405,
+        "polarisations": [
+          "HH",
+          "HV",
+          "VV",
+          "VH"
+        ],
+        "polarisation_modes": [
+          "Single",
+          "Dual"
+        ],
+        "look_direction": "Right",
+        "imaging_modes": [
+          {
+            "name": "Interferometric Wide swath (IW)",
+            "code": "IW",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 5,
+            "swath_km": 250,
+            "incidence_min_deg": 29.1,
+            "incidence_max_deg": 46,
+            "nesz_db": -22
+          }
+        ],
+        "source": "ESA Sentinel-1 SAR User Guide / Product Definition + eoPortal; ARD values cross-checked vs Geoscience Australia Sentinel-1 NRB (CEOS-ARD)"
+      }
+    },
+    "940": {
+      "instrument_id": 940,
+      "slug": "msi-sentinel-2",
+      "name_short": "MSI (Sentinel-2)",
+      "name_full": "Multi-Spectral Instrument (Sentinel-2)",
+      "instrument_types": "High resolution optical imagers",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "ESA (COM)",
+      "spatial_resolution_best_m": 10,
+      "spatial_resolution_description": "10 m for 4 bands in VNIR, 60 m for 3 dedicated atmospheric correction bands, 20 m for remaining bands for S-2.",
+      "swath_width_max_km": 290,
+      "swath_width_description": "290 km",
+      "waveband_description": "13 bands in the VNIR-SWIR",
+      "accuracy_description": "Absolute radiometric accuracy for Level 1C data: 3 - 5%",
+      "data_format_info": null,
+      "sar": null
+    },
+    "946": {
+      "instrument_id": 946,
+      "slug": "sar-rcm",
+      "name_short": "SAR (RCM)",
+      "name_full": "Synthetic Aperture Radar (SAR) C band",
+      "instrument_types": "Imaging microwave radars",
+      "status": "Operational",
+      "maturity": "High Heritage - Operational",
+      "operator": "CSA (NRCAN, DND, DFO, AAFC, ECCC, PSC)",
+      "spatial_resolution_best_m": 1,
+      "spatial_resolution_description": "Low Resolution 100 m and Low Noise: 100 x 100 m (8 looks); Medium Resolution 50 m: 50 x 50 m (4 looks); Medium Resolution 30 m: 30 x 30 m (4 looks); Medium Resolution 16 m: 16 x 16 m (4 looks);  High-Resolution 5 m: 5 x 5 m (1 look); Very High Resolution 3 m: 3 x 3 m @35deg (1 look); Spotlight: 1 x 3 m @35deg (1 look); Quad-Pol: 9 x 9 m (1 look).",
+      "swath_width_max_km": 500,
+      "swath_width_description": "Low Resolution 100 m: 500 km; Medium Resolution 50 m: 350 km; Low Noise: 350 km;  Ship Detection: 350 km; Medium Resolution 30 m: 125 km; Medium Resolution 16 m: 30 km;  High-Resolution 5 m: 30 km; Very High Resolution 3 m: 20 km; Spotlight: 20 km [5 km along-track]; Quad-Pol: 20 km.",
+      "waveband_description": "Microwave: C band 5.405 GHz: HH, VV, HV, VH polarization - includes Quad polarization imaging mode and compact polarimetry.",
+      "accuracy_description": "Absolute Radiometric Accuracy: +/- 1.0 dB",
+      "data_format_info": "Image Products in a format that uses GeoTIFF for imagery and XML for metadata, or NITF for imagery and metadata.",
+      "sar": {
+        "band": "C-Band",
+        "centre_frequency_ghz": 5.405,
+        "polarisations": [
+          "HH",
+          "HV",
+          "VV",
+          "VH"
+        ],
+        "polarisation_modes": [
+          "Single",
+          "Dual",
+          "Quad",
+          "Compact"
+        ],
+        "look_direction": "Right",
+        "imaging_modes": [
+          {
+            "name": "High Resolution 5 m",
+            "code": "5M",
+            "azimuth_resolution_m": 5,
+            "range_resolution_m": 5,
+            "swath_km": 30,
+            "incidence_min_deg": 19.02,
+            "incidence_max_deg": 54.14,
+            "nesz_db": -19
+          },
+          {
+            "name": "Low Resolution 100 m",
+            "code": "SC100M",
+            "azimuth_resolution_m": 100,
+            "range_resolution_m": 100,
+            "swath_km": 500,
+            "incidence_min_deg": 19.02,
+            "incidence_max_deg": 55.08,
+            "nesz_db": -22
+          },
+          {
+            "name": "Medium Resolution 16 m",
+            "code": "16M",
+            "azimuth_resolution_m": 16,
+            "range_resolution_m": 16,
+            "swath_km": 30,
+            "incidence_min_deg": 20.18,
+            "incidence_max_deg": 47.43,
+            "nesz_db": -25
+          },
+          {
+            "name": "Medium Resolution 30 m",
+            "code": "SC30M",
+            "azimuth_resolution_m": 30,
+            "range_resolution_m": 30,
+            "swath_km": 125,
+            "incidence_min_deg": 17.3,
+            "incidence_max_deg": 48.3,
+            "nesz_db": -24
+          },
+          {
+            "name": "Medium Resolution 50 m",
+            "code": "SC50M",
+            "azimuth_resolution_m": 50,
+            "range_resolution_m": 50,
+            "swath_km": 350,
+            "incidence_min_deg": 19.02,
+            "incidence_max_deg": 58.71,
+            "nesz_db": -22
+          },
+          {
+            "name": "Medium Resolution 50m-High Incidence",
+            "code": "SC50ME",
+            "azimuth_resolution_m": 50,
+            "range_resolution_m": 50,
+            "swath_km": 133,
+            "incidence_min_deg": 55.06,
+            "incidence_max_deg": 60.35,
+            "nesz_db": -22
+          },
+          {
+            "name": "Medium Resolution 50m-High PRF",
+            "code": "SC50MHIPRF",
+            "azimuth_resolution_m": 50,
+            "range_resolution_m": 50,
+            "swath_km": 350,
+            "incidence_min_deg": 19.02,
+            "incidence_max_deg": 58.71,
+            "nesz_db": -22
+          },
+          {
+            "name": "Quad-Polarization",
+            "code": "QP",
+            "azimuth_resolution_m": 9,
+            "range_resolution_m": 9,
+            "swath_km": 20,
+            "incidence_min_deg": 23.94,
+            "incidence_max_deg": 43.88,
+            "nesz_db": -24
+          },
+          {
+            "name": "Ship Detection",
+            "code": "SCSD",
+            "azimuth_resolution_m": null,
+            "range_resolution_m": null,
+            "swath_km": 350,
+            "incidence_min_deg": 39.82,
+            "incidence_max_deg": 58.24,
+            "nesz_db": null
+          },
+          {
+            "name": "Spotlight",
+            "code": "FSL",
+            "azimuth_resolution_m": 1,
+            "range_resolution_m": 3,
+            "swath_km": 20,
+            "incidence_min_deg": 19.42,
+            "incidence_max_deg": 46.75,
+            "nesz_db": -17
+          },
+          {
+            "name": "Very High Resolution 3 m",
+            "code": "3M",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 3,
+            "swath_km": 20,
+            "incidence_min_deg": 18.25,
+            "incidence_max_deg": 54.15,
+            "nesz_db": -17
+          }
+        ],
+        "source": "2026 Extended Parameters Survey (CSA, 2026-09-29)"
+      }
+    },
+    "964": {
+      "instrument_id": 964,
+      "slug": "hsi-enmap",
+      "name_short": "HSI",
+      "name_full": "Hyperspectral Imager",
+      "instrument_types": "Hyperspectral imagers|Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": "Medium Heritage",
+      "operator": "DLR",
+      "spatial_resolution_best_m": 30,
+      "spatial_resolution_description": "GSD 30 m",
+      "swath_width_max_km": 30,
+      "swath_width_description": "30 km",
+      "waveband_description": "420 - 2450 nm",
+      "accuracy_description": "Radiometric: <5%",
+      "data_format_info": null,
+      "sar": null
+    },
+    "1524": {
+      "instrument_id": 1524,
+      "slug": "tirs",
+      "name_short": "TIRS",
+      "name_full": "Thermal Infrared Sensor",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 100,
+      "spatial_resolution_description": "100 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "TIR 10.5 µm and 12 µm",
+      "accuracy_description": "Absolute geodetic accuracy of 44 m;  geometric accuracy of 32 m or better",
+      "data_format_info": "COG, GeoTIFF",
+      "sar": null
+    },
+    "1589": {
+      "instrument_id": 1589,
+      "slug": "palsar-2",
+      "name_short": "PALSAR-2",
+      "name_full": "Phased Array type L-band Synthetic Aperture Radar-2",
+      "instrument_types": "Imaging microwave radars",
+      "status": "Operational",
+      "maturity": "Medium Heritage",
+      "operator": "JAXA",
+      "spatial_resolution_best_m": 1,
+      "spatial_resolution_description": "Spotlight mode (1 to 3 m), stripmap mode (3 to 10 m).",
+      "swath_width_max_km": 490,
+      "swath_width_description": "Spotlight mode: 25km, Stripmap mode: 50-70 km, Scan SAR mode: 350 - 490 km, Polarimetry: 30-50 km",
+      "waveband_description": "Microwave: L-Band 1270 MHz",
+      "accuracy_description": "Surface Resolution:  1 to 3 m (Spotlight Mode), 3m (Ultra-Fine Mode), 6m (High sensitive Mode), 10m (Fine Mode),100 m (Scan Mode); Radiometric: ±1 dB",
+      "data_format_info": "CEOS SAR and GeoTiFF",
+      "sar": {
+        "band": "L-Band",
+        "centre_frequency_ghz": 1.2575,
+        "polarisations": [
+          "HH",
+          "HV",
+          "VV",
+          "VH"
+        ],
+        "polarisation_modes": [
+          "Single",
+          "Dual",
+          "Quad"
+        ],
+        "look_direction": "Both",
+        "imaging_modes": [
+          {
+            "name": "ScanSAR (Normal - 14 MHz Bandwidth)",
+            "code": "WD1",
+            "azimuth_resolution_m": 100,
+            "range_resolution_m": 100,
+            "swath_km": 350,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -26
+          },
+          {
+            "name": "ScanSAR (Normal - 28 MHz Bandwidth)",
+            "code": "WD1",
+            "azimuth_resolution_m": 100,
+            "range_resolution_m": 100,
+            "swath_km": 350,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -23
+          },
+          {
+            "name": "ScanSAR (Wide Beam)",
+            "code": "WD2",
+            "azimuth_resolution_m": 60,
+            "range_resolution_m": 60,
+            "swath_km": 490,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -26
+          },
+          {
+            "name": "Spotlight",
+            "code": "SPT",
+            "azimuth_resolution_m": 1,
+            "range_resolution_m": 3,
+            "swath_km": 25,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -24
+          },
+          {
+            "name": "Stripmap Fine - FullPol",
+            "code": "FBQ",
+            "azimuth_resolution_m": 10,
+            "range_resolution_m": 10,
+            "swath_km": 30,
+            "incidence_min_deg": 23.7,
+            "incidence_max_deg": 23.7,
+            "nesz_db": -23
+          },
+          {
+            "name": "Stripmap Fine - Single/Dual/Compact Pol",
+            "code": "FB",
+            "azimuth_resolution_m": 10,
+            "range_resolution_m": 10,
+            "swath_km": 70,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -26
+          },
+          {
+            "name": "Stripmap High Sensitive - Full Pol",
+            "code": "HBQ",
+            "azimuth_resolution_m": 6,
+            "range_resolution_m": 6,
+            "swath_km": 40,
+            "incidence_min_deg": 20,
+            "incidence_max_deg": 40,
+            "nesz_db": -25
+          },
+          {
+            "name": "Stripmap High Sensitive - Single/Dual/Compact Pol",
+            "code": "HB",
+            "azimuth_resolution_m": 6,
+            "range_resolution_m": 6,
+            "swath_km": 50,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -28
+          },
+          {
+            "name": "Stripmap Ultrafine",
+            "code": "UB",
+            "azimuth_resolution_m": 3,
+            "range_resolution_m": 3,
+            "swath_km": 50,
+            "incidence_min_deg": 8,
+            "incidence_max_deg": 70,
+            "nesz_db": -24
+          }
+        ],
+        "source": "2026 Extended Parameters Survey (JAXA, 2026-07-16)"
+      }
+    },
+    "1664": {
+      "instrument_id": 1664,
+      "slug": "vegetation-proba-v",
+      "name_short": "Vegetation",
+      "name_full": "Vegetation",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "No longer operational",
+      "maturity": null,
+      "operator": "ESA",
+      "spatial_resolution_best_m": 100,
+      "spatial_resolution_description": "100 m resolution at Nadir, 350 m on full field of view",
+      "swath_width_max_km": 2250,
+      "swath_width_description": "102° field of view with 2250 km wide swath",
+      "waveband_description": "Equivalent spectral bands to Spot Vegetation: VNIR: Blue (438-486 nm), Red (615-696 nm), Near IR (772-914 nm), SWIR (1564-1634 nm).",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": null
+    },
+    "1734": {
+      "instrument_id": 1734,
+      "slug": "desis",
+      "name_short": "DESIS",
+      "name_full": "DLR Earth Sensing Imaging Spectrometer",
+      "instrument_types": "Hyperspectral imagers",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "DLR",
+      "spatial_resolution_best_m": 79,
+      "spatial_resolution_description": "79m/104m @330 km/435km orbit (min/max)",
+      "swath_width_max_km": 57,
+      "swath_width_description": "44km/57km @330 km/435km orbit (min/max)",
+      "waveband_description": "Spectral range: 450nm – 950nm (400 - 1000nm)\n\nSpectral sampling: ≈ 2.32nm\n\nSpectral channels: 240 (without binning)",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": null
+    },
+    "1746": {
+      "instrument_id": 1746,
+      "slug": "tirs-2",
+      "name_short": "TIRS-2",
+      "name_full": "Thermal Infrared Sensor 2",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 100,
+      "spatial_resolution_description": "100 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "TIR 10.5 µm and 12 µm",
+      "accuracy_description": "Absolute geodetic accuracy of 44 m;  geometric accuracy of 32 m or better",
+      "data_format_info": null,
+      "sar": null
+    },
+    "1769": {
+      "instrument_id": 1769,
+      "slug": "oli-2",
+      "name_short": "OLI-2",
+      "name_full": "Operational Land Imager 2",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "USGS (NASA)",
+      "spatial_resolution_best_m": 15,
+      "spatial_resolution_description": "Pan: 15 m, VIS - SWIR: 30 m",
+      "swath_width_max_km": 185,
+      "swath_width_description": "185 km",
+      "waveband_description": "VIS - SWIR: 9 bands: 0.43 - 2.3 µm",
+      "accuracy_description": "Absolute geodetic accuracy of 32 m; relative geodetic accuracy of 18 m (excluding terrain effects); geometric accuracy of 12 m or better",
+      "data_format_info": "COG, GeoTIFF",
+      "sar": null
+    },
+    "1797": {
+      "instrument_id": 1797,
+      "slug": "s-band-sar-novasar-1",
+      "name_short": "S-band SAR",
+      "name_full": "S-band SAR",
+      "instrument_types": "Imaging microwave radars",
+      "status": "Operational",
+      "maturity": null,
+      "operator": "UKSA (CSIRO)",
+      "spatial_resolution_best_m": 6,
+      "spatial_resolution_description": "ScanSAR: 20 m; Stripmap: 6m; ScanSAR Wide: 30 - 50m; Maritime 6x13.7 m",
+      "swath_width_max_km": 400,
+      "swath_width_description": "ScanSAR: 50 - 100 km; Stripmap: 13-20 km; ScanSAR Wide: 55 - 195 km; Maritime: 400 km",
+      "waveband_description": "S-band: 3.1-3.3 GHz",
+      "accuracy_description": "sub 50 m",
+      "data_format_info": "Spacecraft format - CCSDS\r\nBase deliverable format - GeoTIFF",
+      "sar": {
+        "band": "S-Band",
+        "centre_frequency_ghz": 3.2,
+        "polarisations": [
+          "HH",
+          "HV",
+          "VV"
+        ],
+        "polarisation_modes": [
+          "Single",
+          "Dual"
+        ],
+        "look_direction": "Both",
+        "imaging_modes": [
+          {
+            "name": "Maritime",
+            "code": "Maritime",
+            "azimuth_resolution_m": 13.7,
+            "range_resolution_m": 6,
+            "swath_km": 400,
+            "incidence_min_deg": 34.5,
+            "incidence_max_deg": 57.3,
+            "nesz_db": -9.7
+          },
+          {
+            "name": "ScanSAR 20m HH Full-Swath",
+            "code": "20m_ScanSAR_HH_Full",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 100,
+            "incidence_min_deg": 15,
+            "incidence_max_deg": 24.66,
+            "nesz_db": -20
+          },
+          {
+            "name": "ScanSAR 20m HH Half-Swath",
+            "code": "20m_ScanSAR_HH_Half",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 50,
+            "incidence_min_deg": 24.51,
+            "incidence_max_deg": 28.94,
+            "nesz_db": -21
+          },
+          {
+            "name": "ScanSAR 20m HH+HV",
+            "code": "20m_ScanSAR_HHHV",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 27,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": -20
+          },
+          {
+            "name": "ScanSAR 20m HH+VV",
+            "code": "20m_ScanSAR_HHVV",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 60,
+            "incidence_min_deg": 13.98,
+            "incidence_max_deg": 30.6,
+            "nesz_db": -20
+          },
+          {
+            "name": "ScanSAR 20m VV Full-Swath",
+            "code": "20m_ScanSAR_VV_Full",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 100,
+            "incidence_min_deg": 15,
+            "incidence_max_deg": 25.93,
+            "nesz_db": -20
+          },
+          {
+            "name": "ScanSAR 20m VV Half-Swath",
+            "code": "20m_ScanSAR_VV_Half",
+            "azimuth_resolution_m": 20,
+            "range_resolution_m": 20,
+            "swath_km": 50,
+            "incidence_min_deg": 24.51,
+            "incidence_max_deg": 32.01,
+            "nesz_db": -21
+          },
+          {
+            "name": "ScanSAR 30m 150 km SinglePol",
+            "code": "30m_ScanSAR_150km_HH/VV",
+            "azimuth_resolution_m": 30,
+            "range_resolution_m": 30,
+            "swath_km": 150,
+            "incidence_min_deg": 11.29,
+            "incidence_max_deg": 25.93,
+            "nesz_db": -21
+          },
+          {
+            "name": "ScanSAR 30m VV 55 km",
+            "code": "30m_ScanSAR_55km_VV",
+            "azimuth_resolution_m": 30,
+            "range_resolution_m": 30,
+            "swath_km": 55,
+            "incidence_min_deg": 27.35,
+            "incidence_max_deg": 32.01,
+            "nesz_db": -19.5
+          },
+          {
+            "name": "ScanSAR 30m VV+HH+HV Half-Swath",
+            "code": "30m_ScanSAR_56km_VVHHHV",
+            "azimuth_resolution_m": 30,
+            "range_resolution_m": 30,
+            "swath_km": 100,
+            "incidence_min_deg": 15,
+            "incidence_max_deg": 29.1,
+            "nesz_db": -27
+          },
+          {
+            "name": "ScanSAR 35m VV+HH+HV Full-Swath",
+            "code": "35m_ScanSAR_100km_VVHHHV",
+            "azimuth_resolution_m": 35,
+            "range_resolution_m": 35,
+            "swath_km": 100,
+            "incidence_min_deg": 14.39,
+            "incidence_max_deg": 29.08,
+            "nesz_db": -26
+          },
+          {
+            "name": "ScanSAR Wide 33m",
+            "code": "33m_ScanSAR_195km_HH",
+            "azimuth_resolution_m": 33,
+            "range_resolution_m": 33,
+            "swath_km": 195,
+            "incidence_min_deg": 11.82,
+            "incidence_max_deg": 30.26,
+            "nesz_db": null
+          },
+          {
+            "name": "ScanSAR Wide 40m",
+            "code": "40m_ScanSAR_195km_HV",
+            "azimuth_resolution_m": 40,
+            "range_resolution_m": 40,
+            "swath_km": 195,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": null
+          },
+          {
+            "name": "ScanSAR Wide 40m (CoCross)",
+            "code": "40m_CoCross_ScanSAR_Mid_HHHV",
+            "azimuth_resolution_m": 40,
+            "range_resolution_m": 40,
+            "swath_km": 195,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": null
+          },
+          {
+            "name": "ScanSAR Wide 45m",
+            "code": "45m_ScanSAR_195km_HHHV",
+            "azimuth_resolution_m": 45,
+            "range_resolution_m": 45,
+            "swath_km": 195,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": null
+          },
+          {
+            "name": "ScanSAR Wide 50m",
+            "code": "50m_ScanSAR_195km_HHHV",
+            "azimuth_resolution_m": 50,
+            "range_resolution_m": 50,
+            "swath_km": 195,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": null
+          },
+          {
+            "name": "ScanSAR Wide 50m (Co6+Cross1)",
+            "code": "50m_Co6+Cross1_ScanSAR_195km_HHHV",
+            "azimuth_resolution_m": 50,
+            "range_resolution_m": 50,
+            "swath_km": 195,
+            "incidence_min_deg": 12.95,
+            "incidence_max_deg": 31.18,
+            "nesz_db": null
+          },
+          {
+            "name": "Stripmap HH",
+            "code": "6m_Stripmap_HH",
+            "azimuth_resolution_m": 6,
+            "range_resolution_m": 6,
+            "swath_km": 20,
+            "incidence_min_deg": 16,
+            "incidence_max_deg": 25.38,
+            "nesz_db": null
+          },
+          {
+            "name": "Stripmap VV",
+            "code": "6m_Stripmap_VV",
+            "azimuth_resolution_m": 6,
+            "range_resolution_m": 6,
+            "swath_km": 20,
+            "incidence_min_deg": 21.29,
+            "incidence_max_deg": 31.2,
+            "nesz_db": null
+          }
+        ],
+        "source": "2026 Extended Parameters Survey (SSTL, 2026-09-08)"
+      }
+    },
+    "2231": {
+      "instrument_id": 2231,
+      "slug": "earthdaily-imager",
+      "name_short": "EarthDaily Imager",
+      "name_full": "EarthDaily Imager",
+      "instrument_types": "High resolution optical imagers",
+      "status": "Operational",
+      "maturity": "Low Heritage",
+      "operator": "EarthDaily",
+      "spatial_resolution_best_m": 5,
+      "spatial_resolution_description": "5 m",
+      "swath_width_max_km": null,
+      "swath_width_description": null,
+      "waveband_description": "22 spectral bands: 6 VIS, 6 NIR, 6 SWIR, 4 TIR",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": null
+    },
+    "2254": {
+      "instrument_id": 2254,
+      "slug": "strix-sar",
+      "name_short": "StriX SAR 1st Gen",
+      "name_full": "StriX Synthetic Aperture Radar 1st Gen",
+      "instrument_types": "Imaging microwave radars",
+      "status": "No longer operational",
+      "maturity": "Medium Heritage",
+      "operator": "Synspective",
+      "spatial_resolution_best_m": 0.9,
+      "spatial_resolution_description": "slant_res x azimuth_res Stripmap SM: 1.8m x 2.6m;  Sliding Spotlight SL 1: 0.5m x 0.9m",
+      "swath_width_max_km": 20,
+      "swath_width_description": "Stripmap: 20 x 50 km  Sliding Spotlight: 10km x 10km",
+      "waveband_description": "9.65 GHz (X-band); up to 300 MHz bandwidth",
+      "accuracy_description": null,
+      "data_format_info": null,
+      "sar": {
+        "band": "X-Band",
+        "centre_frequency_ghz": 9.65,
+        "polarisations": [
+          "VV"
+        ],
+        "polarisation_modes": [
+          "Single"
+        ],
+        "look_direction": null,
+        "imaging_modes": [
+          {
+            "name": "Sliding Spotlight",
+            "code": "SL",
+            "azimuth_resolution_m": 0.9,
+            "range_resolution_m": 0.9,
+            "swath_km": 10,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": -15.4
+          },
+          {
+            "name": "Stripmap",
+            "code": "SM",
+            "azimuth_resolution_m": 2.6,
+            "range_resolution_m": 3.6,
+            "swath_km": 20,
+            "incidence_min_deg": null,
+            "incidence_max_deg": null,
+            "nesz_db": -21.7
+          }
+        ],
+        "source": "Synspective SAR data page (synspective.com) + eoPortal StriX article; ARD context: Synspective StriX Series NRB CEOS-ARD self-assessment v1.2 (ceos.org/ard)"
+      }
+    },
+    "2264": {
+      "instrument_id": 2264,
+      "slug": "thermal-imager-constellr",
+      "name_short": "Thermal Imager (Constellr)",
+      "name_full": "Thermal Imager (Constellr)",
+      "instrument_types": "Imaging multi-spectral radiometers (vis/IR)",
+      "status": "Operational",
+      "maturity": "Medium Heritage",
+      "operator": "constellr",
+      "spatial_resolution_best_m": 10,
+      "spatial_resolution_description": "LSTprecision: 30m, LSTzoom: 10m, LSTfusion: 30m",
+      "swath_width_max_km": 110,
+      "swath_width_description": "LSTprecision: 17.5km, LSTzoom: 17.5km, LSTfusion: 110 km",
+      "waveband_description": "Four thermal bands",
+      "accuracy_description": "LSTprecision: <1-2K with 0.03K NEDT, LSTzoom: <3K, LSTfusion: <5K",
+      "data_format_info": null,
+      "sar": null
+    }
+  },
+  "missions": {
+    "88": {
+      "mission_id": 88,
+      "slug": "landsat-4",
+      "acronym": "Landsat 4",
+      "full_name": "Landsat 4",
+      "status": "Mission complete",
+      "launch_date": "1982-07-16",
+      "eol_date": "1993-08-01",
+      "lead_agency": "USGS",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 705,
+      "orbit_inclination_deg": 98.2,
+      "orbit_lst": null,
+      "repeat_cycle_days": 16,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-4-and-5",
+      "mission_url": null,
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "226": {
+      "mission_id": 226,
+      "slug": "landsat-5",
+      "acronym": "Landsat 5",
+      "full_name": "Landsat 5",
+      "status": "Mission complete",
+      "launch_date": "1984-03-01",
+      "eol_date": "2013-06-05",
+      "lead_agency": "USGS",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 705,
+      "orbit_inclination_deg": 98.2,
+      "orbit_lst": "10:00",
+      "repeat_cycle_days": 16,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-4-and-5",
+      "mission_url": null,
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "253": {
+      "mission_id": 253,
+      "slug": "spot-5",
+      "acronym": "SPOT-5",
+      "full_name": "Satellite Pour l'Observation de la Terre - 5",
+      "status": "Mission complete",
+      "launch_date": "2002-05-04",
+      "eol_date": "2015-03-30",
+      "lead_agency": "CNES / Spot Image",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 832,
+      "orbit_inclination_deg": 98.7,
+      "orbit_lst": "10:30",
+      "repeat_cycle_days": 26,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/spot-5",
+      "mission_url": "https://cnes.fr/en/projects/spot",
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "349": {
+      "mission_id": 349,
+      "slug": "landsat-7",
+      "acronym": "Landsat 7",
+      "full_name": "Landsat 7",
+      "status": "Mission complete",
+      "launch_date": "1999-04-15",
+      "eol_date": "2024-01-19",
+      "lead_agency": "USGS",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 697,
+      "orbit_inclination_deg": 98.2,
+      "orbit_lst": "08:00",
+      "repeat_cycle_days": 16,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-7",
+      "mission_url": "https://www.usgs.gov/landsat-missions/landsat-7",
+      "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-7",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/landsat-7/landsat-7-512px.png",
+        "icon": "/images/satellites/landsat-7/landsat-7-icon.svg",
+        "photo_512": "/images/satellites/landsat-7/landsat-7-photo-cut-512px.png",
+        "credit": {
+          "rights_holder": "NASA",
+          "license": "Public domain",
+          "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Landsat_7_Satellite_3D_Render.png",
+          "modified": true
+        }
+      }
+    },
+    "547": {
+      "mission_id": 547,
+      "slug": "landsat-8",
+      "acronym": "Landsat 8",
+      "full_name": "Landsat 8",
+      "status": "Operational (nominal)",
+      "launch_date": "2013-02-11",
+      "eol_date": "2030-12-31",
+      "lead_agency": "USGS",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 705,
+      "orbit_inclination_deg": 98.2,
+      "orbit_lst": "10:11",
+      "repeat_cycle_days": 16,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-8-ldcm",
+      "mission_url": "https://www.usgs.gov/landsat-missions/landsat-8",
+      "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-8",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/landsat-8/landsat-8-512px.png",
+        "icon": "/images/satellites/landsat-8/landsat-8-icon.svg",
+        "photo_512": "/images/satellites/landsat-8/landsat-8-photo-cut-512px.png",
+        "credit": {
+          "rights_holder": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+          "license": "Public domain",
+          "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "source_url": "https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png",
+          "modified": true
+        }
+      }
+    },
+    "552": {
+      "mission_id": 552,
+      "slug": "sentinel-2-a",
+      "acronym": "Sentinel-2 A",
+      "full_name": "Sentinel-2 A",
+      "status": "Operational (extended)",
+      "launch_date": "2015-06-23",
+      "eol_date": "2026-12-31",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 786,
+      "orbit_inclination_deg": 98.62,
+      "orbit_lst": "10:30",
+      "repeat_cycle_days": 10,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+      "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-2/sentinel-2-512px.png",
+        "icon": "/images/satellites/sentinel-2/sentinel-2-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "553": {
+      "mission_id": 553,
+      "slug": "sentinel-2-b",
+      "acronym": "Sentinel-2 B",
+      "full_name": "Sentinel-2 B",
+      "status": "Operational (nominal)",
+      "launch_date": "2017-03-06",
+      "eol_date": "2027-04-30",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 786,
+      "orbit_inclination_deg": 98.62,
+      "orbit_lst": "10:30",
+      "repeat_cycle_days": 10,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+      "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-2/sentinel-2-512px.png",
+        "icon": "/images/satellites/sentinel-2/sentinel-2-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "575": {
+      "mission_id": 575,
+      "slug": "sentinel-1-a",
+      "acronym": "Sentinel-1 A",
+      "full_name": "Sentinel-1 A",
+      "status": "Mission complete",
+      "launch_date": "2014-04-03",
+      "eol_date": "2026-06-29",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 693,
+      "orbit_inclination_deg": 98.19,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-1/sentinel-1-512px.png",
+        "icon": "/images/satellites/sentinel-1/sentinel-1-icon.svg",
+        "photo_512": "/images/satellites/sentinel-1/sentinel-1-photo-cut-512px.png",
+        "credit": {
+          "rights_holder": "Rama",
+          "license": "CC BY-SA 2.0 fr",
+          "license_url": "https://creativecommons.org/licenses/by-sa/2.0/fr/",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+          "modified": true
+        }
+      }
+    },
+    "576": {
+      "mission_id": 576,
+      "slug": "sentinel-1-b",
+      "acronym": "Sentinel-1 B",
+      "full_name": "Sentinel-1 B",
+      "status": "Mission complete",
+      "launch_date": "2016-04-25",
+      "eol_date": "2022-08-03",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 693,
+      "orbit_inclination_deg": 98.19,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "mission_url": "https://sentiwiki.copernicus.eu/web/s1-mission",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-1/sentinel-1-512px.png",
+        "icon": "/images/satellites/sentinel-1/sentinel-1-icon.svg",
+        "photo_512": "/images/satellites/sentinel-1/sentinel-1-photo-cut-512px.png",
+        "credit": {
+          "rights_holder": "Rama",
+          "license": "CC BY-SA 2.0 fr",
+          "license_url": "https://creativecommons.org/licenses/by-sa/2.0/fr/",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+          "modified": true
+        }
+      }
+    },
+    "577": {
+      "mission_id": 577,
+      "slug": "sentinel-1-c",
+      "acronym": "Sentinel-1 C",
+      "full_name": "Sentinel-1 C",
+      "status": "Operational (nominal)",
+      "launch_date": "2024-12-05",
+      "eol_date": "2034-12-04",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 693,
+      "orbit_inclination_deg": 98.19,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-1c/sentinel-1c-512px.png",
+        "icon": "/images/satellites/sentinel-1c/sentinel-1c-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "584": {
+      "mission_id": 584,
+      "slug": "rcm-1",
+      "acronym": "RCM-1",
+      "full_name": "RADARSAT CONSTELLATION MISSION-1",
+      "status": "Operational (nominal)",
+      "launch_date": "2019-06-12",
+      "eol_date": "2027-12-31",
+      "lead_agency": "CSA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 600,
+      "orbit_inclination_deg": 97.7,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
+      "mission_url": null,
+      "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-sar/generic-sar-512px.png",
+        "icon": "/images/satellites/generic-sar/generic-sar-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-sar",
+          "modified": false
+        }
+      }
+    },
+    "585": {
+      "mission_id": 585,
+      "slug": "rcm-2",
+      "acronym": "RCM-2",
+      "full_name": "RADARSAT CONSTELLATION MISSION-2",
+      "status": "Operational (nominal)",
+      "launch_date": "2019-06-12",
+      "eol_date": "2027-12-31",
+      "lead_agency": "CSA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 600,
+      "orbit_inclination_deg": 97.7,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
+      "mission_url": null,
+      "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-sar/generic-sar-512px.png",
+        "icon": "/images/satellites/generic-sar/generic-sar-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-sar",
+          "modified": false
+        }
+      }
+    },
+    "586": {
+      "mission_id": 586,
+      "slug": "rcm-3",
+      "acronym": "RCM-3",
+      "full_name": "RADARSAT CONSTELLATION MISSION-3",
+      "status": "Operational (nominal)",
+      "launch_date": "2019-06-12",
+      "eol_date": "2027-12-31",
+      "lead_agency": "CSA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 600,
+      "orbit_inclination_deg": 97.7,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
+      "mission_url": null,
+      "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-sar/generic-sar-512px.png",
+        "icon": "/images/satellites/generic-sar/generic-sar-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-sar",
+          "modified": false
+        }
+      }
+    },
+    "600": {
+      "mission_id": 600,
+      "slug": "enmap",
+      "acronym": "EnMAP",
+      "full_name": "Environmental Mapping & Analysis Program",
+      "status": "Operational (extended)",
+      "launch_date": "2022-04-01",
+      "eol_date": "2027-12-31",
+      "lead_agency": "DLR",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 650,
+      "orbit_inclination_deg": null,
+      "orbit_lst": "11:00",
+      "repeat_cycle_days": 21,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/enmap",
+      "mission_url": null,
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "629": {
+      "mission_id": 629,
+      "slug": "alos-2",
+      "acronym": "ALOS-2",
+      "full_name": "Advanced Land Observing Satellite-2",
+      "status": "Operational (extended)",
+      "launch_date": "2014-05-24",
+      "eol_date": "2028-03-31",
+      "lead_agency": "JAXA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 628,
+      "orbit_inclination_deg": 97.9,
+      "orbit_lst": "12:00",
+      "repeat_cycle_days": 14,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/alos-2",
+      "mission_url": "https://global.jaxa.jp/projects/sat/alos2/index.html",
+      "data_site_url": "https://gportal.jaxa.jp/gpr/?lang=en",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/alos-2/alos-2-512px.png",
+        "icon": "/images/satellites/alos-2/alos-2-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "712": {
+      "mission_id": 712,
+      "slug": "risat-1a",
+      "acronym": "RISAT-1A",
+      "full_name": "Radar Imaging Satellite",
+      "status": "Operational (nominal)",
+      "launch_date": "2022-02-14",
+      "eol_date": "2027-02-14",
+      "lead_agency": "ISRO",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 610,
+      "orbit_inclination_deg": 97.844,
+      "orbit_lst": "6:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/risat-1",
+      "mission_url": "https://www.isro.gov.in/",
+      "data_site_url": null,
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/risat-1a/risat-1a-512px.png",
+        "icon": "/images/satellites/risat-1a/risat-1a-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "737": {
+      "mission_id": 737,
+      "slug": "proba-v",
+      "acronym": "PROBA-V",
+      "full_name": "PROBA-V",
+      "status": "Mission complete",
+      "launch_date": "2013-05-07",
+      "eol_date": "2021-10-31",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 820,
+      "orbit_inclination_deg": 98.73,
+      "orbit_lst": "10:30 to 11:30",
+      "repeat_cycle_days": 2,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/proba-v",
+      "mission_url": "https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Proba_Missions",
+      "data_site_url": "https://dataspace.copernicus.eu/proba-v",
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "772": {
+      "mission_id": 772,
+      "slug": "landsat-9",
+      "acronym": "Landsat 9",
+      "full_name": "Landsat 9",
+      "status": "Operational (nominal)",
+      "launch_date": "2021-09-27",
+      "eol_date": "2038-12-31",
+      "lead_agency": "USGS",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Descending",
+      "orbit_altitude_km": 705,
+      "orbit_inclination_deg": 98.2,
+      "orbit_lst": "10:11",
+      "repeat_cycle_days": 16,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-9",
+      "mission_url": "https://www.usgs.gov/landsat-missions/landsat-9",
+      "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-9",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/landsat-9/landsat-9-512px.png",
+        "icon": "/images/satellites/landsat-9/landsat-9-icon.svg",
+        "photo_512": "/images/satellites/landsat-9/landsat-9-photo-cut-512px.png",
+        "credit": {
+          "rights_holder": "NASA/Ross Walter",
+          "license": "Public domain",
+          "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_5.png",
+          "modified": true
+        }
+      }
+    },
+    "776": {
+      "mission_id": 776,
+      "slug": "desis-on-iss",
+      "acronym": "DESIS-on-ISS",
+      "full_name": "DLR Earth Sensing Imaging Spectrometer for MUSES",
+      "status": "Operational (extended)",
+      "launch_date": "2018-06-29",
+      "eol_date": "2027-12-31",
+      "lead_agency": "DLR",
+      "orbit_type": "Inclined, non-sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 407,
+      "orbit_inclination_deg": 51.6,
+      "orbit_lst": "2023-05-03T10:55:45.134+0100",
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/iss-muses",
+      "mission_url": null,
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    },
+    "814": {
+      "mission_id": 814,
+      "slug": "sentinel-1-d",
+      "acronym": "Sentinel-1 D",
+      "full_name": "Sentinel-1 D",
+      "status": "Operational (nominal)",
+      "launch_date": "2025-11-04",
+      "eol_date": "2035-10-29",
+      "lead_agency": "ESA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 693,
+      "orbit_inclination_deg": 98.19,
+      "orbit_lst": "18:00",
+      "repeat_cycle_days": 12,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "mission_url": "https://www.copernicus.eu/en/media/image-day-gallery/copernicus-sentinel-1d-new-eu-satellite-orbit",
+      "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/sentinel-1c/sentinel-1c-512px.png",
+        "icon": "/images/satellites/sentinel-1c/sentinel-1c-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "856": {
+      "mission_id": 856,
+      "slug": "novasar-1",
+      "acronym": "NovaSAR-1",
+      "full_name": "NovaSAR-1",
+      "status": "Operational (nominal)",
+      "launch_date": "2018-09-16",
+      "eol_date": "2026-12-31",
+      "lead_agency": "UKSA",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": "Ascending",
+      "orbit_altitude_km": 591,
+      "orbit_inclination_deg": 97.7,
+      "orbit_lst": "8:56",
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/novasar-1",
+      "mission_url": "https://www.sstl.co.uk/space-portfolio/launched-missions/2010-2019",
+      "data_site_url": "https://data.novasar.csiro.au/",
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/novasar-1/novasar-1-512px.png",
+        "icon": "/images/satellites/novasar-1/novasar-1-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "1357": {
+      "mission_id": 1357,
+      "slug": "strix-a",
+      "acronym": "StriX-a",
+      "full_name": "Strix Alpha",
+      "status": "Mission complete",
+      "launch_date": "2020-12-15",
+      "eol_date": "2023-10-31",
+      "lead_agency": "Synspective",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": null,
+      "orbit_altitude_km": 500,
+      "orbit_inclination_deg": 97.3,
+      "orbit_lst": null,
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/synspective",
+      "mission_url": "https://synspective.com/satellite/strix-constellation/",
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-sar/generic-sar-512px.png",
+        "icon": "/images/satellites/generic-sar/generic-sar-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-sar",
+          "modified": false
+        }
+      }
+    },
+    "1358": {
+      "mission_id": 1358,
+      "slug": "strix",
+      "acronym": "StriX-ß",
+      "full_name": "Strix Beta",
+      "status": "Mission complete",
+      "launch_date": "2022-03-01",
+      "eol_date": "2026-04-16",
+      "lead_agency": "Synspective",
+      "orbit_type": "Inclined, non-sun-synchronous",
+      "orbit_sense": null,
+      "orbit_altitude_km": 561,
+      "orbit_inclination_deg": 91,
+      "orbit_lst": null,
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/synspective",
+      "mission_url": "https://synspective.com/satellite/strix-constellation/",
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-sar/generic-sar-512px.png",
+        "icon": "/images/satellites/generic-sar/generic-sar-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-sar",
+          "modified": false
+        }
+      }
+    },
+    "1514": {
+      "mission_id": 1514,
+      "slug": "earthdaily",
+      "acronym": "EarthDaily",
+      "full_name": "EarthDaily Constellation",
+      "status": "Operational (nominal)",
+      "launch_date": "2025-06-23",
+      "eol_date": "2036-07-07",
+      "lead_agency": "EarthDaily",
+      "orbit_type": "Sun-synchronous",
+      "orbit_sense": null,
+      "orbit_altitude_km": 630,
+      "orbit_inclination_deg": 97.5,
+      "orbit_lst": null,
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/earthdaily",
+      "mission_url": "https://earthdaily.com/constellation",
+      "data_site_url": null,
+      "visual": {
+        "kind": "specific",
+        "caption": null,
+        "colour_512": "/images/satellites/earthdaily-constellation/earthdaily-constellation-512px.png",
+        "icon": "/images/satellites/earthdaily-constellation/earthdaily-constellation-icon.svg",
+        "photo_512": null,
+        "credit": null
+      }
+    },
+    "1542": {
+      "mission_id": 1542,
+      "slug": "hive-constellation",
+      "acronym": "HiVE Constellation",
+      "full_name": "High-precision Versatile Ecosphere",
+      "status": "Operational (nominal)",
+      "launch_date": "2025-01-14",
+      "eol_date": "2030-12-31",
+      "lead_agency": "constellr",
+      "orbit_type": null,
+      "orbit_sense": null,
+      "orbit_altitude_km": null,
+      "orbit_inclination_deg": null,
+      "orbit_lst": null,
+      "repeat_cycle_days": null,
+      "eoportal_url": "https://www.eoportal.org/satellite-missions/hive",
+      "mission_url": "https://www.constellr.com/",
+      "data_site_url": null,
+      "visual": {
+        "kind": "generic",
+        "caption": "Generic illustration. We do not yet hold an image of this spacecraft.",
+        "colour_512": "/images/satellites/generic-optical/generic-optical-512px.png",
+        "icon": "/images/satellites/generic-optical/generic-optical-icon.svg",
+        "photo_512": null,
+        "credit": {
+          "rights_holder": "CEOS MIM Database",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source_url": "https://github.com/ceos-capabilities/satellite-visuals/tree/main/satellites/generic-optical",
+          "modified": false
+        }
+      }
+    }
+  }
+}
