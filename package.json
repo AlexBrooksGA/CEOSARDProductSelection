@@ -19,7 +19,8 @@
     "parity:fixtures": "python legacy/streamlit-prototype/generate_parity_fixtures.py",
     "verify": "npm run check && npm run test && npm run build && npm run test:e2e",
     "build:sites": "node scripts/build-sites.mjs",
-    "test:hosting": "node tests/hosting/worker.test.mjs"
+    "test:hosting": "node tests/hosting/worker.test.mjs",
+    "build:artifact": "node scripts/build-artifact.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
