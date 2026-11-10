@@ -139,6 +139,13 @@ class Reader {
 		return this.value[key];
 	}
 
+	/** Reject keys the format does not define, so a typo cannot silently drop a value. */
+	only(keys: readonly string[]): this {
+		const unknown = Object.keys(this.value).filter((key) => !keys.includes(key));
+		if (unknown.length) this.errors.push(`${this.path} has unknown field${unknown.length === 1 ? '' : 's'}: ${unknown.join(', ')}`);
+		return this;
+	}
+
 	text(key: string): string {
 		const value = this.value[key];
 		if (typeof value !== 'string' || !value.trim()) {
@@ -160,20 +167,21 @@ class Reader {
 
 	date(key: string): string {
 		const value = this.text(key);
-		if (value && (!ISO_DATE.test(value) || Number.isNaN(Date.parse(`${value}T00:00:00Z`)))) this.errors.push(`${this.at(key)} must be an ISO date (YYYY-MM-DD)`);
+		const real = ISO_DATE.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+		if (value && !real) this.errors.push(`${this.at(key)} must be an ISO date (YYYY-MM-DD)`);
 		return value;
 	}
 
-	number(key: string, { min = -Infinity, integer = false }: { min?: number; integer?: boolean } = {}): number {
+	number(key: string, { min = -Infinity, integer = false, positive = false }: { min?: number; integer?: boolean; positive?: boolean } = {}): number {
 		const value = this.value[key];
-		if (typeof value !== 'number' || !Number.isFinite(value) || value < min || (integer && !Number.isInteger(value))) {
-			this.errors.push(`${this.at(key)} must be ${integer ? 'an integer' : 'a number'}${min > -Infinity ? ` ≥ ${min}` : ''}`);
+		if (typeof value !== 'number' || !Number.isFinite(value) || value < min || (positive && value <= 0) || (integer && !Number.isInteger(value))) {
+			this.errors.push(`${this.at(key)} must be ${integer ? 'an integer' : 'a number'}${positive ? ' > 0' : min > -Infinity ? ` ≥ ${min}` : ''}`);
 			return 0;
 		}
 		return value;
 	}
 
-	optionalNumber(key: string, options: { min?: number; integer?: boolean } = {}): number | null {
+	optionalNumber(key: string, options: { min?: number; integer?: boolean; positive?: boolean } = {}): number | null {
 		const value = this.value[key];
 		if (value === null || value === undefined) return null;
 		return this.number(key, options);
@@ -208,37 +216,53 @@ class Reader {
 	}
 }
 
+const KEYS = {
+	top: ['schema', 'data_status', 'status_note', 'report_id', 'report_date', 'product', 'pfs', 'scene', 'run', 'findings', 'findings_summary', 'geometric', 'radiometric', 'next_action', 'next_actions', 'scope_note'],
+	product: ['explorer_id', 'name', 'short_name'],
+	pfs: ['name', 'short_name', 'version', 'total_requirements'],
+	scene: ['product_id', 'platform', 'instrument', 'acquisition_date', 'path', 'row', 'reference_site', 'note'],
+	site: ['network', 'code', 'name'],
+	run: ['code', 'snapshot', 'reviewer', 'segments', 'note'],
+	segment: ['code', 'part', 'meaning'],
+	finding: ['requirement', 'id', 'threshold', 'goal', 'reason'],
+	geometric: ['label', 'method', 'reference', 'comparison', 'method_notes', 'pixel_size_m', 'radial_rmse_px', 'comparisons_px', 'limit_px', 'limit_source', 'matches_accepted', 'matches_total', 'positional_uncertainty', 'absolute_accuracy', 'numeric_test', 'requirement_result', 'requirement_reason'],
+	radiometric: ['label', 'method', 'reference', 'comparison', 'method_notes', 'units', 'headline_band', 'headline_band_name', 'bands', 'pixels_used', 'pixels_total', 'unique_exclusions', 'product_uncertainty', 'accuracy_test', 'accuracy_reason', 'uncertainty_goal', 'uncertainty_goal_reason'],
+	band: ['band', 'difference', 'uncertainty_k1']
+} as const;
+
 /** Validate a parsed report file. Throws `CqasReportError` listing every problem found. */
 export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 	const errors: string[] = [];
 	const r = Reader.object(errors, source, raw);
 	if (!r) throw new CqasReportError(errors.join('; '));
 	if (r.raw('schema') !== CQAS_SCHEMA) throw new CqasReportError(`${source}.schema must be "${CQAS_SCHEMA}"`);
+	r.only(KEYS.top);
 
-	const product = r.child('product');
-	const pfs = r.child('pfs');
-	const scene = r.child('scene');
-	const site = scene?.optionalChild('reference_site') ?? null;
-	const run = r.child('run');
-	const geo = r.child('geometric');
-	const rad = r.child('radiometric');
+	const product = r.child('product')?.only(KEYS.product);
+	const pfs = r.child('pfs')?.only(KEYS.pfs);
+	const scene = r.child('scene')?.only(KEYS.scene);
+	const site = scene?.optionalChild('reference_site')?.only(KEYS.site) ?? null;
+	const run = r.child('run')?.only(KEYS.run);
+	const geo = r.child('geometric')?.only(KEYS.geometric);
+	const rad = r.child('radiometric')?.only(KEYS.radiometric);
 
 	const explorerId = product?.text('explorer_id') ?? '';
 	if (explorerId && !ID_PATTERN.test(explorerId)) errors.push(`${source}.product.explorer_id is not a stable product ID`);
 
 	const findings: CqasFinding[] = r.list('findings', { minLength: 1 }).flatMap((item, index) => {
-		const f = Reader.object(errors, `${source}.findings[${index}]`, item);
+		const f = Reader.object(errors, `${source}.findings[${index}]`, item)?.only(KEYS.finding);
 		if (!f) return [];
 		return [{ requirement: f.text('requirement'), id: f.text('id'), threshold: f.oneOf('threshold', FINDING_STATUSES), goal: f.oneOf('goal', FINDING_STATUSES), reason: f.optionalText('reason') }];
 	});
 	const seenIds = new Set<string>();
 	for (const finding of findings) {
+		if (!finding.id) continue;
 		if (seenIds.has(finding.id)) errors.push(`${source}.findings has a duplicate requirement id: ${finding.id}`);
 		seenIds.add(finding.id);
 	}
 
 	const segments: CqasRunSegment[] = (run?.list('segments', { minLength: 1 }) ?? []).flatMap((item, index) => {
-		const s = Reader.object(errors, `${source}.run.segments[${index}]`, item);
+		const s = Reader.object(errors, `${source}.run.segments[${index}]`, item)?.only(KEYS.segment);
 		return s ? [{ code: s.text('code'), part: s.text('part'), meaning: s.text('meaning') }] : [];
 	});
 	const runCode = run?.text('code') ?? '';
@@ -253,9 +277,11 @@ export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 	}) as number[];
 
 	const bands: CqasBand[] = (rad?.list('bands', { minLength: 1 }) ?? []).flatMap((item, index) => {
-		const b = Reader.object(errors, `${source}.radiometric.bands[${index}]`, item);
+		const b = Reader.object(errors, `${source}.radiometric.bands[${index}]`, item)?.only(KEYS.band);
 		return b ? [{ band: b.text('band'), difference: b.number('difference'), uncertainty_k1: b.number('uncertainty_k1', { min: 0 }) }] : [];
 	});
+	const bandNames = bands.map((band) => band.band).filter(Boolean);
+	if (new Set(bandNames).size !== bandNames.length) errors.push(`${source}.radiometric.bands has duplicate band names`);
 	const headlineBand = rad?.text('headline_band') ?? '';
 	if (headlineBand && bands.length && !bands.some((band) => band.band === headlineBand)) errors.push(`${source}.radiometric.headline_band must name one of the bands`);
 
@@ -264,6 +290,8 @@ export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 		if (!ok) errors.push(`${source}.next_actions[${index}] must be non-empty text`);
 		return ok;
 	}) as string[];
+
+	if ((geo?.raw('limit_px') ?? null) !== null && (geo?.raw('limit_source') ?? null) === null) errors.push(`${source}.geometric.limit_source is required when limit_px is given`);
 
 	const total = pfs?.number('total_requirements', { min: 1, integer: true }) ?? 0;
 	if (total && findings.length > total) errors.push(`${source}.findings lists more requirements than pfs.total_requirements`);
@@ -302,7 +330,7 @@ export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 			reference: geo?.text('reference') ?? '',
 			comparison: geo?.text('comparison') ?? '',
 			method_notes: geo?.optionalText('method_notes') ?? null,
-			pixel_size_m: geo?.number('pixel_size_m', { min: 0 }) ?? 0,
+			pixel_size_m: geo?.number('pixel_size_m', { positive: true }) ?? 0,
 			radial_rmse_px: geo?.number('radial_rmse_px', { min: 0 }) ?? 0,
 			comparisons_px: comparisons,
 			limit_px: geo?.optionalNumber('limit_px', { min: 0 }) ?? null,
@@ -349,8 +377,10 @@ export interface CqasLoadResult {
 }
 
 /**
- * Validate every bundled report. Invalid files fail loudly (they are maintained in the repository);
- * a report for an unknown product is skipped with a warning; two reports for one product is an error.
+ * Validate every bundled report. A problem with one report never stops the explorer: an invalid
+ * file, a report for an unknown product, a file not named after its product, or a second report
+ * for the same product is skipped with a warning. `npm test` fails on any warning, so problems are
+ * still caught before release.
  */
 export function loadCqasReports(files: Record<string, unknown>, knownProductIds: Iterable<string>): CqasLoadResult {
 	const known = new Set(knownProductIds);
@@ -358,13 +388,26 @@ export function loadCqasReports(files: Record<string, unknown>, knownProductIds:
 	const warnings: string[] = [];
 	for (const [path, raw] of Object.entries(files).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) {
 		const name = path.split('/').pop() ?? path;
-		const report = parseCqasReport(raw, name);
+		let report: CqasReport;
+		try {
+			report = parseCqasReport(raw, name);
+		} catch (error) {
+			warnings.push(`C-QAS report ${name} is invalid and is not shown: ${error instanceof Error ? error.message : 'unreadable'}`);
+			continue;
+		}
 		const id = report.product.explorer_id;
 		if (!known.has(id)) {
 			warnings.push(`C-QAS report ${name} refers to unknown product ${id}; it is not shown.`);
 			continue;
 		}
-		if (reports[id]) throw new CqasReportError(`More than one C-QAS report refers to product ${id}.`);
+		if (name !== `${id}.json`) {
+			warnings.push(`C-QAS report ${name} must be named ${id}.json; it is not shown.`);
+			continue;
+		}
+		if (reports[id]) {
+			warnings.push(`More than one C-QAS report refers to product ${id}; ${name} is not shown.`);
+			continue;
+		}
 		reports[id] = report;
 	}
 	return { reports, warnings };
@@ -398,8 +441,9 @@ export function headlineBand(report: CqasReport): CqasBand {
 
 /** Signed value with a true minus sign, e.g. +0.006 / −0.002. */
 export function signed(value: number, digits = 3): string {
-	const sign = value > 0 ? '+' : value < 0 ? '−' : '';
-	return `${sign}${Math.abs(value).toFixed(digits)}`;
+	const rounded = Number(value.toFixed(digits));
+	const sign = rounded > 0 ? '+' : rounded < 0 ? '−' : '';
+	return `${sign}${Math.abs(rounded).toFixed(digits)}`;
 }
 
 export function formatNumber(value: number, digits = 1): string {
@@ -420,5 +464,5 @@ export function pfsVersionDiffers(report: CqasReport, assessedVersion: string | 
 /** One plain line for comparison tables and copied summaries. */
 export function cqasOneLine(report: CqasReport): string {
 	const band = headlineBand(report);
-	return `${thresholdHeadline(report)} selected Threshold rows (${report.findings.length} of ${report.pfs.total_requirements}); geometric ${formatNumber(report.geometric.radial_rmse_px, 2)} pixel radial RMSE; radiometric ${signed(band.difference)} SR difference (${band.band}) for one scene`;
+	return `${thresholdHeadline(report)} selected Threshold rows (${report.findings.length} of ${report.pfs.total_requirements}); geometric ${formatNumber(report.geometric.radial_rmse_px, 2)} pixel radial RMSE; radiometric ${signed(band.difference)} ${report.pfs.short_name} difference (${band.band}) for one scene`;
 }

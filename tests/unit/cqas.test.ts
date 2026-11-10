@@ -87,10 +87,48 @@ describe('C-QAS report format', () => {
 		expect(() => parseCqasReport(null)).toThrow(CqasReportError);
 	});
 
-	it('skips reports for unknown products and refuses two reports for one product', () => {
+	it('rejects unknown fields, impossible dates, a zero pixel size and duplicate bands', () => {
+		const bad = raw();
+		bad.geometric.limitpx = 0.5;
+		bad.findings[0].reasons = 'typo';
+		bad.scene.acquisition_date = '2026-02-30';
+		bad.geometric.pixel_size_m = 0;
+		bad.radiometric.bands[1].band = 'B2';
+		expect(() => parseCqasReport(bad)).toThrow(/geometric has unknown field: limitpx/);
+		expect(() => parseCqasReport(bad)).toThrow(/findings\[0\] has unknown field: reasons/);
+		expect(() => parseCqasReport(bad)).toThrow(/acquisition_date must be an ISO date/);
+		expect(() => parseCqasReport(bad)).toThrow(/pixel_size_m must be a number > 0/);
+		expect(() => parseCqasReport(bad)).toThrow(/duplicate band names/);
+		const limit = raw();
+		limit.geometric.limit_source = null;
+		expect(() => parseCqasReport(limit)).toThrow(/limit_source is required/);
+	});
+
+	it('never throws at runtime: bad, unknown, misnamed and duplicate reports are skipped with warnings', () => {
 		const unknown = raw();
 		unknown.product.explorer_id = 'not-in-catalogue';
-		expect(loadCqasReports({ '/data/cqas/x.json': unknown }, catalogueIds).warnings[0]).toMatch(/unknown product not-in-catalogue/);
-		expect(() => loadCqasReports({ '/a.json': raw(), '/b.json': raw() }, catalogueIds)).toThrow(/More than one/);
+		const invalid = raw();
+		invalid.data_status = 'final';
+		const result = loadCqasReports(
+			{
+				'/data/cqas/landsat-c2-sr.json': raw(),
+				'/data/cqas/not-in-catalogue.json': unknown,
+				'/data/cqas/sentinel2-level2a.json': invalid,
+				'/data/cqas/wrong-name.json': raw()
+			},
+			catalogueIds
+		);
+		expect(Object.keys(result.reports)).toEqual(['landsat-c2-sr']);
+		expect(result.warnings.join('\n')).toMatch(/unknown product not-in-catalogue/);
+		expect(result.warnings.join('\n')).toMatch(/sentinel2-level2a\.json is invalid/);
+		expect(result.warnings.join('\n')).toMatch(/wrong-name\.json must be named landsat-c2-sr\.json/);
+		const twice = loadCqasReports({ '/x/landsat-c2-sr.json': raw(), '/y/landsat-c2-sr.json': raw() }, catalogueIds);
+		expect(twice.warnings[0]).toMatch(/More than one/);
+	});
+
+	it('rounds before choosing a sign', () => {
+		expect(signed(0.0004)).toBe('0.000');
+		expect(signed(-0.0004)).toBe('0.000');
+		expect(signed(0.0006)).toBe('+0.001');
 	});
 });

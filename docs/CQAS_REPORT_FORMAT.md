@@ -16,12 +16,14 @@ A C-QAS report is **not** a CEOS-ARD assessment, does not establish collection-w
 
 ## Location and naming
 
-- Product Explorer: `data/cqas/<product-id>.json`, where `<product-id>` is the curated product's stable ID (for example `landsat-c2-sr`). Files are validated when the server starts and by `npm test`.
+- Product Explorer: `data/cqas/<product-id>.json`, where `<product-id>` is the curated product's stable ID (for example `landsat-c2-sr`).
 - Reporting demo: a copy at `cqas-report.json` in the repository root, embedded in `index.html`. `tools/sync-report.mjs` in that repository refreshes the embedded copy and fails if they differ.
+
+**Validation.** `npm test` fails if any report is invalid, has an unknown field, refers to a product that is not in the curated catalogue, is not named after its product, or duplicates another report. When the server starts, the same problems only skip that report with a logged warning, so a bad C-QAS file can never stop discovery, filtering or comparison.
 
 ## Fields
 
-Required unless marked *optional* (optional fields may be `null` or omitted). Dates are ISO `YYYY-MM-DD`.
+Required unless marked *optional* (optional fields may be `null` or omitted). Fields not listed here are rejected. Dates are real ISO calendar dates, `YYYY-MM-DD`.
 
 ### Top level
 
@@ -41,7 +43,7 @@ Required unless marked *optional* (optional fields may be `null` or omitted). Da
 
 | Field | Type | Meaning |
 |---|---|---|
-| `explorer_id` | stable ID | Product Explorer product ID. Must exist in the curated catalogue. |
+| `explorer_id` | stable ID | Product Explorer product ID. Must exist in the curated catalogue, and the file must be named `<explorer_id>.json`. |
 | `name` | text | Product name as checked (may be narrower than the catalogue record, e.g. one mission). |
 | `short_name` | text | Short label for headings. |
 
@@ -89,10 +91,10 @@ Required unless marked *optional* (optional fields may be `null` or omitted). Da
 |---|---|---|
 | `label`, `method`, `reference`, `comparison` | text | Test identity, method version, reference and comparison type. |
 | `method_notes` | text, *optional* | |
-| `pixel_size_m` | number | Native grid, used to convert pixels to metres. |
-| `radial_rmse_px` | number | Headline radial RMSE in pixels. |
+| `pixel_size_m` | number > 0 | Native grid, used to convert pixels to metres. |
+| `radial_rmse_px` | number | Headline radial RMSE in pixels, as reported by C-QAS over all accepted matches. It is not recomputed from `comparisons_px`. |
 | `comparisons_px` | list of numbers | Radial error of each comparison, in pixels (plotted). |
-| `limit_px`, `limit_source` | number, text, *optional* | Numeric limit and where it comes from (e.g. `PFS Threshold`). |
+| `limit_px`, `limit_source` | number, text, *optional* | Numeric limit and where it comes from (e.g. `PFS Threshold`). `limit_source` is required when `limit_px` is given. |
 | `matches_accepted`, `matches_total` | integers | Accepted ≤ total. |
 | `positional_uncertainty` | text, *optional* | `null` shows "not estimated". |
 | `absolute_accuracy`, `numeric_test`, `requirement_result` | `Met` \| `Not met` \| `Not assessed` | Absolute accuracy against an independent reference; the numeric limit test; the full PFS requirement. |
@@ -106,7 +108,7 @@ Required unless marked *optional* (optional fields may be `null` or omitted). Da
 | `method_notes` | text, *optional* | |
 | `units` | text | Reflectance units, e.g. `1`. |
 | `headline_band`, `headline_band_name` | text, text *optional* | Band shown in the headline; must be one of `bands`. |
-| `bands` | list | Each `{ band, difference, uncertainty_k1 }`: observed minus reference, and standard uncertainty at k = 1. Views derive k = 2 by doubling. |
+| `bands` | list | Each `{ band, difference, uncertainty_k1 }`, with unique band names: observed minus reference, and standard uncertainty at k = 1. Views derive k = 2 by doubling. |
 | `pixels_used`, `pixels_total` | integers | Used ≤ total. |
 | `unique_exclusions` | integer, *optional* | |
 | `product_uncertainty` | text, *optional* | `null` shows "missing". |

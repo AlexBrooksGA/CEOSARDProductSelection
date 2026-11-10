@@ -6,7 +6,7 @@
  * prototype did: the researched catalogue wins; demo + status overlay is a fallback only.
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
-import { CqasReportError, loadCqasReports, type CqasReport } from '$lib/domain/cqas';
+import { loadCqasReports, type CqasReport } from '$lib/domain/cqas';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
 import type { Product, Profile, ProvenanceIndex } from '$lib/domain/types';
 
@@ -50,12 +50,8 @@ function build(): BundledData {
 		const url = record.file ? logoFiles[`/assets/agency_logos/${record.file}`] : undefined;
 		if (url) agencyMarks[agency] = { url, monochrome: record.display_treatment === 'monochrome-dark' };
 	}
-	let cqas;
-	try {
-		cqas = loadCqasReports(cqasFiles, known);
-	} catch (error) {
-		throw new CatalogueError(error instanceof CqasReportError ? `C-QAS report is invalid: ${error.message}` : 'C-QAS reports could not be loaded.');
-	}
+	// A bad C-QAS file is skipped with a warning; it never takes down discovery or matching.
+	const cqas = loadCqasReports(cqasFiles, known);
 	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings };
 }
 
