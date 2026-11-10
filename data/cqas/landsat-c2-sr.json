@@ -1,0 +1,102 @@
+{
+  "schema": "cqas-report/1",
+  "data_status": "example",
+  "status_note": "Example findings and accuracy values. No scene has been assessed. The C-QAS metadata, geometric and radiometric test system is still being built.",
+  "report_id": "DEMO-L8-001",
+  "report_date": "2026-10-12",
+  "product": {
+    "explorer_id": "landsat-c2-sr",
+    "name": "Landsat 8 Collection 2 Level-2 Surface Reflectance",
+    "short_name": "Landsat 8 C2 Level-2 SR"
+  },
+  "pfs": {
+    "name": "Surface Reflectance",
+    "short_name": "SR",
+    "version": "5.0.2",
+    "total_requirements": 36
+  },
+  "scene": {
+    "product_id": "LC08_L2SP_040033_20251201_20251209_02_T1",
+    "platform": "Landsat 8",
+    "instrument": "OLI",
+    "acquisition_date": "2025-12-01",
+    "path": 40,
+    "row": 33,
+    "reference_site": { "network": "RadCalNet", "code": "RVUS", "name": "Railroad Valley Playa, USA" },
+    "note": "Example input scene from the original C-QAS report; not independently verified."
+  },
+  "run": {
+    "code": "C031-S502-G1-R1-D01",
+    "snapshot": "DEMO-01",
+    "reviewer": null,
+    "segments": [
+      { "code": "C031", "part": "Software", "meaning": "C-QAS processing software v0.3.1" },
+      { "code": "S502", "part": "Check set", "meaning": "Surface Reflectance PFS v5.0.2" },
+      { "code": "G1", "part": "Geometric method", "meaning": "demo-v1 · reference REF-L8-A" },
+      { "code": "R1", "part": "Radiometric method", "meaning": "demo-v1 · reference REF-SR-A" },
+      { "code": "D01", "part": "Snapshot", "meaning": "Assessment snapshot DEMO-01" }
+    ],
+    "note": "Mock code. It identifies the software and settings that produced these results."
+  },
+  "findings": [
+    { "requirement": "Metadata Machine Readability", "id": "meta-memare-optical", "threshold": "Met", "goal": "Met" },
+    { "requirement": "Data Collection Time", "id": "meta-time-sr", "threshold": "Met", "goal": "Not met" },
+    { "requirement": "Spectral Bands", "id": "meta-specband", "threshold": "Met", "goal": "Met" },
+    { "requirement": "Data Access", "id": "meta-daccess", "threshold": "Not met", "goal": "Not met", "reason": "Data Access DOI not supplied" },
+    { "requirement": "No Data", "id": "pxl-pinodat", "threshold": "Met", "goal": "Met" },
+    { "requirement": "Cloud", "id": "pxl-picloud", "threshold": "Met", "goal": "Not met" },
+    { "requirement": "Measurement", "id": "rac-measur-sr", "threshold": "Met", "goal": "Not met" },
+    { "requirement": "Measurement Uncertainty", "id": "rac-muncer-sr", "threshold": "Not required", "goal": "Not met", "reason": "Product uncertainty estimate missing" },
+    { "requirement": "Geometric Correction", "id": "gcor-geocorr-sr", "threshold": "Not met", "goal": "Not assessed", "reason": "Grid / coverage evidence missing" }
+  ],
+  "findings_summary": "2 Not met: Data Access and Geometric Correction. Both have missing supporting evidence.",
+  "geometric": {
+    "label": "DEMO-G1",
+    "method": "demo-v1",
+    "reference": "REF-L8-A",
+    "comparison": "Same-platform repeat image",
+    "method_notes": "original offsets",
+    "pixel_size_m": 30,
+    "radial_rmse_px": 0.42,
+    "comparisons_px": [0.31, 0.45, 0.40, 0.47, 0.36, 0.42],
+    "limit_px": 0.5,
+    "limit_source": "PFS Threshold",
+    "matches_accepted": 96,
+    "matches_total": 120,
+    "positional_uncertainty": null,
+    "absolute_accuracy": "Not assessed",
+    "numeric_test": "Met",
+    "requirement_result": "Not met",
+    "requirement_reason": "grid / coverage evidence missing"
+  },
+  "radiometric": {
+    "label": "DEMO-R1",
+    "method": "demo-v1",
+    "reference": "REF-SR-A",
+    "comparison": "Observed minus surface reference",
+    "method_notes": "spectral response matched; time gap 120 s; 150 × 150 m",
+    "units": "1",
+    "headline_band": "B4",
+    "headline_band_name": "red",
+    "bands": [
+      { "band": "B2", "difference": 0.003, "uncertainty_k1": 0.004 },
+      { "band": "B3", "difference": 0.008, "uncertainty_k1": 0.005 },
+      { "band": "B4", "difference": 0.006, "uncertainty_k1": 0.004 },
+      { "band": "B5", "difference": -0.002, "uncertainty_k1": 0.006 }
+    ],
+    "pixels_used": 18,
+    "pixels_total": 25,
+    "unique_exclusions": 7,
+    "product_uncertainty": null,
+    "accuracy_test": "Not assessed",
+    "accuracy_reason": "no agreed limit",
+    "uncertainty_goal": "Not met",
+    "uncertainty_goal_reason": "product estimate missing"
+  },
+  "next_action": "Supply the Data Access DOI and grid / coverage evidence.",
+  "next_actions": [
+    "Supply the Data Access DOI.",
+    "Review geometric coverage, grid and uncertainty evidence."
+  ],
+  "scope_note": "A C-QAS check describes one scene and its reference comparisons. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}
