@@ -24,6 +24,14 @@ export interface Fact {
 	missing?: { kind: MissingKind; text: string } | null;
 	/** True when the value is shown for context only and is never used for matching. */
 	displayOnly?: boolean;
+	/** True when the value comes from the CEOS MIM database (shown with a purple asterisk). */
+	mim?: boolean;
+}
+
+/** Use a MIM value only where the curated record has none; the curated value always wins. */
+export function withMimFill(fact: Fact, fill: { value: string; basis: string } | null): Fact {
+	if (fact.value || !fill) return fact;
+	return { ...fact, value: fill.value, basis: fill.basis, note: null, missing: null, mim: true };
 }
 
 const BASIS_LABELS: Record<string, string> = {

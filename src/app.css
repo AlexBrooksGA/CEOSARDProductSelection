@@ -60,6 +60,8 @@
 	--cat-ar: #1f6670;
 	--cat-ntl: #6a5a86;
 	--cat-other: #5a646c;
+	/* CEOS MIM database marker (purple asterisk); distinct from the Night-time Lights family colour. */
+	--mim: #7c3aed;
 	color-scheme: light;
 }
 
@@ -101,6 +103,7 @@
 		--cat-ar: #79d0d8;
 		--cat-ntl: #c4b2e6;
 		--cat-other: #a8b6d0;
+		--mim: #c4b5fd;
 		color-scheme: dark;
 	}
 }
@@ -142,6 +145,7 @@
 	--cat-ar: #79d0d8;
 	--cat-ntl: #c4b2e6;
 	--cat-other: #a8b6d0;
+	--mim: #c4b5fd;
 	color-scheme: dark;
 }
 
@@ -850,4 +854,15 @@ fieldset {
 		background: #fff;
 		color: #000;
 	}
+}
+
+/* ----------------------------------------------------------------- CEOS MIM database marker */
+
+.mim-mark {
+	margin-left: 2px;
+	color: var(--mim);
+	font-weight: 700;
+	font-size: 0.9em;
+	line-height: 0;
+	cursor: help;
 }

@@ -114,6 +114,19 @@ Journey-managed settings are the measurement family, `spatial_resolution_m` and 
 
 **Imagery.** One AI-generated fictional wetland scene with a depth map (masters, prompt, provenance and terms in `assets/purpose-imagery/`: `SOURCE.txt`, `PROMPT.txt`, `manifest.json`). `tools/build_purpose_imagery.py` turns the masters into `static/images/purpose-journey/`: optical, radar and thermal looks at 1280/1920/2560 px plus 720/1080 px portrait crops (WebP), 160 × 90 coarse versions (PNG) and a smoothed 1024 × 576 depth texture. The radar and thermal looks are stylisations derived from the optical picture, not data. On desktops with a fine pointer, `depth-scene.ts` (WebGL, no dependencies) draws the scene full-bleed in a sticky stage and displaces it by the depth map as the cursor and scroll move; looks crossfade (520 ms), "broad patterns" pixelates, and the neutral state is a navy/teal duotone. Touch devices, reduced motion, missing WebGL, a failed texture or a lost context get a still `<picture>` with the same framing; a failed image leaves the navy gradient. The WebGL scene requests the same file the still image's `srcset` picks, so the first view loads about 330–450 KB on desktop and 220 KB on a phone. The *Illustrative imagery* button says the pictures are AI-generated, stylised and not evidence.
 
+## CEOS MIM database values (purple asterisk)
+
+Curated products are linked to the CEOS MIM database through `data/mim/links.json`; `data/mim/snapshot.json` holds the linked records (see the README). Curated values always take precedence.
+
+| Where | What MIM adds |
+|---|---|
+| Product page | A **Missions and instruments** panel (`MimPanel`): constellation, missions (status, launch and end of life, lead agency, orbit, repeat cycle, links), instruments (type, operator, resolution, swath, wavebands, declared accuracy, measurements, radar parameters and imaging modes) and the MIM product record. MIM-only access, documentation and peer-review links appear under *Access, documentation and samples*. |
+| Gap fills | Swath width, sensor or instrument type, data format and finest instrument resolution, only where the curated record has no value (`withMimFill`). |
+| Comparison | The same gap fills, plus *Mission status* and *Mission years* rows under *Missions and instruments*. |
+| Copied summary | A *Missions* line per shortlisted product and a source line. |
+
+Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim`), with a text alternative and tooltip; a footnote (`MimFootnote`) gives the attribution, edition, data date and CC BY 4.0 licence. MIM values are display only: they never enter filtering, matching, ordering or the URL. The layout sends a compact summary per product; the product page loads full details on the server.
+
 ## C-QAS quality checks (proposed)
 
 Product pages for products with a C-QAS report show a **C-QAS quality checks** section after the three concept panels, a header badge and a cross-reference in *Measured quality evidence*.

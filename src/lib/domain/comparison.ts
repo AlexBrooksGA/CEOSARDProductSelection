@@ -20,8 +20,10 @@ import {
 	spatialFact,
 	textFact,
 	updateFrequencyFact,
+	withMimFill,
 	type Fact
 } from './facts';
+import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimMissionStatusText, mimMissionYearsText, mimSwathFill, type MimSummary } from './mim';
 import { criterionReasons } from './presentation';
 import { CHECK_OUTCOME_LABELS, checkActions, productMeasurementNote, type CheckOutcome, type Guidance, type PurposeAnswers, type ResolvedCheck } from './purpose';
 import { evaluateProduct } from './matching';
@@ -36,6 +38,8 @@ export interface ComparisonCell {
 	link?: { label: string; url: string } | null;
 	links?: { label: string; url: string; internal?: boolean }[];
 	state?: 'met' | 'outside' | 'unknown';
+	/** Value from the CEOS MIM database (purple asterisk). */
+	mim?: boolean;
 }
 
 export interface ComparisonRow {
@@ -67,7 +71,8 @@ function factCell(fact: Fact): ComparisonCell {
 	return {
 		text: fact.value,
 		missingText: fact.missing?.text,
-		detail: [fact.basis, fact.note].filter(Boolean).join(' · ') || null
+		detail: [fact.basis, fact.note].filter(Boolean).join(' · ') || null,
+		...(fact.mim ? { mim: true } : {})
 	};
 }
 
@@ -101,9 +106,12 @@ export function buildComparison(
 	optionalGroups: string[],
 	provenance: Record<string, Record<string, ProvenanceRow>> = {},
 	purpose: ComparisonPurpose | null = null,
-	cqas: ComparisonCqas | null = null
+	cqas: ComparisonCqas | null = null,
+	/** CEOS MIM database summaries by product ID; used only to fill gaps and add mission rows. */
+	mimSummaries: Record<string, MimSummary> = {}
 ): ComparisonGroup[] {
 	const prov = (product: Product) => provenance[product.id];
+	const mim = (product: Product) => mimSummaries[product.id] ?? null;
 	const groups: ComparisonGroup[] = [];
 
 	const active = activeCriteria(criteria);
@@ -244,7 +252,7 @@ export function buildComparison(
 		description: 'External provider portals perform the next area, period and access checks. This explorer does not download or validate imagery.',
 		optional: false,
 		rows: [
-			row('format', 'Data format', products.map((p) => factCell(textFact(p, 'Data format', 'data_format', prov(p))))),
+			row('format', 'Data format', products.map((p) => factCell(withMimFill(textFact(p, 'Data format', 'data_format', prov(p)), mimFormatFill(mim(p)))))),
 			row(
 				'access',
 				'Access',
@@ -268,7 +276,7 @@ export function buildComparison(
 				row('crs', 'Coordinate reference system', products.map((p) => factCell(textFact(p, '', 'coordinate_system', prov(p))))),
 				row('encoding', 'Output encoding', products.map((p) => factCell(outputEncodingFact(p, prov(p))))),
 				row('bits', 'Radiometric bit depth', products.map((p) => factCell(bitDepthFact(p, prov(p))))),
-				row('swath', 'Swath width', products.map((p) => factCell(textFact(p, '', 'swath_width', prov(p))))),
+				row('swath', 'Swath width', products.map((p) => factCell(withMimFill(textFact(p, '', 'swath_width', prov(p)), mimSwathFill(mim(p)))))),
 				row('operational', 'Operational status', products.map((p) => factCell(textFact(p, '', 'operational_status', prov(p)))))
 			]
 		});
@@ -282,8 +290,14 @@ export function buildComparison(
 			rows: [
 				row('missions', 'Missions', products.map((p) => factCell(listFact(p, '', 'missions')))),
 				row('instruments', 'Instruments', products.map((p) => factCell(listFact(p, '', 'instruments')))),
-				row('sensor', 'Sensor or instrument type', products.map((p) => factCell(textFact(p, '', 'sensor_or_instrument_type', prov(p))))),
-				row('instrument-resolution', 'Finest instrument resolution (display only)', products.map((p) => factCell(instrumentResolutionFact(p))))
+				row('sensor', 'Sensor or instrument type', products.map((p) => factCell(withMimFill(textFact(p, '', 'sensor_or_instrument_type', prov(p)), mimInstrumentTypeFill(mim(p)))))),
+				row('instrument-resolution', 'Finest instrument resolution (display only)', products.map((p) => factCell(withMimFill(instrumentResolutionFact(p), mimInstrumentResolutionFill(mim(p)))))),
+				...(products.some((p) => mim(p))
+					? [
+							row('mission-status', 'Mission status', products.map((p) => ({ text: mimMissionStatusText(mim(p)), missingText: 'Not linked to the CEOS MIM database', mim: Boolean(mim(p)) }))),
+							row('mission-years', 'Mission years (launch–end of life)', products.map((p) => ({ text: mimMissionYearsText(mim(p)), missingText: 'Not linked to the CEOS MIM database', detail: mim(p) ? 'End year is planned or actual end of life' : null, mim: Boolean(mim(p)) })))
+						]
+					: [])
 			]
 		});
 	}

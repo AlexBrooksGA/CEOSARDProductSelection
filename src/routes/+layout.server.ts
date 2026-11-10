@@ -13,6 +13,8 @@ export const load: LayoutServerLoad = () => {
 		profiles: data.profiles,
 		agencyMarks: data.agencyMarks,
 		cqasReports: data.cqasReports,
+		mimSummaries: data.mimSummaries,
+		mimSource: data.mimSnapshot?.source ?? null,
 		// Compact missing-state evidence so cards use the same wording as details: field → date checked.
 		notFound: Object.fromEntries(
 			Object.entries(data.provenance).map(([id, fields]) => [id, Object.fromEntries(Object.values(fields).filter((row) => row.confidence === 'not_found').map((row) => [row.field_name, row.date_checked]))])

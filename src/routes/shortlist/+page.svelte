@@ -65,6 +65,8 @@
 			provenance: store.provenanceMap,
 			unresolvedReason: (id) => store.unresolvedReason(id),
 			cqasReports: store.cqasReports,
+			mimSummaries: store.mimSummaries,
+			mimSource: store.mimSource,
 			purpose: store.purposeAnswers
 				? {
 						sentence: purposeSentence(store.purposeAnswers, store.guidance, { includePrivate: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' }),

@@ -7,7 +7,7 @@
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
 import { loadCqasReports, type CqasReport } from '$lib/domain/cqas';
-import { MimSnapshotError, parseMimSnapshot, type MimSnapshot } from '$lib/domain/mim';
+import { mimDetailsFor, MimSnapshotError, mimSummary, parseMimSnapshot, type MimSnapshot, type MimSummary } from '$lib/domain/mim';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
 import type { Product, Profile, ProvenanceIndex } from '$lib/domain/types';
 
@@ -31,6 +31,8 @@ export interface BundledData {
 	cqasWarnings: string[];
 	/** MIM snapshot, or null when absent or invalid (MIM facts are then simply not shown). */
 	mimSnapshot: MimSnapshot | null;
+	/** Compact MIM facts by curated product ID, for lists and comparison. */
+	mimSummaries: Record<string, MimSummary>;
 	mimWarnings: string[];
 }
 
@@ -69,7 +71,12 @@ function build(): BundledData {
 			mimWarnings.push(error instanceof MimSnapshotError ? error.message : 'MIM snapshot could not be read.');
 		}
 	}
-	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimWarnings };
+	const mimSummaries: Record<string, MimSummary> = {};
+	for (const product of catalogue.products) {
+		const details = mimDetailsFor(mimSnapshot, product.id);
+		if (details) mimSummaries[product.id] = mimSummary(details);
+	}
+	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, mimWarnings };
 }
 
 /** Validated bundled data, or a clear error message when the bundled files are unusable. */

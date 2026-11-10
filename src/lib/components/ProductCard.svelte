@@ -7,6 +7,7 @@
 	import ExternalLink from './ExternalLink.svelte';
 	import FactList from './FactList.svelte';
 	import FamilyMark from './FamilyMark.svelte';
+	import MimMark from './MimMark.svelte';
 
 	let { item, showReasons }: { item: PresentedResult; showReasons: boolean } = $props();
 	const store = app();
@@ -26,7 +27,7 @@
 	</div>
 	<h3 id={titleId} class="card-title"><a href={store.href(`/products/${encodeURIComponent(product.id)}`)}>{product.product_name}</a></h3>
 	<p class="small secondary">
-		{product.provider ?? 'Provider not reported'}{#if isMimRecord(product)} · <span class="badge info">MIM record</span>{/if}
+		{product.provider ?? 'Provider not reported'}{#if isMimRecord(product)} · <span class="badge info">MIM record<MimMark label="This whole record is from the CEOS MIM database" /></span>{/if}
 	</p>
 	<div class="row badges"><AssessmentBadge {product} /></div>
 	<FactList {facts} compact />

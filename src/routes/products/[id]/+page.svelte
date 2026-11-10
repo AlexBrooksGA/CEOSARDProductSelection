@@ -8,6 +8,10 @@
 	import FamilyMark from '$lib/components/FamilyMark.svelte';
 	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
 	import CqasSection from '$lib/components/cqas/CqasSection.svelte';
+	import MimFootnote from '$lib/components/MimFootnote.svelte';
+	import MimMark from '$lib/components/MimMark.svelte';
+	import MimPanel from '$lib/components/MimPanel.svelte';
+	import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimSwathFill } from '$lib/domain/mim';
 	import { formatNumber, headlineBand, signed, thresholdHeadline } from '$lib/domain/cqas';
 	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import {
@@ -29,7 +33,8 @@
 		sourceLabel,
 		spatialFact,
 		textFact,
-		updateFrequencyFact
+		updateFrequencyFact,
+		withMimFill
 	} from '$lib/domain/facts';
 	import { familyLabel, FAMILY_BY_VALUE, CEOS_ARD_URL } from '$lib/domain/guidance';
 	import { PROVENANCE_FIELD_ALIASES } from '$lib/domain/provenance';
@@ -46,6 +51,18 @@
 	let access = $derived(product ? accessAction(product) : null);
 	let links = $derived(product ? productLinks(product) : []);
 	let cqas = $derived(product ? (store.cqasReports[product.id] ?? null) : null);
+	// CEOS MIM database: full details for curated products, compact summary for gap fills.
+	let mim = $derived(data.mimDetails && product && data.mimDetails.product && data.id === product.id ? data.mimDetails : null);
+	let mimSummary = $derived(product ? (store.mimSummaries[product.id] ?? null) : null);
+	let mimLinks = $derived.by(() => {
+		if (!mim || !product) return [];
+		const curated = new Set([product.access_url, product.information_url, product.self_assessment_url, product.peer_review_url, product.sample_product_url].filter(Boolean));
+		return [
+			{ label: 'Access (recorded in MIM)', url: mim.product.access_url },
+			{ label: 'Documentation (recorded in MIM)', url: mim.product.instrument_links.find((l) => l.documentation_url)?.documentation_url ?? null },
+			{ label: 'Peer review (recorded in MIM)', url: mim.product.certification?.review_url ?? null }
+		].filter((link): link is { label: string; url: string } => Boolean(link.url) && !curated.has(link.url));
+	});
 	let cqasLabel = $derived(cqas ? (cqas.data_status === 'example' ? 'C-QAS example' : 'C-QAS') : '');
 	/** The link navigates to #cqas normally (so :target highlights it); this only moves focus there too. */
 	function jumpToCqas(event: MouseEvent) {
@@ -114,7 +131,7 @@
 				{#if FAMILY_BY_VALUE[product.product_family ?? '']}<span class="small"> — {FAMILY_BY_VALUE[product.product_family ?? '']!.explanation}</span>{/if}
 			</p>
 			<div class="row">
-				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record</span>{/if}
+				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record<MimMark label="This whole record is from the CEOS MIM database" /></span>{/if}
 				{#if cqas}<span><a class="badge info cq-badge" href="#cqas" onclick={jumpToCqas}><span aria-hidden="true">◉</span>{cqasLabel}: {thresholdHeadline(cqas)} <span aria-hidden="true">↓</span></a><span class="cq-proposed">Proposed</span></span>{/if}
 			</div>
 			{#if outside}
@@ -232,7 +249,12 @@
 				<ul class="links">{#each links as link (link.kind)}<li><ExternalLink href={link.url}>{link.label}</ExternalLink></li>{/each}</ul>
 			{/if}
 			{#if !product.access_url}<p class="missing">No sourced access link is recorded.{#if access?.url} Use the documentation to find access routes.{/if}</p>{/if}
+			{#if mimLinks.length}
+				<ul class="links">{#each mimLinks as link (link.url)}<li><ExternalLink href={link.url}>{link.label}</ExternalLink><MimMark /></li>{/each}</ul>
+			{/if}
 		</section>
+
+		{#if mim}<MimPanel details={mim} />{/if}
 
 		<section class="panel stack" aria-labelledby="technical-heading">
 			<h2 id="technical-heading">Technical details</h2>
@@ -242,17 +264,17 @@
 						textFact(product, 'Atmospheric or radiometric correction', 'atmospheric_correction', prov),
 						textFact(product, 'Elevation model', 'elevation_model', prov),
 						textFact(product, 'Coordinate reference system', 'coordinate_system', prov),
-						textFact(product, 'Data format', 'data_format', prov),
+						withMimFill(textFact(product, 'Data format', 'data_format', prov), mimFormatFill(mimSummary)),
 						outputEncodingFact(product, prov),
 						radiometricBitDepthFact(product, prov),
-						textFact(product, 'Swath width', 'swath_width', prov),
+						withMimFill(textFact(product, 'Swath width', 'swath_width', prov), mimSwathFill(mimSummary)),
 						textFact(product, 'Operational status', 'operational_status', prov)
 					]}
 				/>
 				<p class="hint">Output storage describes file encoding, not radiometric resolution or quality.</p>
 			</Disclosure>
 			<Disclosure key="detail:instrument" label="Missions and instruments">
-				<FactList facts={[listFact(product, 'Missions', 'missions'), listFact(product, 'Instruments', 'instruments'), textFact(product, 'Sensor or instrument type', 'sensor_or_instrument_type', prov), instrumentResolutionFact(product)]} />
+				<FactList facts={[listFact(product, 'Missions', 'missions'), listFact(product, 'Instruments', 'instruments'), withMimFill(textFact(product, 'Sensor or instrument type', 'sensor_or_instrument_type', prov), mimInstrumentTypeFill(mimSummary)), withMimFill(instrumentResolutionFact(product), mimInstrumentResolutionFill(mimSummary))]} />
 				<p class="hint">Instrument values describe the sensor and can differ from the delivered product's grid or mode-specific resolution. They are never used for product matching.</p>
 			</Disclosure>
 			<Disclosure key="detail:provenance" label="Provenance">
@@ -285,6 +307,7 @@
 				{/if}
 			</Disclosure>
 		</section>
+		{#if (mim || mimSummary || isMimRecord(product)) && store.mimSource}<MimFootnote source={store.mimSource} />{/if}
 	{/if}
 </div>
 

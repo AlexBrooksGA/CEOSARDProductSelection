@@ -93,3 +93,72 @@ describe('MIM links and snapshot', () => {
 		expect(() => parseMimSnapshot({ schema: 'x' }, ids)).toThrow(MimSnapshotError);
 	});
 });
+
+describe('MIM values in facts, comparison and the copied summary', async () => {
+	const { mimSummary, mimSwathFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimMissionStatusText, mimMissionYearsText } = await import('../../src/lib/domain/mim');
+	const { withMimFill, textFact } = await import('../../src/lib/domain/facts');
+	const { buildComparison } = await import('../../src/lib/domain/comparison');
+	const { buildSelectionSummary } = await import('../../src/lib/domain/summary');
+	const { NEUTRAL_STATE } = await import('../../src/lib/domain/explorer');
+	const { parity } = await import('./fixtures');
+	const snapshot = parseMimSnapshot(raw(), ids);
+	const summaries = Object.fromEntries(ids.map((id) => [id, mimSummary(mimDetailsFor(snapshot, id)!)]));
+	const byId = Object.fromEntries(parity<any[]>('catalogue_normalised.json').map((p) => [p.id, p]));
+
+	it('fills only missing curated values, and marks them as MIM', () => {
+		const landsat = byId['landsat-c2-sr'];
+		const swath = withMimFill(textFact(landsat, 'Swath width', 'swath_width'), mimSwathFill(summaries['landsat-c2-sr']));
+		expect(swath.value).toBe(landsat.swath_width);
+		expect(swath.mim).toBeUndefined();
+		const catalyst = byId['catalyst-sentinel1-rtc'];
+		expect(catalyst.swath_width).toBeNull();
+		const filled = withMimFill(textFact(catalyst, 'Swath width', 'swath_width'), mimSwathFill(summaries['catalyst-sentinel1-rtc']));
+		expect(filled.mim).toBe(true);
+		expect(filled.value).toBeTruthy();
+		expect(filled.missing).toBeNull();
+		expect(withMimFill(textFact(catalyst, 'Swath width', 'swath_width'), null).mim).toBeUndefined();
+	});
+
+	it('gives instrument resolution as instrument-level, never product resolution', () => {
+		const fill = mimInstrumentResolutionFill(summaries['landsat-c2-sr'])!;
+		expect(fill.value).toMatch(/^15 m \(/);
+		expect(fill.basis).toMatch(/not product resolution/);
+		expect(mimInstrumentTypeFill(summaries['alos2-palsar2-25m-scansar-nrb'])!.value).toMatch(/radar/i);
+	});
+
+	it('summarises mission status and years', () => {
+		expect(mimMissionYearsText(summaries['landsat-c2-sr'])).toMatch(/^Landsat 4 1982–\d{4} · Landsat 5 1984–/);
+		expect(mimMissionStatusText(summaries['synspective-strix-nrb'])).toMatch(/Mission complete \(all 2 missions\)/);
+		expect(mimMissionStatusText(null)).toBeNull();
+	});
+
+	it('adds MIM-marked mission rows and gap fills to the comparison, and never touches matching rows', () => {
+		const pair = [byId['landsat-c2-sr'], byId['catalyst-sentinel1-rtc']];
+		const withMim = buildComparison(pair, {}, ['technical', 'instrument'], {}, null, null, summaries);
+		const without = buildComparison(pair, {}, ['technical', 'instrument'], {}, null, null, {});
+		const rows = (groups: any[]) => Object.fromEntries(groups.flatMap((g) => g.rows.map((r: any) => [r.id, r])));
+		expect(rows(withMim)['mission-status'].cells.every((c: any) => c.mim)).toBe(true);
+		expect(rows(without)['mission-status']).toBeUndefined();
+		expect(rows(withMim).swath.cells[0].mim).toBeUndefined();
+		expect(rows(withMim).swath.cells[1].mim).toBe(true);
+		for (const id of ['spatial', 'revisit', 'coverage', 'status', 'pfs']) expect(rows(withMim)[id]).toEqual(rows(without)[id]);
+	});
+
+	it('lists missions with an asterisk and a source footnote in the copied summary', () => {
+		const text = buildSelectionSummary({
+			snapshot: new Date('2026-11-10T00:00:00Z'),
+			shareUrl: 'https://example.test/shortlist?v=1',
+			state: { ...structuredClone(NEUTRAL_STATE), shortlist: ['landsat-c2-sr'] },
+			products: byId,
+			notes: {},
+			investigationNote: '',
+			currentFingerprint: '',
+			provenance: {},
+			unresolvedReason: () => '',
+			mimSummaries: summaries,
+			mimSource: snapshot.source
+		});
+		expect(text).toMatch(/  Missions\*: Landsat 4 1982–/);
+		expect(text).toMatch(/\n\* From the CEOS MIM database: CEOS MIM Database, https:\/\/database\.eohandbook\.com, edition [0-9a-f]{8}, data as of \d{4}-\d{2}-\d{2} \(CC BY 4\.0\)/);
+	});
+});

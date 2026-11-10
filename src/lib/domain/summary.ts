@@ -9,6 +9,7 @@ import { SCOPE_LABELS } from './profiles';
 import { CHECK_OUTCOME_LABELS, checkActions, type CheckOutcome, type Guidance, type ResolvedCheck } from './purpose';
 import type { Product, ProvenanceRow } from './types';
 import { cqasOneLine, cqasProvenance, type CqasReport } from './cqas';
+import { mimEditionText, mimMissionStatusText, mimMissionYearsText, type MimSource, type MimSummary } from './mim';
 
 export interface SummaryPurpose {
 	sentence: string;
@@ -47,6 +48,9 @@ export interface SummaryInput {
 	purpose?: SummaryPurpose | null;
 	/** C-QAS reports by product ID (proposed). */
 	cqasReports?: Record<string, CqasReport>;
+	/** CEOS MIM database summaries by product ID and the snapshot source (for the footnote). */
+	mimSummaries?: Record<string, MimSummary>;
+	mimSource?: MimSource | null;
 }
 
 export function noteNeedsReview(note: ProductNote | undefined, currentFingerprint: string): boolean {
@@ -121,6 +125,8 @@ export function buildSelectionSummary(input: SummaryInput): string {
 			for (const [label, url] of links) lines.push(`  ${label}: ${url}`);
 			const dates = [...new Set(Object.values(input.provenance[id] ?? {}).map((row) => row.date_checked).filter(Boolean))].sort();
 			lines.push(`  Catalogue sources last checked: ${dates.length ? dates.join(', ') : 'not recorded'} (checking date, not observation date)`);
+			const mimFacts = input.mimSummaries?.[id];
+			if (mimFacts?.missions.length) lines.push(`  Missions*: ${mimMissionYearsText(mimFacts)} · ${mimMissionStatusText(mimFacts)}`);
 			const cqas = input.cqasReports?.[id];
 			if (cqas) {
 				lines.push(`  C-QAS scene check (proposed): ${cqasOneLine(cqas)}.`);
@@ -141,6 +147,11 @@ export function buildSelectionSummary(input: SummaryInput): string {
 		if (note?.rationale.trim()) lines.push(`  Why retained: ${note.rationale.trim()}`);
 		if (note?.openChecks.trim()) lines.push(`  Open checks: ${note.openChecks.trim()}`);
 		if (noteNeedsReview(note, input.currentFingerprint)) lines.push('  REVIEW RATIONALE: criteria changed since this note was written.');
+	}
+	if (input.mimSource && state.shortlist.some((id) => input.mimSummaries?.[id]?.missions.length)) {
+		const edition = mimEditionText(input.mimSource);
+		lines.push('');
+		lines.push(`* From the CEOS MIM database: ${input.mimSource.attribution}${edition ? `, ${edition}` : ''} (${input.mimSource.licence.name}). Declared by agencies; not part of the CEOS-ARD assessment.`);
 	}
 	return lines.join('\n');
 }

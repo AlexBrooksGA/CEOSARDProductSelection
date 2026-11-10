@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Fact } from '$lib/domain/facts';
+	import MimMark from './MimMark.svelte';
 	let { facts, compact = false }: { facts: Fact[]; compact?: boolean } = $props();
 </script>
 
@@ -8,7 +9,7 @@
 		<div class="fact">
 			<dt>{fact.label}{#if fact.displayOnly}<span class="display-only">display only</span>{/if}</dt>
 			<dd>
-				{#if fact.value}{fact.value}{:else}<span class="missing">{fact.missing?.text ?? 'Not established in this catalogue'}</span>{/if}
+				{#if fact.value}{fact.value}{#if fact.mim}<MimMark />{/if}{:else}<span class="missing">{fact.missing?.text ?? 'Not established in this catalogue'}</span>{/if}
 				{#if fact.basis}<span class="basis">{fact.basis}</span>{/if}
 				{#if fact.note && !compact}<span class="basis">{fact.note}</span>{/if}
 			</dd>
