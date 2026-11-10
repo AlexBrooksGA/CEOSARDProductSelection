@@ -148,13 +148,22 @@ describe('C-QAS in comparison and the copied summary', () => {
 
 	it('adds a C-QAS row to measured quality evidence, with "No C-QAS check" for products without a report', () => {
 		const row = cqasRow(pair)!;
-		expect(row.label).toBe('C-QAS scene check');
+		expect(row.label).toBe('C-QAS scene check (proposed)');
+		expect(row.incomparable).toBeUndefined();
 		expect(row.help).toMatch(/separate from the CEOS-ARD assessment/);
 		expect(row.cells[0]!.text).toBe(cqasOneLine(reports['landsat-c2-sr']));
 		expect(row.cells[0]!.detail).toMatch(/^Concept — example data · PFS SR v5\.0\.2 · report DEMO-L8-001/);
 		expect(row.cells[0]!.links).toEqual([{ label: 'See C-QAS quality checks', url: '/products/landsat-c2-sr?v=1#cqas', internal: true }]);
 		expect(row.cells[1]).toEqual({ text: null, missingText: 'No C-QAS check' });
 		expect(row.differs).toBe(true);
+	});
+
+	it('leaves the other quality rows unchanged and marks two reports as not directly comparable', () => {
+		const quality = (withReports: boolean) => buildComparison(pair, {}, [], {}, null, withReports ? { reports, detailHref: () => '/' } : null).find((g) => g.id === 'quality')!.rows;
+		expect(quality(true).slice(0, 2)).toEqual(quality(false));
+		const second = { ...reports['landsat-c2-sr'], product: { ...reports['landsat-c2-sr'].product, explorer_id: 'sentinel2-level2a' } };
+		const both = buildComparison(pair, {}, [], {}, null, { reports: { ...reports, 'sentinel2-level2a': second }, detailHref: () => '/' });
+		expect(both.find((g) => g.id === 'quality')!.rows.find((r) => r.id === 'cqas')!.incomparable).toMatch(/different scene/);
 	});
 
 	it('omits the row when no compared product has a report, or when no reports are passed', () => {
@@ -176,7 +185,7 @@ describe('C-QAS in comparison and the copied summary', () => {
 			cqasReports: reports
 		});
 		expect(text).toContain('  C-QAS scene check (proposed): 6 Met / 2 Not met selected Threshold rows (9 of 36)');
-		expect(text).toContain('Concept — example data · PFS SR v5.0.2 · report DEMO-L8-001 (2026-10-12) · scene 2025-12-01. One scene only; not a CEOS-ARD assessment.');
+		expect(text).toContain('Concept — example data · PFS SR v5.0.2 · report DEMO-L8-001 (2026-10-12) · scene 2025-12-01. Not a CEOS-ARD assessment.');
 		expect(text.match(/C-QAS scene check/g)).toHaveLength(1);
 	});
 });

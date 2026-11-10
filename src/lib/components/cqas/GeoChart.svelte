@@ -19,7 +19,7 @@
 	let y = $derived((value: number) => H - M.b - (value / scale.hi) * (H - M.t - M.b));
 	let path = $derived(values.map((value, i) => `${i ? 'L' : 'M'}${x(i)} ${y(value)}`).join(' '));
 	let label = $derived(
-		`Radial error for ${n} ${g.comparison.toLowerCase()} comparisons in ${unitName}${limit === null ? '' : `; ${g.limit_source ?? 'numeric'} limit ${formatNumber(limit, 2)} ${unitName}`}`
+		`Radial error for ${n} ${g.comparison.toLowerCase()} comparisons in ${unitName}${limit === null ? '' : `; ${g.limit_source ?? 'Numeric'} limit ${formatNumber(limit, 2)} ${unitName}`}`
 	);
 	let current = $state(-1);
 	let tip = $derived<Tip | null>(
@@ -43,10 +43,12 @@
 		for (let i = 1; i < n; i++) if (Math.abs(x(i) - sx) < Math.abs(x(best) - sx)) best = i;
 		current = best;
 	}
+	let focused = $state(false);
 	function key(event: KeyboardEvent) {
-		if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+		const next: Record<string, number> = { ArrowRight: current + 1, ArrowUp: current + 1, ArrowLeft: current - 1, ArrowDown: current - 1, Home: 0, End: n - 1 };
+		if (!(event.key in next)) return;
 		event.preventDefault();
-		current = Math.min(n - 1, Math.max(0, current + (event.key === 'ArrowRight' ? 1 : -1)));
+		current = Math.min(n - 1, Math.max(0, next[event.key]!));
 	}
 </script>
 
@@ -74,15 +76,23 @@
 			class="hit"
 			tabindex="0"
 			role="slider"
-			aria-label="Comparison; use the left and right arrow keys to step through comparisons"
+			aria-label="Comparison; use the arrow keys, Home and End to step through comparisons"
 			aria-valuemin={1}
 			aria-valuemax={n}
 			aria-valuenow={Math.max(current, 0) + 1}
 			aria-valuetext={tip ? `${tip.title}: ${tip.lines[0]}` : undefined}
 			onmousemove={nearest}
-			onmouseleave={() => (current = -1)}
-			onfocus={() => (current = Math.max(current, 0))}
-			onblur={() => (current = -1)}
+			onmouseleave={() => {
+				if (!focused) current = -1;
+			}}
+			onfocus={() => {
+				focused = true;
+				current = Math.max(current, 0);
+			}}
+			onblur={() => {
+				focused = false;
+				current = -1;
+			}}
 			onkeydown={key}
 		/>
 	</svg>

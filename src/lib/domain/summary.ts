@@ -124,7 +124,7 @@ export function buildSelectionSummary(input: SummaryInput): string {
 			const cqas = input.cqasReports?.[id];
 			if (cqas) {
 				lines.push(`  C-QAS scene check (proposed): ${cqasOneLine(cqas)}.`);
-				lines.push(`  C-QAS details: ${cqasProvenance(cqas)}. One scene only; not a CEOS-ARD assessment.`);
+				lines.push(`  C-QAS details: ${cqasProvenance(cqas)}. Not a CEOS-ARD assessment.`);
 			}
 			lines.push('  Open by default: availability for the area and period; task-specific accuracy and suitability.');
 		}

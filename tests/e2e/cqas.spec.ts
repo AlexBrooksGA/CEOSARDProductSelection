@@ -28,7 +28,8 @@ test('header badge and quality-evidence link jump to the section; Advanced is li
 	await expect(badge).toBeVisible();
 	await badge.click();
 	await expect(section(page)).toBeFocused();
-	await expect(page).toHaveURL(/#cqas$/);
+	await expect(page).toHaveURL(/\?v=1#cqas$/);
+	await expect(section(page)).toBeInViewport();
 	await expect(page.getByRole('link', { name: /See C-QAS quality checks/ })).toBeVisible();
 
 	await section(page).getByRole('radio', { name: 'Advanced' }).check();
@@ -58,6 +59,11 @@ test('Advanced view: filter findings, switch units and coverage factor, run code
 	await slider.focus();
 	await page.keyboard.press('ArrowRight');
 	await expect(cqas.locator('.cq-tip')).toContainText('Comparison 2');
+	await page.keyboard.press('End');
+	await expect(slider).toHaveAttribute('aria-valuenow', '6');
+	// The tooltip at the last point stays inside the chart.
+	const [tipBox, chartBox] = await Promise.all([cqas.locator('.cq-tip').boundingBox(), cqas.locator('.cq-chart:has([role="slider"])').boundingBox()]);
+	expect(tipBox!.x + tipBox!.width).toBeLessThanOrEqual(chartBox!.x + chartBox!.width + 1);
 	await expect(cqas.getByRole('button', { name: /^C031: Software/ })).toBeVisible();
 	await expect(cqas.getByText('Run C031-S502-G1-R1-D01', { exact: false })).toBeVisible();
 });
@@ -67,6 +73,14 @@ test('products without a C-QAS report show no C-QAS section or badge', async ({ 
 	await expect(page.getByRole('heading', { level: 1, name: 'Sentinel-2 Level-2A' })).toBeVisible();
 	await expect(section(page)).toHaveCount(0);
 	await expect(page.getByText(/C-QAS/)).toHaveCount(0);
+});
+
+test('switching to Advanced from the strip keeps keyboard focus in the section', async ({ page }) => {
+	await open(page, LANDSAT);
+	await section(page).locator('.cq-strip button').first().focus();
+	await page.keyboard.press('Enter');
+	await expect(section(page).getByRole('radio', { name: 'Advanced' })).toBeChecked();
+	await expect(section(page)).toBeFocused();
 });
 
 test('an unrecognised cqas value is ignored with a message', async ({ page }) => {
@@ -100,7 +114,8 @@ test('comparison shows a C-QAS row with "No C-QAS check" for the other product a
 	await expect(row).toContainText('6 Met / 2 Not met selected Threshold rows (9 of 36)');
 	await expect(row).toContainText('Concept — example data');
 	await expect(row).toContainText('No C-QAS check');
-	await row.getByRole('link', { name: 'See C-QAS quality checks' }).click();
-	await expect(page).toHaveURL(/\/products\/landsat-c2-sr\?.*#cqas$/);
+	await row.getByRole('link', { name: 'See C-QAS quality checks for Landsat Collection 2 Surface Reflectance' }).click();
+	// The shortlist and comparison survive in the link.
+	await expect(page).toHaveURL(/\/products\/landsat-c2-sr\?v=1&sl=landsat-c2-sr%2Csentinel2-level2a&cmp=landsat-c2-sr%2Csentinel2-level2a#cqas$/);
 	await expect(page.locator('section#cqas')).toBeInViewport();
 });

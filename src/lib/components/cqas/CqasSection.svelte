@@ -43,11 +43,17 @@
 	let bandName = $derived(rad.headline_band_name ? `${rad.headline_band_name[0]!.toUpperCase()}${rad.headline_band_name.slice(1)}-band` : band.band);
 	let stripTip = $state<string | null>(null);
 
-	function setMode(next: 'simple' | 'advanced', scroll = false) {
+	/** Switch level; when the control that was used disappears, move focus to the section. */
+	function setMode(next: 'simple' | 'advanced', moveFocus = false) {
 		void store.patch((draft) => void (draft.cqasDetail = next), 'replace').then(() => {
-			if (scroll) document.getElementById('cqas')?.scrollIntoView({ block: 'start' });
+			if (!moveFocus) return;
+			const section = document.getElementById('cqas');
+			section?.scrollIntoView({ block: 'start' });
+			section?.focus({ preventScroll: true });
 		});
 	}
+	let measurement = $derived(report.pfs.name.toLowerCase());
+	let assessedVersion = $derived(product.pfs_version ? `v${product.pfs_version.trim().replace(/^v/i, '')}` : null);
 	function thresholdLabel(status: FindingStatus): string {
 		return status === 'Not required' ? 'Not required at Threshold' : status;
 	}
@@ -72,7 +78,7 @@
 	<p class="hint">
 		{report.status_note}
 		One {report.scene.platform} {report.scene.instrument} scene.
-		{#if versionDiffers}C-QAS checks use {report.pfs.short_name} PFS v{report.pfs.version}; this product's CEOS-ARD assessment used {product.pfs_version}.{/if}
+		{#if versionDiffers}C-QAS checks use {report.pfs.short_name} PFS v{report.pfs.version}; this product's CEOS-ARD assessment used {assessedVersion}.{/if}
 	</p>
 
 	{#if mode === 'simple'}
@@ -131,10 +137,10 @@
 					<p class="hint">Accuracy against an independent ground reference: {g.absolute_accuracy}.</p>
 				</div>
 				<div class="panel-subtle cq-card">
-					<p class="label">How close are the reflectance values?</p>
+					<p class="label">How close are the {measurement} values?</p>
 					<p class="cq-big">{Math.abs(band.difference).toFixed(3)} <small>difference, {rad.headline_band_name ?? band.band} band</small></p>
 					<RadNumberLine {report} />
-					<p class="small">{bandName} reflectance differs from the surface reference by {Math.abs(band.difference).toFixed(3)}; comparison uncertainty is ±{band.uncertainty_k1.toFixed(3)}.</p>
+					<p class="small">{bandName} {measurement} differs from the {report.data_status === 'example' ? 'example ' : ''}reference ({rad.reference}) by {Math.abs(band.difference).toFixed(3)}; comparison uncertainty is ±{band.uncertainty_k1.toFixed(3)}.</p>
 					<p class="hint">Accuracy test: {rad.accuracy_test}{#if rad.accuracy_reason}&nbsp;— {rad.accuracy_reason}{/if}.</p>
 				</div>
 			</div>
@@ -275,7 +281,7 @@
 			{#if report.next_actions.length}
 				<div class="notice warn"><strong>Next actions</strong><ul class="cq-actions">{#each report.next_actions as action (action)}<li>{action}</li>{/each}</ul></div>
 			{/if}
-			<p class="hint mono">Run {report.run.code} · Snapshot {report.run.snapshot} · Reviewer {report.run.reviewer ?? 'unassigned'} · Report {report.report_date}</p>
+			<p class="hint mono">Run {report.run.code} · Snapshot {report.run.snapshot} · Reviewer {report.run.reviewer ?? 'unassigned'} · {report.pfs.short_name} units: {rad.units} · Absolute accuracy: {g.absolute_accuracy} · Report {report.report_date}</p>
 		</div>
 	{/if}
 

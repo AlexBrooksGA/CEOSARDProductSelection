@@ -25,7 +25,7 @@ export function niceTicks(lo: number, hi: number, count = 4): Ticks {
 	const start = Math.floor(lo / step + 1e-9) * step;
 	const end = Math.ceil(hi / step - 1e-9) * step;
 	const ticks: number[] = [];
-	for (let value = start; value <= end + step / 2; value += step) ticks.push(Number(value.toFixed(10)));
+	for (let index = 0; start + index * step <= end + step / 2; index += 1) ticks.push(Number((start + index * step).toPrecision(12)));
 	return { lo: start, hi: end, ticks };
 }
 

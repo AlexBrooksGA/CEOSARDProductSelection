@@ -216,18 +216,19 @@ export function buildComparison(
 	const qualityRows = [geometric, radiometric];
 	// Shown only when at least one compared product has a C-QAS report.
 	if (cqas && products.some((p) => cqas.reports[p.id])) {
-		qualityRows.push(
-			row(
+		const cqasRow = row(
 				'cqas',
-				'C-QAS scene check',
+				'C-QAS scene check (proposed)',
 				products.map((p) => {
 					const report = cqas.reports[p.id];
 					if (!report) return { text: null, missingText: 'No C-QAS check' };
 					return { text: cqasOneLine(report), detail: cqasProvenance(report), links: [{ label: 'See C-QAS quality checks', url: `${cqas.detailHref(p)}#cqas`, internal: true }] };
 				}),
 				CQAS_ROW_HELP
-			)
-		);
+			);
+		// Reports cover different scenes (and possibly PFS versions): flag them as not directly comparable.
+		if (products.filter((p) => cqas.reports[p.id]).length > 1) cqasRow.incomparable = 'Each C-QAS check covers a different scene; compare what was checked, not just the numbers.';
+		qualityRows.push(cqasRow);
 	}
 	groups.push({
 		id: 'quality',

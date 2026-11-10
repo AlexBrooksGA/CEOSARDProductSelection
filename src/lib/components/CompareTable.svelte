@@ -94,7 +94,7 @@
 									{#if cell.detail}<span class="detail small secondary">{cell.detail}</span>{/if}
 									{#if cell.link}<span class="detail"><ExternalLink href={cell.link.url} class="button small">{cell.link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></ExternalLink></span>{/if}
 									{#if cell.links?.length}
-										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}{#if link.internal}<a href={link.url}>{link.label}</a>{:else}<ExternalLink href={link.url}>{link.label}</ExternalLink>{/if}{/each}</span>
+										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}{#if link.internal}<a href={link.url}>{link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></a>{:else}<ExternalLink href={link.url}>{link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></ExternalLink>{/if}{/each}</span>
 									{/if}
 								</td>
 							{/each}

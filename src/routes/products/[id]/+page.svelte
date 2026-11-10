@@ -47,13 +47,10 @@
 	let links = $derived(product ? productLinks(product) : []);
 	let cqas = $derived(product ? (store.cqasReports[product.id] ?? null) : null);
 	let cqasLabel = $derived(cqas ? (cqas.data_status === 'example' ? 'C-QAS example' : 'C-QAS') : '');
+	/** The link navigates to #cqas normally (so :target highlights it); this only moves focus there too. */
 	function jumpToCqas(event: MouseEvent) {
-		event.preventDefault();
-		const section = document.getElementById('cqas');
-		if (!section) return;
-		section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-		section.focus({ preventScroll: true });
-		history.replaceState(history.state, '', `${location.pathname}${location.search}#cqas`);
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		setTimeout(() => document.getElementById('cqas')?.focus({ preventScroll: true }), 0);
 	}
 	let cameFromResults = $state(false);
 	afterNavigate(({ from }) => {
@@ -227,7 +224,7 @@
 			</section>
 		</div>
 
-		{#if cqas}<CqasSection report={cqas} {product} />{/if}
+		{#if cqas}{#key product.id}<CqasSection report={cqas} {product} />{/key}{/if}
 
 		<section class="panel stack" aria-labelledby="links-heading">
 			<h2 id="links-heading">Access, documentation and samples</h2>

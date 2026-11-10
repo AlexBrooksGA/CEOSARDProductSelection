@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatNumber, geometricMetres, type CqasReport } from '$lib/domain/cqas';
 	import ChartTip from './ChartTip.svelte';
-	import { niceTicks, type Tip } from './chart';
+	import { niceTicks, tickLabel, type Tip } from './chart';
 
 	let { report }: { report: CqasReport } = $props();
 	const W = 560;
@@ -35,7 +35,7 @@
 </script>
 
 <div class="cq-chart">
-	<svg viewBox="0 0 {W} {H}" role="group" aria-label={label}>
+	<svg viewBox="0 0 {W} {H}" role="group" aria-label="Relative geometric error compared with the numeric limit">
 		<rect x={L} y={Y - 5} width={R - L} height="10" rx="5" class="track" />
 		<rect x={L} y={Y - 5} width={Math.max(0, x(value) - L)} height="10" rx="5" class="fill" />
 		{#if limit !== null}
@@ -43,9 +43,10 @@
 			<text x={x(limit)} y={Y - 22} text-anchor="middle" class="limit-lbl">Limit {formatNumber(limit)} m ({g.limit_px} pixel)</text>
 		{/if}
 		{#each scale.ticks.filter((t) => t <= scale.hi) as t (t)}
-			<text x={x(t)} y={Y + 33} text-anchor={t ? 'middle' : 'start'}>{formatNumber(t)} m</text>
+			<text x={x(t)} y={Y + 33} text-anchor={t ? 'middle' : 'start'}>{tickLabel(t)} m</text>
 		{/each}
 		<circle cx={x(value)} cy={Y} r={active ? 7 : 6} class="pt" />
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<rect
 			x={L}
 			y={Y - 16}
@@ -53,7 +54,7 @@
 			height="32"
 			class="hit"
 			tabindex="0"
-			role="button"
+			role="img"
 			aria-label={label}
 			onmouseenter={show}
 			onmouseleave={hide}

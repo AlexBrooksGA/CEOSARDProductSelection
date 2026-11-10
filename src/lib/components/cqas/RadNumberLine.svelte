@@ -23,7 +23,7 @@
 		tip = {
 			x: (x(v) / W) * 100,
 			y: ((Y - 8) / H) * 100,
-			title: `${signed(v)} reflectance difference`,
+			title: `${signed(v)} ${report.pfs.short_name} difference`,
 			lines: [`${bandName[0]!.toUpperCase()}${bandName.slice(1)}, ${report.radiometric.comparison.toLowerCase()}`],
 			note: `±${u.toFixed(3)} (k = 1): ${signed(v - u)} to ${signed(v + u)}`
 		};
@@ -34,7 +34,7 @@
 </script>
 
 <div class="cq-chart">
-	<svg viewBox="0 0 {W} {H}" role="group" aria-label={label}>
+	<svg viewBox="0 0 {W} {H}" role="group" aria-label="{report.pfs.short_name} difference from the reference, {band.band}">
 		<line x1={L} x2={R} y1={Y} y2={Y} class="zero" />
 		<line x1={x(0)} x2={x(0)} y1={Y - 15} y2={Y + 15} class="zero" />
 		<text x={x(0)} y={Y - 21} text-anchor="middle">0 = same as reference</text>
@@ -44,6 +44,7 @@
 			<text x={x(t)} y={Y + 32} text-anchor={i === 0 ? 'start' : i === scale.ticks.length - 1 ? 'end' : 'middle'}>{tickLabel(t, true)}</text>
 		{/each}
 		<circle cx={x(v)} cy={Y} r={tip ? 7 : 6} class="pt" />
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<rect
 			x={x(v - u) - 6}
 			y={Y - 16}
@@ -51,7 +52,7 @@
 			height="32"
 			class="hit"
 			tabindex="0"
-			role="button"
+			role="img"
 			aria-label={label}
 			onmouseenter={show}
 			onmouseleave={hide}

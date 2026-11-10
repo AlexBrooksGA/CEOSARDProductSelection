@@ -33,12 +33,12 @@
 </script>
 
 <div class="cq-chart">
-	<svg viewBox="0 0 {W} {H}" role="group" aria-label="SR difference by band with uncertainty whiskers, k = {k}">
+	<svg viewBox="0 0 {W} {H}" role="group" aria-label="{report.pfs.short_name} difference by band with uncertainty whiskers, k = {k}">
 		<g class="grid">
 			{#each scale.ticks as t (t)}<line x1={M.l} x2={W - M.r} y1={y(t)} y2={y(t)} class:zero={t === 0} />{/each}
 		</g>
 		{#each scale.ticks as t (t)}<text x={M.l - 8} y={y(t) + 4} text-anchor="end">{tickLabel(t, true)}</text>{/each}
-		<text x="2" y="12">SR difference</text>
+		<text x="2" y="12">{report.pfs.short_name} difference</text>
 		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">Band · whiskers: uncertainty, k = {k}</text>
 		{#each bands as band, i (band.band)}
 			{@const U = band.uncertainty_k1 * k}
@@ -46,6 +46,7 @@
 			<line x1={x(i)} x2={x(i)} y1={y(band.difference - U)} y2={y(band.difference + U)} class="whisker" />
 			{#each [band.difference - U, band.difference + U] as end, j (j)}<line x1={x(i) - 6} x2={x(i) + 6} y1={y(end)} y2={y(end)} class="whisker" />{/each}
 			<circle cx={x(i)} cy={y(band.difference)} r="5" class="pt" class:on={i === current} />
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<rect
 				x={x(i) - 26}
 				y={M.t}
@@ -53,7 +54,7 @@
 				height={H - M.t - M.b}
 				class="hit"
 				tabindex="0"
-				role="button"
+				role="img"
 				aria-label="{band.band}: {signed(band.difference)}, uncertainty ±{U.toFixed(3)} at k = {k}"
 				onmouseenter={() => (current = i)}
 				onmouseleave={() => (current = -1)}
