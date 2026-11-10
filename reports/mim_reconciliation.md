@@ -6,7 +6,15 @@ This lists differences to review. Neither source is assumed to be right: the cur
 
 ## Linked products (26 of 26 curated)
 
-3 linked products have at least one difference; 23 agree on every compared field (assessment status, PFS version, approval date, access link host, data format).
+| Field | Same | Differs | No value in MIM |
+|---|---|---|---|
+| CEOS-ARD assessed | 26 | 0 | 0 |
+| PFS version | 26 | 0 | 0 |
+| Approval date | 26 | 0 | 0 |
+| Access link host | 17 | 3 | 6 |
+| Data format | 1 | 0 | 25 |
+
+3 linked products have at least one difference where both sources have a value:
 
 | Curated product | MIM product | Field | Curated | MIM |
 |---|---|---|---|---|
@@ -22,6 +30,7 @@ This lists differences to review. Neither source is assumed to be right: the cur
 - `risat1a-eos04-nrb`: The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only.
 - `risat1a-eos04-india-mosaic`: The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only.
 - `sentinel2-level2a`: Limited to Sentinel-2A and 2B, as in the curated record; the MIM instrument record also lists Sentinel-2C and 2D.
+- `synspective-strix-nrb`: MIM records the first StriX-α and StriX-β demonstrators as missions (both complete); the operating satellites are the StriX constellation.
 
 ## CEOS-ARD assessed in MIM but not in the curated catalogue (2)
 

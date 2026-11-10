@@ -24,7 +24,14 @@ const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 async function get(path, { optional = false } = {}) {
 	for (let attempt = 0; attempt < 4; attempt += 1) {
-		const response = await fetch(`${API}${path}`, { headers: HEADERS });
+		let response;
+		try {
+			response = await fetch(`${API}${path}`, { headers: HEADERS });
+		} catch {
+			// Network errors (e.g. a reset connection) are retried like 5xx responses.
+			await sleep(1000 * (attempt + 1));
+			continue;
+		}
 		if (response.status === 404 && optional) return null;
 		if (response.status === 429 || response.status >= 500) {
 			await sleep(Number(response.headers.get('retry-after')) * 1000 || 1000 * (attempt + 1));
@@ -40,7 +47,15 @@ async function get(path, { optional = false } = {}) {
 const text = (value) => (typeof value === 'string' && value.trim() ? value.trim() : null);
 const num = (value) => (typeof value === 'number' && Number.isFinite(value) ? value : null);
 const firstUrl = (value) => text(value)?.split(/;\s*|\s+/).find((part) => /^https:\/\//.test(part)) ?? null;
-const https = (value) => (text(value) && /^https:\/\//.test(value) ? value.trim() : null);
+// CEOS pages are served over https; older records still link them with http, so upgrade those.
+const https = (value) => {
+	const url = text(value)?.replace(/^http:\/\/((?:www\.)?ceos\.org\/)/i, 'https://$1');
+	return url && /^https:\/\//.test(url) ? url : null;
+};
+const short = (value, max = 320) => {
+	const t = text(value);
+	return t && t.length > max ? `${t.slice(0, max - 1).replace(/\s+\S*$/, '')}…` : t;
+};
 
 function pickMission(m) {
 	return {
@@ -58,6 +73,9 @@ function pickMission(m) {
 		orbit_inclination_deg: num(m.orbit_inclination_deg),
 		orbit_lst: text(m.orbit_lst),
 		repeat_cycle_days: num(m.repeat_cycle_days),
+		orbit_period_min: num(m.orbit_period_min),
+		norad_id: num(m.norad_id) || null,
+		description: short(m.description),
 		eoportal_url: https(m.eoportal_url),
 		mission_url: firstUrl(m.mission_url),
 		data_site_url: firstUrl(m.data_site_url),
@@ -71,7 +89,7 @@ function pickVisual(v) {
 	return {
 		kind: v.kind === 'specific' ? 'specific' : 'generic',
 		caption: text(v.caption),
-		// Paths are relative to the API root (e.g. /images/satellites/…); tools/fetch_mission_visuals.mjs vendors them.
+		// Paths are relative to the API root (e.g. /images/satellites/…).
 		colour_512: text(v.images.png_512),
 		icon: text(v.images.icon),
 		photo_512: text(v.images.photo_cut_512),
@@ -104,6 +122,9 @@ function pickInstrument(i) {
 		waveband_description: text(i.waveband_description),
 		accuracy_description: text(i.accuracy_description),
 		data_format_info: text(i.data_format_info),
+		measurement_description: short(i.measurement_description),
+		measurements: (i.measurements ?? []).map((m) => ({ category: text(m.category), name: text(m.name) })).filter((m) => m.name),
+		is_commercial: i.is_commercial === 1 || i.is_commercial === true,
 		sar: null
 	};
 }
@@ -115,9 +136,12 @@ function pickSar(s) {
 	return {
 		band: text(p.waveband),
 		centre_frequency_ghz: num(p.centre_frequency_ghz),
+		bandwidth_max_mhz: num(p.bandwidth_max_mhz),
 		polarisations: flags(p.polarisation_channels),
 		polarisation_modes: flags(p.polarisation_modes).map((mode) => mode[0] + mode.slice(1).toLowerCase()),
 		look_direction: text(p.look_direction),
+		look_direction_nominal: text(p.look_direction_nominal),
+		polarisation_notes: short(p.polarisation_notes),
 		imaging_modes: (s.imaging_modes ?? []).map((mode) => ({
 			name: text(mode.mode_name),
 			code: text(mode.mode_code),
@@ -126,7 +150,9 @@ function pickSar(s) {
 			swath_km: num(mode.swath_across_track_km),
 			incidence_min_deg: num(mode.incidence_angle_min_deg),
 			incidence_max_deg: num(mode.incidence_angle_max_deg),
-			nesz_db: num(mode.nesz_db)
+			nesz_db: num(mode.nesz_db),
+			polarisations: text(mode.polarisation_combinations),
+			bandwidth_mhz: num(mode.bandwidth_mhz)
 		})),
 		source: text(s.source)
 	};
@@ -136,6 +162,8 @@ function pickProduct(p) {
 	const links = (p.instruments ?? []).map((l) => ({
 		instrument_id: l.instrument_id,
 		instrument_name: text(l.instrument_name),
+		provider_product_name: text(l.provider_product_name),
+		provider_product_code: text(l.provider_product_code),
 		product_status: text(l.product_status),
 		access_url: https(l.access_url),
 		documentation_url: https(l.documentation_url)
@@ -144,6 +172,7 @@ function pickProduct(p) {
 	return {
 		product_id: p.product_id,
 		product_name: text(p.product_name),
+		product_short_name: text(p.product_short_name),
 		category: text(p.category),
 		level: text(p.level),
 		type: text(p.type),
@@ -153,7 +182,26 @@ function pickProduct(p) {
 		statuses: [...new Set(links.map((l) => l.product_status).filter(Boolean))],
 		access_url: links.find((l) => l.access_url)?.access_url ?? null,
 		instrument_ids: links.map((l) => l.instrument_id),
+		instrument_links: links,
 		certification: cert ? { spec_version: text(cert.spec_version), approval_date: text(cert.approval_date), review_url: https(cert.review_url) } : null
+	};
+}
+
+function pickConstellation(c) {
+	return {
+		constellation_id: c.constellation_id,
+		slug: text(c.slug),
+		name_short: text(c.name_short),
+		name_full: text(c.name_full),
+		operator: text(c.operator_name),
+		status: text(c.status),
+		first_launch_date: text(c.first_launch_date),
+		latest_launch_date: text(c.latest_launch_date),
+		active_unit_count: num(c.active_unit_count),
+		target_unit_count: num(c.target_unit_count),
+		revisit_time_hours: num(c.revisit_time_hours),
+		orbit_description: short(c.orbit_description),
+		description: short(c.description)
 	};
 }
 
@@ -172,13 +220,15 @@ async function main() {
 	const products = {};
 	const instrumentIds = new Set();
 	const missionIds = new Set();
+	const constellationIds = new Set();
 	for (const link of links) {
 		const raw = productsById.get(link.mim_product_id);
 		if (!raw) throw new Error(`links.json: MIM product ${link.mim_product_id} (${link.product_id}) not found`);
 		const product = pickProduct(raw);
 		product.instrument_ids.forEach((id) => instrumentIds.add(id));
 		link.mission_ids.forEach((id) => missionIds.add(id));
-		products[link.product_id] = { mim_product: product, mission_ids: link.mission_ids, note: link.note ?? null };
+		(link.constellation_ids ?? []).forEach((id) => constellationIds.add(id));
+		products[link.product_id] = { mim_product: product, mission_ids: link.mission_ids, constellation_ids: link.constellation_ids ?? [], note: link.note ?? null };
 	}
 
 	const instruments = {};
@@ -196,6 +246,9 @@ async function main() {
 		missions[id] = mission;
 	}
 
+	const constellations = {};
+	for (const id of [...constellationIds].sort((a, b) => a - b)) constellations[id] = pickConstellation(await get(`/constellation/${id}`));
+
 	const snapshot = {
 		schema: 'mim-snapshot/1',
 		source: {
@@ -208,12 +261,13 @@ async function main() {
 		},
 		products,
 		instruments,
-		missions
+		missions,
+		constellations
 	};
 	mkdirSync(resolve(ROOT, 'data/mim'), { recursive: true });
 	writeFileSync(resolve(ROOT, 'data/mim/snapshot.json'), `${JSON.stringify(snapshot, null, 2)}\n`);
 	writeFileSync(resolve(ROOT, 'reports/mim_reconciliation.md'), reconciliation(snapshot, curatedById, allProducts, links));
-	console.log(`Snapshot: ${Object.keys(products).length} products, ${Object.keys(instruments).length} instruments, ${Object.keys(missions).length} missions (edition ${snapshot.source.edition}, data as of ${snapshot.source.as_of}).`);
+	console.log(`Snapshot: ${Object.keys(products).length} products, ${Object.keys(instruments).length} instruments, ${Object.keys(missions).length} missions, ${Object.keys(constellations).length} constellations (edition ${snapshot.source.edition}, data as of ${snapshot.source.as_of}).`);
 }
 
 // ---------------------------------------------------------------- reconciliation report
@@ -234,18 +288,20 @@ function reconciliation(snapshot, curatedById, allProducts, links) {
 		const c = curatedById[link.product_id];
 		const m = snapshot.products[link.product_id].mim_product;
 		const mimAssessed = m.statuses.includes('CEOS-ARD') && Boolean(m.certification?.approval_date || m.certification?.review_url);
+		// Each check: [field, curated, MIM, state] where state is 'same', 'differs' or 'missing' (MIM has no value).
+		const state = (mimValue, same) => (mimValue === null || mimValue === undefined || mimValue === '' ? 'missing' : same ? 'same' : 'differs');
 		const checks = [
-			['CEOS-ARD assessed', c.ceos_ard_verified ? 'yes' : 'no', mimAssessed ? 'yes' : `no (${m.statuses.join(', ') || 'no status'})`, c.ceos_ard_verified === mimAssessed],
-			['PFS version', c.pfs_version, m.certification?.spec_version, clean(c.pfs_version) === clean(m.certification?.spec_version)],
-			['Approval date', c.approval_date, m.certification?.approval_date, (c.approval_date ?? '') === (m.certification?.approval_date ?? '')],
-			['Access link host', host(c.access_url), host(m.access_url), !m.access_url || host(c.access_url) === host(m.access_url)],
-			['Data format', c.data_format, m.format, !m.format || clean(c.data_format).includes(clean(m.format)) || clean(m.format).includes(clean(c.data_format))]
+			['CEOS-ARD assessed', c.ceos_ard_verified ? 'yes' : 'no', mimAssessed ? 'yes' : `no (${m.statuses.join(', ') || 'no status'})`, c.ceos_ard_verified === mimAssessed ? 'same' : 'differs'],
+			['PFS version', c.pfs_version, m.certification?.spec_version, state(m.certification?.spec_version, clean(c.pfs_version) === clean(m.certification?.spec_version))],
+			['Approval date', c.approval_date, m.certification?.approval_date, state(m.certification?.approval_date, (c.approval_date ?? '') === m.certification?.approval_date)],
+			['Access link host', host(c.access_url), host(m.access_url), state(m.access_url, host(c.access_url) === host(m.access_url))],
+			['Data format', c.data_format, m.format, state(m.format, clean(c.data_format).includes(clean(m.format)) || clean(m.format).includes(clean(c.data_format)))]
 		];
-		const differences = checks.filter(([, , , same]) => !same);
-		rows.push({ link, c, m, differences });
+		const differences = checks.filter(([, , , s]) => s === 'differs');
+		rows.push({ link, c, m, checks, differences });
 	}
 	const linkedIds = new Set(links.map((l) => l.mim_product_id));
-	const unlinkedAssessed = allProducts.filter((p) => !linkedIds.has(p.product_id) && (p.instruments ?? []).some((i) => i.product_status === 'CEOS-ARD') && (p.certifications ?? []).some((c) => c.approval_date || c.review_url));
+	const unlinkedAssessed = allProducts.filter((p) => !linkedIds.has(p.product_id) && (p.instruments ?? []).some((i) => i.product_status === 'CEOS-ARD') && (p.certifications ?? []).some((c) => (c.scheme ?? '').toLowerCase() === 'ceos-ard' && (c.approval_date || c.review_url)));
 	const unlinkedReview = allProducts.filter((p) => !linkedIds.has(p.product_id) && (p.instruments ?? []).some((i) => i.product_status === 'Under Peer Review'));
 
 	const lines = [];
@@ -254,7 +310,12 @@ function reconciliation(snapshot, curatedById, allProducts, links) {
 	lines.push('This lists differences to review. Neither source is assumed to be right: the curated catalogue cites a source for each field (`data/ceos_ard_research_log.csv`), and MIM is maintained by CEOS agencies through an annual survey. Fix the curated record (`tools/populate_ceos_ard.py`) only after checking the cited sources, or report MIM issues to the MIM team.', '');
 	lines.push(`## Linked products (${rows.length} of ${Object.keys(curatedById).length} curated)`, '');
 	const differing = rows.filter((r) => r.differences.length);
-	lines.push(`${differing.length} linked products have at least one difference; ${rows.length - differing.length} agree on every compared field (assessment status, PFS version, approval date, access link host, data format).`, '');
+	lines.push('| Field | Same | Differs | No value in MIM |', '|---|---|---|---|');
+	for (const field of rows[0]?.checks.map(([name]) => name) ?? []) {
+		const states = rows.map((r) => r.checks.find(([name]) => name === field)[3]);
+		lines.push(`| ${field} | ${states.filter((s) => s === 'same').length} | ${states.filter((s) => s === 'differs').length} | ${states.filter((s) => s === 'missing').length} |`);
+	}
+	lines.push('', `${differing.length} linked products have at least one difference where both sources have a value:`, '');
 	lines.push('| Curated product | MIM product | Field | Curated | MIM |', '|---|---|---|---|---|');
 	for (const r of differing) {
 		for (const [field, curatedValue, mimValue] of r.differences) {

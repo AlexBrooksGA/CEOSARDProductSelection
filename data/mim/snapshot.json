@@ -16,6 +16,7 @@
       "mim_product": {
         "product_id": 133,
         "product_name": "ALOS-2 PALSAR-2 25m ScanSAR Normalised Radar Backscatter",
+        "product_short_name": "ALOS-2 ScanSAR NRB",
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -29,6 +30,17 @@
         "instrument_ids": [
           1589
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1589,
+            "instrument_name": "PALSAR-2",
+            "provider_product_name": "ALOS-2 PALSAR-2 ScanSAR L2.2 (NRB)",
+            "provider_product_code": "WWDR2.2GUD",
+            "product_status": "CEOS-ARD",
+            "access_url": "https://gportal.jaxa.jp/gpr/?lang=en",
+            "documentation_url": "https://www.eorc.jaxa.jp/ALOS/en/alos-2/datause/ceos-ard-sample/"
+          }
+        ],
         "certification": {
           "spec_version": "v1.0",
           "approval_date": "2024-04-17",
@@ -38,12 +50,14 @@
       "mission_ids": [
         629
       ],
+      "constellation_ids": [],
       "note": null
     },
     "alos2-palsar2-global-mosaics-rtc": {
       "mim_product": {
         "product_id": 35,
         "product_name": "ALOS-2 PALSAR-2 Global Mosaics (RTC)",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -57,6 +71,17 @@
         "instrument_ids": [
           1589
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1589,
+            "instrument_name": "PALSAR-2",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://www.eorc.jaxa.jp/ALOS/en/dataset/fnf_e.htm",
+            "documentation_url": "https://www.eorc.jaxa.jp/ALOS/en/dataset/pdf/DatasetDescription_PALSAR2_Mosaic_ver212.pdf"
+          }
+        ],
         "certification": {
           "spec_version": "v1.0",
           "approval_date": "2024-04-17",
@@ -66,12 +91,14 @@
       "mission_ids": [
         629
       ],
+      "constellation_ids": [],
       "note": null
     },
     "catalyst-sentinel1-rtc": {
       "mim_product": {
         "product_id": 36,
         "product_name": "Catalyst Sentinel-1 RTC",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -85,6 +112,17 @@
         "instrument_ids": [
           939
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 939,
+            "instrument_name": "C-Band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/",
+            "documentation_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/"
+          }
+        ],
         "certification": {
           "spec_version": "v1.1",
           "approval_date": "2024-10-17",
@@ -97,12 +135,14 @@
         577,
         814
       ],
+      "constellation_ids": [],
       "note": null
     },
     "catalyst-spot5-hrg-2-5m": {
       "mim_product": {
         "product_id": 112,
         "product_name": "Catalyst SPOT 5 HRG 2.5m",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -116,6 +156,17 @@
         "instrument_ids": [
           183
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 183,
+            "instrument_name": "HRG",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/",
+            "documentation_url": "https://catalyst.earth/earth-observation-science/analysis-ready-data/"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0.1",
           "approval_date": "2024-12-04",
@@ -125,12 +176,14 @@
       "mission_ids": [
         253
       ],
+      "constellation_ids": [],
       "note": null
     },
     "constellr-lstprecision": {
       "mim_product": {
         "product_id": 140,
         "product_name": "Constellr LSTprecision",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/ST",
         "type": "Surface Temperature",
@@ -144,21 +197,34 @@
         "instrument_ids": [
           2264
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 2264,
+            "instrument_name": "Thermal Imager (Constellr)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": null
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2026-05-19",
-          "review_url": null
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/ST/v5.0/Constellr%20LSTprecision%20-%20CEOS%20ARD%20Review%20Summary.pdf"
         }
       },
       "mission_ids": [
         1542
       ],
+      "constellation_ids": [],
       "note": "MIM records the satellites as the HiVE Constellation; the curated record names SkyBee A01 and A02."
     },
     "desis-l2a": {
       "mim_product": {
         "product_id": 38,
         "product_name": "DESIS L2A",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -172,6 +238,17 @@
         "instrument_ids": [
           1734
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1734,
+            "instrument_name": "DESIS",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://geoservice.dlr.de/web/datasets/desis_l2_hsi",
+            "documentation_url": "https://www.dlr.de/de/eoc/forschung-transfer/projekte-und-missionen/desis"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0.1",
           "approval_date": "2025-02-12",
@@ -181,12 +258,14 @@
       "mission_ids": [
         776
       ],
+      "constellation_ids": [],
       "note": "MIM records DESIS as its own mission, DESIS-on-ISS."
     },
     "earthdaily-constellation": {
       "mim_product": {
         "product_id": 139,
         "product_name": "EarthDaily Constellation Surface Reflectance",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -200,14 +279,28 @@
         "instrument_ids": [
           2231
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 2231,
+            "instrument_name": "EarthDaily Imager",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": null
+          }
+        ],
         "certification": {
           "spec_version": "v5.0.1",
           "approval_date": "2025-10-07",
-          "review_url": null
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SR/v5.0.1/EDC-SR/EarthDaily%20-%20CEOS%20ARD%20Peer%20Review%20Summary.pdf"
         }
       },
       "mission_ids": [
         1514
+      ],
+      "constellation_ids": [
+        11
       ],
       "note": null
     },
@@ -215,6 +308,7 @@
       "mim_product": {
         "product_id": 39,
         "product_name": "EnMAP (Surface Reflectance)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -228,6 +322,17 @@
         "instrument_ids": [
           964
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 964,
+            "instrument_name": "HSI",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://www.enmap.org/data_access/",
+            "documentation_url": "https://www.enmap.org/"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2022-01-22",
@@ -237,12 +342,14 @@
       "mission_ids": [
         600
       ],
+      "constellation_ids": [],
       "note": "MIM lists EnMAP Surface Reflectance (assessed) and Aquatic Reflectance (in development) separately; this curated record is the Surface Reflectance product."
     },
     "aircas-l8-sr": {
       "mim_product": {
         "product_id": 45,
         "product_name": "L8 SR (Aerospace Information Research Institute)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -256,6 +363,17 @@
         "instrument_ids": [
           897
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 897,
+            "instrument_name": "OLI",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.12237/casearth.RTU_Data_303",
+            "documentation_url": "https://doi.org/10.12237/casearth.RTU_Data_303"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2023-12-06",
@@ -265,12 +383,14 @@
       "mission_ids": [
         547
       ],
+      "constellation_ids": [],
       "note": null
     },
     "aircas-l8-st": {
       "mim_product": {
         "product_id": 118,
         "product_name": "L8 ST (Aerospace Information Research Institute)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/ST",
         "type": "Surface Temperature",
@@ -284,6 +404,17 @@
         "instrument_ids": [
           1524
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1524,
+            "instrument_name": "TIRS",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.12237/casearth.RTU_Data_302",
+            "documentation_url": "https://doi.org/10.12237/casearth.RTU_Data_302"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2023-12-06",
@@ -293,12 +424,14 @@
       "mission_ids": [
         547
       ],
+      "constellation_ids": [],
       "note": null
     },
     "landsat-c2-sr": {
       "mim_product": {
         "product_id": 46,
         "product_name": "Landsat Collection 2 (Surface Reflectance)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -314,6 +447,44 @@
           897,
           1769,
           327
+        ],
+        "instrument_links": [
+          {
+            "instrument_id": 322,
+            "instrument_name": "ETM+",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 897,
+            "instrument_name": "OLI",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 1769,
+            "instrument_name": "OLI-2",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 327,
+            "instrument_name": "TM",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          }
         ],
         "certification": {
           "spec_version": "v5.0",
@@ -328,12 +499,14 @@
         547,
         772
       ],
+      "constellation_ids": [],
       "note": null
     },
     "landsat-c2-st": {
       "mim_product": {
         "product_id": 119,
         "product_name": "Landsat Collection 2 (Surface Temperature)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/ST",
         "type": "Surface Temperature",
@@ -350,6 +523,44 @@
           1746,
           327
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 322,
+            "instrument_name": "ETM+",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 1524,
+            "instrument_name": "TIRS",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 1746,
+            "instrument_name": "TIRS-2",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          },
+          {
+            "instrument_id": 327,
+            "instrument_name": "TM",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P9IAXOVV",
+            "documentation_url": "https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2021-06-04",
@@ -363,12 +574,14 @@
         547,
         772
       ],
+      "constellation_ids": [],
       "note": null
     },
     "landsat-c2-usard-sr": {
       "mim_product": {
         "product_id": 47,
         "product_name": "Landsat Collection 2 U.S. ARD (Surface Reflectance)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -385,6 +598,44 @@
           1769,
           327
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 322,
+            "instrument_name": "ETM+",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 897,
+            "instrument_name": "OLI",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 1769,
+            "instrument_name": "OLI-2",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 327,
+            "instrument_name": "TM",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2022-05-23",
@@ -398,12 +649,14 @@
         547,
         772
       ],
+      "constellation_ids": [],
       "note": null
     },
     "landsat-c2-usard-st": {
       "mim_product": {
         "product_id": 120,
         "product_name": "Landsat Collection 2 U.S. ARD (Surface Temperature)",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/ST",
         "type": "Surface Temperature",
@@ -420,6 +673,44 @@
           1746,
           327
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 322,
+            "instrument_name": "ETM+",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 1524,
+            "instrument_name": "TIRS",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 1746,
+            "instrument_name": "TIRS-2",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          },
+          {
+            "instrument_id": 327,
+            "instrument_name": "TM",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://doi.org/10.5066/P960F8OC",
+            "documentation_url": "https://www.usgs.gov/landsat-missions/landsat-collection-2-us-analysis-ready-data"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2022-05-23",
@@ -433,12 +724,14 @@
         547,
         772
       ],
+      "constellation_ids": [],
       "note": null
     },
     "novasar1-rtc": {
       "mim_product": {
         "product_id": 50,
         "product_name": "NovaSAR-1 RTC",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "NRB",
@@ -452,6 +745,17 @@
         "instrument_ids": [
           1797
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1797,
+            "instrument_name": "S-band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://data.novasar.csiro.au/#/home",
+            "documentation_url": "https://research.csiro.au/cceo/novasar/"
+          }
+        ],
         "certification": {
           "spec_version": "v5.5",
           "approval_date": "2023-10-05",
@@ -461,12 +765,14 @@
       "mission_ids": [
         856
       ],
+      "constellation_ids": [],
       "note": null
     },
     "nrcan-rcm-nrb": {
       "mim_product": {
         "product_id": 51,
         "product_name": "NRCan RCM NRB",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -480,6 +786,17 @@
         "instrument_ids": [
           946
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 946,
+            "instrument_name": "SAR (RCM)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
+            "documentation_url": "https://www.asc-csa.gc.ca/eng/satellites/radarsat/"
+          }
+        ],
         "certification": {
           "spec_version": "v1.1",
           "approval_date": "2025-02-07",
@@ -491,12 +808,14 @@
         585,
         586
       ],
+      "constellation_ids": [],
       "note": null
     },
     "nrcan-rcm-pol": {
       "mim_product": {
         "product_id": 52,
         "product_name": "NRCan RCM POL",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/POL",
         "type": "SAR-POL",
@@ -510,6 +829,17 @@
         "instrument_ids": [
           946
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 946,
+            "instrument_name": "SAR (RCM)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://registry.opendata.aws/rcm-ceos-ard/",
+            "documentation_url": "https://www.asc-csa.gc.ca/eng/satellites/radarsat/"
+          }
+        ],
         "certification": {
           "spec_version": "v1.1",
           "approval_date": "2025-02-07",
@@ -521,12 +851,14 @@
         585,
         586
       ],
+      "constellation_ids": [],
       "note": null
     },
     "opera-rtc-sentinel1": {
       "mim_product": {
         "product_id": 54,
         "product_name": "Opera RTC Sentinel-1",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "NRB",
@@ -539,6 +871,17 @@
         "access_url": null,
         "instrument_ids": [
           939
+        ],
+        "instrument_links": [
+          {
+            "instrument_id": 939,
+            "instrument_name": "C-Band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": null
+          }
         ],
         "certification": {
           "spec_version": "v5.5",
@@ -552,12 +895,14 @@
         577,
         814
       ],
+      "constellation_ids": [],
       "note": null
     },
     "proba-v-l3-toc": {
       "mim_product": {
         "product_id": 126,
         "product_name": "PROBA-V L3 (0.1/0.333/1 km) TOC",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -571,6 +916,17 @@
         "instrument_ids": [
           1664
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 1664,
+            "instrument_name": "Vegetation",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://proba-v.vgt.vito.be/en/product-types/c2/level-3toc",
+            "documentation_url": "https://proba-v.vgt.vito.be/en"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2023-03-21",
@@ -580,12 +936,14 @@
       "mission_ids": [
         737
       ],
+      "constellation_ids": [],
       "note": null
     },
     "risat1a-eos04-nrb": {
       "mim_product": {
         "product_id": 58,
         "product_name": "RISAT-1A (EOS-04) NRB",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -599,6 +957,17 @@
         "instrument_ids": [
           790
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 790,
+            "instrument_name": "SAR (RISAT)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_STUC00ZTD",
+            "documentation_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_STUC00ZTD"
+          }
+        ],
         "certification": {
           "spec_version": "v1.0",
           "approval_date": "2024-04-02",
@@ -608,12 +977,14 @@
       "mission_ids": [
         712
       ],
+      "constellation_ids": [],
       "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only."
     },
     "risat1a-eos04-india-mosaic": {
       "mim_product": {
         "product_id": 59,
         "product_name": "RISAT-1A (EOS-04) NRB India Mosaic",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -627,6 +998,17 @@
         "instrument_ids": [
           790
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 790,
+            "instrument_name": "SAR (RISAT)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_FIGC00ZTD",
+            "documentation_url": "https://bhoonidhi.nrsc.gov.in/MetaSearch/E04_SAR_MRS_FIGC00ZTD"
+          }
+        ],
         "certification": {
           "spec_version": "v1.1",
           "approval_date": "2025-01-06",
@@ -636,12 +1018,14 @@
       "mission_ids": [
         712
       ],
+      "constellation_ids": [],
       "note": "The MIM instrument record also lists RISAT-1 and RISAT-1B; this product uses RISAT-1A (EOS-04) only."
     },
     "ga-sentinel1-nrb": {
       "mim_product": {
         "product_id": 63,
         "product_name": "Sentinel-1 NRB (Geoscience Australia)",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -655,10 +1039,21 @@
         "instrument_ids": [
           939
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 939,
+            "instrument_name": "C-Band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": null
+          }
+        ],
         "certification": {
           "spec_version": "v1.2",
           "approval_date": "2025-09-23",
-          "review_url": null
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-NRB-GA/Sentinel-1%20NRB%20%28Geoscience%20Australia%29%20-%20CEOS%20ARD%20Peer%20Review%20Summary%20.pdf"
         }
       },
       "mission_ids": [
@@ -667,12 +1062,14 @@
         577,
         814
       ],
+      "constellation_ids": [],
       "note": null
     },
     "opera-disp-sentinel1": {
       "mim_product": {
         "product_id": 64,
         "product_name": "Sentinel-1 OPERA InSAR Surface Displacement",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/InSAR",
         "type": "SAR-INSAR",
@@ -686,10 +1083,21 @@
         "instrument_ids": [
           939
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 939,
+            "instrument_name": "C-Band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": null
+          }
+        ],
         "certification": {
           "spec_version": "v1.2",
           "approval_date": "2026-01-05",
-          "review_url": null
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/S1-OPERA-INSAR/OPERA%20DISP%20InSAR%20-%20CEOS%20ARD%20Review%20Summary.pdf"
         }
       },
       "mission_ids": [
@@ -698,12 +1106,14 @@
         577,
         814
       ],
+      "constellation_ids": [],
       "note": null
     },
     "dea-sentinel1-rtc": {
       "mim_product": {
         "product_id": 65,
         "product_name": "Sentinel-1 RTC (Digital Earth Africa)",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "NRB",
@@ -717,6 +1127,17 @@
         "instrument_ids": [
           939
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 939,
+            "instrument_name": "C-Band SAR",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://apps.sentinel-hub.com/s1-card4l/",
+            "documentation_url": "https://docs.sentinel-hub.com/api/latest/data/sentinel-1-grd/#processing-chain"
+          }
+        ],
         "certification": {
           "spec_version": "v5.5",
           "approval_date": "2022-05-20",
@@ -729,12 +1150,14 @@
         577,
         814
       ],
+      "constellation_ids": [],
       "note": null
     },
     "sentinel2-level2a": {
       "mim_product": {
         "product_id": 67,
         "product_name": "Sentinel-2 Level-2A",
+        "product_short_name": null,
         "category": "Optical",
         "level": "ARD/SR",
         "type": "Surface Reflectance",
@@ -748,6 +1171,17 @@
         "instrument_ids": [
           940
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 940,
+            "instrument_name": "MSI (Sentinel-2)",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": "https://dataspace.copernicus.eu/",
+            "documentation_url": "https://sentiwiki.copernicus.eu/web/s2-products#S2Products-L2AS2-Products-L2Atrue"
+          }
+        ],
         "certification": {
           "spec_version": "v5.0",
           "approval_date": "2022-01-22",
@@ -758,12 +1192,14 @@
         552,
         553
       ],
+      "constellation_ids": [],
       "note": "Limited to Sentinel-2A and 2B, as in the curated record; the MIM instrument record also lists Sentinel-2C and 2D."
     },
     "synspective-strix-nrb": {
       "mim_product": {
         "product_id": 136,
         "product_name": "Synspective StriX Series NRB",
+        "product_short_name": null,
         "category": "SAR",
         "level": "ARD/NRB",
         "type": "SAR-NRB",
@@ -777,17 +1213,31 @@
         "instrument_ids": [
           2254
         ],
+        "instrument_links": [
+          {
+            "instrument_id": 2254,
+            "instrument_name": "StriX SAR 1st Gen",
+            "provider_product_name": null,
+            "provider_product_code": null,
+            "product_status": "CEOS-ARD",
+            "access_url": null,
+            "documentation_url": "https://synspective.com/data/synspective-sar-data/"
+          }
+        ],
         "certification": {
           "spec_version": "v1.2",
           "approval_date": "2026-05-04",
-          "review_url": null
+          "review_url": "https://ceos.org/ard/files/Peer%20Reviews/SAR/v1.2/SynspectiveStrixNRB/Synspective%20NRB%20SAR%20-%20CEOS%20ARD%20Review%20Summary.pdf"
         }
       },
       "mission_ids": [
         1357,
         1358
       ],
-      "note": null
+      "constellation_ids": [
+        16
+      ],
+      "note": "MIM records the first StriX-α and StriX-β demonstrators as missions (both complete); the operating satellites are the StriX constellation."
     }
   },
   "instruments": {
@@ -807,6 +1257,26 @@
       "waveband_description": "VIS: B1: 0.50 - 0.59 µm, B2: 0.61 - 0.68 µm, NIR: B3: 0.79 - 0.89 µm, SWIR: 1.50 - 1.75 µm, Panchromatic: 0.49 - 0.69 µm",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "High resolution multispectral mapper. 2 HRG instruments on this mission can be processed to produce simulated imagery of 2.5 m. Images are 60 x 60 km in size.",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "322": {
@@ -825,6 +1295,58 @@
       "waveband_description": "VIS - TIR: 8 bands: 0.45 - 12.5 µm",
       "accuracy_description": "50 - 250 m systematically corrected geodetic accuracy",
       "data_format_info": "COG, GeoTIFF",
+      "measurement_description": "Measures surface radiance and emittance, land cover state, and change (e.g., vegetation type). Used as multi-purpose imagery for land applications.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Aerosols"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean colour/biology"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "327": {
@@ -843,6 +1365,54 @@
       "waveband_description": "VIS - TIR: 7 bands: 0.45 - 12.5 µm",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "Measures surface radiance and emittance, lands cover state and change (eg vegetation type).  Used as multipurpose imagery for land applications. Declared no longer operational June 4, 2012.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Landscape topography"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean colour/biology"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "790": {
@@ -861,9 +1431,34 @@
       "waveband_description": "C-Band (5.350 Ghz)",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "Radar backscatter measurements of land, water and ocean surfaces for applications in soil moisture, crop applications (under cloud cover), terrain mapping, etc.",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Soil moisture"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": {
         "band": "C-Band",
         "centre_frequency_ghz": 5.4,
+        "bandwidth_max_mhz": 75,
         "polarisations": [
           "HH",
           "HV",
@@ -877,6 +1472,8 @@
           "Compact"
         ],
         "look_direction": "Both",
+        "look_direction_nominal": null,
+        "polarisation_notes": "Single (HH/HV/VV/VH), dual, full-pol and hybrid-circular polarimetry (transmit circular, receive H+V linear). Full-pol available in FRS-1/FRS-2/MRS/CRS, not HRS. Hybrid-circular (C-) variants available in all modes.",
         "imaging_modes": [
           {
             "name": "Coarse Resolution ScanSAR (CRS)",
@@ -886,7 +1483,9 @@
             "swath_km": 223,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH, HV, VV, VH, HH+HV, VV+VH, quad, RH+RV (hybrid circular)",
+            "bandwidth_mhz": 18.75
           },
           {
             "name": "Fine Resolution Stripmap - 1",
@@ -896,7 +1495,9 @@
             "swath_km": 25,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH; HV; VV; VH; HH+HV; VV+VH; RH+RV (hybrid circular)",
+            "bandwidth_mhz": 18.75
           },
           {
             "name": "Fine Resolution Stripmap - 1 (QuadPol)",
@@ -906,7 +1507,9 @@
             "swath_km": 20,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV+VV+VH",
+            "bandwidth_mhz": 18.75
           },
           {
             "name": "Fine Resolution Stripmap - 2",
@@ -916,7 +1519,9 @@
             "swath_km": 25,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH; HV; VV; VH; HH+HV; VV+VH; RH+RV (hybrid circular)",
+            "bandwidth_mhz": 18.75
           },
           {
             "name": "Fine Resolution Stripmap - 2 (QuadPol)",
@@ -926,7 +1531,9 @@
             "swath_km": 20,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV+VV+VH",
+            "bandwidth_mhz": 18.75
           },
           {
             "name": "High Resolution Spotlight Mode",
@@ -936,7 +1543,9 @@
             "swath_km": 10,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": -15.99
+            "nesz_db": -15.99,
+            "polarisations": "HH; HV; VV; VH; HH+HV; VV+VH; RH+RV (hybrid circular)",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution ScanSAR (MRS)",
@@ -946,7 +1555,9 @@
             "swath_km": 160,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH, HV, VV, VH, HH+HV, VV+VH, quad, RH+RV (hybrid circular)",
+            "bandwidth_mhz": 18.75
           }
         ],
         "source": "NRSC EOS-04 (RISAT-1A) Hand Book, Doc. No. NRSC-DPA-NDC-OCT 2022-TG-0002110-V1.0; ARD context: ISRO EOS-04 CEOS-ARD NRB self-assessments v1.0/v1.1 (ceos.org/ard)"
@@ -968,6 +1579,58 @@
       "waveband_description": "VIS - SWIR: 9 bands: 0.43 - 2.3 µm",
       "accuracy_description": "Absolute geodetic accuracy of 32 m; relative geodetic accuracy of 18 m (excluding terrain effects); geometric accuracy of 12 m or better",
       "data_format_info": "COG, GeoTIFF",
+      "measurement_description": "Measures surface radiance, land cover state, and change (e.g., vegetation type). Used as multi-purpose imagery for land applications.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean colour/biology"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean topography/currents"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "939": {
@@ -986,9 +1649,54 @@
       "waveband_description": "C-band: 5.405 GHz; HH, VV, HH+HV, VV+VH; Incidence angle: 20-45",
       "accuracy_description": "NESZ: -22 dB; PTAR: -25 dB; DTAR: -22 dB; Radiometric accuracy 1 dB (3 sigma); Radiometric stability: 0.5 dB (3 sigma)",
       "data_format_info": null,
+      "measurement_description": "Marine core services, land monitoring and emergency services. Monitoring sea ice zones and arctic environment. Surveillance of marine environment, monitoring land surface motion risks, mapping of land surfaces (forest, water and soil, agriculture), mapping in support of humanitarian aid in crisis situations.",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Landscape topography"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Soil moisture"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean surface winds"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean topography/currents"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean wave height and spectrum"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": {
         "band": "C-Band",
         "centre_frequency_ghz": 5.405,
+        "bandwidth_max_mhz": 100,
         "polarisations": [
           "HH",
           "HV",
@@ -1000,6 +1708,8 @@
           "Dual"
         ],
         "look_direction": "Right",
+        "look_direction_nominal": "Right",
+        "polarisation_notes": "Dual-polarisation C-SAR: transmits H or V and receives both co- and cross-pol (HH/HV or VV/VH). No simultaneous quad-pol, no compact-pol. Land IW nominally VV+VH; sea-ice EW nominally HH+HV.",
         "imaging_modes": [
           {
             "name": "Interferometric Wide swath (IW)",
@@ -1009,7 +1719,9 @@
             "swath_km": 250,
             "incidence_min_deg": 29.1,
             "incidence_max_deg": 46,
-            "nesz_db": -22
+            "nesz_db": -22,
+            "polarisations": "VV+VH, HH+HV, VV, HH",
+            "bandwidth_mhz": 56.5
           }
         ],
         "source": "ESA Sentinel-1 SAR User Guide / Product Definition + eoPortal; ARD values cross-checked vs Geoscience Australia Sentinel-1 NRB (CEOS-ARD)"
@@ -1031,6 +1743,30 @@
       "waveband_description": "13 bands in the VNIR-SWIR",
       "accuracy_description": "Absolute radiometric accuracy for Level 1C data: 3 - 5%",
       "data_format_info": null,
+      "measurement_description": "Optical high spatial resolution imagery over land and coastal areas for Copernicus operational services.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "946": {
@@ -1049,9 +1785,66 @@
       "waveband_description": "Microwave: C band 5.405 GHz: HH, VV, HV, VH polarization - includes Quad polarization imaging mode and compact polarimetry.",
       "accuracy_description": "Absolute Radiometric Accuracy: +/- 1.0 dB",
       "data_format_info": "Image Products in a format that uses GeoTIFF for imagery and XML for metadata, or NITF for imagery and metadata.",
+      "measurement_description": "All-weather, C-band data to support ecosystem monitoring, maritime surveillance and disaster management.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Atmospheric Winds"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Landscape topography"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean surface winds"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean topography/currents"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean wave height and spectrum"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Ice sheet topography"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": {
         "band": "C-Band",
         "centre_frequency_ghz": 5.405,
+        "bandwidth_max_mhz": 100,
         "polarisations": [
           "HH",
           "HV",
@@ -1065,6 +1858,8 @@
           "Compact"
         ],
         "look_direction": "Right",
+        "look_direction_nominal": "Right",
+        "polarisation_notes": "Dual co-cross selectable pol, and compact-pol available on all modes; dual HH-VV available for specific modes with HH and VV acquired in different bursts, and a dedicated quad pol mode",
         "imaging_modes": [
           {
             "name": "High Resolution 5 m",
@@ -1074,7 +1869,9 @@
             "swath_km": 30,
             "incidence_min_deg": 19.02,
             "incidence_max_deg": 54.14,
-            "nesz_db": -19
+            "nesz_db": -19,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Low Resolution 100 m",
@@ -1084,7 +1881,9 @@
             "swath_km": 500,
             "incidence_min_deg": 19.02,
             "incidence_max_deg": 55.08,
-            "nesz_db": -22
+            "nesz_db": -22,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution 16 m",
@@ -1094,7 +1893,9 @@
             "swath_km": 30,
             "incidence_min_deg": 20.18,
             "incidence_max_deg": 47.43,
-            "nesz_db": -25
+            "nesz_db": -25,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution 30 m",
@@ -1104,7 +1905,9 @@
             "swath_km": 125,
             "incidence_min_deg": 17.3,
             "incidence_max_deg": 48.3,
-            "nesz_db": -24
+            "nesz_db": -24,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution 50 m",
@@ -1114,7 +1917,9 @@
             "swath_km": 350,
             "incidence_min_deg": 19.02,
             "incidence_max_deg": 58.71,
-            "nesz_db": -22
+            "nesz_db": -22,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution 50m-High Incidence",
@@ -1124,7 +1929,9 @@
             "swath_km": 133,
             "incidence_min_deg": 55.06,
             "incidence_max_deg": 60.35,
-            "nesz_db": -22
+            "nesz_db": -22,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Medium Resolution 50m-High PRF",
@@ -1134,7 +1941,9 @@
             "swath_km": 350,
             "incidence_min_deg": 19.02,
             "incidence_max_deg": 58.71,
-            "nesz_db": -22
+            "nesz_db": -22,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Quad-Polarization",
@@ -1144,7 +1953,9 @@
             "swath_km": 20,
             "incidence_min_deg": 23.94,
             "incidence_max_deg": 43.88,
-            "nesz_db": -24
+            "nesz_db": -24,
+            "polarisations": "HH+VV+HV+VH",
+            "bandwidth_mhz": null
           },
           {
             "name": "Ship Detection",
@@ -1154,7 +1965,9 @@
             "swath_km": 350,
             "incidence_min_deg": 39.82,
             "incidence_max_deg": 58.24,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Spotlight",
@@ -1164,7 +1977,9 @@
             "swath_km": 20,
             "incidence_min_deg": 19.42,
             "incidence_max_deg": 46.75,
-            "nesz_db": -17
+            "nesz_db": -17,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; CH+CV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Very High Resolution 3 m",
@@ -1174,7 +1989,9 @@
             "swath_km": 20,
             "incidence_min_deg": 18.25,
             "incidence_max_deg": 54.15,
-            "nesz_db": -17
+            "nesz_db": -17,
+            "polarisations": "HH; VV; HV; VH; HH+HV; VV+VH; HH+VV; CH+CV",
+            "bandwidth_mhz": null
           }
         ],
         "source": "2026 Extended Parameters Survey (CSA, 2026-09-29)"
@@ -1196,6 +2013,30 @@
       "waveband_description": "420 - 2450 nm",
       "accuracy_description": "Radiometric: <5%",
       "data_format_info": null,
+      "measurement_description": "Detailed monitoring and characterization of rock and soil targets, vegetation, inland and coastal waters on a global scale.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Aerosols"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Trace gases (excluding ozone)"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1524": {
@@ -1214,6 +2055,46 @@
       "waveband_description": "TIR 10.5 µm and 12 µm",
       "accuracy_description": "Absolute geodetic accuracy of 44 m;  geometric accuracy of 32 m or better",
       "data_format_info": "COG, GeoTIFF",
+      "measurement_description": "Measures longwave thermal infrared surface emittance, land cover state, and change.  Used as multipurpose imagery for land applications.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1589": {
@@ -1232,9 +2113,62 @@
       "waveband_description": "Microwave: L-Band 1270 MHz",
       "accuracy_description": "Surface Resolution:  1 to 3 m (Spotlight Mode), 3m (Ultra-Fine Mode), 6m (High sensitive Mode), 10m (Fine Mode),100 m (Scan Mode); Radiometric: ±1 dB",
       "data_format_info": "CEOS SAR and GeoTiFF",
+      "measurement_description": "Disaster monitoring, land monitoring, agricultural monitoring, natural resource exploration, global forest monitoring, potential use and interferometry.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Atmospheric Winds"
+        },
+        {
+          "category": "Gravity and Magnetic Fields",
+          "name": "Gravity, Magnetic and Geodynamic measurements"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Landscape topography"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Soil moisture"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean surface winds"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Ice sheet topography"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": {
         "band": "L-Band",
         "centre_frequency_ghz": 1.2575,
+        "bandwidth_max_mhz": 84,
         "polarisations": [
           "HH",
           "HV",
@@ -1247,6 +2181,8 @@
           "Quad"
         ],
         "look_direction": "Both",
+        "look_direction_nominal": "Right",
+        "polarisation_notes": "Full-polarimetric capable (Stripmap HBQ). Compact-pol experimental on PALSAR-2 — not asserted here. Centre frequency is mode-dependent (1257.5 / 1236.5 / 1278.5 MHz by bandwidth); 1.2575 GHz nominal.",
         "imaging_modes": [
           {
             "name": "ScanSAR (Normal - 14 MHz Bandwidth)",
@@ -1256,7 +2192,9 @@
             "swath_km": 350,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -26
+            "nesz_db": -26,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 14
           },
           {
             "name": "ScanSAR (Normal - 28 MHz Bandwidth)",
@@ -1266,7 +2204,9 @@
             "swath_km": 350,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -23
+            "nesz_db": -23,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 28
           },
           {
             "name": "ScanSAR (Wide Beam)",
@@ -1276,7 +2216,9 @@
             "swath_km": 490,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -26
+            "nesz_db": -26,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 14
           },
           {
             "name": "Spotlight",
@@ -1286,7 +2228,9 @@
             "swath_km": 25,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -24
+            "nesz_db": -24,
+            "polarisations": "HH; HV; VV",
+            "bandwidth_mhz": 84
           },
           {
             "name": "Stripmap Fine - FullPol",
@@ -1296,7 +2240,9 @@
             "swath_km": 30,
             "incidence_min_deg": 23.7,
             "incidence_max_deg": 23.7,
-            "nesz_db": -23
+            "nesz_db": -23,
+            "polarisations": "HH+HV+VH+VV",
+            "bandwidth_mhz": 28
           },
           {
             "name": "Stripmap Fine - Single/Dual/Compact Pol",
@@ -1306,7 +2252,9 @@
             "swath_km": 70,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -26
+            "nesz_db": -26,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 28
           },
           {
             "name": "Stripmap High Sensitive - Full Pol",
@@ -1316,7 +2264,9 @@
             "swath_km": 40,
             "incidence_min_deg": 20,
             "incidence_max_deg": 40,
-            "nesz_db": -25
+            "nesz_db": -25,
+            "polarisations": "HH+HV+VH+VV",
+            "bandwidth_mhz": 42
           },
           {
             "name": "Stripmap High Sensitive - Single/Dual/Compact Pol",
@@ -1326,7 +2276,9 @@
             "swath_km": 50,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -28
+            "nesz_db": -28,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 42
           },
           {
             "name": "Stripmap Ultrafine",
@@ -1336,7 +2288,9 @@
             "swath_km": 50,
             "incidence_min_deg": 8,
             "incidence_max_deg": 70,
-            "nesz_db": -24
+            "nesz_db": -24,
+            "polarisations": "HH; HV; VV; HH+HV; VV+VH",
+            "bandwidth_mhz": 84
           }
         ],
         "source": "2026 Extended Parameters Survey (JAXA, 2026-07-16)"
@@ -1358,6 +2312,26 @@
       "waveband_description": "Equivalent spectral bands to Spot Vegetation: VNIR: Blue (438-486 nm), Red (615-696 nm), Near IR (772-914 nm), SWIR (1564-1634 nm).",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "Global coverage every two days for uses including climate impact assessments, surface water resource management, agricultural monitoring, and food security estimates.",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1734": {
@@ -1376,6 +2350,14 @@
       "waveband_description": "Spectral range: 450nm – 950nm (400 - 1000nm)\n\nSpectral sampling: ≈ 2.32nm\n\nSpectral channels: 240 (without binning)",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "DESIS is a hyperspectral camera that records image data using an array of up to 240 closely spaced channels, covering the visible and near infrared portions of the spectrum (450 to 915 nanometres) with a ground resolution of approximately 90 metres. This multifaceted information allows scientists to detect changes in…",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1746": {
@@ -1394,6 +2376,46 @@
       "waveband_description": "TIR 10.5 µm and 12 µm",
       "accuracy_description": "Absolute geodetic accuracy of 44 m;  geometric accuracy of 32 m or better",
       "data_format_info": null,
+      "measurement_description": "Measures longwave thermal infrared surface emittance, land cover state, and change.  Used as multipurpose imagery for land applications. TIRS-2 will adhere to the Landsat 8 TIRS instrument performance specifications but will be built to NASA Class-B instrument standards (including a 5-year design life).",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1769": {
@@ -1412,6 +2434,58 @@
       "waveband_description": "VIS - SWIR: 9 bands: 0.43 - 2.3 µm",
       "accuracy_description": "Absolute geodetic accuracy of 32 m; relative geodetic accuracy of 18 m (excluding terrain effects); geometric accuracy of 12 m or better",
       "data_format_info": "COG, GeoTIFF",
+      "measurement_description": "Measures surface radiance, land cover state, and change (e.g., vegetation type). Used as multi-purpose imagery for land applications.",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Cloud type, amount and cloud top temperature"
+        },
+        {
+          "category": "Atmosphere",
+          "name": "Radiation budget"
+        },
+        {
+          "category": "Land",
+          "name": "Albedo and reflectance"
+        },
+        {
+          "category": "Land",
+          "name": "Inland Waters"
+        },
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Ocean",
+          "name": "Multi-purpose imagery (ocean)"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean colour/biology"
+        },
+        {
+          "category": "Ocean",
+          "name": "Ocean topography/currents"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Snow cover, edge and depth"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "1797": {
@@ -1430,9 +2504,26 @@
       "waveband_description": "S-band: 3.1-3.3 GHz",
       "accuracy_description": "sub 50 m",
       "data_format_info": "Spacecraft format - CCSDS\r\nBase deliverable format - GeoTIFF",
+      "measurement_description": "SAR imagery for a range of applications including agriculture, maritime and forestry",
+      "measurements": [
+        {
+          "category": "Atmosphere",
+          "name": "Atmospheric Winds"
+        },
+        {
+          "category": "Land",
+          "name": "Vegetation"
+        },
+        {
+          "category": "Snow & Ice",
+          "name": "Sea ice cover, edge and thickness"
+        }
+      ],
+      "is_commercial": false,
       "sar": {
         "band": "S-Band",
         "centre_frequency_ghz": 3.2,
+        "bandwidth_max_mhz": 200,
         "polarisations": [
           "HH",
           "HV",
@@ -1443,6 +2534,8 @@
           "Dual"
         ],
         "look_direction": "Both",
+        "look_direction_nominal": null,
+        "polarisation_notes": null,
         "imaging_modes": [
           {
             "name": "Maritime",
@@ -1452,7 +2545,9 @@
             "swath_km": 400,
             "incidence_min_deg": 34.5,
             "incidence_max_deg": 57.3,
-            "nesz_db": -9.7
+            "nesz_db": -9.7,
+            "polarisations": "HH",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m HH Full-Swath",
@@ -1462,7 +2557,9 @@
             "swath_km": 100,
             "incidence_min_deg": 15,
             "incidence_max_deg": 24.66,
-            "nesz_db": -20
+            "nesz_db": -20,
+            "polarisations": "HH",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m HH Half-Swath",
@@ -1472,7 +2569,9 @@
             "swath_km": 50,
             "incidence_min_deg": 24.51,
             "incidence_max_deg": 28.94,
-            "nesz_db": -21
+            "nesz_db": -21,
+            "polarisations": "HH",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m HH+HV",
@@ -1482,7 +2581,9 @@
             "swath_km": 27,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": -20
+            "nesz_db": -20,
+            "polarisations": "HH+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m HH+VV",
@@ -1492,7 +2593,9 @@
             "swath_km": 60,
             "incidence_min_deg": 13.98,
             "incidence_max_deg": 30.6,
-            "nesz_db": -20
+            "nesz_db": -20,
+            "polarisations": "HH+VV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m VV Full-Swath",
@@ -1502,7 +2605,9 @@
             "swath_km": 100,
             "incidence_min_deg": 15,
             "incidence_max_deg": 25.93,
-            "nesz_db": -20
+            "nesz_db": -20,
+            "polarisations": "VV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 20m VV Half-Swath",
@@ -1512,7 +2617,9 @@
             "swath_km": 50,
             "incidence_min_deg": 24.51,
             "incidence_max_deg": 32.01,
-            "nesz_db": -21
+            "nesz_db": -21,
+            "polarisations": "VV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 30m 150 km SinglePol",
@@ -1522,7 +2629,9 @@
             "swath_km": 150,
             "incidence_min_deg": 11.29,
             "incidence_max_deg": 25.93,
-            "nesz_db": -21
+            "nesz_db": -21,
+            "polarisations": "HH; VV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 30m VV 55 km",
@@ -1532,7 +2641,9 @@
             "swath_km": 55,
             "incidence_min_deg": 27.35,
             "incidence_max_deg": 32.01,
-            "nesz_db": -19.5
+            "nesz_db": -19.5,
+            "polarisations": "VV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 30m VV+HH+HV Half-Swath",
@@ -1542,7 +2653,9 @@
             "swath_km": 100,
             "incidence_min_deg": 15,
             "incidence_max_deg": 29.1,
-            "nesz_db": -27
+            "nesz_db": -27,
+            "polarisations": "HH+VV+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR 35m VV+HH+HV Full-Swath",
@@ -1552,7 +2665,9 @@
             "swath_km": 100,
             "incidence_min_deg": 14.39,
             "incidence_max_deg": 29.08,
-            "nesz_db": -26
+            "nesz_db": -26,
+            "polarisations": "HH+VV+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 33m",
@@ -1562,7 +2677,9 @@
             "swath_km": 195,
             "incidence_min_deg": 11.82,
             "incidence_max_deg": 30.26,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 40m",
@@ -1572,7 +2689,9 @@
             "swath_km": 195,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 40m (CoCross)",
@@ -1582,7 +2701,9 @@
             "swath_km": 195,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 45m",
@@ -1592,7 +2713,9 @@
             "swath_km": 195,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 50m",
@@ -1602,7 +2725,9 @@
             "swath_km": 195,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "ScanSAR Wide 50m (Co6+Cross1)",
@@ -1612,7 +2737,9 @@
             "swath_km": 195,
             "incidence_min_deg": 12.95,
             "incidence_max_deg": 31.18,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH+HV",
+            "bandwidth_mhz": null
           },
           {
             "name": "Stripmap HH",
@@ -1622,7 +2749,9 @@
             "swath_km": 20,
             "incidence_min_deg": 16,
             "incidence_max_deg": 25.38,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "HH",
+            "bandwidth_mhz": null
           },
           {
             "name": "Stripmap VV",
@@ -1632,7 +2761,9 @@
             "swath_km": 20,
             "incidence_min_deg": 21.29,
             "incidence_max_deg": 31.2,
-            "nesz_db": null
+            "nesz_db": null,
+            "polarisations": "VV",
+            "bandwidth_mhz": null
           }
         ],
         "source": "2026 Extended Parameters Survey (SSTL, 2026-09-08)"
@@ -1654,6 +2785,14 @@
       "waveband_description": "22 spectral bands: 6 VIS, 6 NIR, 6 SWIR, 4 TIR",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "Agriculture, insurance, and disaster prevention and recovery.",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        }
+      ],
+      "is_commercial": false,
       "sar": null
     },
     "2254": {
@@ -1672,9 +2811,18 @@
       "waveband_description": "9.65 GHz (X-band); up to 300 MHz bandwidth",
       "accuracy_description": null,
       "data_format_info": null,
+      "measurement_description": "X-band SAR imagery for disaster response and recovery, and general land imagery",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Multi-purpose imagery (land)"
+        }
+      ],
+      "is_commercial": true,
       "sar": {
         "band": "X-Band",
         "centre_frequency_ghz": 9.65,
+        "bandwidth_max_mhz": 300,
         "polarisations": [
           "VV"
         ],
@@ -1682,6 +2830,8 @@
           "Single"
         ],
         "look_direction": null,
+        "look_direction_nominal": null,
+        "polarisation_notes": "VV only.",
         "imaging_modes": [
           {
             "name": "Sliding Spotlight",
@@ -1691,7 +2841,9 @@
             "swath_km": 10,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": -15.4
+            "nesz_db": -15.4,
+            "polarisations": "VV",
+            "bandwidth_mhz": 300
           },
           {
             "name": "Stripmap",
@@ -1701,7 +2853,9 @@
             "swath_km": 20,
             "incidence_min_deg": null,
             "incidence_max_deg": null,
-            "nesz_db": -21.7
+            "nesz_db": -21.7,
+            "polarisations": "VV",
+            "bandwidth_mhz": 75
           }
         ],
         "source": "Synspective SAR data page (synspective.com) + eoPortal StriX article; ARD context: Synspective StriX Series NRB CEOS-ARD self-assessment v1.2 (ceos.org/ard)"
@@ -1723,6 +2877,14 @@
       "waveband_description": "Four thermal bands",
       "accuracy_description": "LSTprecision: <1-2K with 0.03K NEDT, LSTzoom: <3K, LSTfusion: <5K",
       "data_format_info": null,
+      "measurement_description": "Thermal imaging for activity, stress, anomalies, change over time",
+      "measurements": [
+        {
+          "category": "Land",
+          "name": "Surface temperature (land)"
+        }
+      ],
+      "is_commercial": true,
       "sar": null
     }
   },
@@ -1742,6 +2904,9 @@
       "orbit_inclination_deg": 98.2,
       "orbit_lst": null,
       "repeat_cycle_days": 16,
+      "orbit_period_min": 98.9,
+      "norad_id": 13367,
+      "description": null,
       "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-4-and-5",
       "mission_url": null,
       "data_site_url": null,
@@ -1775,6 +2940,9 @@
       "orbit_inclination_deg": 98.2,
       "orbit_lst": "10:00",
       "repeat_cycle_days": 16,
+      "orbit_period_min": 98.9,
+      "norad_id": 14780,
+      "description": "Earth resources, land surface, environmental monitoring, agriculture and forestry, disaster monitoring and assessment, ice and snow cover.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-4-and-5",
       "mission_url": null,
       "data_site_url": null,
@@ -1808,6 +2976,9 @@
       "orbit_inclination_deg": 98.7,
       "orbit_lst": "10:30",
       "repeat_cycle_days": 26,
+      "orbit_period_min": 101,
+      "norad_id": 27421,
+      "description": "Cartography, land surface, agriculture and forestry, civil planning and mapping, digital terrain models, environmental monitoring.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/spot-5",
       "mission_url": "https://cnes.fr/en/projects/spot",
       "data_site_url": null,
@@ -1841,6 +3012,9 @@
       "orbit_inclination_deg": 98.2,
       "orbit_lst": "08:00",
       "repeat_cycle_days": 16,
+      "orbit_period_min": 98.9,
+      "norad_id": 25682,
+      "description": "Earth resources, land surface, environmental monitoring, agriculture and forestry, disaster monitoring and assessment, ice and snow cover. 5-year nominal mission life, currently in extended operations with the LST allowed to drift. Routine science mission data operations ended following the declaration of successful…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-7",
       "mission_url": "https://www.usgs.gov/landsat-missions/landsat-7",
       "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-7",
@@ -1874,6 +3048,9 @@
       "orbit_inclination_deg": 98.2,
       "orbit_lst": "10:11",
       "repeat_cycle_days": 16,
+      "orbit_period_min": 98.9,
+      "norad_id": 39084,
+      "description": "5-year mission design life with at least 10 years of consumables. Earth resources, land surface, environmental monitoring, agriculture and forestry, disaster monitoring and assessment, ice and snow cover.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-8-ldcm",
       "mission_url": "https://www.usgs.gov/landsat-missions/landsat-8",
       "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-8",
@@ -1907,6 +3084,9 @@
       "orbit_inclination_deg": 98.62,
       "orbit_lst": "10:30",
       "repeat_cycle_days": 10,
+      "orbit_period_min": 100.7,
+      "norad_id": 40697,
+      "description": "Sentinel-2 mission delivers high-resolution optical multispectral imagery across 13 spectral bands in the visible to shortwave infrared, with spatial resolutions up to 10 meters and a revisit period of 5 days. This data supports a wide range of applications, including precision agriculture, food security, ecosystems…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
       "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2",
@@ -1934,6 +3114,9 @@
       "orbit_inclination_deg": 98.62,
       "orbit_lst": "10:30",
       "repeat_cycle_days": 10,
+      "orbit_period_min": 100.7,
+      "norad_id": 42063,
+      "description": "Sentinel-2 mission delivers high-resolution optical multispectral imagery across 13 spectral bands in the visible to shortwave infrared, with spatial resolutions up to 10 meters and a revisit period of 5 days. This data supports a wide range of applications, including precision agriculture, food security, ecosystems…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
       "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2",
@@ -1961,6 +3144,9 @@
       "orbit_inclination_deg": 98.19,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 98.74,
+      "norad_id": 39634,
+      "description": "Sentinel-1 provides continuity of C-band SAR data for operational applications notably in the following areas: monitoring of sea ice zones and the arctic environment, surveillance of marine environment, monitoring of land surface motion risks and mapping in support of humanitarian aid in crisis situations.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
       "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
@@ -1994,6 +3180,9 @@
       "orbit_inclination_deg": 98.19,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 98.74,
+      "norad_id": 41456,
+      "description": "Providing continuity of C-band SAR data for operational applications notably in the following areas: monitoring of sea ice zones and the arctic environment, surveillance of marine environment, monitoring of land surface motion risks and mapping in support of humanitarian aid in crisis situations.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
       "mission_url": "https://sentiwiki.copernicus.eu/web/s1-mission",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
@@ -2027,6 +3216,9 @@
       "orbit_inclination_deg": 98.19,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 98.74,
+      "norad_id": 62261,
+      "description": "Sentinel-1 provides continuity of C-band SAR data for operational applications notably in the following areas: monitoring of sea ice zones and the arctic environment, surveillance of marine environment, monitoring of land surface motion risks and mapping in support of humanitarian aid in crisis situations.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
       "mission_url": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
@@ -2054,6 +3246,9 @@
       "orbit_inclination_deg": 97.7,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 96.4,
+      "norad_id": 44322,
+      "description": "Ecosystem monitoring, maritime surveillance, disaster management.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
       "mission_url": null,
       "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
@@ -2087,6 +3282,9 @@
       "orbit_inclination_deg": 97.7,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 96.4,
+      "norad_id": 44324,
+      "description": "Ecosystem monitoring, maritime surveillance, disaster management.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
       "mission_url": null,
       "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
@@ -2120,6 +3318,9 @@
       "orbit_inclination_deg": 97.7,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 96.4,
+      "norad_id": 44323,
+      "description": "Ecosystem monitoring, maritime surveillance, disaster management.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/radarsat-constellation",
       "mission_url": null,
       "data_site_url": "https://www.eodms-sgdot.nrcan-rncan.gc.ca/",
@@ -2153,6 +3354,9 @@
       "orbit_inclination_deg": null,
       "orbit_lst": "11:00",
       "repeat_cycle_days": 21,
+      "orbit_period_min": 97.5,
+      "norad_id": 52159,
+      "description": "Hyperspectral imaging, land surface, geological and environmental investigation.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/enmap",
       "mission_url": null,
       "data_site_url": null,
@@ -2186,6 +3390,9 @@
       "orbit_inclination_deg": 97.9,
       "orbit_lst": "12:00",
       "repeat_cycle_days": 14,
+      "orbit_period_min": 97,
+      "norad_id": 39766,
+      "description": "Environmental monitoring, disaster monitoring, civil planning, agriculture and forestry, Earth resources, land surface and ocean monitoring.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/alos-2",
       "mission_url": "https://global.jaxa.jp/projects/sat/alos2/index.html",
       "data_site_url": "https://gportal.jaxa.jp/gpr/?lang=en",
@@ -2213,6 +3420,9 @@
       "orbit_inclination_deg": 97.844,
       "orbit_lst": "6:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 96.5,
+      "norad_id": 51656,
+      "description": "Land surface, agriculture and forestry, regional geology, land use studies, water resources, vegetation studies, coastal studies and soils - especially during cloud season.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/risat-1",
       "mission_url": "https://www.isro.gov.in/",
       "data_site_url": null,
@@ -2240,6 +3450,9 @@
       "orbit_inclination_deg": 98.73,
       "orbit_lst": "10:30 to 11:30",
       "repeat_cycle_days": 2,
+      "orbit_period_min": null,
+      "norad_id": 39159,
+      "description": "The PROBA-V mission’s main multispectral imager extends the 15-year dataset of Spot-4 & Spot-5’s Vegetation instrument, delivering global coverage every two days for uses including climate impact assessments, surface water resource management, agricultural monitoring, and food security estimates.\nFrom July 2020,…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/proba-v",
       "mission_url": "https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Proba_Missions",
       "data_site_url": "https://dataspace.copernicus.eu/proba-v",
@@ -2273,6 +3486,9 @@
       "orbit_inclination_deg": 98.2,
       "orbit_lst": "10:11",
       "repeat_cycle_days": 16,
+      "orbit_period_min": 98.9,
+      "norad_id": 49260,
+      "description": "5-year mission design life with at least 10 years of consumables. Earth resources, land surface, environmental monitoring, agriculture and forestry, disaster monitoring and assessment, ice and snow cover.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/landsat-9",
       "mission_url": "https://www.usgs.gov/landsat-missions/landsat-9",
       "data_site_url": "https://www.usgs.gov/landsat-missions/landsat-9",
@@ -2306,6 +3522,9 @@
       "orbit_inclination_deg": 51.6,
       "orbit_lst": "2023-05-03T10:55:45.134+0100",
       "repeat_cycle_days": null,
+      "orbit_period_min": 93,
+      "norad_id": 25544,
+      "description": "DESIS detects changes in the land surface, oceans and atmosphere; it will contribute to the development of effective measures to protect the environment and climate and allows scientists to detect changes in ecosystems and to make statements on the condition of forests and agricultural land. Among other things, its…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/iss-muses",
       "mission_url": null,
       "data_site_url": null,
@@ -2339,6 +3558,9 @@
       "orbit_inclination_deg": 98.19,
       "orbit_lst": "18:00",
       "repeat_cycle_days": 12,
+      "orbit_period_min": 98.74,
+      "norad_id": 66315,
+      "description": "Sentinel-1 provides continuity of C-band SAR data for operational applications notably in the following areas: monitoring of sea ice zones and the arctic environment, surveillance of marine environment, monitoring of land surface motion risks and mapping in support of humanitarian aid in crisis situations.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
       "mission_url": "https://www.copernicus.eu/en/media/image-day-gallery/copernicus-sentinel-1d-new-eu-satellite-orbit",
       "data_site_url": "https://dataspace.copernicus.eu/data-collections/sentinel-data/sentinel-1",
@@ -2366,6 +3588,9 @@
       "orbit_inclination_deg": 97.7,
       "orbit_lst": "8:56",
       "repeat_cycle_days": null,
+      "orbit_period_min": 96.3,
+      "norad_id": 43619,
+      "description": "NovaSAR-1 is a low cost spaceborne Synthetic Aperture Radar (SAR) programme from SSTL employing a novel small satellite design capable of supporting the requirements of a high performance SAR payload. The main applications include maritime and forestry. It has a secondary AIS payload. The orbit drifts, so revisit is…",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/novasar-1",
       "mission_url": "https://www.sstl.co.uk/space-portfolio/launched-missions/2010-2019",
       "data_site_url": "https://data.novasar.csiro.au/",
@@ -2393,6 +3618,9 @@
       "orbit_inclination_deg": 97.3,
       "orbit_lst": null,
       "repeat_cycle_days": null,
+      "orbit_period_min": null,
+      "norad_id": null,
+      "description": "Demonstration mission for StriX Constellation. X-band SAR observations over land and sea",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/synspective",
       "mission_url": "https://synspective.com/satellite/strix-constellation/",
       "data_site_url": null,
@@ -2426,6 +3654,9 @@
       "orbit_inclination_deg": 91,
       "orbit_lst": null,
       "repeat_cycle_days": null,
+      "orbit_period_min": null,
+      "norad_id": null,
+      "description": "Demonstration mission for StriX Constellation. X-band SAR observations over land and sea",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/synspective",
       "mission_url": "https://synspective.com/satellite/strix-constellation/",
       "data_site_url": null,
@@ -2459,6 +3690,9 @@
       "orbit_inclination_deg": 97.5,
       "orbit_lst": null,
       "repeat_cycle_days": null,
+      "orbit_period_min": null,
+      "norad_id": 69884,
+      "description": "10 satellite constellation. Each satellite will be equipped with an optical imager that will aid in services such as agriculture, insurance, and disaster prevention and recovery.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/earthdaily",
       "mission_url": "https://earthdaily.com/constellation",
       "data_site_url": null,
@@ -2486,6 +3720,9 @@
       "orbit_inclination_deg": null,
       "orbit_lst": null,
       "repeat_cycle_days": null,
+      "orbit_period_min": null,
+      "norad_id": 62671,
+      "description": "Thermal imaging constellation for climate and intelligence.",
       "eoportal_url": "https://www.eoportal.org/satellite-missions/hive",
       "mission_url": "https://www.constellr.com/",
       "data_site_url": null,
@@ -2503,6 +3740,38 @@
           "modified": false
         }
       }
+    }
+  },
+  "constellations": {
+    "11": {
+      "constellation_id": 11,
+      "slug": "earthdaily",
+      "name_short": "EarthDaily",
+      "name_full": "EarthDaily Constellation",
+      "operator": "EarthDaily",
+      "status": "Deploying",
+      "first_launch_date": "2025-06-23",
+      "latest_launch_date": "2026-07-07",
+      "active_unit_count": 8,
+      "target_unit_count": 10,
+      "revisit_time_hours": 24,
+      "orbit_description": "Sun-synchronous ~630 km, 10:30 LTDN",
+      "description": null
+    },
+    "16": {
+      "constellation_id": 16,
+      "slug": "strix",
+      "name_short": "StriX",
+      "name_full": "StriX Constellation",
+      "operator": "Synspective",
+      "status": "Deploying",
+      "first_launch_date": "2020-12-15",
+      "latest_launch_date": "2026-09-26",
+      "active_unit_count": 11,
+      "target_unit_count": 30,
+      "revisit_time_hours": null,
+      "orbit_description": "2nd Gen platforms in Sun-synchronous orbits, 3rd Gen platforms in inclined orbits, at 38-50 deg inclination. All platforms at approx 560km altitude.",
+      "description": "Constellation of 30 X-band SAR satellites for disaster response and recovery, and general land surface imaging"
     }
   }
 }

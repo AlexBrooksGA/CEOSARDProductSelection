@@ -50,6 +50,35 @@ describe('MIM links and snapshot', () => {
 		}
 	});
 
+	it('adds constellation records for commercial constellations (StriX demonstrators are complete; the constellation is active)', () => {
+		const details = mimDetailsFor(parseMimSnapshot(raw(), ids), 'synspective-strix-nrb')!;
+		expect(details.missions.every((m) => /complete/i.test(m.status ?? ''))).toBe(true);
+		expect(details.constellations[0]!.name_short).toBe('StriX');
+		expect(details.constellations[0]!.active_unit_count).toBeGreaterThan(0);
+		expect(mimDetailsFor(parseMimSnapshot(raw(), ids), 'landsat-c2-sr')!.constellations).toEqual([]);
+	});
+
+	it('keeps upgraded https review links (CEOS pages listed with http)', () => {
+		const constellr = parseMimSnapshot(raw(), ids).products['constellr-lstprecision']!.mim_product;
+		expect(constellr.certification!.review_url).toMatch(/^https:\/\/ceos\.org\//);
+	});
+
+	it('accepts a mission without a visual and rejects unsafe credit links or prototype keys', () => {
+		const noVisual = raw();
+		noVisual.missions['547'].visual = null;
+		expect(() => parseMimSnapshot(noVisual, ids)).not.toThrow();
+		const credit = raw();
+		const withCredit = Object.values<any>(credit.missions).find((m) => m.visual?.credit)!;
+		withCredit.visual.credit.source_url = 'http://insecure.example/image';
+		expect(() => parseMimSnapshot(credit, ids)).toThrow(/credit URLs must be https/);
+		const proto = raw();
+		proto.products['landsat-c2-sr'].mission_ids.push('toString');
+		expect(() => parseMimSnapshot(proto, ids)).toThrow(/missing mission toString/);
+		const review = raw();
+		review.products['landsat-c2-sr'].mim_product.certification.review_url = 'ftp://x';
+		expect(() => parseMimSnapshot(review, ids)).toThrow(/review_url must be https/);
+	});
+
 	it('rejects broken links, unsafe URLs and unknown products', () => {
 		const missing = raw();
 		missing.products['landsat-c2-sr'].mission_ids.push(999999);
