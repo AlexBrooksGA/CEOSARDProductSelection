@@ -54,6 +54,8 @@ export interface MimStatusView {
 	endpoints: { products: string; instruments: string } | null;
 	ttlHours: number;
 	host: string | null;
+	disabledReason: 'off' | 'misconfigured' | null;
+	publicAccess: boolean;
 	edition: { edition: string | null; asOf: string | null; licence: { name: string; url: string | null } | null; attribution: string } | null;
 }
 
@@ -172,7 +174,7 @@ export class AppStore {
 
 	unresolvedReason(id: string): string {
 		if (id.startsWith('mim-product:')) {
-			if (!this.mimStatus.configured) return 'MIM record — MIM is not configured for this deployment.';
+			if (!this.mimStatus.configured) return `MIM record — MIM is ${this.mimStatus.disabledReason === 'off' ? 'turned off' : 'not configured'} for this deployment.`;
 			if (!this.mimLoaded) return 'MIM record — MIM products are not loaded in this session.';
 			return 'MIM record — not present in the currently loaded MIM data.';
 		}

@@ -40,6 +40,7 @@ export default defineConfig({
 				MIMS_API_BASE_URL: 'http://127.0.0.1:4599/api',
 				MIMS_API_USERNAME: 'e2e-user',
 				MIMS_API_PASSWORD: 'e2e-secret',
+				MIMS_API_KEY: '',
 				MIMS_REFRESH_COOLDOWN_SECONDS: '30',
 				MIMS_FAILURE_BACKOFF_SECONDS: '0'
 			},

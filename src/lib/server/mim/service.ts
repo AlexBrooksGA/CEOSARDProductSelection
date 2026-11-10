@@ -58,8 +58,12 @@ export interface MimStatus {
 	ttlHours: number;
 	retryAfterSeconds: number | null;
 	endpoints: { products: string; instruments: string } | null;
-	/** Public API host, for display (never credentials). */
+	/** Public CEOS Database API host when that is the source, for display; null for any other host. */
 	host: string | null;
+	/** Why MIM is not configured: turned off on purpose, or an invalid setting. */
+	disabledReason: 'off' | 'misconfigured' | null;
+	/** True when no Basic credentials are used (the public API needs none). */
+	publicAccess: boolean;
 	/** Database edition and licence from the API's /meta, when available. */
 	edition: MimEdition | null;
 }
@@ -112,6 +116,22 @@ function namedCollection(payload: unknown, key: 'products' | 'instruments'): Jso
 		throw new MimError('response', `The MIM ${key} response has an unexpected structure.`);
 	}
 	return ((payload as Json)[key] as unknown[]).filter((item): item is Json => Boolean(item) && typeof item === 'object' && !Array.isArray(item));
+}
+
+/**
+ * Service options from private environment variables. Pure, so it can be tested without SvelteKit.
+ * MIMS_API_BASE_URL: empty means the public API, "off" (any case) turns MIM off.
+ */
+export function mimOptionsFromEnv(env: Record<string, string | undefined>): Pick<MimServiceOptions, 'disabled' | 'baseUrl' | 'username' | 'password' | 'apiKey'> {
+	const base = env.MIMS_API_BASE_URL?.trim();
+	const off = base?.toLowerCase() === 'off';
+	return {
+		disabled: off,
+		baseUrl: base && !off ? base : undefined,
+		username: env.MIMS_API_USERNAME || undefined,
+		password: env.MIMS_API_PASSWORD || undefined,
+		apiKey: env.MIMS_API_KEY?.trim() || undefined
+	};
 }
 
 export class MimService {
@@ -183,7 +203,10 @@ export class MimService {
 			ttlHours: this.options.ttlMs / 3_600_000,
 			endpoints: this.cache?.endpoints ?? null,
 			retryAfterSeconds: null as number | null,
-			host: this.validBaseUrl() && !this.options.disabled ? new URL(this.options.baseUrl).host : null,
+			// Only the public API's host is shown; a private deployment's host stays on the server.
+			host: this.validBaseUrl() && !this.options.disabled && new URL(this.options.baseUrl).origin === new URL(DEFAULT_BASE_URL).origin ? new URL(DEFAULT_BASE_URL).host : null,
+			disabledReason: this.configured ? null : this.options.disabled ? ('off' as const) : ('misconfigured' as const),
+			publicAccess: !(this.options.username && this.options.password),
 			edition: this.cache?.edition ?? null
 		};
 		if (!this.configured) {

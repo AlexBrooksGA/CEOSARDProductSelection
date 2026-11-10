@@ -14,7 +14,7 @@ test('malformed link portions are ignored with recovery messages', async ({ page
 test('unresolved shortlist IDs stay as labelled placeholders, never substituted', async ({ page }) => {
 	await open(page, '/shortlist?v=1&sl=mim-product:12,retired-product,landsat-c2-sr&cmp=mim-product:12,landsat-c2-sr');
 	await expect(page.locator('li.entry')).toHaveCount(3);
-	await expect(page.getByText('mim-product:12 — MIM record — MIM is not configured for this deployment.')).toBeVisible();
+	await expect(page.getByText('mim-product:12 — MIM record — MIM is turned off for this deployment.')).toBeVisible();
 	await expect(page.getByText(/retired-product — Not found in the current catalogue/)).toBeVisible();
 	await expect(page.getByText(/Not shown in the comparison because the record is not available: mim-product:12/)).toBeVisible();
 	await open(page, '/products/mim-product:12?v=1');

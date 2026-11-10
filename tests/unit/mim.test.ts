@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { assertTrusted } from '../../src/lib/server/mim/http';
 import { explicitProductResolution, instrumentIndex, normaliseMimProduct, productFamily, toBrowserProduct } from '../../src/lib/server/mim/normalise';
 import { collectionPath, declaredSchemaUrl, findMissionEndpoint, serverRoot } from '../../src/lib/server/mim/schema';
-import { MimService } from '../../src/lib/server/mim/service';
+import { MimService, mimOptionsFromEnv, parseMimEdition } from '../../src/lib/server/mim/service';
 import { parity } from './fixtures';
 
 const fixture = parity('mim_cases.json');
@@ -107,7 +107,7 @@ describe('MIM service', () => {
 			const instance = new MimService({ baseUrl: BASE, fetchImpl: fake.fetchImpl, ...options });
 			const result = await instance.load();
 			expect(result.status.state).toBe('not_configured');
-			expect(result.status.host).toBe(options.disabled ? null : 'mim.example.test');
+			expect(result.status.host).toBeNull();
 			expect(result.products).toBeNull();
 			expect(fake.calls).toHaveLength(0);
 		}
@@ -285,5 +285,42 @@ describe('MIM service', () => {
 		expect(new MimService({ baseUrl: 'http://mim.example.test/api', username: 'u', password: 'p' }).configured).toBe(false);
 		expect(new MimService({ baseUrl: 'https://u:p@mim.example.test/api', username: 'u', password: 'p' }).configured).toBe(false);
 		expect(new MimService({ baseUrl: 'http://127.0.0.1:9999/api', username: 'u', password: 'p' }).configured).toBe(true);
+	});
+});
+
+describe('MIM settings, keys and edition hardening', () => {
+	it('reads settings from the environment: empty means the public API, "off" in any case turns MIM off', () => {
+		expect(mimOptionsFromEnv({})).toEqual({ disabled: false, baseUrl: undefined, username: undefined, password: undefined, apiKey: undefined });
+		expect(mimOptionsFromEnv({ MIMS_API_BASE_URL: '  ' }).baseUrl).toBeUndefined();
+		expect(mimOptionsFromEnv({ MIMS_API_BASE_URL: 'OFF' }).disabled).toBe(true);
+		expect(mimOptionsFromEnv({ MIMS_API_BASE_URL: ' https://x.example/api ', MIMS_API_KEY: ' k ', MIMS_API_USERNAME: '', MIMS_API_PASSWORD: '' })).toEqual({ disabled: false, baseUrl: 'https://x.example/api', username: undefined, password: undefined, apiKey: 'k' });
+	});
+
+	it('explains why MIM is unavailable and shows only the public host', () => {
+		expect(new MimService({ disabled: true }).status()).toMatchObject({ disabledReason: 'off', host: null });
+		expect(new MimService({ baseUrl: BASE, username: 'u' }).status()).toMatchObject({ disabledReason: 'misconfigured', host: null });
+		expect(new MimService({}).status()).toMatchObject({ disabledReason: null, host: 'ceos-capabilities.org', publicAccess: true });
+		expect(new MimService({ username: 'u', password: 'p' }).status().publicAccess).toBe(false);
+	});
+
+	it('sends Basic credentials and the key together, and never follows a redirect to another origin', async () => {
+		const seen: { url: string; headers: Headers }[] = [];
+		const fetchImpl = (async (input: string | URL | Request, init: RequestInit = {}) => {
+			seen.push({ url: String(input), headers: new Headers(init.headers) });
+			return new Response('', { status: 302, headers: { location: 'https://evil.example.test/api/docs/' } });
+		}) as unknown as typeof fetch;
+		const instance = new MimService({ baseUrl: BASE, username: 'u', password: 'p', apiKey: 'secret-key', fetchImpl, sleep: async () => undefined });
+		const result = await instance.load();
+		expect(result.status.errorKind).toBe('untrusted_url');
+		expect(seen.every((call) => call.url.startsWith('https://mim.example.test/'))).toBe(true);
+		expect(seen[0]!.headers.get('x-api-key')).toBe('secret-key');
+		expect(seen[0]!.headers.get('authorization')).toMatch(/^Basic /);
+	});
+
+	it('drops unsafe or malformed edition data', () => {
+		for (const bad of [null, [], 'text', 42]) expect(parseMimEdition(bad)).toBeNull();
+		const edition = parseMimEdition({ registry_edition: 'x'.repeat(40), as_of: '23/10/2026', licence: { name: 'CC BY 4.0', url: 'javascript:alert(1)' } });
+		expect(edition).toEqual({ edition: null, asOf: null, licence: { name: 'CC BY 4.0', url: null }, attribution: 'CEOS MIM Database, https://database.eohandbook.com' });
+		expect(parseMimEdition({ registry_edition: 'e5 <b>', licence: { url: 'http://insecure.example' } })).toMatchObject({ edition: null, licence: null });
 	});
 });

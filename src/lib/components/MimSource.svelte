@@ -25,7 +25,7 @@
 				{#if status.edition.licence}Licence: {#if status.edition.licence.url}<a href={status.edition.licence.url} target="_blank" rel="noopener noreferrer">{status.edition.licence.name}</a>{:else}{status.edition.licence.name}{/if}.{/if}
 			</p>
 		{:else if status.configured && status.host}
-			<p class="hint">Source: CEOS MIM database via {status.host}. No sign-in is needed.</p>
+			<p class="hint">Source: CEOS MIM database via {status.host}.{#if status.publicAccess} No sign-in is needed.{/if}</p>
 		{/if}
 		{#if status.configured}
 			<div class="row">
@@ -37,7 +37,7 @@
 			</div>
 			<p class="hint">Loading is deliberate and never changes your filters, scope or selections. Refresh affects the MIM data only.</p>
 		{:else}
-			<p class="hint">MIM is turned off for this deployment by its owner. The curated catalogue works without it.</p>
+			<p class="hint">{status.disabledReason === 'off' ? 'MIM is turned off for this deployment by its owner.' : 'MIM settings for this deployment are incomplete or invalid; the deployment owner can fix them on the server.'} The curated catalogue works without it.</p>
 		{/if}
 		{#if store.mimLoaded && store.mimHiddenByFilters > 0}
 			<div class="notice warn">

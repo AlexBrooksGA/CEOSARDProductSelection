@@ -1,5 +1,5 @@
 /**
- * Authenticated OpenAPI inspection — a port of legacy `inspect_openapi`,
+ * OpenAPI inspection — a port of legacy `inspect_openapi`,
  * `_collection_path` and `_server_root`, with trusted-origin restrictions added.
  */
 import { MimError } from './errors';
