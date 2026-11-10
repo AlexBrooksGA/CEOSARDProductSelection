@@ -11,7 +11,7 @@ Browser                                          Node process (node build)
 │   sessionStorage ⇄ session.ts       │          │ lib/server/mim: http, schema, normalise,     │
 │ domain/* (pure): filter, match,     │          │   cache (process-local, 6 h)                 │
 │   present, compare, summarise       │          └──────────────┬───────────────────────────────┘
-└─────────────────────────────────────┘                         │ Basic auth, trusted origin only
+└─────────────────────────────────────┘                         │ Public API (optional key), trusted origin only
                                                                 ▼
                                                         CEOS MIM API (optional)
 ```
@@ -65,12 +65,13 @@ Field-level provenance reaches the browser in two parts. A compact *not-found* i
 
 ## MIM integration
 
-`src/lib/server/mim` ports `mims_api.py` and follows the current product/instrument adapter:
+`src/lib/server/mim` ports `mims_api.py` and follows the current product/instrument adapter. By default it reads the public CEOS Database API (`https://ceos-capabilities.org/api`, no credentials). An optional free API key is sent as `X-API-Key`; optional Basic credentials are kept for older authenticated deployments. `MIMS_API_BASE_URL=off` turns MIM off.
 
 1. `GET <base>/docs/` → Swagger UI HTML → declared schema URL (`url:` / `spec-url=`), which must be on the configured origin.
 2. `GET` schema → must contain `paths` and an identifiable missions endpoint. The mission requirement is a preserved prototype coupling (see the audit, §5). Products and instruments collections are found with the prototype's scoring rules.
 3. `servers[0].url` (if present) defines the root. The product and instrument URLs must be on the configured origin **and** under the configured base path.
 4. One `GET` each for products and instruments, joined by stable `instrument_id` only.
+5. If the schema declares `/meta`, one more `GET` reads the database edition, extract date and licence for the attribution line. A missing or failed `/meta` never fails the load.
 
 Product resolution comes only from explicit product fields or a metre value in the product name. Instrument resolution is a display-only fallback.
 
@@ -80,7 +81,7 @@ The browser receives only normalised `Product` objects: no raw payloads, headers
 
 ### Request safety
 
-- **Credentials:** Basic auth credentials are sent only to the trusted origin.
+- **Credentials:** an API key or Basic credentials, when configured, are sent only to the trusted origin.
 - **Redirects:** followed manually, and only within that origin.
 - **Timeouts:** each request times out after 25 s, and a whole load has a 60 s deadline.
 - **Retries:** up to two, for 429/502/503/504 and connection errors. This matches the prototype's urllib3 policy, with a short `Retry-After` honoured.

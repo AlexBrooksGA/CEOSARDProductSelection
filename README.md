@@ -28,23 +28,24 @@ npm start         # node --env-file-if-exists=.env build → http://localhost:30
 
 On Windows, double-click `run_app.bat` (installs, builds and starts, then opens the browser).
 
-A clean setup **without MIM credentials** supports the complete curated-catalogue journey.
+A clean setup needs no configuration: the curated catalogue works offline, and MIM records load from the public CEOS Database API on request.
 
-## Optional MIM configuration
+## MIM (CEOS Missions, Instruments and Measurements database)
 
-```bash
-cp .env.example .env   # then edit; .env is git-ignored
-```
+MIM works with no configuration: the server reads the public **CEOS Database API** at `https://ceos-capabilities.org/api` (CC BY 4.0, attribution "CEOS MIM Database, https://database.eohandbook.com"). Loading is still deliberate: nothing is fetched until someone selects **Load MIM products**. The MIM panel shows the database edition and data date.
+
+Optional settings (`cp .env.example .env`; `.env` is git-ignored):
 
 | Variable | Purpose |
 |---|---|
-| `MIMS_API_USERNAME`, `MIMS_API_PASSWORD` | Server-only credentials (names unchanged from the prototype). |
-| `MIMS_API_BASE_URL` | API root, e.g. `https://eo-explorer-demo.diamondsky.au/api`. HTTPS required (http only for localhost). |
-| `MIMS_CACHE_TTL_SECONDS` | Cache freshness, default 21600 (6 hours, as before). |
+| `MIMS_API_BASE_URL` | API root. Default `https://ceos-capabilities.org/api`. HTTPS required (http only for localhost). Set to `off` to turn MIM off. |
+| `MIMS_API_KEY` | Free key for higher rate limits (anonymous use allows 30 requests per second per IP). Sent as `X-API-Key`, server-side only. |
+| `MIMS_API_USERNAME`, `MIMS_API_PASSWORD` | Only for an older authenticated MIM deployment. Set both or neither. |
+| `MIMS_CACHE_TTL_SECONDS` | Cache freshness, default 21600 (6 hours). |
 | `MIMS_REFRESH_COOLDOWN_SECONDS` | Minimum gap between upstream refreshes, default 60. |
 | `MIMS_FAILURE_BACKOFF_SECONDS` | Pause after a failed load before retrying upstream, default 30. |
 
-Credentials are read only on the server, never sent to the browser, put in URLs or logged. Requests and schema-discovered URLs are restricted to the configured origin and API path. Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#mim-integration).
+Keys and credentials are read only on the server, never sent to the browser, put in URLs or logged. Requests and schema-discovered URLs are restricted to the configured origin and API path. Behind an outbound proxy, run Node 22.21+ with `NODE_USE_ENV_PROXY=1` so its built-in fetch uses `HTTPS_PROXY`. Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#mim-integration).
 
 ## Scripts
 
@@ -108,4 +109,4 @@ Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceo
 - The MIM cache is process-local: it resets on restart and is not shared across replicas.
 - Profiles, notes and drafts are session-only (no accounts).
 - Purpose guidance version 1 is illustrative and **not reviewed**; it covers wetlands in detail and gives general checks elsewhere. The entry imagery is an AI-generated fictional scene (radar and thermal looks are stylised from it), not satellite data; the repository keeps the native generated files and their provenance in `assets/purpose-imagery/`; rebuild the web versions in `static/images/purpose-journey/` with `python tools/build_purpose_imagery.py` (it uses the upscaled working masters when present, otherwise the native files).
-- Live MIM integration was validated against controlled fixtures and a mock server in this rebuild, not against the live service.
+- MIM integration is tested against fixtures and a mock server; it was also checked by hand against the live public CEOS Database API (59 products, edition e574f0c2, data as of 2026-10-23).

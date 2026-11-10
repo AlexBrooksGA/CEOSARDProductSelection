@@ -7,7 +7,7 @@ test.describe.configure({ mode: 'serial' });
 const control = (mode: string) => fetch(`http://127.0.0.1:4599/__control?mode=${mode}`, { method: 'POST' });
 
 async function includeMim(page: Page) {
-	await page.getByLabel(/Include product records from CEOS Missions/).check();
+	await page.getByLabel(/Include product records from the CEOS Missions/).check();
 }
 
 test('upstream failure leaves the curated catalogue usable with a clear message', async ({ page }) => {

@@ -12,13 +12,21 @@
 	<h2 id="mim-heading" class="label">Additional source</h2>
 	<label class="check">
 		<input type="checkbox" checked={explorer.includeMim} onchange={(event) => store.patch((draft) => void (draft.includeMim = event.currentTarget.checked))} />
-		<span>Include product records from CEOS Missions, Instruments and Measurements (MIM)</span>
+		<span>Include product records from the CEOS Missions, Instruments and Measurements (MIM) database</span>
 	</label>
 	{#if explorer.includeMim}
 		<div class="notice {tone}" role="status" aria-live="polite">
 			<p>{status.message}</p>
 			{#if fetched && status.state !== 'not_configured'}<p class="small">Last loaded {fetched}. Kept for up to {status.ttlHours} hours on this server.</p>{/if}
 		</div>
+		{#if status.edition}
+			<p class="small mim-edition">
+				Source: {status.edition.attribution}{#if status.edition.edition}, edition <span class="mono">{status.edition.edition}</span>{/if}{#if status.edition.asOf}, data as of {status.edition.asOf}{/if}.
+				{#if status.edition.licence}Licence: {#if status.edition.licence.url}<a href={status.edition.licence.url} target="_blank" rel="noopener noreferrer">{status.edition.licence.name}</a>{:else}{status.edition.licence.name}{/if}.{/if}
+			</p>
+		{:else if status.configured && status.host}
+			<p class="hint">Source: CEOS MIM database via {status.host}. No sign-in is needed.</p>
+		{/if}
 		{#if status.configured}
 			<div class="row">
 				{#if !store.mimLoaded}
@@ -29,7 +37,7 @@
 			</div>
 			<p class="hint">Loading is deliberate and never changes your filters, scope or selections. Refresh affects the MIM data only.</p>
 		{:else}
-			<p class="hint">Credentials are configured only on the server by the deployment owner. The curated catalogue works without them.</p>
+			<p class="hint">MIM is turned off for this deployment by its owner. The curated catalogue works without it.</p>
 		{/if}
 		{#if store.mimLoaded && store.mimHiddenByFilters > 0}
 			<div class="notice warn">

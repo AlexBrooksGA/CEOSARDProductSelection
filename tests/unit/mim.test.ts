@@ -101,13 +101,62 @@ function service(options: Partial<ConstructorParameters<typeof MimService>[0]> =
 }
 
 describe('MIM service', () => {
-	it('does nothing upstream without configuration and keeps the catalogue usable', async () => {
-		const fake = upstream();
-		const instance = new MimService({ baseUrl: BASE, fetchImpl: fake.fetchImpl });
+	it('does nothing upstream when turned off or half-configured, and keeps the catalogue usable', async () => {
+		for (const options of [{ disabled: true }, { username: 'only-user' }, { password: 'only-pass' }]) {
+			const fake = upstream();
+			const instance = new MimService({ baseUrl: BASE, fetchImpl: fake.fetchImpl, ...options });
+			const result = await instance.load();
+			expect(result.status.state).toBe('not_configured');
+			expect(result.status.host).toBe(options.disabled ? null : 'mim.example.test');
+			expect(result.products).toBeNull();
+			expect(fake.calls).toHaveLength(0);
+		}
+	});
+
+	it('defaults to the public CEOS Database API and needs no credentials', () => {
+		const instance = new MimService({});
+		expect(instance.configured).toBe(true);
+		expect(instance.status().host).toBe('ceos-capabilities.org');
+	});
+
+	it('loads without credentials, sends an optional API key, and reads the edition from /meta', async () => {
+		const seen: Headers[] = [];
+		const calls: string[] = [];
+		const schema = { ...SCHEMA, servers: [{ url: '/api' }], paths: { ...SCHEMA.paths, '/meta': { get: { summary: 'Get Meta' } } } };
+		const routes: Record<string, () => Response> = {
+			'/api/docs/': () => new Response('<script>SwaggerUIBundle({ url: "/api/openapi.json" })</script>'),
+			'/api/openapi.json': () => Response.json(schema),
+			'/api/products': () => Response.json(PRODUCTS),
+			'/api/instruments': () => Response.json(INSTRUMENTS),
+			'/api/meta': () => Response.json({ registry_edition: 'e574f0c2', as_of: '2026-10-23', licence: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' }, extra: '<script>' })
+		};
+		const fetchImpl = (async (input: string | URL | Request, init: RequestInit = {}) => {
+			const url = new URL(String(input));
+			calls.push(url.pathname);
+			seen.push(new Headers(init.headers));
+			return routes[url.pathname]?.() ?? new Response('missing', { status: 404 });
+		}) as unknown as typeof fetch;
+		const instance = new MimService({ baseUrl: BASE, apiKey: 'free-key', fetchImpl, sleep: async () => undefined });
 		const result = await instance.load();
-		expect(result.status.state).toBe('not_configured');
-		expect(result.products).toBeNull();
-		expect(fake.calls).toHaveLength(0);
+		expect(result.status.state).toBe('ready');
+		expect(result.products).toHaveLength(2);
+		expect(calls).toEqual(['/api/docs/', '/api/openapi.json', '/api/products', '/api/instruments', '/api/meta']);
+		expect(seen.every((headers) => headers.get('authorization') === null && headers.get('x-api-key') === 'free-key')).toBe(true);
+		expect(result.status.edition).toEqual({
+			edition: 'e574f0c2',
+			asOf: '2026-10-23',
+			licence: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+			attribution: 'CEOS MIM Database, https://database.eohandbook.com'
+		});
+		expect(JSON.stringify(result.status)).not.toContain('free-key');
+	});
+
+	it('a failing /meta never fails the load', async () => {
+		const schema = { ...SCHEMA, paths: { ...SCHEMA.paths, '/meta': { get: {} } } };
+		const { instance } = service({}, { '/api/openapi.json': () => Response.json(schema), '/api/meta': () => new Response('down', { status: 500 }) });
+		const result = await instance.load();
+		expect(result.status.state).toBe('ready');
+		expect(result.status.edition).toBeNull();
 	});
 
 	it('loads products with one bulk instrument request and serves the cache afterwards', async () => {

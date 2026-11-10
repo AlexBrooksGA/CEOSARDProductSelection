@@ -1,7 +1,9 @@
 /**
- * Bounded, authenticated HTTP for the MIM API. Server-only.
+ * Bounded HTTP for the MIM API. Server-only.
  *
- * - Credentials are sent only to the configured trusted origin; redirects are followed
+ * - The public CEOS Database API needs no credentials. Optional Basic credentials (older
+ *   deployments) and an optional free API key (higher rate limits) are sent only to the
+ *   configured trusted origin; redirects are followed
  *   manually and only within that origin.
  * - Per-request timeout, overall deadline, limited retries (as the prototype: two retries
  *   for 429/502/503/504 and connection errors) and a response-size cap.
@@ -11,8 +13,11 @@ import { MimError } from './errors';
 
 export interface MimHttpConfig {
 	baseUrl: string;
-	username: string;
-	password: string;
+	/** Optional Basic credentials; both or neither. */
+	username?: string;
+	password?: string;
+	/** Optional CEOS Database API key, sent as X-API-Key. */
+	apiKey?: string;
 	requestTimeoutMs: number;
 	maxResponseBytes: number;
 	retries: number;
@@ -83,7 +88,9 @@ export interface MimHttp {
 export function createMimHttp(config: MimHttpConfig): MimHttp {
 	const fetchImpl = config.fetchImpl ?? fetch;
 	const sleep = config.sleep ?? ((ms: number) => new Promise((resolve) => setTimeout(resolve, ms)));
-	const header = authHeader(config.username, config.password);
+	const headers: Record<string, string> = { Accept: 'application/json, text/html;q=0.9' };
+	if (config.username && config.password) headers.Authorization = authHeader(config.username, config.password);
+	if (config.apiKey) headers['X-API-Key'] = config.apiKey;
 
 	async function once(url: string, deadline: number): Promise<Response> {
 		let current = url;
@@ -94,7 +101,7 @@ export function createMimHttp(config: MimHttpConfig): MimHttp {
 			const signal = AbortSignal.timeout(Math.min(config.requestTimeoutMs, remaining));
 			let response: Response;
 			try {
-				response = await fetchImpl(current, { headers: { Authorization: header, Accept: 'application/json, text/html;q=0.9' }, redirect: 'manual', signal });
+				response = await fetchImpl(current, { headers, redirect: 'manual', signal });
 			} catch (error) {
 				const name = error instanceof Error ? error.name : '';
 				if (name === 'TimeoutError' || name === 'AbortError') throw new MimError('timeout', 'Request timed out');

@@ -53,6 +53,8 @@ export interface MimStatusView {
 	retryAfterSeconds: number | null;
 	endpoints: { products: string; instruments: string } | null;
 	ttlHours: number;
+	host: string | null;
+	edition: { edition: string | null; asOf: string | null; licence: { name: string; url: string | null } | null; attribution: string } | null;
 }
 
 export interface LayoutPayload {
