@@ -14,6 +14,8 @@
 		radValue,
 		relativePercent,
 		seriesStats,
+		exclusionExamples,
+		seriesUncertainty,
 		seriesValue,
 		unitsDescription,
 		type CqasReport,
@@ -75,6 +77,7 @@
 	function measuredLine(): string {
 		if (g.limit_px === null) return 'No numeric limit agreed, so the value is reported only.';
 		const limit = g.limit_px * g.pixel_size_m;
+		if (g.numeric_test === 'Not assessed') return `Not tested against the ${formatNumber(limit)} m limit.`;
 		return g.numeric_test === 'Met'
 			? `Within the ${formatNumber(limit)} m limit (${g.limit_px} pixel, ${g.limit_source ?? 'numeric limit'}).`
 			: `Above the ${formatNumber(limit)} m limit (${g.limit_px} pixel, ${g.limit_source ?? 'numeric limit'}).`;
@@ -145,7 +148,7 @@
 				<div class="notice cq-provider">
 					<strong>For the data provider</strong>
 					<span>{report.next_action}</span>
-					<span class="small secondary">Gaps here are missing or incomplete supporting evidence. On their own they do not mean the data are poor for your use.</span>
+					<span class="small secondary">Next steps for the provider. Missing evidence on its own does not mean the data are poor for your use.</span>
 				</div>
 			</div>
 
@@ -186,8 +189,8 @@
 				<div class="panel-subtle cq-card">
 					<p class="label">Across scenes · {series.description}</p>
 					<p>
-						Over <strong>{stats.scenes} scenes</strong> at <strong>{stats.sites} site{stats.sites === 1 ? '' : 's'}</strong> ({periodText}),
-						{#if series.test === 'radiometric'}the difference averaged <strong>{seriesValue(series, stats.mean)}</strong>, with a spread of ±{stats.sd.toFixed(series.decimals)} between scenes. {stats.withinK2} of {stats.scenes} scenes were within their own uncertainty (k = 2) of zero.{:else}the location error averaged <strong>{formatNumber(stats.mean)} m</strong>, with a spread of ±{formatNumber(stats.sd)} m.{/if}
+						Over <strong>{stats.scenes} {series.test === 'geometric' ? 'measurements' : 'scenes'}</strong> at <strong>{stats.sites} site{stats.sites === 1 ? '' : 's'}</strong> ({periodText}),
+						{#if series.test === 'radiometric'}the difference averaged <strong>{seriesValue(series, stats.mean)}</strong>, with a spread of {seriesUncertainty(series, stats.sd)} between scenes. {stats.withinK2} of {stats.scenes} scenes were within their own uncertainty (k = 2) of zero.{:else}the location error averaged <strong>{seriesValue(series, stats.mean)}</strong>, with a spread of {seriesUncertainty(series, stats.sd)}.{/if}
 					</p>
 					<SeriesChart {series} compact />
 				</div>
@@ -302,7 +305,7 @@
 						</details>
 						<ul class="cq-results">
 							<li><span class="cq-k">Accuracy test</span><span><StatusText status={rad.accuracy_test} />{#if rad.limit !== null}&nbsp;against ±{rad.limit}{rad.units === '1' ? '' : ` ${rad.units}`} ({rad.limit_source}){/if}{#if rad.accuracy_reason}&nbsp;— {rad.accuracy_reason}{/if}</span></li>
-							<li><span class="cq-k">Sample</span>{rad.samples_used} of {rad.samples_total} {rad.sample_unit} used{#if rad.unique_exclusions}; {rad.unique_exclusions} excluded (for example cloud, shadow or saturation){/if}</li>
+							<li><span class="cq-k">Sample</span>{rad.samples_used} of {rad.samples_total} {rad.sample_unit} used{#if rad.unique_exclusions}; {rad.unique_exclusions} excluded ({exclusionExamples(report.domain)}){/if}</li>
 							<li><span class="cq-k">Units</span>{unitsDescription(rad.units, rad.quantity)}</li>
 						</ul>
 					</div>
@@ -332,8 +335,8 @@
 					<dl class="facts cq-stats">
 						<div class="fact"><dt>Scenes</dt><dd>{siteStats.scenes}</dd></div>
 						<div class="fact"><dt>Period</dt><dd>{siteStats.start} to {siteStats.end}</dd></div>
-						<div class="fact"><dt>Mean</dt><dd>{series.units === 'm' ? `${formatNumber(siteStats.mean)} m` : seriesValue(series, siteStats.mean)}</dd></div>
-						<div class="fact"><dt>Spread (1 SD)</dt><dd>±{siteStats.sd.toFixed(series.decimals)}{series.units === '1' ? '' : ` ${series.units}`}</dd></div>
+						<div class="fact"><dt>Mean</dt><dd>{seriesValue(series, siteStats.mean)}</dd></div>
+						<div class="fact"><dt>Spread (1 SD)</dt><dd>{seriesUncertainty(series, siteStats.sd)}</dd></div>
 						{#if series.test === 'radiometric'}<div class="fact"><dt>Within k = 2 of zero</dt><dd>{siteStats.withinK2} of {siteStats.scenes}</dd></div>{/if}
 					</dl>
 					<SeriesChart {series} site={seriesSite} />
@@ -345,7 +348,7 @@
 								<thead><tr><th scope="col">Date</th><th scope="col">Site</th><th scope="col">Value</th><th scope="col">Uncertainty (k = 1)</th></tr></thead>
 								<tbody>
 									{#each series.points.filter((p) => !seriesSite || p.site === seriesSite) as point, i (i)}
-										<tr><td>{point.date}</td><td>{series.sites.find((s) => s.code === point.site)?.name ?? point.site}</td><td>{series.units === 'm' ? `${point.value.toFixed(series.decimals)} m` : seriesValue(series, point.value)}</td><td>±{point.uncertainty_k1.toFixed(series.decimals)}</td></tr>
+										<tr><td>{point.date}</td><td>{series.sites.find((s) => s.code === point.site)?.name ?? point.site}</td><td>{seriesValue(series, point.value)}</td><td>{seriesUncertainty(series, point.uncertainty_k1)}</td></tr>
 									{/each}
 								</tbody>
 							</table>

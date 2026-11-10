@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { seriesStats, seriesValue, signed, type CqasSeries } from '$lib/domain/cqas';
+	import { seriesStats, seriesUncertainty, seriesValue, type CqasSeries } from '$lib/domain/cqas';
 	import ChartTip from './ChartTip.svelte';
 	import { niceTicks, tickLabel, type Tip } from './chart';
 
@@ -11,7 +11,7 @@
 	let width = $state(560);
 	let W = $derived(Math.max(280, Math.round(width)));
 	let H = $derived(compact ? 120 : 240);
-	let M = $derived(compact ? { l: 46, r: 12, t: 14, b: 24 } : { l: 52, r: 14, t: 24, b: 40 });
+	let M = $derived(compact ? { l: 46, r: 12, t: 14, b: 28 } : { l: 52, r: 14, t: 24, b: 44 });
 
 	let points = $derived(site ? series.points.filter((point) => point.site === site) : series.points);
 	let stats = $derived(seriesStats(series, site));
@@ -55,7 +55,7 @@
 			y: ((y(point.value) - 8) / H) * 100,
 			title: `${point.date} · ${siteName.get(point.site) ?? point.site}`,
 			lines: [`${seriesValue(series, point.value)}`],
-			note: `±${point.uncertainty_k1.toFixed(series.decimals)} (k = 1)`
+			note: `${seriesUncertainty(series, point.uncertainty_k1)} (k = 1)`
 		};
 	});
 	let svg: SVGSVGElement | undefined = $state();
@@ -102,7 +102,7 @@
 			</g>
 			{#each scale.ticks as t (t)}<text x={M.l - 8} y={y(t) + 4} text-anchor="end">{series.units === 'm' ? tickLabel(t) : tickLabel(t, true)}</text>{/each}
 			{#if !compact}<text x="2" y="12">{series.units === '1' ? 'difference' : series.units === 'm' ? 'metres' : `difference (${series.units})`}</text>{/if}
-			{#each xTicks as tick (tick.t)}<text x={x(tick.t)} y={H - M.b + 16} text-anchor="middle">{tick.label}</text>{/each}
+			{#each xTicks as tick (tick.t)}<text x={x(tick.t)} y={H - M.b + 20} text-anchor="middle">{tick.label}</text>{/each}
 			{#if series.test === 'radiometric'}
 				<line x1={M.l} x2={W - M.r} y1={y(stats.mean)} y2={y(stats.mean)} class="mean" />
 			{/if}
@@ -150,7 +150,7 @@
 						<li><svg viewBox="0 0 14 14" aria-hidden="true">{@render marker(i, 7, 7, 4.5)}</svg>{s.name}</li>
 					{/each}
 				{/if}
-				{#if series.test === 'radiometric'}<li><svg viewBox="0 0 18 14" aria-hidden="true"><line x1="0" x2="18" y1="7" y2="7" class="mean" /></svg>Mean {signed(stats.mean, series.decimals)}</li>{/if}
+				{#if series.test === 'radiometric'}<li><svg viewBox="0 0 18 14" aria-hidden="true"><line x1="0" x2="18" y1="7" y2="7" class="mean" /></svg>Mean {seriesValue(series, stats.mean)}</li>{/if}
 			</ul>
 		{/if}
 		<ChartTip {tip} />

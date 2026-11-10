@@ -1,7 +1,7 @@
 {
 	"schema": "cqas-report/2",
 	"data_status": "example",
-	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
 	"report_id": "DEMO-ENMAP-001",
 	"report_date": "2026-10-12",
 	"domain": "optical",
@@ -177,7 +177,7 @@
 			{
 				"channel": "665 nm",
 				"name": "red",
-				"difference": 0,
+				"difference": -0.001,
 				"uncertainty_k1": 0.005,
 				"reference_value": 0.363
 			},
@@ -198,7 +198,7 @@
 			{
 				"channel": "2200 nm",
 				"name": "shortwave infrared 2",
-				"difference": 0,
+				"difference": -0.001,
 				"uncertainty_k1": 0.006,
 				"reference_value": 0.43
 			}
@@ -243,67 +243,67 @@
 			{
 				"date": "2023-06-12",
 				"site": "GONA",
-				"value": -0.0007,
+				"value": -0.0017,
 				"uncertainty_k1": 0.0048
 			},
 			{
 				"date": "2023-08-07",
 				"site": "RVUS",
-				"value": 0.0003,
+				"value": -0.0007,
 				"uncertainty_k1": 0.0046
 			},
 			{
 				"date": "2023-12-22",
 				"site": "LCFR",
-				"value": 0.0062,
+				"value": 0.0052,
 				"uncertainty_k1": 0.0046
 			},
 			{
 				"date": "2024-02-24",
 				"site": "GONA",
-				"value": 0.0016,
+				"value": 0.0006,
 				"uncertainty_k1": 0.0047
 			},
 			{
 				"date": "2024-06-15",
 				"site": "RVUS",
-				"value": 0.0003,
+				"value": -0.0007,
 				"uncertainty_k1": 0.0048
 			},
 			{
 				"date": "2024-09-17",
 				"site": "LCFR",
-				"value": 0.0013,
+				"value": 0.0003,
 				"uncertainty_k1": 0.0052
 			},
 			{
 				"date": "2024-12-22",
 				"site": "GONA",
-				"value": 0,
+				"value": -0.001,
 				"uncertainty_k1": 0.0054
 			},
 			{
 				"date": "2025-03-12",
 				"site": "RVUS",
-				"value": 0.001,
+				"value": 0,
 				"uncertainty_k1": 0.0045
 			},
 			{
 				"date": "2025-05-11",
 				"site": "LCFR",
-				"value": 0.0051,
+				"value": 0.0041,
 				"uncertainty_k1": 0.0053
 			},
 			{
 				"date": "2025-06-18",
 				"site": "GONA",
-				"value": 0,
+				"value": -0.001,
 				"uncertainty_k1": 0.005
 			},
 			{
 				"date": "2025-09-18",
 				"site": "GONA",
-				"value": -0.0015,
+				"value": -0.0025,
 				"uncertainty_k1": 0.005
 			}
 		],

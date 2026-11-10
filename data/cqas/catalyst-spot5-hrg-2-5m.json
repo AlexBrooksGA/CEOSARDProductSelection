@@ -1,7 +1,7 @@
 {
 	"schema": "cqas-report/2",
 	"data_status": "example",
-	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
 	"report_id": "DEMO-SPOT5-001",
 	"report_date": "2026-10-12",
 	"domain": "optical",
@@ -287,9 +287,9 @@
 		],
 		"note": "Each point is one scene over a site. Zero means the same as the reference."
 	},
-	"next_action": "Supply grid and coverage evidence for the geometric correction.",
+	"next_action": "Review the geometric correction: the measured error on this scene exceeds the 0.5 pixel limit.",
 	"next_actions": [
-		"Supply grid and coverage evidence for the geometric correction.",
+		"Review the geometric correction: the measured error on this scene exceeds the 0.5 pixel limit.",
 		"To reach Goal, review the evidence for Data Collection Time."
 	],
 	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."

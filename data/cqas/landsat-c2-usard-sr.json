@@ -1,7 +1,7 @@
 {
 	"schema": "cqas-report/2",
 	"data_status": "example",
-	"status_note": "Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
 	"report_id": "DEMO-USARD-SR-001",
 	"report_date": "2026-10-12",
 	"domain": "optical",
@@ -17,7 +17,7 @@
 		"total_requirements": 36
 	},
 	"scene": {
-		"product_id": "LC09_CU_007011_20250723_20250802_02",
+		"product_id": "LC09_CU_005009_20250723_20250802_02",
 		"platform": "Landsat 9",
 		"instrument": "OLI-2",
 		"acquisition_date": "2025-07-23",
@@ -177,7 +177,7 @@
 			{
 				"channel": "B3",
 				"name": "green",
-				"difference": 0,
+				"difference": 0.001,
 				"uncertainty_k1": 0.006,
 				"reference_value": 0.257
 			},

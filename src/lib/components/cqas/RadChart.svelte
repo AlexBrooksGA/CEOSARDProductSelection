@@ -7,7 +7,7 @@
 	let width = $state(460);
 	let W = $derived(Math.max(280, Math.round(width)));
 	const H = 236;
-	const M = { l: 50, r: 14, t: 32, b: 42 };
+	const M = { l: 50, r: 14, t: 32, b: 50 };
 
 	let channels = $derived(rad.channels);
 	let n = $derived(channels.length);
@@ -16,6 +16,7 @@
 	let pad = $derived(n === 1 ? 0 : Math.min(40, (W - M.l - M.r) / (n * 2)));
 	let x = $derived((i: number) => (n === 1 ? (M.l + W - M.r) / 2 : M.l + pad + (i * (W - M.l - M.r - 2 * pad)) / (n - 1)));
 	let y = $derived((value: number) => H - M.b - ((value - scale.lo) / (scale.hi - scale.lo)) * (H - M.t - M.b));
+	let crowded = $derived(n > 1 && (W - M.l - M.r - 2 * pad) / (n - 1) < 7.5 * Math.max(...channels.map((c) => c.channel.length)));
 	let hitWidth = $derived(Math.min(52, (W - M.l - M.r) / Math.max(n, 1)));
 	let current = $state(-1);
 	let tip = $derived.by<Tip | null>(() => {
@@ -41,10 +42,11 @@
 		</g>
 		{#each scale.ticks as t (t)}<text x={M.l - 8} y={y(t) + 4} text-anchor="end">{tickLabel(t, true)}</text>{/each}
 		<text x="2" y="12">{rad.short_quantity} difference{unitSuffix(rad.units)}</text>
-		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">Channel · whiskers: uncertainty, k = {k}</text>
+		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">{W < 420 ? `Whiskers: k = ${k}` : `Channel · whiskers: uncertainty, k = ${k}`}</text>
 		{#each channels as channel, i (channel.channel)}
 			{@const U = channel.uncertainty_k1 * k}
-			<text x={x(i)} y={H - M.b + 18} text-anchor="middle">{channel.channel}</text>
+			<!-- Stagger labels when they would touch -->
+			<text x={x(i)} y={H - M.b + 18 + (crowded && i % 2 ? 12 : 0)} text-anchor="middle">{channel.channel}</text>
 			<line x1={x(i)} x2={x(i)} y1={y(channel.difference - U)} y2={y(channel.difference + U)} class="whisker" />
 			{#each [channel.difference - U, channel.difference + U] as end, j (j)}<line x1={x(i) - 6} x2={x(i) + 6} y1={y(end)} y2={y(end)} class="whisker" />{/each}
 			<circle cx={x(i)} cy={y(channel.difference)} r="5" class="pt" class:on={i === current} />

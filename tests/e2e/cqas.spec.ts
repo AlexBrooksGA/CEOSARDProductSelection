@@ -10,7 +10,7 @@ test('the Landsat product page shows the C-QAS section, labelled as example data
 	const cqas = section(page);
 	await expect(cqas.getByRole('heading', { level: 2, name: 'C-QAS quality checks' })).toBeVisible();
 	await expect(cqas.getByRole('note').getByText('Example data', { exact: true })).toBeVisible();
-	await expect(cqas.getByText(/No scene has been assessed/)).toBeVisible();
+	await expect(cqas.getByText(/C-QAS has not run on any real scene yet/)).toBeVisible();
 	await expect(cqas.getByText(/These checks use the Surface Reflectance PFS v5\.0\.2\. This product's CEOS-ARD assessment used v5\.0/)).toBeVisible();
 	await expect(cqas.getByText(/Results for 9 of the 36 Surface Reflectance PFS v5\.0\.2 requirements/)).toBeVisible();
 	await expect(cqas.getByText('For the data provider')).toBeVisible();
@@ -132,6 +132,20 @@ test('the C-QAS section fits a 390 px phone without horizontal page scroll', asy
 	await expect(section(page)).toBeVisible();
 	const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 	expect(overflow).toBeLessThanOrEqual(0);
+	// Chart text stays inside its chart, including products with many channels.
+	for (const id of ['landsat-c2-sr', 'enmap-l2a', 'ga-sentinel1-nrb']) {
+		await open(page, `/products/${id}?v=1&cqas=advanced`);
+		const clipped = await page.evaluate(() =>
+			[...document.querySelectorAll('#cqas .cq-chart > svg')].flatMap((svg) => {
+				const box = svg.getBoundingClientRect();
+				return [...svg.querySelectorAll('text')]
+					.map((text) => ({ text: text.textContent, r: text.getBoundingClientRect() }))
+					.filter(({ r }) => r.width > 0 && (r.left < box.left - 2 || r.right > box.right + 2))
+					.map(({ text }) => text);
+			})
+		);
+		expect(clipped, id).toEqual([]);
+	}
 });
 
 test('comparison shows a C-QAS row for both products, one line per test, and links to the section', async ({ page }) => {

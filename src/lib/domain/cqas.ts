@@ -185,6 +185,9 @@ export interface CqasReport {
 
 type Json = Record<string, unknown>;
 
+/** Radiometric units expected in each domain. */
+const DOMAIN_UNITS: Record<CqasDomain, string> = { optical: '1', thermal: 'K', radar: 'dB' };
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 
@@ -466,8 +469,20 @@ export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 	const radiometric = radReader ? readRadiometric(errors, source, radReader) : null;
 	const radiometricNote = r.optionalText('radiometric_note');
 	if (!radiometric && !radiometricNote) errors.push(`${source}.radiometric_note is required when radiometric is null`);
+	if (radiometric && radiometricNote) errors.push(`${source}.radiometric_note must be null when there is a radiometric test`);
+	const domain = r.oneOf('domain', DOMAINS);
+	if (radiometric && radiometric.units && radiometric.units !== DOMAIN_UNITS[domain]) errors.push(`${source}.radiometric.units must be "${DOMAIN_UNITS[domain]}" for the ${domain} domain`);
+	// The numeric test must agree with the value and the limit.
+	if (geometric.limit_px === null && geometric.numeric_test !== 'Not assessed') errors.push(`${source}.geometric.numeric_test must be Not assessed when there is no limit`);
+	if (geometric.limit_px !== null && geometric.numeric_test !== 'Not assessed' && (geometric.radial_rmse_px <= geometric.limit_px) !== (geometric.numeric_test === 'Met')) errors.push(`${source}.geometric.numeric_test does not agree with radial_rmse_px and limit_px`);
 	const seriesReader = r.optionalChild('series')?.only(KEYS.series) ?? null;
 	const series = seriesReader ? readSeries(errors, source, seriesReader, radiometric) : null;
+	if (series?.test === 'radiometric' && radiometric && (series.units !== radiometric.units || series.decimals !== radiometric.decimals)) errors.push(`${source}.series units and decimals must match the radiometric test`);
+	if (series?.test === 'geometric' && series.units !== 'm') errors.push(`${source}.series.units must be "m" for a geometric series`);
+	const reportDate = r.date('report_date');
+	const sceneDate = scene?.date('acquisition_date') ?? '';
+	if (reportDate && sceneDate && sceneDate > reportDate) errors.push(`${source}.scene.acquisition_date cannot be after report_date`);
+	if (reportDate && series?.points.some((point) => point.date > reportDate)) errors.push(`${source}.series.points cannot be after report_date`);
 
 	const nextActions = r.list('next_actions').filter((value, index) => {
 		const ok = typeof value === 'string' && value.trim().length > 0;
@@ -483,15 +498,15 @@ export function parseCqasReport(raw: unknown, source = 'report'): CqasReport {
 		data_status: r.oneOf('data_status', DATA_STATUSES),
 		status_note: r.text('status_note'),
 		report_id: r.text('report_id'),
-		report_date: r.date('report_date'),
-		domain: r.oneOf('domain', DOMAINS),
+		report_date: reportDate,
+		domain,
 		product: { explorer_id: explorerId, name: product?.text('name') ?? '', short_name: product?.text('short_name') ?? '' },
 		pfs: { name: pfs?.text('name') ?? '', short_name: pfs?.text('short_name') ?? '', version: pfs?.text('version') ?? '', total_requirements: total },
 		scene: {
 			product_id: scene?.text('product_id') ?? '',
 			platform: scene?.text('platform') ?? '',
 			instrument: scene?.text('instrument') ?? '',
-			acquisition_date: scene?.date('acquisition_date') ?? '',
+			acquisition_date: sceneDate,
 			path: scene?.optionalNumber('path', { min: 0, integer: true }) ?? null,
 			row: scene?.optionalNumber('row', { min: 0, integer: true }) ?? null,
 			reference_site: site,
@@ -676,8 +691,18 @@ export function seriesStats(series: CqasSeries, site: string | null = null): Ser
 	};
 }
 
-export function seriesValue(series: Pick<CqasSeries, 'units' | 'decimals'>, value: number): string {
-	return `${signed(value, series.decimals)}${unitSuffix(series.units)}`;
+/** A series value with units: signed for a radiometric difference, unsigned for a geometric error. */
+export function seriesValue(series: Pick<CqasSeries, 'test' | 'units' | 'decimals'>, value: number): string {
+	return series.test === 'geometric' ? `${value.toFixed(series.decimals)}${unitSuffix(series.units)}` : `${signed(value, series.decimals)}${unitSuffix(series.units)}`;
+}
+
+export function seriesUncertainty(series: Pick<CqasSeries, 'units' | 'decimals'>, value: number): string {
+	return `±${value.toFixed(series.decimals)}${unitSuffix(series.units)}`;
+}
+
+/** What a sample can be excluded for, in plain words. */
+export function exclusionExamples(domain: CqasDomain): string {
+	return domain === 'radar' ? 'for example low signal-to-clutter or an obstructed reflector' : domain === 'thermal' ? 'for example cloud or mixed land and water' : 'for example cloud, shadow or saturation';
 }
 
 /** Status, PFS and report identity for comparison details and summaries. */

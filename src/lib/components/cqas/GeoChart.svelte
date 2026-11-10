@@ -65,7 +65,7 @@
 			<text x={M.l + 4} y={y(limit) - 8} class="limit-lbl">{g.limit_source ?? 'Numeric'} limit: {formatNumber(limit, 2)} {unitName}</text>
 		{/if}
 		{#each values as _, i (i)}<text x={x(i)} y={H - M.b + 18} text-anchor="middle">{i + 1}</text>{/each}
-		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">{g.kind === 'absolute' ? 'Corner reflector (no order)' : `${g.comparison} comparison (no order)`}</text>
+		<text x={(M.l + W - M.r) / 2} y={H - 4} text-anchor="middle">{g.kind === 'absolute' ? 'Corner reflector (no order)' : W < 420 ? 'Comparison (no order)' : `${g.comparison} comparison (no order)`}</text>
 		{#if current >= 0}<line x1={x(current)} x2={x(current)} y1={M.t} y2={H - M.b} class="cross" />{/if}
 		{#each values as value, i (i)}<circle cx={x(i)} cy={y(value)} r="5" class="pt" class:on={i === current} />{/each}
 		<rect

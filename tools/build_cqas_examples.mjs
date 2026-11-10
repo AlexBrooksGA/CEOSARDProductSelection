@@ -137,7 +137,7 @@ const PRODUCTS = {
 	},
 	'landsat-c2-usard-sr': {
 		spec: 'SR', domain: 'optical', abbr: 'USARD-SR', platform: 'Landsat 9', instrument: 'OLI-2', px: 30,
-		scene: 'LC09_CU_007011_20250723_20250802_02', date: '2025-07-23', site: 'RVUS',
+		scene: 'LC09_CU_005009_20250723_20250802_02', date: '2025-07-23', site: 'RVUS',
 		geo: 'G1', rad: 'R1', channels: [['B2', 'blue'], ['B3', 'green'], ['B4', 'red'], ['B5', 'near infrared'], ['B6', 'shortwave infrared']], headline: 'B4',
 		px_rmse: 0.38, bias: 0.004, fails: [], series: { sites: ['RVUS', 'LCFR'], start: '2024-02-01', end: '2025-12-10', n: 14 },
 		scene_note: 'Example U.S. ARD tile over the site; tiles have no WRS path and row.'
@@ -161,7 +161,7 @@ const PRODUCTS = {
 		scene: 'CATALYST_SPOT5_HRG_PSH_20140612_101544_SR', date: '2014-06-12', site: 'LIBYA4',
 		geo: 'G1', rad: 'R2', channels: [['B1', 'green'], ['B2', 'red'], ['B3', 'near infrared'], ['B4', 'shortwave infrared']], headline: 'B2',
 		px_rmse: 0.58, bias: 0.009, window_m: 500,
-		fails: [{ id: 'gcor-geocorr-sr', reason: 'Relative error 0.58 pixel exceeds the 0.5 pixel limit on this scene' }],
+		fails: [{ id: 'gcor-geocorr-sr', reason: 'Relative error 0.58 pixel exceeds the 0.5 pixel limit on this scene', action: 'Review the geometric correction: the measured error on this scene exceeds the 0.5 pixel limit.' }],
 		series: { sites: ['LIBYA4'], start: '2012-03-01', end: '2015-02-20', n: 9 },
 		scene_note: 'SPOT-5 operated until 2015, so the example scene and series predate RadCalNet; a desert (PICS) site is used instead.'
 	},
@@ -205,7 +205,7 @@ const PRODUCTS = {
 	},
 	'landsat-c2-usard-st': {
 		spec: 'ST', domain: 'thermal', abbr: 'USARD-ST', platform: 'Landsat 9', instrument: 'TIRS-2', px: 30,
-		scene: 'LC09_CU_002008_20250808_20250818_02', date: '2025-08-08', site: 'TAHOE',
+		scene: 'LC09_CU_003008_20250808_20250818_02', date: '2025-08-08', site: 'TAHOE',
 		geo: 'G1', rad: 'R3', channels: [['ST_B10', 'surface temperature from Band 10']], headline: 'ST_B10',
 		px_rmse: 0.34, bias: 0.52, product_uncertainty: 'ST_QA uncertainty band supplied (0.8 K at the site)', fails: [],
 		series: { sites: ['TAHOE', 'EVO'], start: '2024-02-10', end: '2025-11-25', n: 12 },
@@ -356,24 +356,29 @@ const LANDSAT_FIXED = {
 
 function findingsFor(cfg, r) {
 	const spec = specs[cfg.spec];
-	const fails = new Map((cfg.fails ?? []).map((f) => [f.id, f.reason]));
-	return CHECKED[cfg.spec].map((id) => {
-		const req = spec.requirements.find((item) => item.id === id);
+	const fails = new Map((cfg.fails ?? []).map((f) => [f.id, f]));
+	const checked = CHECKED[cfg.spec].map((id) => spec.requirements.find((item) => item.id === id));
+	const CATEGORY = { 'general-metadata': 'metadata', 'source-metadata': 'source metadata', 'product-metadata': 'product metadata', 'per-pixel-metadata': 'per-pixel', 'radiometric-atmospheric-corrections': 'corrections', 'radiometrically-corrected-measurements': 'measurements', 'geometric-corrections': 'geometric' };
+	return CHECKED[cfg.spec].map((id, index) => {
+		const req = checked[index];
 		if (!req) throw new Error(`${cfg.spec} has no requirement ${id}`);
 		let threshold = req.threshold ? 'Met' : 'Not required';
 		let reason = null;
 		if (fails.has(id)) {
 			if (!req.threshold) throw new Error(`${id} has no Threshold level, so it cannot be Not met at Threshold`);
 			threshold = 'Not met';
-			reason = fails.get(id);
+			reason = fails.get(id).reason;
 		}
+		// Two checked requirements can share a title (e.g. ST "Measurand Uncertainty"): name the category.
+		const title = checked.filter((other) => other?.title === req.title).length > 1 ? `${req.title} (${CATEGORY[req.category]})` : req.title;
 		let goal = 'Not required';
 		if (req.goal) {
 			const roll = r.next();
 			goal = threshold === 'Not met' ? (roll < 0.7 ? 'Not met' : 'Not assessed') : roll < 0.55 ? 'Met' : roll < 0.9 ? 'Not met' : 'Not assessed';
 		}
-		const finding = { requirement: req.title, id, threshold, goal };
+		const finding = { requirement: title, id, threshold, goal };
 		if (reason) finding.reason = reason;
+		if (fails.get(id)?.action) Object.defineProperty(finding, 'action', { value: fails.get(id).action, enumerable: false });
 		return finding;
 	});
 }
@@ -383,11 +388,12 @@ function summaryFor(findings) {
 	if (!failed.length) return 'No checked Threshold requirement is Not met.';
 	const allEvidence = failed.every((f) => /missing|not supplied|not found|not recorded|not in the metadata|not described/i.test(f.reason ?? ''));
 	const names = list(failed.map((f) => f.requirement));
-	return `${failed.length} Not met: ${names}.${allEvidence ? (failed.length === 1 ? ' It has missing supporting evidence.' : ' Both have missing supporting evidence.') : ''}`;
+	const evidence = failed.length === 1 ? ' It has missing supporting evidence.' : failed.length === 2 ? ' Both have missing supporting evidence.' : ' All have missing supporting evidence.';
+	return `${failed.length} Not met: ${names}.${allEvidence ? evidence : ''}`;
 }
 
 function actionsFor(findings) {
-	const actions = findings.filter((f) => f.threshold === 'Not met').map((f) => ACTIONS[f.id] ?? `Review the evidence for ${f.requirement}.`);
+	const actions = findings.filter((f) => f.threshold === 'Not met').map((f) => f.action ?? ACTIONS[f.id] ?? `Review the evidence for ${f.requirement}.`);
 	const goalGap = findings.find((f) => f.threshold !== 'Not met' && f.goal === 'Not met');
 	if (goalGap) actions.push(`To reach Goal, review the evidence for ${goalGap.requirement}.`);
 	return [...new Set(actions)];
@@ -480,7 +486,9 @@ function radiometricFor(cfg, r) {
 			fixed?.channels ??
 			cfg.channels.map(([channel, name]) => {
 				const refValue = round((SITE_REFLECTANCE[name] ?? 0.4) * r.between(0.88, 1.12), 3);
-				return { channel, name, difference: round(cfg.bias + 0.003 * r.normal(), 3), uncertainty_k1: round(r.between(0.004, 0.007), 3), reference_value: refValue };
+				let difference = round(cfg.bias + 0.003 * r.normal(), 3);
+				if (difference === 0) difference = cfg.bias < 0 ? -0.001 : 0.001; // an exact zero reads like a placeholder
+				return { channel, name, difference, uncertainty_k1: round(r.between(0.004, 0.007), 3), reference_value: refValue };
 			});
 		const window = cfg.window_m ?? 150;
 		const total = fixed ? fixed.samples[1] : Math.max(9, Math.round(window / cfg.px) ** 2);
@@ -627,7 +635,7 @@ function build(id, cfg, product) {
 	const report = {
 		schema: 'cqas-report/2',
 		data_status: 'example',
-		status_note: 'Example values made up for this mock-up to be plausible for this product. No scene has been assessed; the C-QAS test system is still being built.',
+		status_note: 'All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.',
 		report_id: fixed ? fixed.report_id : `DEMO-${cfg.abbr}-001`,
 		report_date: REPORT_DATE,
 		domain: cfg.domain,

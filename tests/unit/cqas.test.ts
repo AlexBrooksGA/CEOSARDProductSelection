@@ -31,7 +31,7 @@ describe('C-QAS report format', () => {
 	it('accepts the bundled example and keeps it labelled as example data', () => {
 		const report = parseCqasReport(raw());
 		expect(report.data_status).toBe('example');
-		expect(report.status_note).toMatch(/No scene has been assessed/);
+		expect(report.status_note).toMatch(/C-QAS has not run on any real scene yet/);
 		expect(report.product.explorer_id).toBe('landsat-c2-sr');
 		expect(report.domain).toBe('optical');
 		expect(report.findings).toHaveLength(9);
@@ -173,6 +173,28 @@ describe('C-QAS report format', () => {
 		const limit = raw();
 		limit.geometric.limit_source = null;
 		expect(() => parseCqasReport(limit)).toThrow(/limit_source is required/);
+	});
+
+	it('checks that units, the numeric test and dates agree', () => {
+		const units = raw();
+		units.radiometric.units = 'K';
+		expect(() => parseCqasReport(units)).toThrow(/radiometric\.units must be "1" for the optical domain/);
+		const numeric = raw();
+		numeric.geometric.numeric_test = 'Not met';
+		expect(() => parseCqasReport(numeric)).toThrow(/numeric_test does not agree/);
+		const noLimit = raw();
+		noLimit.geometric.limit_px = null;
+		noLimit.geometric.limit_source = null;
+		expect(() => parseCqasReport(noLimit)).toThrow(/numeric_test must be Not assessed when there is no limit/);
+		const late = raw();
+		late.scene.acquisition_date = '2026-12-01';
+		expect(() => parseCqasReport(late)).toThrow(/acquisition_date cannot be after report_date/);
+		const both = raw();
+		both.radiometric_note = 'extra';
+		expect(() => parseCqasReport(both)).toThrow(/radiometric_note must be null/);
+		const seriesUnits = raw();
+		seriesUnits.series.decimals = 2;
+		expect(() => parseCqasReport(seriesUnits)).toThrow(/series units and decimals must match/);
 	});
 
 	it('checks the radiometric note and the series', () => {
