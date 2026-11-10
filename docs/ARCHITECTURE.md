@@ -125,7 +125,9 @@ Curated products are linked to the CEOS MIM database through `data/mim/links.jso
 | Comparison | The same gap fills, plus *Mission status* and *Mission years* rows under *Missions and instruments*. |
 | Copied summary | A *Missions* line per shortlisted product and a source line. |
 
-Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim`), with a text alternative and tooltip; a footnote (`MimFootnote`) gives the attribution, edition, data date and CC BY 4.0 licence. MIM values are display only: they never enter filtering, matching, ordering or the URL. The layout sends a compact summary per product; the product page loads full details on the server.
+**Satellite pictures.** `assets/mission_visuals/` holds vendored silhouette icons (13 missions) and credited pictures (5 missions) with a manifest (`tools/fetch_mission_visuals.mjs`). `AgencyMark` turns into a toggle button that flips to the product's newest mission with real artwork (hover, focus, tap; `aria-pressed`; reduced motion swaps without rotating); products whose missions have only generic illustrations keep a still logo. Mission cards show the picture and its credit, or the silhouette and the CEOS MIM credit.
+
+Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim`), with a text alternative and tooltip where it sits next to curated values; inside the MIM panel the asterisks are decorative and one visible legend line says that every value there is from MIM. A footnote (`MimFootnote`) gives the attribution, edition, data date and CC BY 4.0 licence. MIM values are display only: they never enter filtering, matching, ordering or the URL. The layout sends a compact summary per product; the product page loads full details on the server.
 
 ## C-QAS quality checks (proposed)
 

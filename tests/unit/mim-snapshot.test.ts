@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { mimDetailsFor, mimEditionText, MimSnapshotError, parseMimSnapshot } from '../../src/lib/domain/mim';
-import { readJson } from './fixtures';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { readJson, ROOT } from './fixtures';
 
 const curated = readJson<{ id: string; ceos_ard_verified: boolean }[]>('data/ceos_ard_products.json');
 const ids = curated.map((p) => p.id);
@@ -160,5 +162,38 @@ describe('MIM values in facts, comparison and the copied summary', async () => {
 		});
 		expect(text).toMatch(/  Missions\*: Landsat 4 1982–/);
 		expect(text).toMatch(/\n\* From the CEOS MIM database: CEOS MIM Database, https:\/\/database\.eohandbook\.com, edition [0-9a-f]{8}, data as of \d{4}-\d{2}-\d{2} \(CC BY 4\.0\)/);
+	});
+});
+
+describe('mission end of life and link matching', () => {
+	it('treats extended operations as not ended, and complete or past-date missions as ended', async () => {
+		const { missionEnded, sameUrl } = await import('../../src/lib/domain/mim');
+		expect(missionEnded({ status: 'Operational (extended)', eol_date: '2028-03-31' }, '2026-11-10')).toBe(false);
+		expect(missionEnded({ status: 'Operational (extended)', eol_date: '2020-01-01' }, '2026-11-10')).toBe(false);
+		expect(missionEnded({ status: 'Mission complete', eol_date: '2030-01-01' }, '2026-11-10')).toBe(true);
+		expect(missionEnded({ status: null, eol_date: '2020-01-01' }, '2026-11-10')).toBe(true);
+		expect(missionEnded({ status: 'Planned', eol_date: null }, '2026-11-10')).toBe(false);
+		expect(sameUrl('http://www.example.org/a/#x', 'https://example.org/a')).toBe(true);
+		expect(sameUrl('https://example.org/a', 'https://example.org/b')).toBe(false);
+		expect(sameUrl(null, 'https://example.org')).toBe(false);
+	});
+
+	it('picks the newest mission with real artwork for each product', async () => {
+		const { productVisual } = await import('../../src/lib/domain/mim');
+		const visuals = { '547': { mission_id: 547, acronym: 'Landsat 8', icon: '/a.svg', image: null, credit: null }, '772': { mission_id: 772, acronym: 'Landsat 9', icon: '/b.svg', image: '/b.png', credit: null } };
+		const details = mimDetailsFor(parseMimSnapshot(raw(), ids), 'landsat-c2-sr');
+		expect(productVisual(details, visuals)).toMatchObject({ acronym: 'Landsat 9', mission_count: 5 });
+		expect(productVisual(mimDetailsFor(parseMimSnapshot(raw(), ids), 'enmap-l2a'), visuals)).toBeNull();
+	});
+
+	it('vendored visuals: every icon and picture listed in the manifest exists, and pictures always carry a credit', () => {
+		const manifest = readJson<any>('assets/mission_visuals/manifest.json');
+		for (const entry of Object.values<any>(manifest.missions)) {
+			expect(existsSync(resolve(ROOT, 'assets/mission_visuals', entry.icon))).toBe(true);
+			if (entry.image) {
+				expect(existsSync(resolve(ROOT, 'assets/mission_visuals', entry.image))).toBe(true);
+				expect(entry.image_credit.rights_holder && entry.image_credit.license).toBeTruthy();
+			}
+		}
 	});
 });

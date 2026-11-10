@@ -239,6 +239,51 @@ export function mimEditionText(source: MimSource): string {
 	return [source.edition ? `edition ${source.edition}` : null, source.as_of ? `data as of ${source.as_of}` : null].filter(Boolean).join(', ');
 }
 
+// ---------------------------------------------------------------------------- mission visuals
+
+/** A vendored picture of one mission's spacecraft (assets/mission_visuals, tools/fetch_mission_visuals.mjs). */
+export interface MissionVisual {
+	mission_id: number;
+	acronym: string | null;
+	/** Silhouette icon URL (CEOS MIM original artwork, CC BY 4.0). */
+	icon: string;
+	/** Spacecraft picture URL, only when MIM records a credit for it. */
+	image: string | null;
+	credit: MimCredit | null;
+}
+
+/** The picture shown for a product: its newest mission with spacecraft-specific artwork. */
+export interface ProductVisual extends MissionVisual {
+	/** How many missions the product covers (e.g. "Landsat 9, one of 5 missions"). */
+	mission_count: number;
+}
+
+export const ICON_CREDIT = 'Silhouette: CEOS MIM Database (CC BY 4.0)';
+
+/**
+ * Whether a mission has ended. "Operational (extended)" missions have not: their end-of-life date
+ * is planned. A mission ends when MIM says so, or when its end-of-life date has passed.
+ */
+export function missionEnded(mission: Pick<MimMission, 'status' | 'eol_date'>, today = new Date().toISOString().slice(0, 10)): boolean {
+	if (/\b(mission complete|decommissioned|inactive|failed|lost)\b/i.test(mission.status ?? '')) return true;
+	if (/\boperational\b/i.test(mission.status ?? '')) return false;
+	return Boolean(mission.eol_date && mission.eol_date < today);
+}
+
+/** Compare links regardless of scheme, "www.", trailing slash and fragment. */
+export function sameUrl(a: string | null | undefined, b: string | null | undefined): boolean {
+	const key = (url: string) => url.trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/\/+$/, '');
+	return Boolean(a && b) && key(a!) === key(b!);
+}
+
+export function productVisual(details: MimDetails | null, visuals: Record<string, MissionVisual>): ProductVisual | null {
+	if (!details) return null;
+	const candidates = details.missions.filter((m) => visuals[String(m.mission_id)]);
+	if (!candidates.length) return null;
+	const newest = candidates.reduce((a, b) => ((b.launch_date ?? '') > (a.launch_date ?? '') ? b : a));
+	return { ...visuals[String(newest.mission_id)]!, mission_count: details.missions.length + details.constellations.length };
+}
+
 // ---------------------------------------------------------------------------- compact summaries
 
 /** Compact MIM facts for lists, comparison and summaries (the product page gets full details). */
@@ -246,8 +291,6 @@ export interface MimSummary {
 	missions: { mission_id: number; acronym: string | null; status: string | null; launch_date: string | null; eol_date: string | null; repeat_cycle_days: number | null }[];
 	instruments: { name_short: string | null; instrument_types: string | null; swath_width_description: string | null; spatial_resolution_best_m: number | null; spatial_resolution_description: string | null }[];
 	format: string | null;
-	access_url: string | null;
-	documentation_url: string | null;
 }
 
 export function mimSummary(details: MimDetails): MimSummary {
@@ -260,9 +303,7 @@ export function mimSummary(details: MimDetails): MimSummary {
 			spatial_resolution_best_m: i.spatial_resolution_best_m,
 			spatial_resolution_description: i.spatial_resolution_description
 		})),
-		format: details.product.format,
-		access_url: details.product.access_url,
-		documentation_url: details.product.documentation_url
+		format: details.product.format
 	};
 }
 

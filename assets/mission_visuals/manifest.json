@@ -1,0 +1,115 @@
+{
+  "schema": "mission-visuals/1",
+  "source": "CEOS MIM Database, https://database.eohandbook.com (CC BY 4.0), edition e574f0c2",
+  "icon_credit": "Silhouette: CEOS MIM Database, https://database.eohandbook.com (CC BY 4.0)",
+  "missions": {
+    "349": {
+      "acronym": "Landsat 7",
+      "icon": "349-landsat-7-icon.svg",
+      "image": "349-landsat-7.png",
+      "image_credit": {
+        "rights_holder": "NASA",
+        "license": "Public domain",
+        "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Landsat_7_Satellite_3D_Render.png",
+        "modified": true
+      }
+    },
+    "547": {
+      "acronym": "Landsat 8",
+      "icon": "547-landsat-8-icon.svg",
+      "image": "547-landsat-8.png",
+      "image_credit": {
+        "rights_holder": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+        "license": "Public domain",
+        "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png",
+        "modified": true
+      }
+    },
+    "552": {
+      "acronym": "Sentinel-2 A",
+      "icon": "552-sentinel-2-a-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "553": {
+      "acronym": "Sentinel-2 B",
+      "icon": "553-sentinel-2-b-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "575": {
+      "acronym": "Sentinel-1 A",
+      "icon": "575-sentinel-1-a-icon.svg",
+      "image": "575-sentinel-1-a.png",
+      "image_credit": {
+        "rights_holder": "Rama",
+        "license": "CC BY-SA 2.0 fr",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/fr/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+        "modified": true
+      }
+    },
+    "576": {
+      "acronym": "Sentinel-1 B",
+      "icon": "576-sentinel-1-b-icon.svg",
+      "image": "576-sentinel-1-b.png",
+      "image_credit": {
+        "rights_holder": "Rama",
+        "license": "CC BY-SA 2.0 fr",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/fr/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+        "modified": true
+      }
+    },
+    "577": {
+      "acronym": "Sentinel-1 C",
+      "icon": "577-sentinel-1-c-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "629": {
+      "acronym": "ALOS-2",
+      "icon": "629-alos-2-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "712": {
+      "acronym": "RISAT-1A",
+      "icon": "712-risat-1a-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "772": {
+      "acronym": "Landsat 9",
+      "icon": "772-landsat-9-icon.svg",
+      "image": "772-landsat-9.png",
+      "image_credit": {
+        "rights_holder": "NASA/Ross Walter",
+        "license": "Public domain",
+        "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_5.png",
+        "modified": true
+      }
+    },
+    "814": {
+      "acronym": "Sentinel-1 D",
+      "icon": "814-sentinel-1-d-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "856": {
+      "acronym": "NovaSAR-1",
+      "icon": "856-novasar-1-icon.svg",
+      "image": null,
+      "image_credit": null
+    },
+    "1514": {
+      "acronym": "EarthDaily",
+      "icon": "1514-earthdaily-icon.svg",
+      "image": null,
+      "image_credit": null
+    }
+  }
+}

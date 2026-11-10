@@ -7,7 +7,7 @@
  * never implement their own matching rules.
  */
 import type { CqasReport } from '$lib/domain/cqas';
-import type { MimSource, MimSummary } from '$lib/domain/mim';
+import type { MimSource, MimSummary, ProductVisual } from '$lib/domain/mim';
 import { getContext, setContext } from 'svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
@@ -66,6 +66,7 @@ export interface LayoutPayload {
 	agencyMarks: Record<string, { url: string; monochrome: boolean }>;
 	cqasReports: Record<string, CqasReport>;
 	mimSummaries: Record<string, MimSummary>;
+	productVisuals: Record<string, ProductVisual>;
 	mimSource: MimSource | null;
 	notFound: Record<string, Record<string, string>>;
 	catalogueSource: 'researched' | 'demo-fallback';
@@ -87,6 +88,7 @@ export class AppStore {
 	/** CEOS MIM database facts for curated products (snapshot), and its source for the footnote. */
 	mimSummaries = $state.raw<LayoutPayload['mimSummaries']>({});
 	mimSource = $state.raw<LayoutPayload['mimSource']>(null);
+	productVisuals = $state.raw<LayoutPayload['productVisuals']>({});
 	catalogueSource = $state.raw<LayoutPayload['catalogueSource']>('researched');
 	notFound = $state.raw<LayoutPayload['notFound']>({});
 
@@ -110,6 +112,7 @@ export class AppStore {
 		this.cqasReports = payload.cqasReports ?? {};
 		this.mimSummaries = payload.mimSummaries ?? {};
 		this.mimSource = payload.mimSource ?? null;
+		this.productVisuals = payload.productVisuals ?? {};
 		this.catalogueSource = payload.catalogueSource;
 		this.notFound = payload.notFound;
 		this.mimStatus = payload.mim;

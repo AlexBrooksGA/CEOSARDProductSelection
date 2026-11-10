@@ -14,6 +14,7 @@ export const load: LayoutServerLoad = () => {
 		agencyMarks: data.agencyMarks,
 		cqasReports: data.cqasReports,
 		mimSummaries: data.mimSummaries,
+		productVisuals: data.productVisuals,
 		mimSource: data.mimSnapshot?.source ?? null,
 		// Compact missing-state evidence so cards use the same wording as details: field → date checked.
 		notFound: Object.fromEntries(

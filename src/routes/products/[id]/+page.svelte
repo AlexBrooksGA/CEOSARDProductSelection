@@ -11,7 +11,7 @@
 	import MimFootnote from '$lib/components/MimFootnote.svelte';
 	import MimMark from '$lib/components/MimMark.svelte';
 	import MimPanel from '$lib/components/MimPanel.svelte';
-	import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimSwathFill } from '$lib/domain/mim';
+	import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimSwathFill, sameUrl } from '$lib/domain/mim';
 	import { formatNumber, headlineBand, signed, thresholdHeadline } from '$lib/domain/cqas';
 	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import {
@@ -52,16 +52,16 @@
 	let links = $derived(product ? productLinks(product) : []);
 	let cqas = $derived(product ? (store.cqasReports[product.id] ?? null) : null);
 	// CEOS MIM database: full details for curated products, compact summary for gap fills.
-	let mim = $derived(data.mimDetails && product && data.mimDetails.product && data.id === product.id ? data.mimDetails : null);
+	let mim = $derived(data.mimDetails && product && data.id === product.id ? data.mimDetails : null);
 	let mimSummary = $derived(product ? (store.mimSummaries[product.id] ?? null) : null);
 	let mimLinks = $derived.by(() => {
 		if (!mim || !product) return [];
-		const curated = new Set([product.access_url, product.information_url, product.self_assessment_url, product.peer_review_url, product.sample_product_url].filter(Boolean));
+		const curated = [product.access_url, product.information_url, product.self_assessment_url, product.peer_review_url, product.sample_product_url];
 		return [
 			{ label: 'Access (recorded in MIM)', url: mim.product.access_url },
 			{ label: 'Documentation (recorded in MIM)', url: mim.product.instrument_links.find((l) => l.documentation_url)?.documentation_url ?? null },
 			{ label: 'Peer review (recorded in MIM)', url: mim.product.certification?.review_url ?? null }
-		].filter((link): link is { label: string; url: string } => Boolean(link.url) && !curated.has(link.url));
+		].filter((link): link is { label: string; url: string } => Boolean(link.url) && !curated.some((url) => sameUrl(url, link.url)));
 	});
 	let cqasLabel = $derived(cqas ? (cqas.data_status === 'example' ? 'C-QAS example' : 'C-QAS') : '');
 	/** The link navigates to #cqas normally (so :target highlights it); this only moves focus there too. */
@@ -131,7 +131,7 @@
 				{#if FAMILY_BY_VALUE[product.product_family ?? '']}<span class="small"> — {FAMILY_BY_VALUE[product.product_family ?? '']!.explanation}</span>{/if}
 			</p>
 			<div class="row">
-				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record<MimMark label="This whole record is from the CEOS MIM database" /></span>{/if}
+				<AssessmentBadge {product} />{#if isMimRecord(product)}<span class="badge info">MIM record</span>{/if}
 				{#if cqas}<span><a class="badge info cq-badge" href="#cqas" onclick={jumpToCqas}><span aria-hidden="true">◉</span>{cqasLabel}: {thresholdHeadline(cqas)} <span aria-hidden="true">↓</span></a><span class="cq-proposed">Proposed</span></span>{/if}
 			</div>
 			{#if outside}
@@ -254,7 +254,7 @@
 			{/if}
 		</section>
 
-		{#if mim}<MimPanel details={mim} />{/if}
+		{#if mim}<MimPanel details={mim} visuals={data.missionVisuals} />{/if}
 
 		<section class="panel stack" aria-labelledby="technical-heading">
 			<h2 id="technical-heading">Technical details</h2>
@@ -307,7 +307,7 @@
 				{/if}
 			</Disclosure>
 		</section>
-		{#if (mim || mimSummary || isMimRecord(product)) && store.mimSource}<MimFootnote source={store.mimSource} />{/if}
+		{#if (mim || mimSummary) && store.mimSource}<MimFootnote source={store.mimSource} />{/if}
 	{/if}
 </div>
 

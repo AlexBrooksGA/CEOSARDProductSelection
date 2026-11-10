@@ -10,8 +10,10 @@ test('product page shows a MIM missions and instruments panel with purple asteri
 	await expect(panel.getByRole('heading', { level: 2, name: /Missions and instruments/ })).toBeVisible();
 	await expect(panel.getByRole('heading', { name: /^Landsat 8/ })).toBeVisible();
 	await expect(panel.getByText('2013-02-11')).toBeVisible();
+	await expect(panel.locator('.mim-legend')).toContainText('Every value in this section is from the CEOS MIM database');
+	// Inside the panel the asterisks are decorative: the legend says it once for screen readers.
+	await expect(panel.getByRole('heading', { level: 2 })).toHaveText('Missions and instruments*');
 	const mark = panel.locator('.mim-mark').first();
-	await expect(mark).toHaveAttribute('title', /CEOS MIM database/);
 	// The asterisk is purple (the --mim token), not the text colour.
 	const colour = await mark.evaluate((el) => getComputedStyle(el).color);
 	expect(colour).toBe('rgb(124, 58, 237)');
@@ -57,4 +59,50 @@ test('the purple asterisk has no accessibility violations in either theme', asyn
 		const results = await new AxeBuilder({ page }).include('section[aria-labelledby="mim-heading"]').include('.mim-footnote').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
 		expect(results.violations.map((v) => `${theme} ${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
 	}
+});
+
+test('missions still operating show a planned end of life, ended missions show their end of life', async ({ page }) => {
+	await open(page, '/products/alos2-palsar2-25m-scansar-nrb?v=1');
+	const alos = page.locator('section[aria-labelledby="mim-heading"] article', { has: page.getByRole('heading', { name: /^ALOS-2/ }) });
+	await expect(alos).toContainText('Operational (extended)');
+	await expect(alos).toContainText('Planned end of life');
+	await open(page, '/products/landsat-c2-sr?v=1');
+	const l5 = page.locator('section[aria-labelledby="mim-heading"] article', { has: page.getByRole('heading', { name: /^Landsat 5/ }) });
+	await expect(l5.getByText('End of life', { exact: true })).toBeVisible();
+});
+
+test('the agency mark flips to the newest mission with real artwork on hover, focus and tap', async ({ page }) => {
+	await open(page, '/products/landsat-c2-sr?v=1');
+	const flip = page.locator('.detail-head').getByRole('button', { name: /USGS logo\. Show the satellite: Landsat 9, one of 5 missions, from the CEOS MIM database/ });
+	await expect(flip).toHaveAttribute('aria-pressed', 'false');
+	await flip.click();
+	await expect(flip).toHaveAttribute('aria-pressed', 'true');
+	const back = flip.locator('.face.back img');
+	await expect(back).toHaveAttribute('src', /772-landsat-9-icon/);
+	// Same-origin image (the Content Security Policy allows no other).
+	expect(await back.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0 && new URL(img.src).origin === location.origin)).toBe(true);
+	// Products whose missions have only generic illustrations do not flip.
+	await open(page, '/products/enmap-l2a?v=1');
+	await expect(page.locator('button.flip')).toHaveCount(0);
+});
+
+test('reduced motion swaps the mark without rotating', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await open(page, '/products/landsat-c2-sr?v=1');
+	const flip = page.locator('.detail-head button.flip');
+	await flip.click();
+	expect(await flip.locator('.inner').evaluate((el) => getComputedStyle(el).transform)).toBe('none');
+	await expect(flip.locator('.face.back')).toBeVisible();
+	await expect(flip.locator('.face.front')).toBeHidden();
+});
+
+test('mission cards show credited pictures with their credit, and silhouettes otherwise', async ({ page }) => {
+	await open(page, '/products/landsat-c2-sr?v=1');
+	const l9 = page.locator('section[aria-labelledby="mim-heading"] article', { has: page.getByRole('heading', { name: /^Landsat 9/ }) });
+	await expect(l9.getByRole('img', { name: 'Landsat 9 spacecraft' })).toBeVisible();
+	await expect(l9.locator('figcaption')).toContainText('NASA');
+	await open(page, '/products/alos2-palsar2-25m-scansar-nrb?v=1');
+	const alos = page.locator('section[aria-labelledby="mim-heading"] article', { has: page.getByRole('heading', { name: /^ALOS-2/ }) });
+	await expect(alos.getByRole('img', { name: 'ALOS-2 spacecraft silhouette' })).toBeVisible();
+	await expect(alos.locator('figcaption')).toHaveText('Silhouette: CEOS MIM Database (CC BY 4.0)');
 });

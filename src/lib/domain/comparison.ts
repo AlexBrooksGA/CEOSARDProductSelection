@@ -112,6 +112,7 @@ export function buildComparison(
 ): ComparisonGroup[] {
 	const prov = (product: Product) => provenance[product.id];
 	const mim = (product: Product) => mimSummaries[product.id] ?? null;
+	const mimMissingText = (product: Product) => (mim(product) ? 'No missions recorded in the CEOS MIM database' : 'Not linked to the CEOS MIM database');
 	const groups: ComparisonGroup[] = [];
 
 	const active = activeCriteria(criteria);
@@ -294,8 +295,8 @@ export function buildComparison(
 				row('instrument-resolution', 'Finest instrument resolution (display only)', products.map((p) => factCell(withMimFill(instrumentResolutionFact(p), mimInstrumentResolutionFill(mim(p)))))),
 				...(products.some((p) => mim(p))
 					? [
-							row('mission-status', 'Mission status', products.map((p) => ({ text: mimMissionStatusText(mim(p)), missingText: 'Not linked to the CEOS MIM database', mim: Boolean(mim(p)) }))),
-							row('mission-years', 'Mission years (launch–end of life)', products.map((p) => ({ text: mimMissionYearsText(mim(p)), missingText: 'Not linked to the CEOS MIM database', detail: mim(p) ? 'End year is planned or actual end of life' : null, mim: Boolean(mim(p)) })))
+							row('mission-status', 'Mission status', products.map((p) => ({ text: mimMissionStatusText(mim(p)), missingText: mimMissingText(p), mim: Boolean(mim(p)?.missions.length) }))),
+							row('mission-years', 'Mission years (launch–end of life)', products.map((p) => ({ text: mimMissionYearsText(mim(p)), missingText: mimMissingText(p), detail: mim(p)?.missions.length ? 'End year is planned or actual end of life' : null, mim: Boolean(mim(p)?.missions.length) })))
 						]
 					: [])
 			]

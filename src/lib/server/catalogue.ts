@@ -7,7 +7,7 @@
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
 import { loadCqasReports, type CqasReport } from '$lib/domain/cqas';
-import { mimDetailsFor, MimSnapshotError, mimSummary, parseMimSnapshot, type MimSnapshot, type MimSummary } from '$lib/domain/mim';
+import { mimDetailsFor, MimSnapshotError, mimSummary, parseMimSnapshot, productVisual, type MimCredit, type MimSnapshot, type MimSummary, type MissionVisual, type ProductVisual } from '$lib/domain/mim';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
 import type { Product, Profile, ProvenanceIndex } from '$lib/domain/types';
 
@@ -17,6 +17,9 @@ const csvFiles = import.meta.glob('/data/*.csv', { eager: true, query: '?raw', i
 const cqasFiles = import.meta.glob('/data/cqas/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 // CEOS MIM database snapshot for curated products (tools/build_mim_snapshot.mjs).
 const mimFiles = import.meta.glob('/data/mim/snapshot.json', { eager: true, import: 'default' }) as Record<string, unknown>;
+// Vendored mission icons and credited pictures (tools/fetch_mission_visuals.mjs).
+const visualFiles = import.meta.glob('/assets/mission_visuals/*.{png,svg}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+const visualManifest = import.meta.glob('/assets/mission_visuals/manifest.json', { eager: true, import: 'default' }) as Record<string, { missions?: Record<string, { acronym?: string | null; icon?: string; image?: string | null; image_credit?: MimCredit | null }> }>;
 const logoFiles = import.meta.glob('/assets/agency_logos/*.{png,svg,jpg,webp,ico}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 const logoManifest = import.meta.glob('/assets/agency_logos/manifest.json', { eager: true, import: 'default' }) as Record<string, { agencies?: Record<string, { file?: string; display_treatment?: string }> }>;
 
@@ -33,6 +36,9 @@ export interface BundledData {
 	mimSnapshot: MimSnapshot | null;
 	/** Compact MIM facts by curated product ID, for lists and comparison. */
 	mimSummaries: Record<string, MimSummary>;
+	/** Vendored pictures by mission ID, and the one shown for each curated product. */
+	missionVisuals: Record<string, MissionVisual>;
+	productVisuals: Record<string, ProductVisual>;
 	mimWarnings: string[];
 }
 
@@ -71,12 +77,22 @@ function build(): BundledData {
 			mimWarnings.push(error instanceof MimSnapshotError ? error.message : 'MIM snapshot could not be read.');
 		}
 	}
+	const missionVisuals: Record<string, MissionVisual> = {};
+	for (const [id, entry] of Object.entries(Object.values(visualManifest)[0]?.missions ?? {})) {
+		const icon = entry.icon ? visualFiles[`/assets/mission_visuals/${entry.icon}`] : undefined;
+		if (!icon) continue;
+		const image = entry.image ? (visualFiles[`/assets/mission_visuals/${entry.image}`] ?? null) : null;
+		missionVisuals[id] = { mission_id: Number(id), acronym: entry.acronym ?? null, icon, image, credit: image ? (entry.image_credit ?? null) : null };
+	}
 	const mimSummaries: Record<string, MimSummary> = {};
+	const productVisuals: Record<string, ProductVisual> = {};
 	for (const product of catalogue.products) {
 		const details = mimDetailsFor(mimSnapshot, product.id);
 		if (details) mimSummaries[product.id] = mimSummary(details);
+		const visual = productVisual(details, missionVisuals);
+		if (visual) productVisuals[product.id] = visual;
 	}
-	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, mimWarnings };
+	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, missionVisuals, productVisuals, mimWarnings };
 }
 
 /** Validated bundled data, or a clear error message when the bundled files are unusable. */

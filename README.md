@@ -106,6 +106,14 @@ NODE_USE_ENV_PROXY=1 node tools/build_mim_snapshot.mjs   # NODE_USE_ENV_PROXY on
 npm test
 ```
 
+Then vendor mission pictures (same-origin only, so the app works offline):
+
+```bash
+NODE_USE_ENV_PROXY=1 node tools/fetch_mission_visuals.mjs
+```
+
+It copies, into `assets/mission_visuals/`, the silhouette icon of every mission with spacecraft-specific artwork (CEOS MIM original artwork, CC BY 4.0) and the picture only where MIM records a credit (rights holder and licence). Pictures without a recorded credit are left out until their terms are confirmed, and generic illustrations are never used. The product's agency mark flips (hover, keyboard focus or tap; a plain swap with reduced motion) to the newest such mission; mission cards show the picture with its credit, or the silhouette.
+
 Curated values always take precedence. MIM values fill gaps and add mission and instrument detail; they are marked with a purple asterisk and never affect filtering, matching or ordering.
 
 ## CEOS-ARD labels
