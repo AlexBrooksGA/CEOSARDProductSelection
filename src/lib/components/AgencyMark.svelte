@@ -9,8 +9,9 @@
 	let agency = $derived(product.agency || product.provider);
 	let mark = $derived(agency ? store.agencyMarks[agency] : undefined);
 	let initials = $derived(((agency ?? 'EO').match(/[A-Za-z0-9]+/g) ?? ['EO']).slice(0, 3).map((word) => word[0]).join('').toUpperCase());
-	// The newest mission with spacecraft-specific artwork in the CEOS MIM database; generic illustrations never flip.
+	// The newest mission with a credited picture (else its silhouette) in the CEOS MIM database; generic illustrations never flip.
 	let visual = $derived(store.productVisuals[product.id] ?? null);
+	let backCredit = $derived(visual?.image && visual.credit ? `Picture: ${[visual.credit.rights_holder, visual.credit.license].filter(Boolean).join(', ')}` : ICON_CREDIT);
 	let missionText = $derived(visual ? `${visual.acronym ?? 'Satellite'}${visual.mission_count > 1 ? `, one of ${visual.mission_count} missions` : ''}` : '');
 	let pressed = $state(false);
 </script>
@@ -30,13 +31,13 @@
 			type="button"
 			class="agency-mark flip"
 			aria-pressed={pressed}
-			title="{agency ?? 'Agency not reported'} — identity mark, no endorsement implied. Satellite: {missionText} (CEOS MIM database; {ICON_CREDIT})"
+			title="{agency ?? 'Agency not reported'} — identity mark, no endorsement implied. Satellite: {missionText} (CEOS MIM database; {backCredit})"
 			onclick={() => (pressed = !pressed)}
 		>
 			<span class="visually-hidden">{agency ?? 'Agency'} logo. Show the satellite: {missionText}, from the CEOS MIM database</span>
 			<span class="inner">
 				{@render logo()}
-				<span class="face back"><img src={visual.icon} alt="" loading="lazy" decoding="async" /><span class="mim-corner" aria-hidden="true">*</span></span>
+				<span class="face back" class:picture={Boolean(visual.image)}><img src={visual.image ?? visual.icon} alt="" loading="lazy" decoding="async" /><span class="mim-corner" aria-hidden="true">*</span></span>
 			</span>
 		</button>
 	{:else if mark}
@@ -109,6 +110,9 @@
 	.face.back {
 		transform: rotateY(180deg);
 		background: #fffdf8;
+	}
+	.face.back.picture {
+		padding: 1px 2px;
 	}
 	.flip:focus-visible .inner,
 	.flip[aria-pressed='true'] .inner {

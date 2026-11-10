@@ -186,6 +186,9 @@ describe('mission end of life and link matching', () => {
 		const visuals = { '547': { mission_id: 547, acronym: 'Landsat 8', icon: '/a.svg', image: null, credit: null }, '772': { mission_id: 772, acronym: 'Landsat 9', icon: '/b.svg', image: '/b.png', credit: null } };
 		const details = mimDetailsFor(parseMimSnapshot(raw(), ids), 'landsat-c2-sr');
 		expect(productVisual(details, visuals)).toMatchObject({ acronym: 'Landsat 9', mission_count: 5 });
+		// A credited picture on an older mission wins over a newer silhouette-only one.
+		const olderPicture = { '547': { ...visuals['547'], image: '/a.png' }, '772': { ...visuals['772'], image: null } };
+		expect(productVisual(details, olderPicture)).toMatchObject({ acronym: 'Landsat 8', image: '/a.png' });
 		expect(productVisual(mimDetailsFor(parseMimSnapshot(raw(), ids), 'enmap-l2a'), visuals)).toBeNull();
 	});
 

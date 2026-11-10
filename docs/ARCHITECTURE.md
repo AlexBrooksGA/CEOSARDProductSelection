@@ -125,7 +125,15 @@ Curated products are linked to the CEOS MIM database through `data/mim/links.jso
 | Comparison | The same gap fills, plus *Mission status* and *Mission years* rows under *Missions and instruments*. |
 | Copied summary | A *Missions* line per shortlisted product and a source line. |
 
-**Satellite pictures.** `assets/mission_visuals/` holds vendored silhouette icons (13 missions) and credited pictures (5 missions) with a manifest (`tools/fetch_mission_visuals.mjs`). `AgencyMark` turns into a toggle button that flips to the product's newest mission with real artwork (hover, focus, tap; `aria-pressed`; reduced motion swaps without rotating); products whose missions have only generic illustrations keep a still logo. Mission cards show the picture and its credit, or the silhouette and the CEOS MIM credit.
+**The image API call.** For a MIM mission ID (an integer, e.g. Landsat 8 = 547; resolve names or slugs with `GET /api/mission/{ref}`):
+
+```
+GET https://ceos-capabilities.org/api/mission/{mission_id}/visual?variant=colour     (variant: grey | colour)
+```
+
+The response gives `kind` (`specific` or `generic`; generic means "we do not yet hold an image of this spacecraft"), `images` (`svg`, `icon`, `png_512`, `png_1024`, and, for some missions, `photo_cut_512`/`photo_cut_1024`) and `credit` (`rights_holder`, `license`, `license_url`, `source_url`, `modified`). Image paths such as `/images/satellites/landsat-8/landsat-8-512px.png` are relative to the API root: fetch them from `https://ceos-capabilities.org/api/images/...` (the same path at the site root returns the web app's HTML with status 200). `GET /api/visuals/icons` lists every silhouette icon in one call. A product's missions come from its MIM product record (instruments) and the instrument records (missions), recorded in `data/mim/links.json`.
+
+**Satellite pictures.** `assets/mission_visuals/` holds vendored silhouette icons (13 missions) and credited pictures (5 missions) with a manifest (`tools/fetch_mission_visuals.mjs`). `AgencyMark` turns into a toggle button that flips to the satellite: the product's newest mission with a credited picture, or the newest silhouette when none has a picture (hover, focus, tap; `aria-pressed`; reduced motion swaps without rotating); products whose missions have only generic illustrations keep a still logo. Mission cards show the picture and its credit, or the silhouette and the CEOS MIM credit.
 
 Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim`), with a text alternative and tooltip where it sits next to curated values; inside the MIM panel the asterisks are decorative and one visible legend line says that every value there is from MIM. A footnote (`MimFootnote`) gives the attribution, edition, data date and CC BY 4.0 licence. MIM values are display only: they never enter filtering, matching, ordering or the URL. The layout sends a compact summary per product; the product page loads full details on the server.
 

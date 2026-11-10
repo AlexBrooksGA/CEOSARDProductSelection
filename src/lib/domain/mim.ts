@@ -252,7 +252,10 @@ export interface MissionVisual {
 	credit: MimCredit | null;
 }
 
-/** The picture shown for a product: its newest mission with spacecraft-specific artwork. */
+/**
+ * The picture shown for a product: the newest mission with a credited spacecraft picture, or,
+ * when none has one, the newest mission with spacecraft-specific artwork (its silhouette).
+ */
 export interface ProductVisual extends MissionVisual {
 	/** How many missions the product covers (e.g. "Landsat 9, one of 5 missions"). */
 	mission_count: number;
@@ -284,9 +287,11 @@ export function sameUrl(a: string | null | undefined, b: string | null | undefin
 
 export function productVisual(details: MimDetails | null, visuals: Record<string, MissionVisual>): ProductVisual | null {
 	if (!details) return null;
-	const candidates = details.missions.filter((m) => visuals[String(m.mission_id)]);
-	if (!candidates.length) return null;
-	const newest = candidates.reduce((a, b) => ((b.launch_date ?? '') > (a.launch_date ?? '') ? b : a));
+	const withArtwork = details.missions.filter((m) => visuals[String(m.mission_id)]);
+	if (!withArtwork.length) return null;
+	const withPicture = withArtwork.filter((m) => visuals[String(m.mission_id)]!.image);
+	const pool = withPicture.length ? withPicture : withArtwork;
+	const newest = pool.reduce((a, b) => ((b.launch_date ?? '') > (a.launch_date ?? '') ? b : a));
 	return { ...visuals[String(newest.mission_id)]!, mission_count: details.missions.length };
 }
 

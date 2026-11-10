@@ -78,9 +78,14 @@ test('the agency mark flips to the newest mission with real artwork on hover, fo
 	await flip.click();
 	await expect(flip).toHaveAttribute('aria-pressed', 'true');
 	const back = flip.locator('.face.back img');
-	await expect(back).toHaveAttribute('src', /772-landsat-9-icon/);
+	// Landsat 9 has a credited picture, so the flip shows the picture, not the silhouette.
+	await expect(back).toHaveAttribute('src', /772-landsat-9\.[^/]*png/);
+	await expect(flip).toHaveAttribute('title', /Picture: NASA/);
 	// Same-origin image (the Content Security Policy allows no other).
 	expect(await back.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0 && new URL(img.src).origin === location.origin)).toBe(true);
+	// Without any credited picture the flip falls back to the silhouette.
+	await open(page, '/products/alos2-palsar2-25m-scansar-nrb?v=1');
+	await expect(page.locator('.detail-head button.flip .face.back img')).toHaveAttribute('src', /629-alos-2-icon/);
 	// Products whose missions have only generic illustrations do not flip.
 	await open(page, '/products/enmap-l2a?v=1');
 	await expect(page.locator('button.flip')).toHaveCount(0);
