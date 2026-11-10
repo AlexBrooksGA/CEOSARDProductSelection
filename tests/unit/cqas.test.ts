@@ -13,7 +13,10 @@ import {
 	signed,
 	thresholdHeadline
 } from '../../src/lib/domain/cqas';
-import { readJson, ROOT } from './fixtures';
+import { buildComparison } from '../../src/lib/domain/comparison';
+import { NEUTRAL_STATE } from '../../src/lib/domain/explorer';
+import { buildSelectionSummary } from '../../src/lib/domain/summary';
+import { parity, readJson, ROOT } from './fixtures';
 
 const raw = () => structuredClone(readJson<any>('data/cqas/landsat-c2-sr.json'));
 const catalogueIds = readJson<{ id: string }[]>('data/ceos_ard_products.json').map((p) => p.id);
@@ -130,5 +133,50 @@ describe('C-QAS report format', () => {
 		expect(signed(0.0004)).toBe('0.000');
 		expect(signed(-0.0004)).toBe('0.000');
 		expect(signed(0.0006)).toBe('+0.001');
+	});
+});
+
+describe('C-QAS in comparison and the copied summary', () => {
+	const catalogue = parity<any[]>('catalogue_normalised.json');
+	const byId = Object.fromEntries(catalogue.map((p) => [p.id, p]));
+	const reports = { 'landsat-c2-sr': parseCqasReport(raw()) };
+	const pair = [byId['landsat-c2-sr'], byId['sentinel2-level2a']];
+	const cqasRow = (products: any[], withReports = true) =>
+		buildComparison(products, {}, [], {}, null, withReports ? { reports, detailHref: (p) => `/products/${p.id}?v=1` } : null)
+			.find((g) => g.id === 'quality')!
+			.rows.find((r) => r.id === 'cqas');
+
+	it('adds a C-QAS row to measured quality evidence, with "No C-QAS check" for products without a report', () => {
+		const row = cqasRow(pair)!;
+		expect(row.label).toBe('C-QAS scene check');
+		expect(row.help).toMatch(/separate from the CEOS-ARD assessment/);
+		expect(row.cells[0]!.text).toBe(cqasOneLine(reports['landsat-c2-sr']));
+		expect(row.cells[0]!.detail).toMatch(/^Concept — example data · PFS SR v5\.0\.2 · report DEMO-L8-001/);
+		expect(row.cells[0]!.links).toEqual([{ label: 'See C-QAS quality checks', url: '/products/landsat-c2-sr?v=1#cqas', internal: true }]);
+		expect(row.cells[1]).toEqual({ text: null, missingText: 'No C-QAS check' });
+		expect(row.differs).toBe(true);
+	});
+
+	it('omits the row when no compared product has a report, or when no reports are passed', () => {
+		expect(cqasRow([byId['sentinel2-level2a'], byId['enmap-l2a']])).toBeUndefined();
+		expect(cqasRow(pair, false)).toBeUndefined();
+	});
+
+	it('adds a labelled C-QAS line to the copied summary for products with a report only', () => {
+		const text = buildSelectionSummary({
+			snapshot: new Date('2026-11-10T00:00:00Z'),
+			shareUrl: 'https://example.test/shortlist?v=1',
+			state: { ...structuredClone(NEUTRAL_STATE), shortlist: ['landsat-c2-sr', 'sentinel2-level2a'] },
+			products: byId,
+			notes: {},
+			investigationNote: '',
+			currentFingerprint: '',
+			provenance: {},
+			unresolvedReason: () => '',
+			cqasReports: reports
+		});
+		expect(text).toContain('  C-QAS scene check (proposed): 6 Met / 2 Not met selected Threshold rows (9 of 36)');
+		expect(text).toContain('Concept — example data · PFS SR v5.0.2 · report DEMO-L8-001 (2026-10-12) · scene 2025-12-01. One scene only; not a CEOS-ARD assessment.');
+		expect(text.match(/C-QAS scene check/g)).toHaveLength(1);
 	});
 });

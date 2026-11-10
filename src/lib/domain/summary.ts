@@ -8,6 +8,7 @@ import { familyLabel } from './guidance';
 import { SCOPE_LABELS } from './profiles';
 import { CHECK_OUTCOME_LABELS, checkActions, type CheckOutcome, type Guidance, type ResolvedCheck } from './purpose';
 import type { Product, ProvenanceRow } from './types';
+import { cqasOneLine, cqasProvenance, type CqasReport } from './cqas';
 
 export interface SummaryPurpose {
 	sentence: string;
@@ -44,6 +45,8 @@ export interface SummaryInput {
 	provenance: Record<string, Record<string, ProvenanceRow>>;
 	unresolvedReason: (id: string) => string;
 	purpose?: SummaryPurpose | null;
+	/** C-QAS reports by product ID (proposed). */
+	cqasReports?: Record<string, CqasReport>;
 }
 
 export function noteNeedsReview(note: ProductNote | undefined, currentFingerprint: string): boolean {
@@ -118,6 +121,11 @@ export function buildSelectionSummary(input: SummaryInput): string {
 			for (const [label, url] of links) lines.push(`  ${label}: ${url}`);
 			const dates = [...new Set(Object.values(input.provenance[id] ?? {}).map((row) => row.date_checked).filter(Boolean))].sort();
 			lines.push(`  Catalogue sources last checked: ${dates.length ? dates.join(', ') : 'not recorded'} (checking date, not observation date)`);
+			const cqas = input.cqasReports?.[id];
+			if (cqas) {
+				lines.push(`  C-QAS scene check (proposed): ${cqasOneLine(cqas)}.`);
+				lines.push(`  C-QAS details: ${cqasProvenance(cqas)}. One scene only; not a CEOS-ARD assessment.`);
+			}
 			lines.push('  Open by default: availability for the area and period; task-specific accuracy and suitability.');
 		}
 		if (purpose && purpose.checks.length) {

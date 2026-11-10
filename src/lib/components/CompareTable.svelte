@@ -25,7 +25,8 @@
 						outcome: (productId, checkId) => store.checkOutcome(productId, checkId),
 						detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`)
 					}
-				: null
+				: null,
+			{ reports: store.cqasReports, detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`) }
 		)
 	);
 	$effect(() => {

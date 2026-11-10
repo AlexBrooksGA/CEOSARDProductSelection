@@ -461,6 +461,11 @@ export function pfsVersionDiffers(report: CqasReport, assessedVersion: string | 
 	return clean(report.pfs.version) !== clean(assessedVersion);
 }
 
+/** Status, PFS and report identity for comparison details and summaries. */
+export function cqasProvenance(report: CqasReport): string {
+	return `${dataStatusLabel(report.data_status)} · PFS ${report.pfs.short_name} v${report.pfs.version} · report ${report.report_id} (${report.report_date}) · scene ${report.scene.acquisition_date}`;
+}
+
 /** One plain line for comparison tables and copied summaries. */
 export function cqasOneLine(report: CqasReport): string {
 	const band = headlineBand(report);

@@ -92,3 +92,15 @@ test('the C-QAS section fits a 390 px phone without horizontal page scroll', asy
 	const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 	expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test('comparison shows a C-QAS row with "No C-QAS check" for the other product and links to the section', async ({ page }) => {
+	await open(page, '/shortlist?v=1&sl=landsat-c2-sr,sentinel2-level2a&cmp=landsat-c2-sr,sentinel2-level2a');
+	const table = page.getByRole('table', { name: /Side-by-side comparison of 2 products/ });
+	const row = table.getByRole('row', { name: /C-QAS scene check/ });
+	await expect(row).toContainText('6 Met / 2 Not met selected Threshold rows (9 of 36)');
+	await expect(row).toContainText('Concept — example data');
+	await expect(row).toContainText('No C-QAS check');
+	await row.getByRole('link', { name: 'See C-QAS quality checks' }).click();
+	await expect(page).toHaveURL(/\/products\/landsat-c2-sr\?.*#cqas$/);
+	await expect(page.locator('section#cqas')).toBeInViewport();
+});

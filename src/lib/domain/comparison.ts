@@ -25,6 +25,7 @@ import {
 import { criterionReasons } from './presentation';
 import { CHECK_OUTCOME_LABELS, checkActions, productMeasurementNote, type CheckOutcome, type Guidance, type PurposeAnswers, type ResolvedCheck } from './purpose';
 import { evaluateProduct } from './matching';
+import { cqasOneLine, cqasProvenance, type CqasReport } from './cqas';
 import type { Criteria, Product, ProvenanceRow } from './types';
 
 export interface ComparisonCell {
@@ -86,12 +87,21 @@ export interface ComparisonPurpose {
 	detailHref: (product: Product) => string;
 }
 
+/** C-QAS reports for the compared products (proposed; example data until C-QAS produces real reports). */
+export interface ComparisonCqas {
+	reports: Record<string, CqasReport>;
+	detailHref: (product: Product) => string;
+}
+
+export const CQAS_ROW_HELP = 'Proposed. Checks on one scene, separate from the CEOS-ARD assessment; values from different scenes or PFS versions are not directly comparable.';
+
 export function buildComparison(
 	products: Product[],
 	criteria: Criteria,
 	optionalGroups: string[],
 	provenance: Record<string, Record<string, ProvenanceRow>> = {},
-	purpose: ComparisonPurpose | null = null
+	purpose: ComparisonPurpose | null = null,
+	cqas: ComparisonCqas | null = null
 ): ComparisonGroup[] {
 	const prov = (product: Product) => provenance[product.id];
 	const groups: ComparisonGroup[] = [];
@@ -203,12 +213,28 @@ export function buildComparison(
 			qualityRow.incomparable = 'Reported values use different or unstated metrics, units or scopes; compare the definitions, not the numbers.';
 		}
 	}
+	const qualityRows = [geometric, radiometric];
+	// Shown only when at least one compared product has a C-QAS report.
+	if (cqas && products.some((p) => cqas.reports[p.id])) {
+		qualityRows.push(
+			row(
+				'cqas',
+				'C-QAS scene check',
+				products.map((p) => {
+					const report = cqas.reports[p.id];
+					if (!report) return { text: null, missingText: 'No C-QAS check' };
+					return { text: cqasOneLine(report), detail: cqasProvenance(report), links: [{ label: 'See C-QAS quality checks', url: `${cqas.detailHref(p)}#cqas`, internal: true }] };
+				}),
+				CQAS_ROW_HELP
+			)
+		);
+	}
 	groups.push({
 		id: 'quality',
 		title: 'Measured quality evidence',
 		description: 'Reported geometric or radiometric evidence with its source. Absent evidence does not mean poor quality; provider values are not assumed to be independent validation.',
 		optional: false,
-		rows: [geometric, radiometric]
+		rows: qualityRows
 	});
 
 	groups.push({

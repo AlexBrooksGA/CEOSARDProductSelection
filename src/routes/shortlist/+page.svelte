@@ -64,6 +64,7 @@
 			currentFingerprint: store.fingerprint,
 			provenance: store.provenanceMap,
 			unresolvedReason: (id) => store.unresolvedReason(id),
+			cqasReports: store.cqasReports,
 			purpose: store.purposeAnswers
 				? {
 						sentence: purposeSentence(store.purposeAnswers, store.guidance, { includePrivate: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' }),
