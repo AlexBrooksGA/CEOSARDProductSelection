@@ -9,7 +9,6 @@
  *   universal load functions; there are no server routes, so live MIM loading is off.
  * - Client-side rendering only, relative asset paths, internal links prefixed with the runtime base,
  *   and no Content Security Policy meta (the host sets its own).
- * - A banner marks it as an unofficial prototype with example C-QAS data.
  * The output's index.html is a single-page shell; navigation happens in the page.
  */
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -134,28 +133,6 @@ patch('src/routes/products/[id]/+page.svelte', [
 
 // --- no nonce in a static page
 patch('src/app.html', [['<script nonce="%sveltekit.nonce%">', '<script>']]);
-
-// --- prototype banner
-patch('src/routes/+layout.svelte', [
-	[
-		'<a class="skip-link" href="#main">Skip to main content</a>',
-		`<a class="skip-link" href="#main">Skip to main content</a>
-<p class="artifact-banner">Unofficial prototype for discussion, not a CEOS service. C-QAS values are example data; CEOS MIM values come from a bundled snapshot.</p>`
-	],
-	[
-		'<style>',
-		`<style>
-	.artifact-banner {
-		margin: 0;
-		padding: 6px max(16px, env(safe-area-inset-left, 0px));
-		background: var(--warn-bg);
-		color: var(--warn-fg);
-		border-bottom: 1px solid var(--warn-line);
-		font-size: 0.82rem;
-		text-align: center;
-	}`
-	]
-]);
 
 // --- static build: a single-page shell with relative paths
 writeFileSync(

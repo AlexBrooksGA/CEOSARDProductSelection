@@ -59,7 +59,7 @@ Keys and credentials are read only on the server, never sent to the browser, put
 | `npm run build` | Production build into `build/`. |
 | `npm start` | Run the built Node app (loads `.env` if present). |
 | `npm run test:e2e` | Playwright tests against the **built** app (run `npm run build` first; `npx playwright install chromium` once). Uses a local mock MIM API — no live credentials. |
-| `npm run build:artifact` | Static, server-free copy for a Claude Artifact or any static host (`artifact-build/`): bundled data only, live MIM loading off, marked as an unofficial prototype. The repository app is not changed. |
+| `npm run build:artifact` | Static, server-free copy for a Claude Artifact or any static host (`artifact-build/`): bundled data only, live MIM loading off. The repository app is not changed. |
 | `npm run verify` | All of the above in order. |
 | `npm run parity:fixtures` | Regenerate parity fixtures from the legacy Python reference (development only). |
 
