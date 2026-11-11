@@ -1,40 +1,26 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { CRITERION_BY_NAME, MODE_LABELS } from '$lib/domain/criteria';
-	import {
-		assumptions,
-		defaultOutput,
-		hasPurpose,
-		measurementNote,
-		outputNote,
-		questionsFor,
-		resolveChecks,
-		sourcesFor,
-		timeframeRange,
-		TEXT_MAX,
-		type RegionOption
-	} from '$lib/domain/purpose';
+	import { toFilterState } from '$lib/domain/explorer';
+	import { ALL_FAMILIES, metadataFilter, OPTICAL_AND_RADAR } from '$lib/domain/filters';
+	import { familyLabel } from '$lib/domain/guidance';
+	import { hasPurpose, needsFor, NOTES_MAX, resolveChecks, sourcesFor, timeframeRange, TEXT_MAX } from '$lib/domain/purpose';
 	import type { CriterionMode } from '$lib/domain/types';
 	import { app } from '$lib/state/app.svelte';
 	import ExternalLink from '../ExternalLink.svelte';
 	import Choice from './Choice.svelte';
 	import PurposeBackdrop from './PurposeBackdrop.svelte';
-	import RegionIcon from './RegionIcon.svelte';
-	import RegionSprite from './RegionSprite.svelte';
 
 	let { onapplied }: { onapplied: () => void } = $props();
 	const store = app();
 	const g = store.guidance;
 	let draft = $derived(store.draft);
-	let goal = $derived(g.goals.find((item) => item.id === draft.goal) ?? null);
-	let context = $derived(g.contexts.find((item) => item.id === draft.context) ?? null);
-	let questions = $derived(questionsFor(g, draft.goal, draft.context));
-	let measurement = $derived(g.measurements.find((item) => item.id === draft.measurement) ?? null);
+	let needs = $derived(needsFor(g, draft.theme));
+	let need = $derived(g.needs.find((item) => item.id === draft.need) ?? null);
 	let ready = $derived(hasPurpose(draft));
 	let proposal = $derived(store.proposal);
 	let checks = $derived(resolveChecks(g, draft));
 	let editing = $derived(Boolean(store.session.purpose.applied) || Boolean(store.explorer.purpose));
-	let connective = $derived(context && context.id !== 'custom' ? context.phrase.split(' ')[0] : 'in');
 	let setupOpen = $derived(store.isOpen('purpose:setup', false));
 	let showTechnical = $state(false);
 	let technicalOpen = $derived(showTechnical || store.experience === 'specialist' || Boolean(draft.resolution || draft.revisit));
@@ -42,28 +28,26 @@
 	const timeframes = g.timeframes.map((t) => ({ ...t, hint: timeframeRange(t) ?? t.hint }));
 
 	/*
-	 * The sentence builds up one part at a time: what you want to do, the setting, the
-	 * question, region and period, then output and measurement, then detail and frequency.
-	 * A part appears once the one before it is answered or skipped; answers restored from the
-	 * session reveal everything up to them. "Find candidate products" is available as soon as
-	 * the first part is answered, so people can stop at any point.
+	 * Three short steps. Step 1 (theme, need, use) is enough for a result; the need is the
+	 * only answer that filters. Step 2 (where, period) appears once step 1 has a need, and
+	 * step 3 (detail, frequency) once step 2 is answered or skipped. Answers restored from
+	 * the session reveal everything up to them.
 	 */
-	const STEP_LABELS = ['What do you want to do?', 'Where, or in what setting?', 'What do you want to understand?', 'Region and period', 'Output and measurement', 'Spatial detail'];
-	const LAST_STEP = STEP_LABELS.length - 1;
-	function answered(step: number, a = draft): boolean {
-		return [hasPurpose(a), Boolean(a.context), Boolean(a.question), Boolean(a.region || a.timeframe), Boolean(a.output || a.measurement), Boolean(a.detail || a.frequency)][step] ?? false;
+	const STEP_LABELS = ['Your purpose', 'Place and time', 'Detail'];
+	function stepDone(step: number, a = draft): boolean {
+		return [hasPurpose(a), Boolean(a.region || a.timeframe), Boolean(a.detail || a.frequency)][step] ?? false;
 	}
 	let revealed = $state(0);
 	$effect(() => {
 		let furthest = 0;
-		for (let step = 0; step <= LAST_STEP; step++) if (answered(step, draft)) furthest = Math.min(LAST_STEP, step + 1);
+		for (let step = 0; step < STEP_LABELS.length - 1; step++) if (stepDone(step, draft)) furthest = step + 1;
 		if (furthest > revealed) {
 			if (furthest === revealed + 1) store.announce(`Next: ${STEP_LABELS[furthest]}`);
 			revealed = furthest;
 		}
 	});
 	function skipStep() {
-		revealed = Math.min(LAST_STEP, revealed + 1);
+		revealed = Math.min(STEP_LABELS.length - 1, revealed + 1);
 		store.announce(`Skipped. Next: ${STEP_LABELS[revealed]}`);
 	}
 	function resetAnswers() {
@@ -71,20 +55,27 @@
 		revealed = 0;
 	}
 
-	/** One plain sentence describing where the catalogue will start. */
+	/** How many products the proposed setup starts with (same filters the results page uses). */
+	let startCount = $derived(metadataFilter(store.available, toFilterState(proposal.next)).length);
+
+	/** One plain sentence stating what applying will do. */
 	let setupSummary = $derived.by(() => {
-		const family = proposal.settings.family === 'All product families' ? 'all measurement families' : `${measurement?.label ?? 'one measurement family'} products`;
-		const limits = [proposal.settings.spatial_resolution_m, proposal.settings.revisit_days].filter(Boolean).length;
-		const limitText = limits ? `${limits} technical limit${limits > 1 ? 's' : ''} you set` : 'no numeric limits';
-		return `Starts with ${family}, ${limitText}, and ${checks.length} checks to make on each product.`;
+		const family =
+			proposal.settings.family === ALL_FAMILIES
+				? 'products from every measurement family'
+				: proposal.settings.family === OPTICAL_AND_RADAR
+					? 'optical and radar products'
+					: `${familyLabel(proposal.settings.family)} products`;
+		const order = proposal.preferences ? `ordered by ${proposal.preferences} preference${proposal.preferences > 1 ? 's' : ''}` : 'in name order';
+		return `${startCount} ${family}, ${order}, with ${checks.length} checks to make on each.`;
 	});
 
 	function set<K extends keyof typeof draft>(key: K, value: (typeof draft)[K]) {
 		const patch: Partial<typeof draft> = { [key]: value };
-		// Keep the sentence coherent: drop a question that no longer fits the goal or context.
-		if (key === 'goal' || key === 'context') {
-			const next = { ...draft, ...patch };
-			if (next.question && !questionsFor(g, next.goal, next.context).some((q) => q.id === next.question)) patch.question = null;
+		// Keep the answers coherent: drop a need the new theme does not offer.
+		if (key === 'theme') {
+			const nextTheme = value as string | null;
+			if (draft.need && !needsFor(g, nextTheme).some((n) => n.id === draft.need)) patch.need = null;
 		}
 		store.updateDraft(patch);
 	}
@@ -114,12 +105,8 @@
 	}
 </script>
 
-{#snippet regionIcon(option: RegionOption)}<RegionIcon icon={option.icon} />{/snippet}
-{#snippet skip(step: number)}{#if revealed === step && step > 0 && step < LAST_STEP && !answered(step)}<span class="conn" aria-hidden="true">{' '}</span><button type="button" class="skip-step" onclick={skipStep}>Skip<span class="visually-hidden"> this question</span></button>{/if}{/snippet}
-
 <section class="journey" aria-labelledby="journey-title">
 	<PurposeBackdrop family={store.visual.family} detail={store.visual.detail} />
-	<RegionSprite />
 	<form class="journey-inner frame" onsubmit={apply}>
 		<!-- Disabled default button: pressing Enter in a field never submits (implicit submission is blocked). -->
 		<button type="submit" disabled hidden aria-hidden="true" tabindex="-1"></button>
@@ -130,7 +117,7 @@
 					Illustrative imagery <span aria-hidden="true">ⓘ</span>
 				</button>
 				<p id="imagery-info" class="imagery-info" hidden={!imageryInfo}>
-					AI-generated picture of a fictional wetland. The radar and thermal looks are stylised from the same picture. None of it is satellite data, a calibrated resolution or evidence about any product; it changes with the measurement and detail you choose only as a visual cue, and it does not show your area or dates.
+					AI-generated picture of a fictional wetland. The radar and thermal looks are stylised from the same picture. None of it is satellite data, a calibrated resolution or evidence about any product; it changes with what you need to see and the detail you choose only as a visual cue, and it does not show your area or dates.
 				</p>
 			</div>
 			{#if editing}
@@ -141,26 +128,45 @@
 		</div>
 
 		<h1 id="journey-title">Find Earth observation data for your purpose.</h1>
-		<p class="intro">Answer in your own words. We’ll suggest where to start in the catalogue. Nothing changes until you choose <strong>Find candidate products</strong>.</p>
+		<p class="intro">Three short steps, aligned with the CEOS-ARD fitness-for-purpose pillar. What you need to see sets the measurement family; your other answers order the results and add checks. Nothing changes until you choose <strong>Find candidate products</strong>.</p>
+		<label class="tech-toggle">
+			<input type="checkbox" checked={draft.experience === 'specialist'} onchange={(e) => set('experience', e.currentTarget.checked ? 'specialist' : null)} />
+			<span>Show technical detail</span>
+		</label>
 
-		<p class="aside visually-hidden" id="sentence-help">Complete the sentence. Only what you want to do is needed; everything else is optional.</p>
+		<p class="aside visually-hidden" id="sentence-help">Step 1 is all that is needed: your theme and what you need to see. Everything else is optional.</p>
 
-		<p class="line lead">
-			<span class="conn" aria-hidden="true">I’m{' '}</span><Choice label="Your experience with Earth observation data" value={draft.experience} options={g.experience} placeholder="new, familiar or a specialist" onchange={(id) => set('experience', val(id) as typeof draft.experience)} /><span class="conn" aria-hidden="true">.</span>
-		</p>
-
+		<h2 class="step-title"><span class="step-no">1</span> Your purpose</h2>
 		<p class="line sentence">
-			<span class="conn" aria-hidden="true">I want to{' '}</span><Choice label="What do you want to do?" value={draft.goal} options={g.goals} placeholder="choose an aim" describedby="sentence-help" onchange={(id) => set('goal', val(id))} />{#if draft.goal === 'custom'}<span class="conn" aria-hidden="true">:{' '}</span><label class="inline-text"><span class="text-label">Describe your purpose</span><input type="text" value={draft.goalText} maxlength={TEXT_MAX} size="18" placeholder="describe your purpose" oninput={(e) => set('goalText', e.currentTarget.value)} /></label>{/if}{#if revealed >= 1}<span class="step"><span class="conn" aria-hidden="true">{' '}{connective}{' '}</span><Choice label="Where, or in what setting?" value={draft.context} options={g.contexts} placeholder="a setting" onchange={(id) => set('context', val(id))} />{#if draft.context === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe the setting</span><input type="text" value={draft.contextText} maxlength={TEXT_MAX} size="12" placeholder="e.g. mangroves" oninput={(e) => set('contextText', e.currentTarget.value)} /></label>{/if}</span>{/if}{#if revealed >= 2}<span class="step"><span class="conn" aria-hidden="true">, to understand{' '}</span><Choice label="What do you want to understand?" value={draft.question} options={questions} placeholder="something specific" onchange={(id) => set('question', val(id))} />{#if draft.question === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Describe your question</span><input type="text" value={draft.questionText} maxlength={TEXT_MAX} size="16" placeholder="your question" oninput={(e) => set('questionText', e.currentTarget.value)} /></label>{/if}</span>{/if}{#if revealed >= 3}<span class="step"><span class="conn" aria-hidden="true">, across{' '}</span><Choice label="Region (optional)" value={draft.region} options={g.regions} placeholder="any region" icon={regionIcon} describedby="private-help" onchange={(id) => set('region', val(id))} />{#if draft.region === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Place (optional)</span><input type="text" value={draft.area} maxlength={TEXT_MAX} size="14" placeholder="name the place" aria-describedby="private-help" oninput={(e) => set('area', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">{' '}over{' '}</span><Choice label="Period (optional)" value={draft.timeframe} options={timeframes} placeholder="any period" describedby="private-help" onchange={(id) => set('timeframe', val(id))} />{#if draft.timeframe === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Dates (optional)</span><input type="text" value={draft.period} maxlength={TEXT_MAX} size="12" placeholder="e.g. 2015–2024" aria-describedby="private-help" oninput={(e) => set('period', e.currentTarget.value)} /></label>{/if}</span>{/if}<span class="conn" aria-hidden="true">.</span>{#if revealed <= 3}{@render skip(revealed)}{/if}
+			<span class="conn" aria-hidden="true">My work is about{' '}</span><Choice label="What is your work about?" value={draft.theme} options={g.themes} placeholder="choose a theme" describedby="sentence-help" onchange={(id) => set('theme', val(id))} />{#if draft.theme === 'custom'}<span class="conn" aria-hidden="true">:{' '}</span><label class="inline-text"><span class="text-label">Describe your topic</span><input type="text" value={draft.themeText} maxlength={TEXT_MAX} size="16" placeholder="describe your topic" oninput={(e) => set('themeText', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">.</span>{#if revealed >= 0 && (draft.theme)}<span class="step"><span class="conn" aria-hidden="true">{' '}I need to see{' '}</span><Choice label="What do you need to see or measure?" value={draft.need} options={needs} placeholder="choose what you need" onchange={(id) => set('need', val(id))} /><span class="conn" aria-hidden="true">, to{' '}</span><Choice label="How will you use the data? (optional)" value={draft.use} options={g.uses} placeholder="use it" onchange={(id) => set('use', val(id))} /><span class="conn" aria-hidden="true">.</span></span>{/if}
 		</p>
+		{#if need}<p class="aside effect"><strong>Sets the measurement family:</strong> {need.explanation}</p>{:else}<p class="aside effect">Your theme chooses the checks. What you need to see sets the measurement family, the only answer that filters.</p>{/if}
 
-		{#if revealed >= 4}
-			<p class="line details step">
-				<span class="conn" aria-hidden="true">I’d like to produce{' '}</span><Choice label="Intended output" value={draft.output ?? defaultOutput(draft, g)} options={g.outputs} placeholder="an output" onchange={(id) => set('output', val(id))} /><span class="conn" aria-hidden="true">{' '}from{' '}</span><Choice label="Measurement" value={draft.measurement ?? 'decide'} options={g.measurements} placeholder="help me decide" onchange={(id) => set('measurement', val(id))} /><span class="conn" aria-hidden="true">{' '}data</span>{#if revealed >= 5}<span class="step"><span class="conn" aria-hidden="true">, distinguishing{' '}</span><Choice label="Spatial detail" value={draft.detail ?? 'decide'} options={g.details} placeholder="help me decide" onchange={(id) => set('detail', val(id))} />{#if goal?.kind === 'change'}<span class="conn" aria-hidden="true">{' '}and observing change{' '}</span><Choice label="How often" value={draft.frequency ?? 'unsure'} options={g.frequencies} placeholder="not sure yet" onchange={(id) => set('frequency', val(id))} />{/if}</span>{/if}<span class="conn" aria-hidden="true">.</span>{@render skip(4)}
-			</p>
-			{#if measurement && measurement.id !== 'decide'}<p class="aside">{measurement.explanation}</p>{/if}
+		{#if revealed >= 1}
+			<div class="step">
+				<h2 class="step-title"><span class="step-no">2</span> Place and time <span class="optional">optional</span></h2>
+				<p class="line details">
+					<span class="conn" aria-hidden="true">It covers{' '}</span><Choice label="Where?" value={draft.region} options={g.regions} placeholder="any scale" onchange={(id) => set('region', val(id))} /><span class="conn" aria-hidden="true">{' '}for{' '}</span><Choice label="What period do you need?" value={draft.timeframe} options={timeframes} placeholder="any period" describedby="private-help" onchange={(id) => set('timeframe', val(id))} />{#if draft.timeframe === 'custom'}<span class="conn" aria-hidden="true">{' '}</span><label class="inline-text"><span class="text-label">Years (optional)</span><input type="text" value={draft.period} maxlength={TEXT_MAX} size="12" placeholder="e.g. 2015–2024" aria-describedby="private-help" oninput={(e) => set('period', e.currentTarget.value)} /></label>{/if}<span class="conn" aria-hidden="true">.</span>{#if revealed === 1 && !stepDone(1)}<span class="conn" aria-hidden="true">{' '}</span><button type="button" class="skip-step" onclick={skipStep}>Skip<span class="visually-hidden"> place and time</span></button>{/if}
+				</p>
+				<p class="aside effect">Where orders results by reported coverage. The period adds checks on the archive and on continuity.</p>
+			</div>
 		{/if}
-		{#if revealed >= 3}
-			<p id="private-help" class="aside">Your experience, region, period and anything you type stay in this browser tab. They are not searched, mapped or shared in links.</p>
+
+		{#if revealed >= 2}
+			<div class="step">
+				<h2 class="step-title"><span class="step-no">3</span> Detail <span class="optional">optional</span></h2>
+				<p class="line details">
+					<span class="conn" aria-hidden="true">The smallest thing I need to tell apart is{' '}</span><Choice label="What is the smallest thing you need to tell apart?" value={draft.detail} options={g.details} placeholder="not sure" onchange={(id) => set('detail', val(id))} /><span class="conn" aria-hidden="true">, and I need a usable look{' '}</span><Choice label="How often do you need a usable look?" value={draft.frequency} options={g.frequencies} placeholder="not sure" onchange={(id) => set('frequency', val(id))} /><span class="conn" aria-hidden="true">.</span>
+				</p>
+				<p class="aside effect">Both set Preferred criteria from the band shown in each choice. Preferred orders results; it never hides a product.</p>
+				<label class="notes">
+					<span class="notes-label">Notes for your shortlist (optional)</span>
+					<textarea rows="2" maxlength={NOTES_MAX} value={draft.notes} placeholder="e.g. the place, the method or who it is for" aria-describedby="private-help" oninput={(e) => set('notes', e.currentTarget.value)}></textarea>
+				</label>
+			</div>
+		{/if}
+		{#if revealed >= 1}
+			<p id="private-help" class="aside">Your notes and any years you type stay in this browser tab. They are not searched, mapped or shared in links.</p>
 		{/if}
 
 		{#if ready}
@@ -172,7 +178,7 @@
 
 				<table class="proposed">
 					<caption class="visually-hidden">Proposed filters, their importance and why</caption>
-					<thead><tr><th scope="col">Filter</th><th scope="col">Proposed</th><th scope="col">Importance</th><th scope="col">Why</th></tr></thead>
+					<thead><tr><th scope="col">Setting</th><th scope="col">Proposed</th><th scope="col">Effect</th><th scope="col">Why</th></tr></thead>
 					<tbody>
 						{#each proposal.proposed as item (item.label)}
 							<tr><th scope="row">{item.label}</th><td>{item.value}</td><td>{item.mode}</td><td>{item.reason}</td></tr>
@@ -187,37 +193,27 @@
 						{@const setting = draft[name]}
 						<div class="limit">
 							<label for="limit-{name}">{definition.label} {definition.comparator} ({definition.unit})</label>
-							<input id="limit-{name}" type="number" inputmode="decimal" min={definition.kind === 'number' ? definition.min : undefined} max={definition.kind === 'number' ? definition.max : undefined} step="any" value={setting?.value ?? ''} placeholder="not set" onchange={(e) => setCriterion(name, 'value', e.currentTarget.value)} />
+							<input id="limit-{name}" type="number" inputmode="decimal" min={definition.kind === 'number' ? definition.min : undefined} max={definition.kind === 'number' ? definition.max : undefined} step="any" value={setting?.value ?? ''} placeholder="use the band" onchange={(e) => setCriterion(name, 'value', e.currentTarget.value)} />
 							<label class="visually-hidden" for="limit-{name}-mode">{definition.label} importance</label>
 							<select id="limit-{name}-mode" value={setting?.mode ?? 'preferred'} disabled={!setting} onchange={(e) => setCriterion(name, 'mode', e.currentTarget.value)}>
 								{#each ['required', 'preferred', 'not_used'] as const as mode (mode)}<option value={mode}>{MODE_LABELS[mode]}</option>{/each}
 							</select>
 						</div>
 					{/each}
-					<p class="aside">Only values you enter become filters. Pixel spacing is not feature detectability or positional accuracy; nominal revisit is not a count of usable observations.</p>
+					<p class="aside">A value you enter replaces the band from your answer. Pixel spacing is not feature detectability or positional accuracy; nominal revisit is not a count of usable observations.</p>
 				</div>
 
-				<div class="preview-grid">
-					<div>
-						<h3>The catalogue can’t check this for you</h3>
-						<ul>
-							{#each proposal.notes as note (note)}<li>{note}</li>{/each}
-							{#each assumptions(g, draft) as note (note)}<li>{note}</li>{/each}
-							{#if outputNote(g, draft)}<li>{outputNote(g, draft)}</li>{/if}
-							{#if draft.measurement && measurementNote(g, draft, draft.measurement)}<li>{measurementNote(g, draft, draft.measurement)}</li>{/if}
-						</ul>
-					</div>
-					<div>
-						<h3>Checks you’ll see on each product ({checks.length})</h3>
-						<ul class="checks">{#each checks as check (check.id)}<li>{check.label}</li>{/each}</ul>
-						{#if sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]).length}
-							<p class="aside">
-								Drawn from:
-								{#each sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]) as source, index (source.id)}{#if index}{'; '}{/if}<ExternalLink href={source.url}>{source.short} ({source.year})</ExternalLink>{/each}
-							</p>
-						{/if}
-					</div>
+				<div>
+					<h3>Checks you’ll see on each product ({checks.length})</h3>
+					<ul class="checks">{#each checks as check (check.id)}<li>{check.label}</li>{/each}</ul>
+					{#if sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]).length}
+						<p class="aside">
+							Drawn from:
+							{#each sourcesFor(g, [...new Set(checks.flatMap((c) => c.sources))]) as source, index (source.id)}{#if index}{'; '}{/if}<ExternalLink href={source.url}>{source.short} ({source.year})</ExternalLink>{/each}
+						</p>
+					{/if}
 				</div>
+				{#each proposal.notes as note (note)}<p class="aside">{note}</p>{/each}
 
 				{#if proposal.changes.length && editing}
 					<div class="changes">
@@ -245,7 +241,10 @@
 				<p class="aside">This changes {proposal.changes.length === 1 ? 'one of your current filters' : `${proposal.changes.length} of your current filters`}; review the starting setup to see which.</p>
 			{/if}
 		{:else}
-			<p class="aside start-hint">Choose what you want to do to see where to start, or skip straight to the catalogue.</p>
+			<p class="aside start-hint">
+				{draft.theme ? 'Choose what you need to see to get a starting setup' : 'Choose a theme to begin'}, or skip straight to the catalogue.
+				{#if draft.theme}<button type="button" class="quiet inline-reset" onclick={resetAnswers}>Reset answers</button>{/if}
+			</p>
 		{/if}
 	</form>
 </section>
@@ -350,14 +349,81 @@
 		max-width: 34em;
 		text-wrap: pretty;
 	}
-	.lead {
-		margin-top: clamp(32px, 6vh, 56px);
-		font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
-		line-height: 1.7;
-		color: #b9c8d5;
+	.tech-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 14px;
+		color: var(--pj-muted);
+		font-size: 0.9rem;
+		cursor: pointer;
+	}
+	.tech-toggle input {
+		width: 18px;
+		height: 18px;
+		min-height: 0;
+		accent-color: var(--pj-accent);
+	}
+	.step-title {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin: clamp(28px, 5vh, 44px) 0 0;
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--pj-label);
+	}
+	.step-no {
+		display: inline-grid;
+		place-items: center;
+		width: 24px;
+		height: 24px;
+		border: 1px solid var(--pj-label);
+		border-radius: 50%;
+		font-size: 0.8rem;
+		letter-spacing: 0;
+	}
+	.optional {
+		color: var(--pj-muted);
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		text-transform: none;
+	}
+	.effect {
+		margin-top: 8px;
+	}
+	.effect strong {
+		color: var(--pj-ink);
+		font-weight: 600;
+	}
+	.notes {
+		display: grid;
+		gap: 6px;
+		max-width: 36em;
+		margin-top: 18px;
+	}
+	.notes-label {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--pj-label);
+	}
+	.notes textarea {
+		min-height: 56px;
+		padding: 10px 14px;
+		border: 1px solid rgb(255 255 255 / 0.14);
+		border-radius: 12px;
+		background: rgb(255 255 255 / 0.04);
+		color: var(--pj-ink-strong);
+		font: inherit;
+		resize: vertical;
+	}
+	.notes textarea::placeholder {
+		color: var(--pj-placeholder);
 	}
 	.sentence {
-		margin-top: 10px;
+		margin-top: 8px;
 		max-width: 26em;
 		font-size: clamp(1.55rem, 1.05rem + 1.45vw, 2.35rem);
 		font-weight: 400;
@@ -366,7 +432,7 @@
 		color: var(--pj-ink);
 	}
 	.details {
-		margin-top: 22px;
+		margin-top: 8px;
 		max-width: 36em;
 		font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
 		line-height: 1.75;
@@ -458,6 +524,13 @@
 	}
 	.start-hint {
 		margin-top: 28px;
+	}
+	.inline-reset {
+		min-height: 32px;
+		margin-left: 6px;
+		padding: 0 6px;
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 
 	/* Sticky action bar: the next step is always one click away. */
@@ -650,11 +723,6 @@
 	.limit input {
 		width: 9rem;
 	}
-	.preview-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-		gap: 24px;
-	}
 	.preview ul {
 		display: grid;
 		gap: 6px;
@@ -691,7 +759,7 @@
 			font-size: 1.05rem;
 			line-height: 1.4;
 		}
-		.lead {
+		.step-title {
 			margin-top: 28px;
 		}
 		.sentence,

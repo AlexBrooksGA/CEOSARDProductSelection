@@ -31,7 +31,7 @@ export interface ExplorerState {
 	fields: string[];
 	/** Built-in profile last applied (informational; criteria are authoritative). */
 	profileId: string | null;
-	/** Public purpose key (`goal~context~question`, fixed ids only) set by the purpose journey. */
+	/** Public purpose key (`theme~need~use`, fixed ids only) set by the purpose journey. */
 	purpose: string | null;
 	/** Guidance version the purpose key refers to. */
 	guidanceVersion: string | null;

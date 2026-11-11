@@ -19,8 +19,10 @@ test('with a fine pointer the purpose scene is drawn in WebGL and moves with the
 	await page.waitForTimeout(1500);
 	const after = await page.locator('.backdrop').screenshot();
 	expect(before.equals(after)).toBe(false);
-	// Choosing a measurement crossfades within the scene; the canvas stays.
-	await page.getByRole('button', { name: /^What do you want to do\?/ }).click();
-	await page.getByRole('option', { name: /^monitor change/ }).click();
+	// Choosing what you need to see crossfades within the scene; the canvas stays.
+	await page.getByRole('button', { name: /^What is your work about\?/ }).click();
+	await page.getByRole('option', { name: /^cities and infrastructure/ }).click();
+	await page.getByRole('button', { name: /^What do you need to see or measure\?/ }).click();
+	await page.getByRole('option', { name: /^surface temperature and heat/ }).click();
 	await expect(canvas).toHaveCount(1);
 });

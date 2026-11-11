@@ -10,7 +10,7 @@ The same parameters are used on `/`, `/shortlist` and `/products/<id>`. Internal
 |---|---|---|
 | `v` | Contract version; its presence marks the URL as **explicit** state | `1` |
 | `q` | Search text (product and mission names) | ≤ 200 characters; control characters removed |
-| `fam` | Measurement family | `sr`, `st`, `sar`, `ar`, `ntl`; absent = all families |
+| `fam` | Measurement family | `sr`, `st`, `sar`, `ar`, `ntl`, or `sr-sar` (optical and radar together, set by the purpose entry); absent = all families |
 | `scope` | Catalogue/assessment scope | `assessed` (default, omitted), `all`, `in-progress`, `not-assessed` |
 | `mim` | Include MIM records when loaded | `1` |
 | `unk` | Hide records with unreported values for active criteria | `hide` |
@@ -26,7 +26,7 @@ The same parameters are used on `/`, `/shortlist` and `/products/<id>`. Internal
 | `cmp` | Compared product IDs, comma-separated | ≤ 3, unique; added to the shortlist if missing |
 | `fields` | Optional comparison field groups | `technical`, `instrument`, `provenance` |
 | `p` | Built-in profile last applied (informational) | built-in profile ID; custom profile IDs are rejected |
-| `pu` | Public purpose key from the purpose entry: `goal~context~question` built from fixed guidance IDs only (`-` for an unset part) | `[a-z0-9-]{1,40}` parts, at most three, joined by `~`. Invalid keys are ignored with a message; the link's criteria are kept. Typed text ("something else…") is **never** encoded |
+| `pu` | Public purpose key from the purpose entry: `theme~need~use` built from fixed guidance IDs only (guidance v2; v1 keys were `goal~context~question`) (`-` for an unset part) | `[a-z0-9-]{1,40}` parts, at most three, joined by `~`. Invalid keys are ignored with a message; the link's criteria are kept. Typed text ("something else…") is **never** encoded |
 | `gv` | Purpose guidance version the key refers to | `[0-9A-Za-z.-]{1,20}`. A version this build doesn't have shows a notice and no purpose-specific checks |
 | `cqas` | Level of detail for the C-QAS section on product pages | `advanced`; `simple` (default) is omitted. A view preference only: it never changes results and on its own does not count as meaningful state. Like other parameters it is carried in internal and shared links |
 

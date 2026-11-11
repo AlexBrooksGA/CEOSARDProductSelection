@@ -2,7 +2,7 @@
  * Short, source-linked explanations. Definitions only — no product recommendations,
  * official-looking domain thresholds or suitability claims.
  */
-import { ALL_FAMILIES } from './filters';
+import { ALL_FAMILIES, OPTICAL_AND_RADAR } from './filters';
 
 export const CEOS_ARD_URL = 'https://ceos.org/ard/';
 export const CEOS_ARD_USER_GUIDE_URL = 'https://ceos.org/ard/files/User%20Guide/CEOS_ARD%20User%20Guide%20v1_4.pdf';
@@ -60,7 +60,17 @@ export const FAMILIES: FamilyInfo[] = [
 	}
 ];
 
-export const FAMILY_BY_VALUE: Record<string, FamilyInfo> = Object.fromEntries(FAMILIES.map((family) => [family.value, family]));
+/** A filter value, not a PFS: shown in the family menu and in labels, never in the family list. */
+export const COMBINED_FAMILY_INFO: FamilyInfo = {
+	value: OPTICAL_AND_RADAR,
+	label: 'Optical and radar (Surface Reflectance and SAR)',
+	short: 'SR + SAR',
+	icon: 'SR',
+	slug: 'surface-reflectance',
+	explanation: 'Keeps Surface Reflectance and Synthetic Aperture Radar products together, for needs that both can serve.'
+};
+
+export const FAMILY_BY_VALUE: Record<string, FamilyInfo> = Object.fromEntries([...FAMILIES, COMBINED_FAMILY_INFO].map((family) => [family.value, family]));
 
 export function familyLabel(value: string | null | undefined): string {
 	if (!value) return 'Measurement family not reported';

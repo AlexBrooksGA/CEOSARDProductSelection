@@ -7,7 +7,7 @@
  */
 import { CRITERIA, CRITERION_BY_NAME, NO_COVERAGE_REQUIREMENT, describeTarget, isActiveMode, MODE_LABELS } from './criteria';
 import { cloneState, type ExplorerState } from './explorer';
-import { ALL_FAMILIES, CEOS_FILTERS } from './filters';
+import { ALL_FAMILIES, CEOS_FILTERS, OPTICAL_AND_RADAR, familyMembers } from './filters';
 import { casefold, collapseWhitespace } from './text';
 import type { CeosFilter, CriterionName, Criteria, Profile } from './types';
 
@@ -19,6 +19,9 @@ export const PRODUCT_FAMILIES = [
 	'Aquatic Reflectance',
 	'Night-time Lights'
 ] as const;
+
+/** Options in the family filter menu: the legacy families plus the optical-and-radar combination. */
+export const FAMILY_FILTER_OPTIONS: readonly string[] = [...PRODUCT_FAMILIES.slice(0, 4), OPTICAL_AND_RADAR, ...PRODUCT_FAMILIES.slice(4)];
 
 export const PROFILE_NAME_MAX = 80;
 export const PROFILE_DESCRIPTION_MAX = 280;
@@ -245,7 +248,7 @@ export function buildCustomProfile(input: CustomProfileInput): Profile {
 		name: normaliseProfileName(input.name),
 		description: input.description.trim() || 'Reusable application-screening filter defaults.',
 		use_case_category: 'User-defined profile',
-		product_families: input.family === ALL_FAMILIES ? families : [input.family],
+		product_families: familyMembers(input.family) ?? families,
 		criteria,
 		default_product_family: input.family,
 		filter_defaults: { ceos_filter: input.scope, show_unknown: !input.hideUnknown },
@@ -289,7 +292,7 @@ export function validateStoredProfile(value: unknown): Profile | null {
 	if (typeof record.id !== 'string' || !/^custom-[A-Za-z0-9-]{1,64}$/.test(record.id)) return null;
 	if (typeof record.name !== 'string' || normaliseProfileName(record.name).length < 3 || record.name.length > PROFILE_NAME_MAX * 2) return null;
 	if (!record.criteria || typeof record.criteria !== 'object' || Array.isArray(record.criteria)) return null;
-	const family = typeof record.default_product_family === 'string' && (PRODUCT_FAMILIES as readonly string[]).includes(record.default_product_family) ? record.default_product_family : ALL_FAMILIES;
+	const family = typeof record.default_product_family === 'string' && FAMILY_FILTER_OPTIONS.includes(record.default_product_family) ? record.default_product_family : ALL_FAMILIES;
 	const filterDefaults = (record.filter_defaults && typeof record.filter_defaults === 'object' ? record.filter_defaults : {}) as Record<string, unknown>;
 	const criteria: ExplorerState['criteria'] = {};
 	for (const definition of CRITERIA) {

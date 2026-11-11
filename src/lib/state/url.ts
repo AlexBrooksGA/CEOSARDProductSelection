@@ -20,6 +20,7 @@ const FAMILY_CODES: Record<string, string> = {
 	sr: 'Surface Reflectance',
 	st: 'Surface Temperature',
 	sar: 'Synthetic Aperture Radar',
+	'sr-sar': 'Surface Reflectance and Synthetic Aperture Radar',
 	ar: 'Aquatic Reflectance',
 	ntl: 'Night-time Lights'
 };

@@ -74,6 +74,7 @@
 						guidance: store.guidance,
 						source: store.purposeContext?.kind === 'ok' ? store.purposeContext.source : 'link',
 						output: outputLabel(store.purposeAnswers, store.guidance),
+						userNotes: store.purposeContext?.kind === 'ok' && store.purposeContext.source === 'session' ? store.purposeAnswers.notes : '',
 						area: contextLines(store.purposeAnswers, store.guidance).area,
 						period: contextLines(store.purposeAnswers, store.guidance).period,
 						assumptions: assumptions(store.guidance, store.purposeAnswers),

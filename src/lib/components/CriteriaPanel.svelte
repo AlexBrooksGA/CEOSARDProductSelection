@@ -3,7 +3,7 @@
 	import { hasRefinements } from '$lib/domain/explorer';
 	import { CEOS_FILTERS } from '$lib/domain/filters';
 	import { CEOS_ARD_URL, FAMILIES, FAMILY_BY_VALUE, familyLabel } from '$lib/domain/guidance';
-	import { PRODUCT_FAMILIES, SCOPE_LABELS } from '$lib/domain/profiles';
+	import { FAMILY_FILTER_OPTIONS, SCOPE_LABELS } from '$lib/domain/profiles';
 	import type { CeosFilter, CriterionMode, CriterionName } from '$lib/domain/types';
 	import { app } from '$lib/state/app.svelte';
 	import CriterionEditor from './CriterionEditor.svelte';
@@ -92,7 +92,7 @@
 	<div class="field">
 		<label for="family">Measurement family</label>
 		<select id="family" value={explorer.family} onchange={(event) => store.patch((draft) => void (draft.family = event.currentTarget.value))}>
-			{#each PRODUCT_FAMILIES as family (family)}<option value={family}>{familyLabel(family)}</option>{/each}
+			{#each FAMILY_FILTER_OPTIONS as family (family)}<option value={family}>{familyLabel(family)}</option>{/each}
 		</select>
 		{#if familyInfo}<p class="hint">{familyInfo.explanation}</p>{/if}
 		<Disclosure key="family-help" label="What the measurement families mean">

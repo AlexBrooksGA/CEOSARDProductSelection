@@ -18,7 +18,7 @@
 		{#if !compact}
 			{@const note = productMeasurementNote(g, answers, product)}
 			{#if note}<p><strong>This measurement for your purpose:</strong> {note}</p>{/if}
-			{#if outputNote(g, answers)}<p><strong>From product to your output:</strong> {outputNote(g, answers)}</p>{/if}
+			{#if outputNote(g, answers)}<p><strong>From product to your use:</strong> {outputNote(g, answers)}</p>{/if}
 		{/if}
 		<ul class="checks">
 			{#each checks as check (check.id)}

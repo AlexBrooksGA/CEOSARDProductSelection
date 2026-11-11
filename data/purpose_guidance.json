@@ -1,240 +1,776 @@
 {
-  "schema": 1,
-  "version": "1",
-  "mapping_version": 1,
-  "status": "illustrative",
-  "review": {
-    "reviewed": false,
-    "note": "Illustrative guidance written for the explorer from the cited sources. It has not been reviewed or endorsed by CEOS, the Ramsar Convention or domain experts."
-  },
-  "updated": "2026-10-09",
-  "sources": [
-    {
-      "id": "ramsar-tr10",
-      "short": "Ramsar Technical Report 10",
-      "title": "The use of Earth Observation for wetland inventory, assessment and monitoring (Ramsar Technical Report No. 10)",
-      "publisher": "Ramsar Convention on Wetlands",
-      "year": 2018,
-      "url": "https://ramsar.org/sites/default/files/documents/library/rtr10_earth_observation_e.pdf"
-    },
-    {
-      "id": "ceos-ard",
-      "short": "CEOS-ARD overview",
-      "title": "CEOS Analysis Ready Data (CEOS-ARD)",
-      "publisher": "Committee on Earth Observation Satellites",
-      "year": 2026,
-      "url": "https://ceos.org/ard/"
-    },
-    {
-      "id": "handbook-quality",
-      "short": "CEOS Interoperability Handbook — Quality",
-      "title": "CEOS Interoperability Handbook 2.0 — Quality (CALVAL#2, CALVAL#3)",
-      "publisher": "Committee on Earth Observation Satellites",
-      "year": 2025,
-      "url": "https://github.com/ceos-org/interoperability-handbook/blob/main/Quality.md"
-    },
-    {
-      "id": "lsi-vc-17",
-      "short": "LSI-VC-17 minutes",
-      "title": "LSI-VC-17 meeting minutes v1.0",
-      "publisher": "CEOS Land Surface Imaging Virtual Constellation",
-      "year": 2025,
-      "url": "https://ceos.org/document_management/Virtual_Constellations/LSI/Meetings/LSI-VC-17/LSI-VC-17%20Minutes%20v1.0.pdf"
-    }
-  ],
-  "goals": [
-    { "id": "monitor-change", "label": "monitor change", "kind": "change" },
-    { "id": "map-features", "label": "map features", "kind": "mapping" },
-    { "id": "explore", "label": "explore my options", "kind": "explore" },
-    { "id": "custom", "label": "do something else…", "kind": "custom" }
-  ],
-  "contexts": [
-    { "id": "wetlands", "label": "wetlands", "phrase": "in wetlands" },
-    { "id": "farmland", "label": "farmland", "phrase": "on farmland" },
-    { "id": "forests", "label": "forests", "phrase": "in forests" },
-    { "id": "coasts", "label": "coastal areas", "phrase": "in coastal areas" },
-    { "id": "urban", "label": "urban areas", "phrase": "in urban areas" },
-    { "id": "any", "label": "any setting — not sure yet", "phrase": "in any setting" },
-    { "id": "custom", "label": "somewhere else…", "phrase": "in" }
-  ],
-  "questions": [
-    { "id": "seasonal-inundation", "label": "seasonal changes in inundation", "goals": ["monitor-change"], "contexts": ["wetlands"], "default_output": "map-series" },
-    { "id": "extent-change", "label": "longer-term change in extent", "goals": ["monitor-change"], "contexts": ["wetlands", "forests", "coasts", "urban", "farmland"], "default_output": "map-series" },
-    { "id": "what-changed", "label": "what has changed and when", "goals": ["monitor-change"], "contexts": null, "default_output": "comparison" },
-    { "id": "where-water", "label": "where open water and wet areas are", "goals": ["map-features"], "contexts": ["wetlands", "coasts", "farmland"], "default_output": "map" },
-    { "id": "where-features", "label": "where features are", "goals": ["map-features"], "contexts": null, "default_output": "map" },
-    { "id": "whats-available", "label": "which products could help", "goals": ["explore", "custom"], "contexts": null, "default_output": "unsure" },
-    { "id": "custom", "label": "something else…", "goals": null, "contexts": null, "default_output": "unsure" },
-    { "id": "unsure", "label": "not sure yet", "goals": null, "contexts": null, "default_output": "unsure" }
-  ],
-  "outputs": [
-    { "id": "map", "label": "a map" },
-    { "id": "map-series", "label": "a series of maps over time" },
-    { "id": "statistics", "label": "summary statistics" },
-    { "id": "comparison", "label": "a comparison between dates or places" },
-    { "id": "unsure", "label": "something — not sure yet" }
-  ],
-  "measurements": [
-    { "id": "decide", "label": "help me decide", "hint": "No family filter; see what each measurement can show", "family": null, "visual": "neutral", "explanation": "No measurement family filter is applied. Guidance below explains what each measurement can and cannot show for your purpose." },
-    { "id": "sr", "label": "optical", "hint": "Surface Reflectance (SR); colour and vegetation, limited by cloud", "family_label": "optical — Surface Reflectance (SR)", "family": "Surface Reflectance", "visual": "optical", "explanation": "Sunlight reflected by the surface, corrected for the atmosphere. Useful for colour and vegetation; clouds and darkness limit observations." },
-    { "id": "sar", "label": "radar", "hint": "Synthetic Aperture Radar (SAR); through cloud, day or night", "family_label": "radar — Synthetic Aperture Radar (SAR)", "family": "Synthetic Aperture Radar", "visual": "radar", "explanation": "Microwave signals the satellite sends and receives. Works day or night and through cloud; responds to surface roughness, structure and moisture rather than colour." },
-    { "id": "st", "label": "thermal", "hint": "Surface Temperature (ST); limited by cloud", "family_label": "thermal — Surface Temperature (ST)", "family": "Surface Temperature", "visual": "thermal", "explanation": "Thermal-infrared measurements expressed as land surface temperature. Clouds limit observations." },
-    { "id": "optical-radar", "label": "optical and radar", "hint": "Both families stay in the results", "family": null, "visual": "neutral", "explanation": "Both families stay in the results. The explorer has a single family filter, so no family filter is applied." }
-  ],
-  "details": [
-    { "id": "decide", "label": "help me decide", "visual": "fine" },
-    { "id": "small", "label": "small features", "hint": "Fine detail matters", "visual": "fine" },
-    { "id": "broad", "label": "broad patterns", "hint": "Overall patterns matter more than detail", "visual": "coarse" }
-  ],
-  "experience": [
-    { "id": "new", "label": "new to Earth observation data", "hint": "Show the essentials first" },
-    { "id": "familiar", "label": "familiar with Earth observation data", "hint": "The standard view" },
-    { "id": "specialist", "label": "an Earth observation specialist", "hint": "Open technical filters and details by default" }
-  ],
-  "regions": [
-    { "id": "global", "label": "the whole world", "icon": "GL" },
-    { "id": "africa", "label": "Africa", "icon": "AF" },
-    { "id": "asia", "label": "Asia", "icon": "AS" },
-    { "id": "europe", "label": "Europe", "icon": "EU" },
-    { "id": "north-america", "label": "North and Central America", "icon": "NA" },
-    { "id": "south-america", "label": "South America", "icon": "SA" },
-    { "id": "oceania", "label": "Australia and Oceania", "icon": "OC" },
-    { "id": "antarctica", "label": "Antarctica", "icon": "AN" },
-    { "id": "custom", "label": "a specific place…", "icon": "PIN" }
-  ],
-  "timeframes": [
-    { "id": "past-year", "label": "the past year", "years_back": 1 },
-    { "id": "past-5", "label": "the past 5 years", "years_back": 5 },
-    { "id": "past-10", "label": "the past decade", "years_back": 10 },
-    { "id": "past-20", "label": "the past 20 years or more", "years_back": 20 },
-    { "id": "ongoing", "label": "the coming years", "hint": "Ongoing monitoring from now" },
-    { "id": "custom", "label": "a specific period…" }
-  ],
-  "frequencies": [
-    { "id": "unsure", "label": "not sure yet" },
-    { "id": "frequent", "label": "frequently", "hint": "Days to weeks apart" },
-    { "id": "seasonal", "label": "across each season" },
-    { "id": "years", "label": "over many years" }
-  ],
-  "guidance": [
-    {
-      "id": "general",
-      "status": "general",
-      "applies": { "goals": null, "contexts": null, "questions": null },
-      "assumptions": [
-        "The catalogue lists products and their reported characteristics. It does not check acquisitions over your area or period.",
-        "CEOS-ARD assessment describes conformance with a Product Family Specification; it does not establish suitability for your purpose."
-      ],
-      "checks": [
-        {
-          "id": "area-period",
-          "label": "Observations exist for your area and period",
-          "why": "Reported coverage and nominal revisit describe scope and opportunity, not actual usable observations over your area and dates.",
-          "next": ["access", "documentation"],
-          "sources": []
-        },
-        {
-          "id": "quality-indicators",
-          "label": "Quality indicators and uncertainty are adequate for your use",
-          "why": "Products should state their measurand and uncertainty and provide quality indicators so users can assess usability (CALVAL#2–3). Where evidence is not reported here, that is a gap to investigate, not a sign of poor quality.",
-          "next": ["quality", "assessment", "documentation"],
-          "sources": ["handbook-quality"]
-        },
-        {
-          "id": "suitability",
-          "label": "Suitability for your method is established",
-          "why": "Quality can be documented through metrics; fitness for a use needs evaluation against that use. Assessment, measured quality and your requirements are separate questions.",
-          "next": ["assessment", "documentation"],
-          "sources": ["lsi-vc-17", "ceos-ard"]
-        }
-      ],
-      "measurement_notes": {},
-      "output_notes": {}
-    },
-    {
-      "id": "change-over-time",
-      "status": "general",
-      "applies": { "goals": ["monitor-change"], "contexts": null, "questions": null },
-      "assumptions": [],
-      "checks": [
-        {
-          "id": "consistency",
-          "label": "Dates can be compared consistently",
-          "why": "Change detection compares observations from different dates. Check geometric consistency between dates and whether processing changed during the record. CEOS-ARD assessment documents describe the geometric and radiometric processing that was assessed.",
-          "next": ["assessment", "documentation"],
-          "sources": ["ceos-ard"]
-        },
-        {
-          "id": "record-period",
-          "label": "The archive covers the years you need",
-          "why": "Observation record periods are not established in this catalogue, and mission age does not prove continuity.",
-          "next": ["documentation", "access"],
-          "sources": []
-        }
-      ],
-      "measurement_notes": {},
-      "output_notes": {}
-    },
-    {
-      "id": "wetlands",
-      "status": "illustrative",
-      "applies": { "goals": null, "contexts": ["wetlands"], "questions": null },
-      "summary": "Illustrative wetlands guidance drawn from Ramsar Technical Report No. 10. It explains considerations and checks; it does not set numeric thresholds.",
-      "assumptions": [
-        "Satellite products are inputs. Water and wetland maps are derived from them by classification and checking.",
-        "Small wetlands, water under vegetation and cloudy seasons are common limitations in the cited guidance."
-      ],
-      "checks": [
-        {
-          "id": "seasonal-observations",
-          "label": "Usable observations in each season you need",
-          "why": "Seasonally and intermittently flooded areas need observations through the year; the cited report notes observation frequency can be insufficient to track wetland changes. Nominal revisit is not a count of usable observations.",
-          "next": ["access", "documentation"],
-          "sources": ["ramsar-tr10"],
-          "when": { "goals": ["monitor-change"] }
-        },
-        {
-          "id": "cloud",
-          "label": "Cloud-free optical observations in your wet season",
-          "why": "Persistent cloud can make much optical imagery unusable in some regions.",
-          "next": ["access"],
-          "sources": ["ramsar-tr10"],
-          "when": { "measurements": ["sr", "optical-radar", "decide"] }
-        },
-        {
-          "id": "water-under-vegetation",
-          "label": "Whether water under vegetation must be detected",
-          "why": "Floating vegetation and flooding below canopies are difficult to detect with optical or C-band SAR alone; the cited report suggests L-band SAR may help. Check each product's radar band and mode in its documentation.",
-          "next": ["documentation"],
-          "sources": ["ramsar-tr10"],
-          "when": { "measurements": ["sar", "optical-radar", "decide"] }
-        },
-        {
-          "id": "smallest-wetland",
-          "label": "Product resolution against the smallest wetland you must detect",
-          "why": "Small wetlands may be missed at coarser resolution. The cited report describes high-resolution data as necessary for detailed assessments; it does not set one threshold for all purposes, so the explorer does not set one for you. Pixel spacing is not the size of the smallest detectable feature.",
-          "next": ["documentation"],
-          "sources": ["ramsar-tr10"]
-        },
-        {
-          "id": "validation",
-          "label": "Reference or field data to validate your results",
-          "why": "The cited report stresses that in-situ data and local knowledge remain critical, and that adequate ground data is needed to validate derived maps.",
-          "next": ["external:ramsar-tr10"],
-          "sources": ["ramsar-tr10"]
-        }
-      ],
-      "measurement_notes": {
-        "sar": "Radar can observe through cloud and haze, which the cited report highlights for cloudy regions. Open water usually appears dark; detecting flooding beneath vegetation depends on band and conditions.",
-        "sr": "Optical data help distinguish vegetation types, but persistent cloud limits usable observations in some regions and seasons.",
-        "st": "The cited wetlands guidance does not discuss surface-temperature products for inundation. Check that temperature measures what you need.",
-        "optical-radar": "The cited report discusses optical and radar as complementary: optical for vegetation types, radar for observations through cloud.",
-        "decide": "For water and wetlands, the cited report discusses both optical and radar data. Comparing one of each is a reasonable way to start; the explorer does not choose for you."
-      },
-      "output_notes": {
-        "map": "A water or wetland map is a derived product: classifying water and wetland types and assessing map accuracy are steps you, or a processing service, carry out. The explorer does not perform them.",
-        "map-series": "A series of inundation maps is a derived product: classifying water (including flooded vegetation where needed), combining dates and assessing accuracy are steps you, or a processing service, carry out. The explorer does not perform them."
-      }
-    }
-  ]
+	"schema": 2,
+	"version": "2",
+	"mapping_version": 2,
+	"status": "illustrative",
+	"review": {
+		"reviewed": false,
+		"note": "Illustrative guidance written for the explorer from the cited sources and the CEOS-ARD fitness-for-purpose pillar. It has not been reviewed or endorsed by CEOS, the Ramsar Convention or domain experts. The need-to-family table and the detail and frequency bands are proposals for review by the relevant Virtual Constellations."
+	},
+	"updated": "2026-11-11",
+	"sources": [
+		{
+			"id": "ramsar-tr10",
+			"short": "Ramsar Technical Report 10",
+			"title": "The use of Earth Observation for wetland inventory, assessment and monitoring (Ramsar Technical Report No. 10)",
+			"publisher": "Ramsar Convention on Wetlands",
+			"year": 2018,
+			"url": "https://ramsar.org/sites/default/files/documents/library/rtr10_earth_observation_e.pdf"
+		},
+		{
+			"id": "ceos-ard",
+			"short": "CEOS-ARD overview",
+			"title": "CEOS Analysis Ready Data (CEOS-ARD)",
+			"publisher": "Committee on Earth Observation Satellites",
+			"year": 2026,
+			"url": "https://ceos.org/ard/"
+		},
+		{
+			"id": "handbook-quality",
+			"short": "CEOS Interoperability Handbook — Quality",
+			"title": "CEOS Interoperability Handbook 2.0 — Quality (CALVAL#2, CALVAL#3)",
+			"publisher": "Committee on Earth Observation Satellites",
+			"year": 2025,
+			"url": "https://github.com/ceos-org/interoperability-handbook/blob/main/Quality.md"
+		},
+		{
+			"id": "lsi-vc-17",
+			"short": "LSI-VC-17 minutes",
+			"title": "LSI-VC-17 meeting minutes v1.0",
+			"publisher": "CEOS Land Surface Imaging Virtual Constellation",
+			"year": 2025,
+			"url": "https://ceos.org/document_management/Virtual_Constellations/LSI/Meetings/LSI-VC-17/LSI-VC-17%20Minutes%20v1.0.pdf"
+		},
+		{
+			"id": "ceos-ard-strategy-2026",
+			"short": "Draft CEOS-ARD Strategy 2026–2031",
+			"title": "Draft CEOS-ARD Strategy 2026–2031, version 0.0 (pillar 3: Fitness for Purpose)",
+			"publisher": "CEOS-ARD Oversight Group",
+			"year": 2026,
+			"url": "https://ceos.org/document_management/Meetings/SIT/SIT-41/Documents/DRAFT%20CEOS-ARD%20Strategy%202026-2031%20v0%20April%202026.pdf"
+		},
+		{
+			"id": "wgcv56-lsivc19",
+			"short": "Joint WGCV-56 / LSI-VC-19 minutes",
+			"title": "Joint WGCV-56 / LSI-VC-19 meeting minutes v1.0",
+			"publisher": "CEOS Working Group on Calibration and Validation and Land Surface Imaging Virtual Constellation",
+			"year": 2026,
+			"url": "https://ceos.org/document_management/Working_Groups/WGCV/Meetings/WGCV-56_LSI-VC-19/Joint%20WGCV-56%20_%20LSI-VC-19%20Minutes%20v1.0.pdf"
+		},
+		{
+			"id": "ceos-work-plan",
+			"short": "CEOS 2026–2028 Work Plan",
+			"title": "CEOS 2026–2028 Work Plan v1.2",
+			"publisher": "Committee on Earth Observation Satellites",
+			"year": 2026,
+			"url": "https://ceos.org/document_management/Publications/CEOS_Work-Plans/CEOS%20Work%20Plan%202026-2028_v1.2_final.pdf"
+		}
+	],
+	"themes": [
+		{
+			"id": "agriculture",
+			"label": "agriculture and food security",
+			"hint": "CEOS Work Plan 4.2 · GEOGLAM"
+		},
+		{
+			"id": "forests",
+			"label": "forests, carbon and land use",
+			"hint": "CEOS Work Plan 4.1.2 · Observations for Carbon"
+		},
+		{
+			"id": "water",
+			"label": "water and wetlands",
+			"hint": "CEOS Work Plan 4.4 · SIT Chair priority Water Planet"
+		},
+		{
+			"id": "coasts",
+			"label": "coasts and oceans",
+			"hint": "COAST-VC · UN Ocean Decade"
+		},
+		{
+			"id": "disasters",
+			"label": "disasters and resilience",
+			"hint": "CEOS Work Plan 4.3 · 2026 Chair theme"
+		},
+		{
+			"id": "biodiversity",
+			"label": "biodiversity and ecosystems",
+			"hint": "CEOS Work Plan 4.10.2"
+		},
+		{
+			"id": "land-degradation",
+			"label": "land degradation",
+			"hint": "GEO-LDN · LSI-VC-19 test case"
+		},
+		{
+			"id": "cities",
+			"label": "cities and infrastructure",
+			"hint": "CEOS Work Plan 4.5 · Sustainable development"
+		},
+		{
+			"id": "climate",
+			"label": "climate and long-term change",
+			"hint": "CEOS Work Plan 4.1 · WGClimate"
+		},
+		{
+			"id": "custom",
+			"label": "something else…"
+		}
+	],
+	"needs": [
+		{
+			"id": "water",
+			"label": "surface water and flooding",
+			"hint": "Optical and radar",
+			"families": [
+				"sr",
+				"sar"
+			],
+			"themes": [
+				"agriculture",
+				"water",
+				"coasts",
+				"disasters",
+				"biodiversity",
+				"climate"
+			],
+			"explanation": "Open water shows in both optical and radar data. Radar sees through cloud; optical helps tell vegetation types apart. Both families stay in the results."
+		},
+		{
+			"id": "vegetation",
+			"label": "vegetation and crop condition",
+			"hint": "Optical",
+			"families": [
+				"sr"
+			],
+			"themes": [
+				"agriculture",
+				"forests",
+				"water",
+				"biodiversity",
+				"land-degradation",
+				"climate"
+			],
+			"explanation": "Vegetation condition is usually read from optical surface reflectance. Cloud limits how often you get a usable look."
+		},
+		{
+			"id": "land-cover",
+			"label": "land cover and how it changes",
+			"hint": "Optical",
+			"families": [
+				"sr"
+			],
+			"themes": [
+				"agriculture",
+				"forests",
+				"water",
+				"coasts",
+				"disasters",
+				"biodiversity",
+				"land-degradation",
+				"cities",
+				"climate"
+			],
+			"explanation": "Land cover is usually mapped from optical surface reflectance. Where cloud persists, radar can fill gaps; you can add it in the filters."
+		},
+		{
+			"id": "movement",
+			"label": "ground movement and structure",
+			"hint": "Radar",
+			"families": [
+				"sar"
+			],
+			"themes": [
+				"forests",
+				"coasts",
+				"disasters",
+				"cities"
+			],
+			"explanation": "Radar responds to surface roughness, structure and moisture, and interferometric products measure ground movement. It works day or night and through cloud."
+		},
+		{
+			"id": "temperature",
+			"label": "surface temperature and heat",
+			"hint": "Thermal",
+			"families": [
+				"st"
+			],
+			"themes": [
+				"agriculture",
+				"water",
+				"disasters",
+				"cities",
+				"climate"
+			],
+			"explanation": "Thermal-infrared measurements expressed as land surface temperature. Cloud limits observations."
+		},
+		{
+			"id": "burnt-area",
+			"label": "burnt area",
+			"hint": "Optical",
+			"families": [
+				"sr"
+			],
+			"themes": [
+				"forests",
+				"disasters",
+				"biodiversity",
+				"land-degradation",
+				"climate"
+			],
+			"explanation": "Burnt area is usually mapped from optical surface reflectance before and after a fire."
+		},
+		{
+			"id": "water-colour",
+			"label": "water colour and quality",
+			"hint": "Aquatic Reflectance",
+			"families": [
+				"ar"
+			],
+			"themes": [
+				"water",
+				"coasts"
+			],
+			"explanation": "Water colour comes from Aquatic Reflectance. No CEOS-ARD assessed Aquatic Reflectance products are in this catalogue yet, so the list will be empty; that gap is shown rather than hidden."
+		},
+		{
+			"id": "unsure",
+			"label": "not sure — show me what each can do",
+			"families": [],
+			"themes": null,
+			"explanation": "No measurement family filter is applied. The checks explain what each measurement can and cannot show."
+		}
+	],
+	"uses": [
+		{
+			"id": "look",
+			"label": "look at it",
+			"hint": "Visual interpretation"
+		},
+		{
+			"id": "map",
+			"label": "map or classify one point in time",
+			"hint": "A map from one date or period"
+		},
+		{
+			"id": "change",
+			"label": "track change through time",
+			"hint": "Compare dates consistently"
+		},
+		{
+			"id": "measure",
+			"label": "measure a physical quantity",
+			"hint": "Values with stated uncertainty"
+		},
+		{
+			"id": "combine",
+			"label": "combine several sensors",
+			"hint": "Mix products without hidden bias"
+		}
+	],
+	"regions": [
+		{
+			"id": "global",
+			"label": "global or many regions",
+			"hint": "Prefers globally reported coverage",
+			"coverage": "Global",
+			"phrase": "globally or across many regions"
+		},
+		{
+			"id": "continent",
+			"label": "a continent or region",
+			"hint": "Prefers continental coverage or broader",
+			"coverage": "Continental or multi-country",
+			"phrase": "across a continent or region"
+		},
+		{
+			"id": "country",
+			"label": "one country",
+			"hint": "Prefers national coverage or broader",
+			"coverage": "National",
+			"phrase": "within one country"
+		},
+		{
+			"id": "site",
+			"label": "a specific site",
+			"hint": "Any reported coverage",
+			"coverage": null,
+			"phrase": "at a specific site"
+		}
+	],
+	"timeframes": [
+		{
+			"id": "recent",
+			"label": "the last couple of years",
+			"years_back": 2,
+			"phrase": "over the last couple of years"
+		},
+		{
+			"id": "since-2015",
+			"label": "the years since about 2015",
+			"phrase": "since about 2015"
+		},
+		{
+			"id": "long",
+			"label": "a long record (20 years or more)",
+			"years_back": 20,
+			"phrase": "over a long record (20 years or more)"
+		},
+		{
+			"id": "ongoing",
+			"label": "ongoing monitoring from now",
+			"hint": "Adds a continuity check",
+			"phrase": "with ongoing monitoring"
+		},
+		{
+			"id": "custom",
+			"label": "specific years…"
+		}
+	],
+	"details": [
+		{
+			"id": "fine",
+			"label": "buildings, single trees or small plots",
+			"hint": "Prefers 10 m or finer",
+			"resolution_m": 10,
+			"visual": "fine"
+		},
+		{
+			"id": "field",
+			"label": "fields, streets or small water bodies",
+			"hint": "Prefers 30 m or finer",
+			"resolution_m": 30,
+			"visual": "fine"
+		},
+		{
+			"id": "landscape",
+			"label": "landscapes or catchments",
+			"hint": "Prefers 100 m or finer",
+			"resolution_m": 100,
+			"visual": "coarse"
+		},
+		{
+			"id": "regional",
+			"label": "regional patterns",
+			"hint": "Prefers 1 km or finer",
+			"resolution_m": 1000,
+			"visual": "coarse"
+		},
+		{
+			"id": "unsure",
+			"label": "not sure",
+			"resolution_m": null,
+			"visual": "fine"
+		}
+	],
+	"frequencies": [
+		{
+			"id": "days",
+			"label": "every few days",
+			"hint": "Prefers nominal revisit of 5 days or less",
+			"revisit_days": 5
+		},
+		{
+			"id": "weeks",
+			"label": "every couple of weeks",
+			"hint": "Prefers nominal revisit of 16 days or less",
+			"revisit_days": 16
+		},
+		{
+			"id": "seasonal",
+			"label": "each season",
+			"hint": "Adds a check on usable observations",
+			"revisit_days": null
+		},
+		{
+			"id": "yearly",
+			"label": "once a year or less",
+			"hint": "Adds a check on usable observations",
+			"revisit_days": null
+		},
+		{
+			"id": "unsure",
+			"label": "not sure",
+			"revisit_days": null
+		}
+	],
+	"experience": [
+		{
+			"id": "new",
+			"label": "new to Earth observation data",
+			"hint": "Show the essentials first"
+		},
+		{
+			"id": "familiar",
+			"label": "familiar with Earth observation data",
+			"hint": "The standard view"
+		},
+		{
+			"id": "specialist",
+			"label": "an Earth observation specialist",
+			"hint": "Open technical filters and details by default"
+		}
+	],
+	"guidance": [
+		{
+			"id": "general",
+			"status": "general",
+			"applies": {
+				"themes": null,
+				"needs": null,
+				"uses": null
+			},
+			"assumptions": [
+				"The catalogue lists products and their reported characteristics. It does not check acquisitions over your area or period.",
+				"CEOS-ARD assessment describes conformance with a Product Family Specification; it does not establish suitability for your purpose."
+			],
+			"checks": [
+				{
+					"id": "area-period",
+					"label": "Observations exist for your area and period",
+					"why": "Reported coverage and nominal revisit describe scope and opportunity, not actual usable observations over your area and dates.",
+					"next": [
+						"access",
+						"documentation"
+					],
+					"sources": []
+				},
+				{
+					"id": "quality-indicators",
+					"label": "Quality indicators and uncertainty are adequate for your use",
+					"why": "Products should state their measurand and uncertainty and provide quality indicators so users can assess usability (CALVAL#2–3). Where evidence is not reported here, that is a gap to investigate, not a sign of poor quality.",
+					"next": [
+						"quality",
+						"assessment",
+						"documentation"
+					],
+					"sources": [
+						"handbook-quality"
+					]
+				},
+				{
+					"id": "suitability",
+					"label": "Suitability for your method is established",
+					"why": "Quality can be documented through metrics; fitness for a use needs evaluation against that use. Assessment, measured quality and your requirements are separate questions.",
+					"next": [
+						"assessment",
+						"documentation"
+					],
+					"sources": [
+						"lsi-vc-17",
+						"ceos-ard"
+					]
+				},
+				{
+					"id": "smallest-feature",
+					"label": "Product resolution against the smallest thing you need to tell apart",
+					"why": "The detail band orders results by reported pixel spacing. Pixel spacing is not the size of the smallest feature you can detect, and it is not positional accuracy, so compare it with your own smallest feature.",
+					"next": [
+						"documentation"
+					],
+					"sources": [],
+					"when": {
+						"details": [
+							"fine",
+							"field",
+							"landscape",
+							"regional"
+						]
+					}
+				},
+				{
+					"id": "usable-observations",
+					"label": "Usable observations when you need them",
+					"why": "Nominal revisit is an observation opportunity, not a count of usable, cloud-free observations or a delivery frequency. Check acquisitions over your area for the times you need.",
+					"next": [
+						"access",
+						"documentation"
+					],
+					"sources": [],
+					"when": {
+						"frequencies": [
+							"days",
+							"weeks",
+							"seasonal",
+							"yearly"
+						]
+					}
+				},
+				{
+					"id": "continuity",
+					"label": "Production continues for the years you need",
+					"why": "Ongoing monitoring depends on the mission and the product continuing. Mission status and planned end dates are context, not a commitment to keep producing the product.",
+					"next": [
+						"documentation",
+						"access"
+					],
+					"sources": [],
+					"when": {
+						"timeframes": [
+							"ongoing"
+						]
+					}
+				},
+				{
+					"id": "record-period",
+					"label": "The archive covers the years you need",
+					"why": "Observation record periods are not established in this catalogue, and mission age does not prove continuity.",
+					"next": [
+						"documentation",
+						"access"
+					],
+					"sources": [],
+					"when": {
+						"timeframes": [
+							"long",
+							"since-2015",
+							"custom"
+						]
+					}
+				}
+			],
+			"family_notes": {},
+			"use_notes": {}
+		},
+		{
+			"id": "change-over-time",
+			"status": "general",
+			"applies": {
+				"themes": null,
+				"needs": null,
+				"uses": [
+					"change"
+				]
+			},
+			"assumptions": [],
+			"checks": [
+				{
+					"id": "consistency",
+					"label": "Dates can be compared consistently",
+					"why": "Change detection compares observations from different dates. Check geometric consistency between dates and whether processing changed during the record. CEOS-ARD assessment documents describe the geometric and radiometric processing that was assessed.",
+					"next": [
+						"assessment",
+						"documentation"
+					],
+					"sources": [
+						"ceos-ard"
+					]
+				},
+				{
+					"id": "record-period",
+					"label": "The archive covers the years you need",
+					"why": "Observation record periods are not established in this catalogue, and mission age does not prove continuity.",
+					"next": [
+						"documentation",
+						"access"
+					],
+					"sources": []
+				},
+				{
+					"id": "stability",
+					"label": "The record is stable enough to show real change",
+					"why": "Drift in a sensor, biases between replacement sensors and changes in sampling can look like change. WGClimate has proposed Goal-level stability metrics for CEOS-ARD; most products do not report them yet.",
+					"next": [
+						"documentation",
+						"assessment"
+					],
+					"sources": [
+						"wgcv56-lsivc19"
+					]
+				}
+			],
+			"family_notes": {},
+			"use_notes": {}
+		},
+		{
+			"id": "measure",
+			"status": "general",
+			"applies": {
+				"themes": null,
+				"needs": null,
+				"uses": [
+					"measure"
+				]
+			},
+			"assumptions": [],
+			"checks": [
+				{
+					"id": "accuracy",
+					"label": "Radiometric and geometric accuracy are reported at the level you need",
+					"why": "Measuring a physical quantity needs stated accuracy and uncertainty. In this catalogue most products do not report these values yet; that is a gap to check in the assessment documents, not a sign of poor quality.",
+					"next": [
+						"quality",
+						"assessment",
+						"documentation"
+					],
+					"sources": [
+						"handbook-quality"
+					]
+				}
+			],
+			"family_notes": {},
+			"use_notes": {}
+		},
+		{
+			"id": "combine",
+			"status": "general",
+			"applies": {
+				"themes": null,
+				"needs": null,
+				"uses": [
+					"combine"
+				]
+			},
+			"assumptions": [],
+			"checks": [
+				{
+					"id": "cross-sensor",
+					"label": "Products can be combined without hidden bias",
+					"why": "The draft CEOS-ARD Strategy aims for products that can be swapped or mixed in a time series or multi-mission analysis without introducing hidden biases. Check how each product was calibrated and processed before combining them.",
+					"next": [
+						"assessment",
+						"documentation"
+					],
+					"sources": [
+						"ceos-ard-strategy-2026"
+					]
+				}
+			],
+			"family_notes": {},
+			"use_notes": {}
+		},
+		{
+			"id": "map",
+			"status": "general",
+			"applies": {
+				"themes": null,
+				"needs": null,
+				"uses": [
+					"map"
+				]
+			},
+			"assumptions": [],
+			"checks": [
+				{
+					"id": "map-accuracy",
+					"label": "Reference data to check your map’s accuracy",
+					"why": "A map is derived from the product by classification. Its accuracy depends on your method and reference data, not only on the product.",
+					"next": [
+						"documentation"
+					],
+					"sources": []
+				}
+			],
+			"family_notes": {},
+			"use_notes": {}
+		},
+		{
+			"id": "wetlands",
+			"status": "illustrative",
+			"summary": "Illustrative wetlands guidance drawn from Ramsar Technical Report No. 10. It explains considerations and checks; it does not set numeric thresholds.",
+			"applies": {
+				"themes": [
+					"water"
+				],
+				"needs": null,
+				"uses": null
+			},
+			"assumptions": [
+				"Satellite products are inputs. Water and wetland maps are derived from them by classification and checking.",
+				"Small wetlands, water under vegetation and cloudy seasons are common limitations in the cited guidance."
+			],
+			"checks": [
+				{
+					"id": "seasonal-observations",
+					"label": "Usable observations in each season you need",
+					"why": "Seasonally and intermittently flooded areas need observations through the year; the cited report notes observation frequency can be insufficient to track wetland changes. Nominal revisit is not a count of usable observations.",
+					"next": [
+						"access",
+						"documentation"
+					],
+					"sources": [
+						"ramsar-tr10"
+					],
+					"when": {
+						"uses": [
+							"change"
+						]
+					},
+					"replaces": [
+						"usable-observations"
+					]
+				},
+				{
+					"id": "cloud",
+					"label": "Cloud-free optical observations in your wet season",
+					"why": "Persistent cloud can make much optical imagery unusable in some regions.",
+					"next": [
+						"access"
+					],
+					"sources": [
+						"ramsar-tr10"
+					],
+					"when": {
+						"families": [
+							"sr",
+							"decide"
+						]
+					}
+				},
+				{
+					"id": "water-under-vegetation",
+					"label": "Whether water under vegetation must be detected",
+					"why": "Floating vegetation and flooding below canopies are difficult to detect with optical or C-band SAR alone; the cited report suggests L-band SAR may help. Check each product's radar band and mode in its documentation.",
+					"next": [
+						"documentation"
+					],
+					"sources": [
+						"ramsar-tr10"
+					],
+					"when": {
+						"families": [
+							"sar",
+							"decide"
+						]
+					}
+				},
+				{
+					"id": "smallest-wetland",
+					"label": "Product resolution against the smallest wetland you must detect",
+					"why": "Small wetlands may be missed at coarser resolution. The cited report describes high-resolution data as necessary for detailed assessments; it does not set one threshold for all purposes, so the explorer does not set one for you. Pixel spacing is not the size of the smallest detectable feature.",
+					"next": [
+						"documentation"
+					],
+					"sources": [
+						"ramsar-tr10"
+					],
+					"replaces": [
+						"smallest-feature"
+					]
+				},
+				{
+					"id": "validation",
+					"label": "Reference or field data to validate your results",
+					"why": "The cited report stresses that in-situ data and local knowledge remain critical, and that adequate ground data is needed to validate derived maps.",
+					"next": [
+						"external:ramsar-tr10"
+					],
+					"sources": [
+						"ramsar-tr10"
+					]
+				}
+			],
+			"family_notes": {
+				"sr": "Optical data help distinguish vegetation types, but persistent cloud limits usable observations in some regions and seasons.",
+				"sar": "Radar can observe through cloud and haze, which the cited report highlights for cloudy regions. Open water usually appears dark; detecting flooding beneath vegetation depends on band and conditions.",
+				"st": "The cited wetlands guidance does not discuss surface-temperature products for inundation. Check that temperature measures what you need.",
+				"both": "The cited report discusses optical and radar as complementary: optical for vegetation types, radar for observations through cloud.",
+				"decide": "For water and wetlands, the cited report discusses both optical and radar data. Comparing one of each is a reasonable way to start; the explorer does not choose for you."
+			},
+			"use_notes": {
+				"map": "A water or wetland map is a derived product: classifying water and wetland types and assessing map accuracy are steps you, or a processing service, carry out. The explorer does not perform them.",
+				"change": "A series of inundation maps is a derived product: classifying water (including flooded vegetation where needed), combining dates and assessing accuracy are steps you, or a processing service, carry out. The explorer does not perform them."
+			}
+		}
+	]
 }

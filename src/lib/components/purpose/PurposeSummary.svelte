@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { guidanceStatus, outputLabel, purposeSentence } from '$lib/domain/purpose';
+	import { guidanceStatus, purposeSentence } from '$lib/domain/purpose';
 	import { app } from '$lib/state/app.svelte';
 
 	let { compact = false }: { compact?: boolean } = $props();
@@ -18,13 +18,13 @@
 			<span class="badge progress">{guidanceStatus(g, answers).label}</span>
 			{#if store.purposeAdjusted}<span class="badge info">Filters adjusted since setup</span>{/if}
 		</div>
-		<p class="sentence">{purposeSentence(answers, g, { includePrivate: context.source === 'session' })}{#if outputLabel(answers, g)}{' '}<span class="secondary">Output: {outputLabel(answers, g)}.</span>{/if}</p>
-		{#if context.source === 'link'}<p class="small secondary">Purpose from a shared link. Private details such as descriptions, area and period are not shared.</p>{/if}
+		<p class="sentence">{purposeSentence(answers, g, { includePrivate: context.source === 'session' })}</p>
+		{#if context.source === 'link'}<p class="small secondary">Purpose from a shared link. Private details such as your notes, scale and period are not shared.</p>{/if}
 		{#if !compact && store.experience === 'new'}
 			<p class="small secondary">New to Earth observation data? Open <strong>Details</strong> on a product to see what was reported and what is still to check; the <strong>Glossary</strong> at the top explains the terms.</p>
 		{/if}
 		{#if !compact}
-			<p class="small secondary">{store.purposeChecks.length} purpose checks appear on each product’s details and in the comparison. Results are screened only by your filters, not by the purpose.</p>
+			<p class="small secondary">{store.purposeChecks.length} purpose checks appear on each product’s details and in the comparison. Results are filtered by measurement family and ordered by your preferences; you can change any of them in the filters.</p>
 		{/if}
 		<div class="row">
 			<button type="button" class="button small" onclick={() => store.openJourney()}>Edit purpose</button>

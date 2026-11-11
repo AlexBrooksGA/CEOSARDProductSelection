@@ -6,6 +6,17 @@ import { casefold } from './text';
 import type { CeosFilter, Criteria, Product } from './types';
 
 export const ALL_FAMILIES = 'All product families';
+/** Two families kept together (set by the purpose journey for needs both can serve). */
+export const OPTICAL_AND_RADAR = 'Surface Reflectance and Synthetic Aperture Radar';
+const COMBINED_FAMILIES: Record<string, string[]> = {
+	[OPTICAL_AND_RADAR]: ['Surface Reflectance', 'Synthetic Aperture Radar']
+};
+
+/** The product families a family filter value keeps; null means every family. */
+export function familyMembers(family: string): string[] | null {
+	if (family === ALL_FAMILIES) return null;
+	return COMBINED_FAMILIES[family] ?? [family];
+}
 
 export const CEOS_FILTERS: CeosFilter[] = [
 	'CEOS-ARD assessed only',
@@ -71,7 +82,8 @@ export function exclusions(product: Product, state: MetadataFilterState): Exclus
 	const result: Exclusion[] = [];
 	const search = casefold(state.search).trim();
 	const sensor = casefold(state.sensor).trim();
-	if (state.family !== ALL_FAMILIES && product.product_family !== state.family) {
+	const members = familyMembers(state.family);
+	if (members && !members.includes(product.product_family as string)) {
 		result.push({ kind: 'family', reason: `Measurement family is ${product.product_family ?? 'not reported'}, not ${state.family}.` });
 	}
 	if (state.ceosFilter === 'CEOS-ARD assessed only' && !product.ceos_ard_verified) {

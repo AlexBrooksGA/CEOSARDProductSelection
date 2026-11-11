@@ -56,6 +56,7 @@ function validatePurpose(raw: unknown): PurposeSession {
 	if (applied && typeof applied === 'object' && applied.answers && typeof applied.answers === 'object' && applied.settings && typeof applied.settings === 'object') {
 		const settings = applied.settings as Record<string, unknown>;
 		const criterion = (c: unknown) => (c && typeof c === 'object' && typeof (c as Record<string, unknown>).value === 'number' && ['required', 'preferred', 'not_used'].includes(String((c as Record<string, unknown>).mode)) ? (c as JourneySettings['revisit_days']) : null);
+		const coverage = (c: unknown) => (c && typeof c === 'object' && typeof (c as Record<string, unknown>).value === 'string' && ['required', 'preferred', 'not_used'].includes(String((c as Record<string, unknown>).mode)) ? (c as JourneySettings['geographic_coverage']) : null);
 		purpose.applied = {
 			answers: applied.answers as PurposeAnswers,
 			key: typeof applied.key === 'string' ? applied.key.slice(0, 130) : null,
@@ -65,7 +66,8 @@ function validatePurpose(raw: unknown): PurposeSession {
 			settings: {
 				family: typeof settings.family === 'string' ? settings.family : 'All product families',
 				spatial_resolution_m: criterion(settings.spatial_resolution_m),
-				revisit_days: criterion(settings.revisit_days)
+				revisit_days: criterion(settings.revisit_days),
+				geographic_coverage: coverage(settings.geographic_coverage)
 			}
 		};
 	}
