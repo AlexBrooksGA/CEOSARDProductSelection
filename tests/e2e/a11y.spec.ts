@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { open } from './helpers';
+import { open, useTheme } from './helpers';
 
 const pages = [
 	['discover', '/?v=1&fam=sr&res=req:10&rev=req:5'],
@@ -11,7 +11,7 @@ const pages = [
 for (const theme of ['light', 'dark'] as const) {
 	for (const [name, path] of pages) {
 		test(`${name} has no automatically detectable accessibility violations (${theme})`, async ({ page }) => {
-			await page.emulateMedia({ colorScheme: theme });
+			await useTheme(page, theme);
 			await open(page, path);
 			if (name === 'discover') {
 				await page.getByRole('button', { name: /^Show \d/ }).first().click();

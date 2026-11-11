@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { open } from './helpers';
+import { open, useTheme } from './helpers';
 
 const LANDSAT = '/products/landsat-c2-sr?v=1';
 const section = (page: import('@playwright/test').Page) => page.locator('section#cqas');
@@ -118,7 +118,7 @@ test('an unrecognised cqas value is ignored with a message', async ({ page }) =>
 for (const theme of ['light', 'dark'] as const) {
 	for (const mode of ['simple', 'advanced'] as const) {
 		test(`C-QAS ${mode} view has no detectable accessibility violations (${theme})`, async ({ page }) => {
-			await page.emulateMedia({ colorScheme: theme });
+			await useTheme(page, theme);
 			await open(page, `${LANDSAT}&cqas=${mode}`);
 			const results = await new AxeBuilder({ page }).include('#cqas').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
 			expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);

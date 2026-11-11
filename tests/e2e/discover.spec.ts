@@ -90,3 +90,19 @@ test('browser back and forward restore the represented state', async ({ page }) 
 	await page.goForward();
 	await expect(page.getByLabel('Measurement family')).toHaveValue('Surface Reflectance');
 });
+
+test('light is the default even on a dark-mode device; choosing dark lasts for the session', async ({ page }) => {
+	await page.emulateMedia({ colorScheme: 'dark' });
+	await browse(page);
+	const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+	const light = await background();
+	await expect(page.getByRole('button', { name: 'Dark theme' })).toHaveAttribute('aria-pressed', 'false');
+	expect(await page.evaluate(() => document.documentElement.dataset.theme ?? null)).toBeNull();
+	await page.getByRole('button', { name: 'Dark theme' }).click();
+	await expect(page.getByRole('button', { name: 'Dark theme' })).toHaveAttribute('aria-pressed', 'true');
+	expect(await background()).not.toBe(light);
+	await page.reload();
+	await expect(page.locator('body[data-hydrated="true"]')).toBeAttached();
+	expect(await page.evaluate(() => document.documentElement.dataset.theme)).toBe('dark');
+	await expect(page.getByRole('button', { name: 'Dark theme' })).toHaveAttribute('aria-pressed', 'true');
+});

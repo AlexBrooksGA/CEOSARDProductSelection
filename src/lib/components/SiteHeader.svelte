@@ -9,8 +9,8 @@
 	let path = $derived(page.url.pathname);
 	let dark = $state(false);
 	onMount(() => {
-		const explicit = document.documentElement.dataset.theme;
-		dark = explicit ? explicit === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+		// Light is the default whatever the device setting; dark only when chosen.
+		dark = document.documentElement.dataset.theme === 'dark';
 	});
 	function toggleTheme() {
 		dark = !dark;

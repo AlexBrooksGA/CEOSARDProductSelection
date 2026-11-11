@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { open } from './helpers';
+import { open, useTheme } from './helpers';
 
 const journeyHeading = (page: Page) => page.getByRole('heading', { level: 1, name: 'Find Earth observation data for your purpose.' });
 const find = (page: Page) => page.getByRole('button', { name: 'Find candidate products' });
@@ -313,7 +313,7 @@ for (const theme of ['light', 'dark'] as const) {
 	test(`purpose entry and results have no detectable accessibility violations (${theme})`, async ({ page }) => {
 		test.slow();
 		await page.setViewportSize({ width: 1440, height: 900 });
-		await page.emulateMedia({ colorScheme: theme });
+		await useTheme(page, theme);
 		await open(page);
 		await page.screenshot({ path: `test-results/screens/journey-empty-${theme}.png` });
 		await describeWetlandPurpose(page, 'Okavango Delta');
@@ -334,7 +334,8 @@ test('narrow screens stack the steps with visible labels and no horizontal scrol
 	// Two contexts, axe and full-page screenshots; the WebGL scene renders in software here.
 	test.slow();
 	for (const theme of ['light', 'dark'] as const) {
-		const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, colorScheme: theme });
+		const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+		await useTheme(context, theme);
 		const page = await context.newPage();
 		await open(page);
 		await expect(page.getByText(THEME)).toBeVisible();

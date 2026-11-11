@@ -65,49 +65,7 @@
 	color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
-		--canvas: #080d18;
-		--nav: #060a12;
-		--panel: #0f1626;
-		--panel-subtle: #0c1220;
-		--raised: #172136;
-		--text: #e8eef7;
-		--text-secondary: #a8b6d0;
-		--text-muted: #8493b3;
-		--line: #202b45;
-		--line-strong: #30405f;
-		--accent: #5eead4;
-		--accent-text: #5eead4;
-		--accent-soft: #0f2f33;
-		--on-accent: #06201c;
-		--shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px #30405f;
-		--ok-bg: #12351f;
-		--ok-fg: #bbf7d0;
-		--ok-line: #2c6b43;
-		--warn-bg: #3a2a0a;
-		--warn-fg: #fcd98a;
-		--warn-line: #7a5a17;
-		--info-bg: #1e3a5f;
-		--info-fg: #b9d7fb;
-		--info-line: #2f5583;
-		--neutral-bg: #131a2b;
-		--neutral-fg: #a8b6d0;
-		--danger-fg: #fca5a5;
-		--danger-bg: #3a1414;
-		--diff-bg: #2a2410;
-		--diff-bar: #fbbf24;
-		--cat-sr: #8bc79a;
-		--cat-st: #f0a27f;
-		--cat-sar: #a9b8ea;
-		--cat-ar: #79d0d8;
-		--cat-ntl: #c4b2e6;
-		--cat-other: #a8b6d0;
-		--mim: #c4b5fd;
-		color-scheme: dark;
-	}
-}
-
+/* Light is the default; dark applies only when the user chooses it (data-theme set from the session). */
 :root[data-theme='dark'] {
 	--canvas: #080d18;
 	--nav: #060a12;

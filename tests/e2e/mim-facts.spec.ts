@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { devices, expect, test } from '@playwright/test';
-import { open } from './helpers';
+import { open, useTheme } from './helpers';
 
 // CEOS MIM database values come from the committed snapshot, so these run with MIM turned off.
 
@@ -53,7 +53,7 @@ test('comparison adds MIM mission rows with asterisks and a footnote', async ({ 
 
 test('the purple asterisk has no accessibility violations in either theme', async ({ page }) => {
 	for (const theme of ['light', 'dark'] as const) {
-		await page.emulateMedia({ colorScheme: theme });
+		await useTheme(page, theme);
 		await open(page, '/products/alos2-palsar2-25m-scansar-nrb?v=1');
 		for (const toggle of await page.locator('section[aria-labelledby="mim-heading"] button.disclosure-toggle[aria-expanded="false"]').all()) await toggle.click();
 		const results = await new AxeBuilder({ page }).include('section[aria-labelledby="mim-heading"]').include('.mim-footnote').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();

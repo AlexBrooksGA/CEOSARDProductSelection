@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type BrowserContext, type Page } from '@playwright/test';
 
 export async function open(page: Page, path = '/'): Promise<void> {
 	await page.goto(path);
@@ -29,4 +29,14 @@ export function card(page: Page, name: string) {
 export async function settle(page: Page): Promise<void> {
 	// Debounced edits commit to the URL after a short pause.
 	await page.waitForTimeout(600);
+}
+
+/**
+ * Choose a colour theme before the page loads, as the header toggle would. Light is the
+ * default whatever the device setting, so dark must be chosen explicitly.
+ */
+export async function useTheme(target: Page | BrowserContext, theme: 'light' | 'dark'): Promise<void> {
+	await target.addInitScript((value) => {
+		document.documentElement.dataset.theme = value;
+	}, theme);
 }
