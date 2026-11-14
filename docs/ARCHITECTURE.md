@@ -11,7 +11,7 @@ Browser                                          Node process (node build)
 │   sessionStorage ⇄ session.ts       │          │ lib/server/mim: http, schema, normalise,     │
 │ domain/* (pure): filter, match,     │          │   cache (process-local, 6 h)                 │
 │   present, compare, summarise       │          └──────────────┬───────────────────────────────┘
-└─────────────────────────────────────┘                         │ Basic auth, trusted origin only
+└─────────────────────────────────────┘                         │ Public API (optional key), trusted origin only
                                                                 ▼
                                                         CEOS MIM API (optional)
 ```
@@ -51,6 +51,7 @@ The prototype's launch-year filter is retained only as `legacyLaunchYear` in `do
 
 - `data/*.json` and `data/ceos_ard_research_log.csv`
 - the agency-logo manifest and images
+- C-QAS reports (`data/cqas/*.json`) and the MIM snapshot (`data/mim/snapshot.json`); a bad file of either kind is skipped with a warning
 
 At server start it then:
 
@@ -65,12 +66,13 @@ Field-level provenance reaches the browser in two parts. A compact *not-found* i
 
 ## MIM integration
 
-`src/lib/server/mim` ports `mims_api.py` and follows the current product/instrument adapter:
+`src/lib/server/mim` ports `mims_api.py` and follows the current product/instrument adapter. By default it reads the public CEOS Database API (`https://ceos-capabilities.org/api`, no credentials). An optional free API key is sent as `X-API-Key`; optional Basic credentials are kept for older authenticated deployments. `MIMS_API_BASE_URL=off` turns MIM off.
 
 1. `GET <base>/docs/` → Swagger UI HTML → declared schema URL (`url:` / `spec-url=`), which must be on the configured origin.
 2. `GET` schema → must contain `paths` and an identifiable missions endpoint. The mission requirement is a preserved prototype coupling (see the audit, §5). Products and instruments collections are found with the prototype's scoring rules.
 3. `servers[0].url` (if present) defines the root. The product and instrument URLs must be on the configured origin **and** under the configured base path.
 4. One `GET` each for products and instruments, joined by stable `instrument_id` only.
+5. If the schema declares `/meta`, one more `GET` reads the database edition, extract date and licence for the attribution line. A missing or failed `/meta` never fails the load.
 
 Product resolution comes only from explicit product fields or a metre value in the product name. Instrument resolution is a display-only fallback.
 
@@ -80,7 +82,7 @@ The browser receives only normalised `Product` objects: no raw payloads, headers
 
 ### Request safety
 
-- **Credentials:** Basic auth credentials are sent only to the trusted origin.
+- **Credentials:** an API key or Basic credentials, when configured, are sent only to the trusted origin.
 - **Redirects:** followed manually, and only within that origin.
 - **Timeouts:** each request times out after 25 s, and a whole load has a 60 s deadline.
 - **Retries:** up to two, for 429/502/503/504 and connection errors. This matches the prototype's urllib3 policy, with a short `Retry-After` honoured.
@@ -111,6 +113,42 @@ A fresh visit to `/` opens a purpose entry ("Find Earth observation data for you
 Journey-managed settings are the measurement family, `spatial_resolution_m` and `revisit_days`. Every other part of the public state (search, scope, providers, shortlist, comparison, built-in profile values) is retained and listed in the preview.
 
 **Imagery.** One AI-generated fictional wetland scene with a depth map (masters, prompt, provenance and terms in `assets/purpose-imagery/`: `SOURCE.txt`, `PROMPT.txt`, `manifest.json`). `tools/build_purpose_imagery.py` turns the masters into `static/images/purpose-journey/`: optical, radar and thermal looks at 1280/1920/2560 px plus 720/1080 px portrait crops (WebP), 160 × 90 coarse versions (PNG) and a smoothed 1024 × 576 depth texture. The radar and thermal looks are stylisations derived from the optical picture, not data. On desktops with a fine pointer, `depth-scene.ts` (WebGL, no dependencies) draws the scene full-bleed in a sticky stage and displaces it by the depth map as the cursor and scroll move; looks crossfade (520 ms), "broad patterns" pixelates, and the neutral state is a navy/teal duotone. Touch devices, reduced motion, missing WebGL, a failed texture or a lost context get a still `<picture>` with the same framing; a failed image leaves the navy gradient. The WebGL scene requests the same file the still image's `srcset` picks, so the first view loads about 330–450 KB on desktop and 220 KB on a phone. The *Illustrative imagery* button says the pictures are AI-generated, stylised and not evidence.
+
+## CEOS MIM database values (purple asterisk)
+
+Curated products are linked to the CEOS MIM database through `data/mim/links.json`; `data/mim/snapshot.json` holds the linked records (see the README). Curated values always take precedence.
+
+| Where | What MIM adds |
+|---|---|
+| Product page | A **Missions and instruments** panel (`MimPanel`): constellation, missions (status, launch and end of life, lead agency, orbit, repeat cycle, links), instruments (type, operator, resolution, swath, wavebands, declared accuracy, measurements, radar parameters and imaging modes) and the MIM product record. MIM-only access, documentation and peer-review links appear under *Access, documentation and samples*. |
+| Gap fills | Swath width, sensor or instrument type, data format and finest instrument resolution, only where the curated record has no value (`withMimFill`). |
+| Comparison | The same gap fills, plus *Mission status* and *Mission years* rows under *Missions and instruments*. |
+| Copied summary | A *Missions* line per shortlisted product and a source line. |
+
+**The image API call.** For a MIM mission ID (an integer, e.g. Landsat 8 = 547; resolve names or slugs with `GET /api/mission/{ref}`):
+
+```
+GET https://ceos-capabilities.org/api/mission/{mission_id}/visual?variant=colour     (variant: grey | colour)
+```
+
+The response gives `kind` (`specific` or `generic`; generic means "we do not yet hold an image of this spacecraft"), `images` (`svg`, `icon`, `png_512`, `png_1024`, and, for some missions, `photo_cut_512`/`photo_cut_1024`) and `credit` (`rights_holder`, `license`, `license_url`, `source_url`, `modified`). Image paths such as `/images/satellites/landsat-8/landsat-8-512px.png` are relative to the API root: fetch them from `https://ceos-capabilities.org/api/images/...` (the same path at the site root returns the web app's HTML with status 200). `GET /api/visuals/icons` lists every silhouette icon in one call. A product's missions come from its MIM product record (instruments) and the instrument records (missions), recorded in `data/mim/links.json`.
+
+**Satellite pictures.** `assets/mission_visuals/` holds vendored silhouette icons (13 missions) and credited pictures (5 missions) with a manifest (`tools/fetch_mission_visuals.mjs`). `AgencyMark` turns into a toggle button that flips to the satellite: the product's newest mission with a credited picture, or the newest silhouette when none has a picture (hover, focus, tap; `aria-pressed`; reduced motion swaps without rotating); products whose missions have only generic illustrations keep a still logo. Mission cards show the picture and its credit, or the silhouette and the CEOS MIM credit.
+
+Every MIM value is marked with a purple asterisk (`MimMark`, colour token `--mim`), with a text alternative and tooltip where it sits next to curated values; inside the MIM panel the asterisks are decorative and one visible legend line says that every value there is from MIM. A footnote (`MimFootnote`) gives the attribution, edition, data date and CC BY 4.0 licence. MIM values are display only: they never enter filtering, matching, ordering or the URL. The layout sends a compact summary per product; the product page loads full details on the server.
+
+## C-QAS quality checks (proposed)
+
+Every curated product has a C-QAS report. Its product page shows a **C-QAS quality checks** section after the three concept panels, a header badge and a cross-reference in *Measured quality evidence*.
+
+| Part | Location | Role |
+|---|---|---|
+| Report files | `data/cqas/<product-id>.json` | `cqas-report/2`, one per product. All are **example data** (`data_status: "example"`) written by `tools/build_cqas_examples.mjs`. Format: [`CQAS_REPORT_FORMAT.md`](CQAS_REPORT_FORMAT.md). |
+| Domain | `domain/cqas.ts` | Pure validation (`parseCqasReport`, `loadCqasReports`) and derived values (counts, metres, values with units, series statistics, PFS version check, the compact summary). |
+| Loading | `server/catalogue.ts` | Bundled with `import.meta.glob`, validated at server start. A bad report is skipped with a warning and never stops the explorer; `npm test` fails on any warning. The layout sends a compact summary of every report (comparison and copied summary); the product page load sends that product's full report. |
+| UI | `components/cqas/*` | `CqasSection` (Simple and Advanced views; the level is the `cqas` URL parameter), chart components with keyboard access and data tables (including `SeriesChart` for results across scenes), `RunCode`, `StatusText`. Charts size their drawing to the box, so text stays readable on a phone. Styles are `cq-` prefixed in `cqas.css`. |
+
+C-QAS results describe one input scene and, where given, a series of scenes at cal/val sites. They are labelled with their data status, never affect filtering, matching or ordering, and are kept separate from the CEOS-ARD assessment.
 
 ## Security headers
 

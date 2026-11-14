@@ -20,11 +20,14 @@ import {
 	spatialFact,
 	textFact,
 	updateFrequencyFact,
+	withMimFill,
 	type Fact
 } from './facts';
+import { mimFormatFill, mimInstrumentResolutionFill, mimInstrumentTypeFill, mimMissionStatusText, mimMissionYearsText, mimSwathFill, type MimSummary } from './mim';
 import { criterionReasons } from './presentation';
 import { CHECK_OUTCOME_LABELS, checkActions, productMeasurementNote, type CheckOutcome, type Guidance, type PurposeAnswers, type ResolvedCheck } from './purpose';
 import { evaluateProduct } from './matching';
+import type { CqasSummary } from './cqas';
 import type { Criteria, Product, ProvenanceRow } from './types';
 
 export interface ComparisonCell {
@@ -34,7 +37,11 @@ export interface ComparisonCell {
 	detail?: string | null;
 	link?: { label: string; url: string } | null;
 	links?: { label: string; url: string; internal?: boolean }[];
+	/** Extra lines shown one per line under the text. */
+	lines?: string[];
 	state?: 'met' | 'outside' | 'unknown';
+	/** Value from the CEOS MIM database (purple asterisk). */
+	mim?: boolean;
 }
 
 export interface ComparisonRow {
@@ -66,7 +73,8 @@ function factCell(fact: Fact): ComparisonCell {
 	return {
 		text: fact.value,
 		missingText: fact.missing?.text,
-		detail: [fact.basis, fact.note].filter(Boolean).join(' · ') || null
+		detail: [fact.basis, fact.note].filter(Boolean).join(' · ') || null,
+		...(fact.mim ? { mim: true } : {})
 	};
 }
 
@@ -86,14 +94,27 @@ export interface ComparisonPurpose {
 	detailHref: (product: Product) => string;
 }
 
+/** C-QAS report summaries for the compared products (proposed; example data until C-QAS produces real reports). */
+export interface ComparisonCqas {
+	summaries: Record<string, CqasSummary>;
+	detailHref: (product: Product) => string;
+}
+
+export const CQAS_ROW_HELP = 'Proposed. Checks on example scenes at cal/val sites, separate from the CEOS-ARD assessment; values from different sites, sensors or PFS versions are not directly comparable.';
+
 export function buildComparison(
 	products: Product[],
 	criteria: Criteria,
 	optionalGroups: string[],
 	provenance: Record<string, Record<string, ProvenanceRow>> = {},
-	purpose: ComparisonPurpose | null = null
+	purpose: ComparisonPurpose | null = null,
+	cqas: ComparisonCqas | null = null,
+	/** CEOS MIM database summaries by product ID; used only to fill gaps and add mission rows. */
+	mimSummaries: Record<string, MimSummary> = {}
 ): ComparisonGroup[] {
 	const prov = (product: Product) => provenance[product.id];
+	const mim = (product: Product) => mimSummaries[product.id] ?? null;
+	const mimMissingText = (product: Product) => (mim(product) ? 'No missions recorded in the CEOS MIM database' : 'Not linked to the CEOS MIM database');
 	const groups: ComparisonGroup[] = [];
 
 	const active = activeCriteria(criteria);
@@ -203,12 +224,30 @@ export function buildComparison(
 			qualityRow.incomparable = 'Reported values use different or unstated metrics, units or scopes; compare the definitions, not the numbers.';
 		}
 	}
+	const qualityRows = [geometric, radiometric];
+	// Shown only when at least one compared product has a C-QAS report.
+	if (cqas && products.some((p) => cqas.summaries[p.id])) {
+		const cqasRow = row(
+				'cqas',
+				'C-QAS checks (proposed)',
+				products.map((p) => {
+					const summary = cqas.summaries[p.id];
+					if (!summary) return { text: null, missingText: 'No C-QAS check' };
+					const [first, ...rest] = summary.lines;
+					return { text: first ?? null, lines: rest, detail: summary.provenance, links: [{ label: 'See C-QAS quality checks', url: `${cqas.detailHref(p)}#cqas`, internal: true }] };
+				}),
+				CQAS_ROW_HELP
+			);
+		// Reports cover different scenes (and possibly PFS versions): flag them as not directly comparable.
+		if (products.filter((p) => cqas.summaries[p.id]).length > 1) cqasRow.incomparable = 'Each C-QAS check uses different scenes and sites; compare what was checked, not just the numbers.';
+		qualityRows.push(cqasRow);
+	}
 	groups.push({
 		id: 'quality',
 		title: 'Measured quality evidence',
 		description: 'Reported geometric or radiometric evidence with its source. Absent evidence does not mean poor quality; provider values are not assumed to be independent validation.',
 		optional: false,
-		rows: [geometric, radiometric]
+		rows: qualityRows
 	});
 
 	groups.push({
@@ -217,7 +256,7 @@ export function buildComparison(
 		description: 'External provider portals perform the next area, period and access checks. This explorer does not download or validate imagery.',
 		optional: false,
 		rows: [
-			row('format', 'Data format', products.map((p) => factCell(textFact(p, 'Data format', 'data_format', prov(p))))),
+			row('format', 'Data format', products.map((p) => factCell(withMimFill(textFact(p, 'Data format', 'data_format', prov(p)), mimFormatFill(mim(p)))))),
 			row(
 				'access',
 				'Access',
@@ -241,7 +280,7 @@ export function buildComparison(
 				row('crs', 'Coordinate reference system', products.map((p) => factCell(textFact(p, '', 'coordinate_system', prov(p))))),
 				row('encoding', 'Output encoding', products.map((p) => factCell(outputEncodingFact(p, prov(p))))),
 				row('bits', 'Radiometric bit depth', products.map((p) => factCell(bitDepthFact(p, prov(p))))),
-				row('swath', 'Swath width', products.map((p) => factCell(textFact(p, '', 'swath_width', prov(p))))),
+				row('swath', 'Swath width', products.map((p) => factCell(withMimFill(textFact(p, '', 'swath_width', prov(p)), mimSwathFill(mim(p)))))),
 				row('operational', 'Operational status', products.map((p) => factCell(textFact(p, '', 'operational_status', prov(p)))))
 			]
 		});
@@ -255,8 +294,14 @@ export function buildComparison(
 			rows: [
 				row('missions', 'Missions', products.map((p) => factCell(listFact(p, '', 'missions')))),
 				row('instruments', 'Instruments', products.map((p) => factCell(listFact(p, '', 'instruments')))),
-				row('sensor', 'Sensor or instrument type', products.map((p) => factCell(textFact(p, '', 'sensor_or_instrument_type', prov(p))))),
-				row('instrument-resolution', 'Finest instrument resolution (display only)', products.map((p) => factCell(instrumentResolutionFact(p))))
+				row('sensor', 'Sensor or instrument type', products.map((p) => factCell(withMimFill(textFact(p, '', 'sensor_or_instrument_type', prov(p)), mimInstrumentTypeFill(mim(p)))))),
+				row('instrument-resolution', 'Finest instrument resolution (display only)', products.map((p) => factCell(withMimFill(instrumentResolutionFact(p), mimInstrumentResolutionFill(mim(p)))))),
+				...(products.some((p) => mim(p))
+					? [
+							row('mission-status', 'Mission status', products.map((p) => ({ text: mimMissionStatusText(mim(p)), missingText: mimMissingText(p), mim: Boolean(mim(p)?.missions.length) }))),
+							row('mission-years', 'Mission years (launch–end of life)', products.map((p) => ({ text: mimMissionYearsText(mim(p)), missingText: mimMissingText(p), detail: mim(p)?.missions.length ? 'End year is planned or actual end of life' : null, mim: Boolean(mim(p)?.missions.length) })))
+						]
+					: [])
 			]
 		});
 	}

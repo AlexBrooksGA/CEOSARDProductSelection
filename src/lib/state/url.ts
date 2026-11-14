@@ -53,7 +53,7 @@ const CRITERION_PARAMS: Record<string, CriterionName> = {
 };
 const CRITERION_TO_PARAM = Object.fromEntries(Object.entries(CRITERION_PARAMS).map(([param, name]) => [name, param]));
 
-export const KNOWN_PARAMS = new Set(['v', 'q', 'fam', 'scope', 'mim', 'unk', 'prov', 'sensor', 'ops', 'src', 'sl', 'cmp', 'fields', 'p', 'pu', 'gv', ...Object.keys(CRITERION_PARAMS)]);
+export const KNOWN_PARAMS = new Set(['v', 'q', 'fam', 'scope', 'mim', 'unk', 'prov', 'sensor', 'ops', 'src', 'sl', 'cmp', 'fields', 'p', 'pu', 'gv', 'cqas', ...Object.keys(CRITERION_PARAMS)]);
 export const PURPOSE_KEY_PATTERN = /^[a-z0-9-]{1,40}(~[a-z0-9-]{1,40}){0,2}$/;
 
 export interface ParsedUrlState {
@@ -190,6 +190,11 @@ export function parseUrlState(params: URLSearchParams): ParsedUrlState {
 		if (/^[a-z0-9-]{1,64}$/.test(profileId) && !profileId.startsWith('custom-')) state.profileId = profileId;
 		else issues.push('Custom profiles are not shared by links; the criteria in the link were used instead.');
 	}
+	const cqas = params.get('cqas');
+	if (cqas !== null) {
+		if (cqas === 'advanced' || cqas === 'simple') state.cqasDetail = cqas;
+		else issues.push('The C-QAS level of detail was not recognised; showing the Simple view.');
+	}
 	const purpose = params.get('pu');
 	if (purpose) {
 		if (PURPOSE_KEY_PATTERN.test(purpose)) {
@@ -203,7 +208,8 @@ export function parseUrlState(params: URLSearchParams): ParsedUrlState {
 
 /** True when the URL carries anything beyond the baseline version parameter. */
 export function hasMeaningfulState(parsed: ParsedUrlState): boolean {
-	return queryString(parsed.state) !== `v=${URL_VERSION}`;
+	// The C-QAS level of detail is a view preference, not explorer state.
+	return queryString({ ...parsed.state, cqasDetail: NEUTRAL_STATE.cqasDetail }) !== `v=${URL_VERSION}`;
 }
 
 function formatValue(value: number): string {
@@ -240,6 +246,7 @@ export function serialiseUrlState(state: ExplorerState): URLSearchParams {
 		params.set('pu', state.purpose);
 		if (state.guidanceVersion) params.set('gv', state.guidanceVersion);
 	}
+	if (state.cqasDetail === 'advanced') params.set('cqas', 'advanced');
 	return params;
 }
 

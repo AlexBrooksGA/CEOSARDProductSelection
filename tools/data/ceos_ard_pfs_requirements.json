@@ -1,0 +1,1706 @@
+{
+ "source": {
+  "repository": "https://github.com/ceos-org/ceos-ard",
+  "commit": "a81d4d48d22186700a356a998bbb44b044a0d099",
+  "date": "2026-11-10",
+  "note": "Extracted by hand for the C-QAS mock-up generator. IDs are the requirement id prefixed by its category, as in the C-QAS report mock-up. threshold/goal are false where the specification has no requirement at that level."
+ },
+ "specifications": {
+  "SR": {
+   "title": "Surface Reflectance",
+   "version": "5.0.2",
+   "requirements": [
+    {
+     "id": "meta-trace-sr",
+     "title": "Traceability",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-memare-optical",
+     "title": "Metadata Machine Readability",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-time-sr",
+     "title": "Data Collection Time",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-geoarea-optical",
+     "title": "Geographical Area",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-crs-optical",
+     "title": "Coordinate Reference System",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-mapproj-sr",
+     "title": "Map Projection",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-geocorm-sr",
+     "title": "Geometric Correction Methods",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-geoacc-sr",
+     "title": "Geometric Accuracy of the Data",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-instru-optical",
+     "title": "Instrument",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-specband",
+     "title": "Spectral Bands",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-sencal-optical",
+     "title": "Sensor Calibration",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-radacc-sr",
+     "title": "Radiometric Accuracy",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-malgos-sr",
+     "title": "Algorithms",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-auxdat-optical",
+     "title": "Auxiliary Data",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-proprov-sr",
+     "title": "Processing Chain Provenance",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-daccess",
+     "title": "Data Access",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-odqual",
+     "title": "Overall Data Quality",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pimemare",
+     "title": "Metadata Machine Readability",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pinodat",
+     "title": "No Data",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pincot",
+     "title": "Incomplete Testing",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-pisatur",
+     "title": "Saturation",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-picloud",
+     "title": "Cloud",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-picloudsh",
+     "title": "Cloud Shadow",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-lawama-sr",
+     "title": "Land/Water Mask",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-snowice-sr",
+     "title": "Snow/Ice Mask",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-tershad",
+     "title": "Terrain Shadow Mask",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-terocc",
+     "title": "Terrain Occlusion",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-vigeso",
+     "title": "Solar and Viewing Geometry",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-piteric",
+     "title": "Terrain Illumination Correction",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rac-measur-sr",
+     "title": "Measurement",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rac-muncer-sr",
+     "title": "Measurement Uncertainty",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rac-mnormal-sr",
+     "title": "Measurement Normalisation",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rac-dirats-sr",
+     "title": "Directional Atmospheric Scattering",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rac-wavap-sr",
+     "title": "Water Vapour Corrections",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rac-cozone-sr",
+     "title": "Ozone Corrections",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-geocorr-sr",
+     "title": "Geometric Correction",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    }
+   ]
+  },
+  "ST": {
+   "title": "Surface Temperature",
+   "version": "6.0.0",
+   "requirements": [
+    {
+     "id": "meta-ardver",
+     "title": "CEOS-ARD PFS Compliance Version",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-trace-st",
+     "title": "Metrological Traceability of the Measurand to SI",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-memare-st",
+     "title": "Metadata Machine Readability",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-time-st",
+     "title": "Data Collection Time",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-geoarea-optical",
+     "title": "Geographical Area",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-crs-ar",
+     "title": "Coordinate Reference System",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-mapproj-ar",
+     "title": "Map Projection",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-geocorm-st",
+     "title": "Geometric Correction Methods",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-geounc-st",
+     "title": "Geometric Uncertainty of the Data",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-instru-st",
+     "title": "Instrument",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-specband-st",
+     "title": "Spectral Bands",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-sencal-st",
+     "title": "Sensor Calibration",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-measurunc",
+     "title": "Measurand Uncertainty",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-measurenc",
+     "title": "Measurand Encoding",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-malgos-st",
+     "title": "Algorithms",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-auxdat-st",
+     "title": "Auxiliary Data",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-proprov-st",
+     "title": "Processing Chain Provenance",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-daccess-st",
+     "title": "Data Access",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-valpix",
+     "title": "Valid Pixels",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pinodat-st",
+     "title": "No Data",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pincot-st",
+     "title": "Incomplete Testing",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-pisatur-ar",
+     "title": "Saturation",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-picloud-st",
+     "title": "Cloud",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-picloudsh-st",
+     "title": "Cloud Shadow",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-surf-st",
+     "title": "Surface",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-vigeso-ar",
+     "title": "Solar and Viewing Geometry",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-terrain-st",
+     "title": "Terrain Occlusion",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rac-measur-st",
+     "title": "Measurand",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rac-catmos",
+     "title": "Corrections for Atmosphere",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rac-emiani",
+     "title": "Adjustments for Emissivity and Anisotropy",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rac-muncer-st",
+     "title": "Measurand Uncertainty",
+     "category": "radiometric-atmospheric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-geocorr-st",
+     "title": "Geometric Correction",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    }
+   ]
+  },
+  "NRB": {
+   "title": "Normalised Radar Backscatter",
+   "version": "5.6.0",
+   "requirements": [
+    {
+     "id": "meta-trace-sar",
+     "title": "Traceability",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-protype",
+     "title": "Product Type",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-pfsurl",
+     "title": "Document Identifier",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-time-sar",
+     "title": "Data Collection Time",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-macqid",
+     "title": "Acquisition ID",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-daccess-src",
+     "title": "Source Data Access",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-instru-sar",
+     "title": "Instrument",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-time-src",
+     "title": "Source Data Acquisition Time",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-acqpar",
+     "title": "Source Data Acquisition Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-orbit",
+     "title": "Source Data Orbit Information",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-propar",
+     "title": "Source Data Processing Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-imgatt-sar",
+     "title": "Source Data Image Attributes",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-sencal-sar",
+     "title": "Sensor Calibration",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-perfind",
+     "title": "Performance Indicators",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-polcalm",
+     "title": "Polarimetric Calibration Matrices",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-farotan",
+     "title": "Mean Faraday Rotation Angle",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-ionind",
+     "title": "Ionosphere Indicator",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-daccess-prod",
+     "title": "Product Data Access",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "prod-auxdat-sar",
+     "title": "Auxiliary Data",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-samspa",
+     "title": "Product Sample Spacing",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-enl",
+     "title": "Product Equivalent Number of Looks",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-resol",
+     "title": "Product Resolution",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-spekfil",
+     "title": "Product Filtering",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-geobbox",
+     "title": "Product Bounding Box",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-geoarea-sar",
+     "title": "Product Geographical Extent",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-imgsize",
+     "title": "Product Image Size",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-pixcoco",
+     "title": "Product Pixel Coordinate Convention",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-crs-sar",
+     "title": "Product Coordinate Reference System",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-reorbit-nrb-pol",
+     "title": "Reference Orbit",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-damaski",
+     "title": "Data Mask Image",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-piscata",
+     "title": "Scattering Area Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-ploinca",
+     "title": "Local Incident Angle Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": false
+    },
+    {
+     "id": "pxl-pelinca",
+     "title": "Ellipsoidal Incident Angle Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": false
+    },
+    {
+     "id": "pxl-pinopow",
+     "title": "Noise Power Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-gasiri",
+     "title": "Gamma-to-Sigma Ratio Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pacqidm",
+     "title": "Acquisition ID Image",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pidem",
+     "title": "Per-Pixel DEM",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-backsca-nrb",
+     "title": "Backscatter Measurements (NRB)",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-scaconv",
+     "title": "Scaling Conversion",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rcm-noiser",
+     "title": "Noise Removal",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-radtalg-appl",
+     "title": "Radiometric Terrain Correction Algorithm",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-radacc-sar",
+     "title": "Radiometric Accuracy",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-flapha",
+     "title": "Flattened Phase",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-geocalg",
+     "title": "Geometric Correction Algorithm",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-cdem",
+     "title": "Digital Elevation Model",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-geomacc-sar",
+     "title": "Geometric Accuracy",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-georacc",
+     "title": "Geometric Refined Accuracy",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-gridconv",
+     "title": "Gridding Convention",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    }
+   ]
+  },
+  "POL": {
+   "title": "Polarimetric Radar",
+   "version": "3.6.0",
+   "requirements": [
+    {
+     "id": "meta-trace-sar",
+     "title": "Traceability",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-protype",
+     "title": "Product Type",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-pfsurl",
+     "title": "Document Identifier",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-time-sar",
+     "title": "Data Collection Time",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-macqid",
+     "title": "Acquisition ID",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-daccess-src",
+     "title": "Source Data Access",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-instru-sar",
+     "title": "Instrument",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-time-src",
+     "title": "Source Data Acquisition Time",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-acqpar",
+     "title": "Source Data Acquisition Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-orbit",
+     "title": "Source Data Orbit Information",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-propar",
+     "title": "Source Data Processing Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-imgatt-sar",
+     "title": "Source Data Image Attributes",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-sencal-sar",
+     "title": "Sensor Calibration",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-perfind",
+     "title": "Performance Indicators",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-polcalm",
+     "title": "Polarimetric Calibration Matrices",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-farotan",
+     "title": "Mean Faraday Rotation Angle",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-ionind",
+     "title": "Ionosphere Indicator",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-daccess-prod",
+     "title": "Product Data Access",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "prod-auxdat-sar",
+     "title": "Auxiliary Data",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-samspa",
+     "title": "Product Sample Spacing",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-enl",
+     "title": "Product Equivalent Number of Looks",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-resol",
+     "title": "Product Resolution",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-spekfil-pol",
+     "title": "Product Filtering",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-geobbox",
+     "title": "Product Bounding Box",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-geoarea-sar",
+     "title": "Product Geographical Extent",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-imgsize",
+     "title": "Product Image Size",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-pixcoco",
+     "title": "Product Pixel Coordinate Convention",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-crs-sar",
+     "title": "Product Coordinate Reference System",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-reorbit-nrb-pol",
+     "title": "Reference Orbit",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-damaski",
+     "title": "Data Mask Image",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-piscata",
+     "title": "Scattering Area Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-ploinca",
+     "title": "Local Incident Angle Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": false
+    },
+    {
+     "id": "pxl-pelinca",
+     "title": "Ellipsoidal Incident Angle Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": false
+    },
+    {
+     "id": "pxl-pinopow",
+     "title": "Noise Power Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-gasiri",
+     "title": "Gamma-to-Sigma Ratio Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pacqidm",
+     "title": "Acquisition ID Image",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "pxl-pidem",
+     "title": "Per-Pixel DEM",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-backsca-pol",
+     "title": "Backscatter Measurements (POL)",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-scaconv",
+     "title": "Scaling Conversion",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rcm-noiser",
+     "title": "Noise Removal",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-radtalg-appl",
+     "title": "Radiometric Terrain Correction Algorithm",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-radacc-sar",
+     "title": "Radiometric Accuracy",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-flapha",
+     "title": "Flattened Phase",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-geocalg",
+     "title": "Geometric Correction Algorithm",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-cdem",
+     "title": "Digital Elevation Model",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-geomacc-sar",
+     "title": "Geometric Accuracy",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-georacc",
+     "title": "Geometric Refined Accuracy",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-gridconv",
+     "title": "Gridding Convention",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    }
+   ]
+  },
+  "INSAR": {
+   "title": "Interferometric SAR",
+   "version": "2.0.0",
+   "requirements": [
+    {
+     "id": "meta-trace-sar",
+     "title": "Traceability",
+     "category": "general-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "meta-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "meta-protype",
+     "title": "Product Type",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-pfsurl",
+     "title": "Document Identifier",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "meta-time-sar",
+     "title": "Data Collection Time",
+     "category": "general-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-macqid",
+     "title": "Acquisition ID",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-daccess-src",
+     "title": "Source Data Access",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-instru-sar",
+     "title": "Instrument",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-time-src",
+     "title": "Source Data Acquisition Time",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-acqpar",
+     "title": "Source Data Acquisition Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-orbit-insar",
+     "title": "Source Data Orbit Information",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "src-propar",
+     "title": "Source Data Processing Parameters",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-imgatt-sar",
+     "title": "Source Data Image Attributes",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-sencal-sar",
+     "title": "Sensor Calibration",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-perfind",
+     "title": "Performance Indicators",
+     "category": "source-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "src-polcalm",
+     "title": "Polarimetric Calibration Matrices",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-farotan",
+     "title": "Mean Faraday Rotation Angle",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "src-ionind",
+     "title": "Ionosphere Indicator",
+     "category": "source-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-daccess-prod",
+     "title": "Product Data Access",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "prod-auxdat-sar",
+     "title": "Auxiliary Data",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-samspa",
+     "title": "Product Sample Spacing",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-enl",
+     "title": "Product Equivalent Number of Looks",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-resol",
+     "title": "Product Resolution",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "prod-geobbox",
+     "title": "Product Bounding Box",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-geoarea-sar",
+     "title": "Product Geographical Extent",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-imgsize",
+     "title": "Product Image Size",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-pixcoco",
+     "title": "Product Pixel Coordinate Convention",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-crs-sar",
+     "title": "Product Coordinate Reference System",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-rulvec",
+     "title": "Radar Unit Look Vector",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-inspair",
+     "title": "InSAR Pair",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "prod-inspacr",
+     "title": "InSAR Pair Co-registration",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-inpqual",
+     "title": "Local InSAR Phase Quality",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-intfil",
+     "title": "Interferogram Filtering",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-phasun",
+     "title": "Phase Unwrapping",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-catpha",
+     "title": "Atmospheric Phase Correction",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-ionpha",
+     "title": "Ionospheric Phase Correction",
+     "category": "product-metadata",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "prod-dismod",
+     "title": "Displacement Modelling",
+     "category": "product-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-memare-sar",
+     "title": "Metadata Machine Readability",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-damaski",
+     "title": "Data Mask Image",
+     "category": "per-pixel-metadata",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "pxl-piscata",
+     "title": "Scattering Area Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pelinca",
+     "title": "Ellipsoidal Incident Angle Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": false
+    },
+    {
+     "id": "pxl-pinopow",
+     "title": "Noise Power Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-gasiri",
+     "title": "Gamma-to-Sigma Ratio Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pidem",
+     "title": "Per-Pixel DEM",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-radulov-insar",
+     "title": "Radar Unit Look Vector Grid Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-slarassi-insar",
+     "title": "Slant Range Sensor to Surface Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-pinphun",
+     "title": "InSAR Phase Uncertainty Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-atphaci",
+     "title": "Atmospheric Phase Correction Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-piopha",
+     "title": "Ionospheric Phase Correction Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-sitophi",
+     "title": "Simulated Topographic Phase Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-iperba",
+     "title": "InSAR Perpendicular Baseline Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-iparba",
+     "title": "InSAR Parallel Baseline Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "pxl-idimopo",
+     "title": "InSAR Displacement Model Point Image",
+     "category": "per-pixel-metadata",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-backsca-insar",
+     "title": "Backscatter Measurements (InSAR)",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-scaconv",
+     "title": "Scaling Conversion",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "rcm-noiser",
+     "title": "Noise Removal",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": true,
+     "goal": false
+    },
+    {
+     "id": "rcm-radtalg-min",
+     "title": "Radiometric Terrain Correction Algorithm",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-radacc-sar",
+     "title": "Radiometric Accuracy",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-coheri",
+     "title": "Coherence Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-interfi",
+     "title": "Interferogram Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-unwinterfi",
+     "title": "Unwrapped Interferogram Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-indispi",
+     "title": "InSAR Displacement Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-indisrei",
+     "title": "InSAR Displacement Residue Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-indisrai",
+     "title": "InSAR Displacement Rate Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "rcm-indisramfi",
+     "title": "InSAR Displacement Rate Model Fit Image",
+     "category": "radiometrically-corrected-measurements",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-geocalg",
+     "title": "Geometric Correction Algorithm",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-cdem",
+     "title": "Digital Elevation Model",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-geomacc-sar",
+     "title": "Geometric Accuracy",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    },
+    {
+     "id": "gcor-georacc",
+     "title": "Geometric Refined Accuracy",
+     "category": "geometric-corrections",
+     "threshold": false,
+     "goal": true
+    },
+    {
+     "id": "gcor-gridconv",
+     "title": "Gridding Convention",
+     "category": "geometric-corrections",
+     "threshold": true,
+     "goal": true
+    }
+   ]
+  }
+ }
+}

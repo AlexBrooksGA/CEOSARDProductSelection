@@ -10,6 +10,8 @@ CEOS-ARD assessment describes conformance with a PFS; it does not certify suitab
 
 **Stack:** SvelteKit 2 + Svelte 5 + TypeScript, plain CSS, one Node.js process (`@sveltejs/adapter-node`). Filtering, matching and comparison run in the browser; MIM requests, credentials, validation and caching run on the server. No database, accounts or Python at runtime. The reasons for this choice are in [`docs/rebuild/AUDIT.md`](docs/rebuild/AUDIT.md#6-stack-decision).
 
+**Publishing the C-QAS and CEOS MIM changes:** see [`docs/PUBLISH_CHECKLIST.md`](docs/PUBLISH_CHECKLIST.md) (Sites secrets to change, the live-embed decision, data refresh and follow-ups).
+
 ## Quick start
 
 Requires **Node.js 22.12 or newer**.
@@ -28,23 +30,24 @@ npm start         # node --env-file-if-exists=.env build → http://localhost:30
 
 On Windows, double-click `run_app.bat` (installs, builds and starts, then opens the browser).
 
-A clean setup **without MIM credentials** supports the complete curated-catalogue journey.
+A clean setup needs no configuration: the curated catalogue works offline, and MIM records load from the public CEOS Database API on request.
 
-## Optional MIM configuration
+## MIM (CEOS Missions, Instruments and Measurements database)
 
-```bash
-cp .env.example .env   # then edit; .env is git-ignored
-```
+MIM works with no configuration: the server reads the public **CEOS Database API** at `https://ceos-capabilities.org/api` (CC BY 4.0, attribution "CEOS MIM Database, https://database.eohandbook.com"). Loading is still deliberate: nothing is fetched until someone selects **Load MIM products**. The MIM panel shows the database edition and data date.
+
+Optional settings (`cp .env.example .env`; `.env` is git-ignored):
 
 | Variable | Purpose |
 |---|---|
-| `MIMS_API_USERNAME`, `MIMS_API_PASSWORD` | Server-only credentials (names unchanged from the prototype). |
-| `MIMS_API_BASE_URL` | API root, e.g. `https://eo-explorer-demo.diamondsky.au/api`. HTTPS required (http only for localhost). |
-| `MIMS_CACHE_TTL_SECONDS` | Cache freshness, default 21600 (6 hours, as before). |
+| `MIMS_API_BASE_URL` | API root. Default `https://ceos-capabilities.org/api`. HTTPS required (http only for localhost). Set to `off` to turn MIM off. |
+| `MIMS_API_KEY` | Free key for higher rate limits (anonymous use allows 30 requests per second per IP). Sent as `X-API-Key`, server-side only. |
+| `MIMS_API_USERNAME`, `MIMS_API_PASSWORD` | Only for an older authenticated MIM deployment. Set both or neither. |
+| `MIMS_CACHE_TTL_SECONDS` | Cache freshness, default 21600 (6 hours). |
 | `MIMS_REFRESH_COOLDOWN_SECONDS` | Minimum gap between upstream refreshes, default 60. |
 | `MIMS_FAILURE_BACKOFF_SECONDS` | Pause after a failed load before retrying upstream, default 30. |
 
-Credentials are read only on the server, never sent to the browser, put in URLs or logged. Requests and schema-discovered URLs are restricted to the configured origin and API path. Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#mim-integration).
+Keys and credentials are read only on the server, never sent to the browser, put in URLs or logged. Requests and schema-discovered URLs are restricted to the configured origin and API path. Behind an outbound proxy, run Node 22.21+ with `NODE_USE_ENV_PROXY=1` so its built-in fetch uses `HTTPS_PROXY`. Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#mim-integration).
 
 ## Scripts
 
@@ -56,6 +59,7 @@ Credentials are read only on the server, never sent to the browser, put in URLs 
 | `npm run build` | Production build into `build/`. |
 | `npm start` | Run the built Node app (loads `.env` if present). |
 | `npm run test:e2e` | Playwright tests against the **built** app (run `npm run build` first; `npx playwright install chromium` once). Uses a local mock MIM API — no live credentials. |
+| `npm run build:artifact` | Static, server-free copy for a Claude Artifact or any static host (`artifact-build/`): bundled data only, live MIM loading off. The repository app is not changed. |
 | `npm run verify` | All of the above in order. |
 | `npm run parity:fixtures` | Regenerate parity fixtures from the legacy Python reference (development only). |
 
@@ -93,6 +97,28 @@ docs/                  Architecture, state contract, deployment, rebuild audit a
 
 Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceos_ard.py`, run `python tools/populate_ceos_ard.py` to regenerate `data/ceos_ard_products.json`, the research log and reports, then run `npm test` (the catalogue is validated on load: stable unique IDs, field types, ISO dates, http(s) URLs, one research-log row per product and field). Keep product IDs stable. If `data/ceos_ard_products.json` is absent, the app falls back to `demo_products.json` with the `ceos_ard_status.json` overlay, as before. Rebuild and restart the server to publish changes.
 
+## MIM snapshot for curated products
+
+Each curated product is linked to its CEOS MIM records in `data/mim/links.json` (MIM product ID and the missions it covers). `tools/build_mim_snapshot.mjs` fetches the linked products, instruments (with radar parameters), missions and mission images from the public CEOS Database API and writes:
+
+- `data/mim/snapshot.json`: the values the explorer shows, with the database edition, data date, licence and attribution. It is validated when the server starts and by `npm test`; a bad snapshot is skipped with a warning.
+- `reports/mim_reconciliation.md`: where MIM and the curated catalogue differ, and MIM CEOS-ARD products not yet in the catalogue.
+
+```bash
+NODE_USE_ENV_PROXY=1 node tools/build_mim_snapshot.mjs   # NODE_USE_ENV_PROXY only behind a proxy
+npm test
+```
+
+Then vendor mission pictures (same-origin only, so the app works offline):
+
+```bash
+NODE_USE_ENV_PROXY=1 node tools/fetch_mission_visuals.mjs
+```
+
+It copies, into `assets/mission_visuals/`, the silhouette icon of every mission with spacecraft-specific artwork (CEOS MIM original artwork; the API documents it as needing no third-party credit, and CC BY 4.0 is inferred from the API's data licence) and the picture only where MIM records a credit (rights holder and licence). Pictures without a recorded credit are left out until their terms are confirmed, and generic illustrations are never used. The product's agency mark flips (hover, keyboard focus or tap; a plain swap with reduced motion) to the satellite: the newest mission with a credited picture, otherwise the newest silhouette; mission cards show the picture with its credit, or the silhouette.
+
+Curated values always take precedence. MIM values fill gaps and add mission and instrument detail; they are marked with a purple asterisk and never affect filtering, matching or ordering.
+
 ## CEOS-ARD labels
 
 - **CEOS-ARD assessed** — only when `ceos_ard_verified` is `true` in the curated data, or, for MIM records, when the product link reports `product_status=CEOS-ARD` **and** a CEOS-ARD certification has an approval date or review URL.
@@ -108,4 +134,4 @@ Catalogue maintenance is unchanged: edit the declarations in `tools/populate_ceo
 - The MIM cache is process-local: it resets on restart and is not shared across replicas.
 - Profiles, notes and drafts are session-only (no accounts).
 - Purpose guidance version 1 is illustrative and **not reviewed**; it covers wetlands in detail and gives general checks elsewhere. The entry imagery is an AI-generated fictional scene (radar and thermal looks are stylised from it), not satellite data; the repository keeps the native generated files and their provenance in `assets/purpose-imagery/`; rebuild the web versions in `static/images/purpose-journey/` with `python tools/build_purpose_imagery.py` (it uses the upscaled working masters when present, otherwise the native files).
-- Live MIM integration was validated against controlled fixtures and a mock server in this rebuild, not against the live service.
+- MIM integration is tested against fixtures and a mock server; it was also checked by hand against the live public CEOS Database API (59 products, edition e574f0c2, data as of 2026-10-23).

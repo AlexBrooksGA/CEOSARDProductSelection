@@ -5,6 +5,8 @@
 	import { app } from '$lib/state/app.svelte';
 	import AssessmentBadge from './AssessmentBadge.svelte';
 	import ExternalLink from './ExternalLink.svelte';
+	import MimFootnote from './MimFootnote.svelte';
+	import MimMark from './MimMark.svelte';
 
 	let { products }: { products: Product[] } = $props();
 	const store = app();
@@ -25,9 +27,12 @@
 						outcome: (productId, checkId) => store.checkOutcome(productId, checkId),
 						detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`)
 					}
-				: null
+				: null,
+			{ summaries: store.cqasSummaries, detailHref: (product) => store.href(`/products/${encodeURIComponent(product.id)}`) },
+			store.mimSummaries
 		)
 	);
+	let showsMim = $derived(groups.some((group) => group.rows.some((row) => row.cells.some((cell) => cell.mim && cell.text))));
 	$effect(() => {
 		void store.ensureProvenance(products.map((product) => product.id));
 	});
@@ -86,14 +91,15 @@
 							{#each row.cells as cell, index (index)}
 								<td>
 									{#if cell.text}
-										<span class={cell.state ? `state ${cell.state}` : ''}>{cell.state === 'met' ? '✓ ' : cell.state === 'outside' ? '△ ' : cell.state === 'unknown' ? '? ' : ''}{cell.text}</span>
+										<span class={cell.state ? `state ${cell.state}` : ''}>{cell.state === 'met' ? '✓ ' : cell.state === 'outside' ? '△ ' : cell.state === 'unknown' ? '? ' : ''}{cell.text}</span>{#if cell.mim}<MimMark />{/if}
+										{#each cell.lines ?? [] as line (line)}<span class="detail">{line}</span>{/each}
 									{:else}
 										<span class="missing">{cell.missingText ?? 'Not established in this catalogue'}</span>
 									{/if}
 									{#if cell.detail}<span class="detail small secondary">{cell.detail}</span>{/if}
 									{#if cell.link}<span class="detail"><ExternalLink href={cell.link.url} class="button small">{cell.link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></ExternalLink></span>{/if}
 									{#if cell.links?.length}
-										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}{#if link.internal}<a href={link.url}>{link.label}</a>{:else}<ExternalLink href={link.url}>{link.label}</ExternalLink>{/if}{/each}</span>
+										<span class="detail small">{#each cell.links as link, i (link.url)}{#if i}<span aria-hidden="true">&nbsp;·&nbsp;</span>{/if}{#if link.internal}<a href={link.url}>{link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></a>{:else}<ExternalLink href={link.url}>{link.label}<span class="visually-hidden"> for {products[index]?.product_name}</span></ExternalLink>{/if}{/each}</span>
 									{/if}
 								</td>
 							{/each}
@@ -103,6 +109,7 @@
 			{/each}
 		</table>
 	</div>
+	{#if showsMim && store.mimSource}<MimFootnote source={store.mimSource} />{/if}
 </div>
 
 <style>

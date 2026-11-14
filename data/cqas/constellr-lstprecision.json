@@ -1,0 +1,270 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-CONSTELLR-001",
+	"report_date": "2026-10-12",
+	"domain": "thermal",
+	"product": {
+		"explorer_id": "constellr-lstprecision",
+		"name": "Constellr LSTprecision",
+		"short_name": "Constellr LSTprecision"
+	},
+	"pfs": {
+		"name": "Surface Temperature",
+		"short_name": "ST",
+		"version": "6.0.0",
+		"total_requirements": 32
+	},
+	"scene": {
+		"product_id": "CONSTELLR_LSTP_A01_20250903T104512_EVO_L2_V1",
+		"platform": "SkyBee A01",
+		"instrument": "SkyBee TIR camera",
+		"acquisition_date": "2025-09-03",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "KIT LST stations",
+			"code": "EVO",
+			"name": "Évora, Portugal"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-T600-G1-R3-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "T600",
+				"part": "Check set",
+				"meaning": "Surface Temperature PFS v6.0.0"
+			},
+			{
+				"code": "G1",
+				"part": "Geometric method",
+				"meaning": "Relative image-to-image matching, demo-v1"
+			},
+			{
+				"code": "R3",
+				"part": "Radiometric method",
+				"meaning": "In situ surface temperature comparison, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "10 of the 32 Surface Temperature PFS v6.0.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Coordinate Reference System",
+			"id": "meta-crs-ar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Access",
+			"id": "meta-daccess-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurand Uncertainty (metadata)",
+			"id": "meta-measurunc",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "No Data",
+			"id": "pxl-pinodat-st",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Cloud",
+			"id": "pxl-picloud-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurand",
+			"id": "rac-measur-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurand Uncertainty (corrections)",
+			"id": "rac-muncer-st",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Correction",
+			"id": "gcor-geocorr-st",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G1",
+		"kind": "relative",
+		"method": "demo-v1",
+		"reference": "SkyBee A01 repeat reference image",
+		"comparison": "Same-platform repeat image",
+		"method_notes": "phase correlation; offsets from the original grid",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.45,
+		"comparisons_px": [
+			0.4,
+			0.5,
+			0.5,
+			0.48,
+			0.36,
+			0.44
+		],
+		"limit_px": 0.5,
+		"limit_source": "PFS Threshold",
+		"matches_accepted": 131,
+		"matches_total": 157,
+		"match_unit": "image matches",
+		"positional_uncertainty": null,
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Met",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R3",
+		"method": "demo-v1",
+		"comparison": "Observed minus in situ surface temperature",
+		"reference": "KIT LST stations: Évora, Portugal",
+		"method_notes": "in situ skin temperature; time gap 8 min; emissivity from ASTER GED",
+		"quantity": "surface temperature",
+		"short_quantity": "ST",
+		"units": "K",
+		"decimals": 2,
+		"headline_channel": "LST",
+		"channels": [
+			{
+				"channel": "LST",
+				"name": "land surface temperature",
+				"difference": -0.68,
+				"uncertainty_k1": 0.56,
+				"reference_value": null
+			}
+		],
+		"limit": 2,
+		"limit_source": "Provider stated accuracy (<1–2 K)",
+		"samples_used": 7,
+		"samples_total": 9,
+		"sample_unit": "pixels around the in situ radiometer",
+		"unique_exclusions": 2,
+		"product_uncertainty": "Per-pixel LST uncertainty supplied (1.1 K at the site)",
+		"accuracy_test": "Met",
+		"accuracy_reason": null,
+		"uncertainty_goal": "Met",
+		"uncertainty_goal_reason": null
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Land surface temperature (LST) surface temperature difference",
+		"channel": "LST",
+		"units": "K",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "KIT LST stations",
+				"code": "EVO",
+				"name": "Évora, Portugal"
+			},
+			{
+				"network": "KIT LST stations",
+				"code": "GBB",
+				"name": "Gobabeb, Namibia"
+			}
+		],
+		"points": [
+			{
+				"date": "2025-03-26",
+				"site": "EVO",
+				"value": -0.373,
+				"uncertainty_k1": 0.591
+			},
+			{
+				"date": "2025-06-25",
+				"site": "GBB",
+				"value": -0.275,
+				"uncertainty_k1": 0.594
+			},
+			{
+				"date": "2025-08-31",
+				"site": "EVO",
+				"value": -1.046,
+				"uncertainty_k1": 0.603
+			},
+			{
+				"date": "2025-09-03",
+				"site": "EVO",
+				"value": -0.68,
+				"uncertainty_k1": 0.56
+			},
+			{
+				"date": "2025-10-07",
+				"site": "GBB",
+				"value": -1.213,
+				"uncertainty_k1": 0.539
+			},
+			{
+				"date": "2025-12-29",
+				"site": "EVO",
+				"value": -1.056,
+				"uncertainty_k1": 0.669
+			},
+			{
+				"date": "2026-03-09",
+				"site": "GBB",
+				"value": -0.668,
+				"uncertainty_k1": 0.528
+			},
+			{
+				"date": "2026-05-14",
+				"site": "EVO",
+				"value": -0.859,
+				"uncertainty_k1": 0.576
+			},
+			{
+				"date": "2026-07-15",
+				"site": "GBB",
+				"value": -1.11,
+				"uncertainty_k1": 0.551
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "No action needed for the checked Threshold requirements.",
+	"next_actions": [],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

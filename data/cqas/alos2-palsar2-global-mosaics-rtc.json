@@ -1,0 +1,241 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-ALOS2-MOSAIC-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "alos2-palsar2-global-mosaics-rtc",
+		"name": "ALOS-2 PALSAR-2 Global Mosaics (RTC)",
+		"short_name": "ALOS-2 PALSAR-2 Global Mosaics (RTC)"
+	},
+	"pfs": {
+		"name": "Normalised Radar Backscatter",
+		"short_name": "NRB",
+		"version": "5.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "N43E141_24_sl_HH_F02DAR",
+		"platform": "ALOS-2",
+		"instrument": "PALSAR-2",
+		"acquisition_date": "2024-07-01",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "TOMAKOMAI",
+			"name": "Tomakomai, Japan"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. Annual 2024 mosaic tile; the date is the mosaic reference date."
+	},
+	"run": {
+		"code": "C031-N560-G2-R0-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "N560",
+				"part": "Check set",
+				"meaning": "Normalised Radar Backscatter PFS v5.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R0",
+				"part": "Radiometric method",
+				"meaning": "No radiometric test defined for this product type"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Normalised Radar Backscatter PFS v5.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Backscatter Measurements (NRB)",
+			"id": "rcm-backsca-nrb",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Tomakomai, Japan reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 25,
+		"radial_rmse_px": 0.36,
+		"comparisons_px": [
+			0.34,
+			0.35,
+			0.3,
+			0.35,
+			0.42,
+			0.39,
+			0.36
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 7,
+		"matches_total": 7,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±3.1 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": null,
+	"radiometric_note": "A mosaic combines many acquisitions, so a single-scene radiometric comparison is not defined.",
+	"series": {
+		"test": "geometric",
+		"description": "Location error of each annual mosaic at the corner reflectors",
+		"channel": null,
+		"units": "m",
+		"decimals": 1,
+		"sites": [
+			{
+				"network": "Corner reflector array",
+				"code": "TOMAKOMAI",
+				"name": "Tomakomai, Japan"
+			}
+		],
+		"points": [
+			{
+				"date": "2016-07-01",
+				"site": "TOMAKOMAI",
+				"value": 9.3,
+				"uncertainty_k1": 1.5
+			},
+			{
+				"date": "2017-07-01",
+				"site": "TOMAKOMAI",
+				"value": 7.3,
+				"uncertainty_k1": 1.2
+			},
+			{
+				"date": "2018-07-01",
+				"site": "TOMAKOMAI",
+				"value": 9.4,
+				"uncertainty_k1": 1.2
+			},
+			{
+				"date": "2019-07-01",
+				"site": "TOMAKOMAI",
+				"value": 7.4,
+				"uncertainty_k1": 1.4
+			},
+			{
+				"date": "2020-07-01",
+				"site": "TOMAKOMAI",
+				"value": 7.4,
+				"uncertainty_k1": 1.2
+			},
+			{
+				"date": "2021-07-01",
+				"site": "TOMAKOMAI",
+				"value": 8.8,
+				"uncertainty_k1": 1
+			},
+			{
+				"date": "2022-07-01",
+				"site": "TOMAKOMAI",
+				"value": 9,
+				"uncertainty_k1": 1.5
+			},
+			{
+				"date": "2023-07-01",
+				"site": "TOMAKOMAI",
+				"value": 7,
+				"uncertainty_k1": 1.2
+			},
+			{
+				"date": "2024-07-01",
+				"site": "TOMAKOMAI",
+				"value": 9,
+				"uncertainty_k1": 1.8
+			}
+		],
+		"note": "One value per annual mosaic. Zero would mean every reflector is exactly where it was surveyed."
+	},
+	"next_action": "No action needed for the checked Threshold requirements.",
+	"next_actions": [],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

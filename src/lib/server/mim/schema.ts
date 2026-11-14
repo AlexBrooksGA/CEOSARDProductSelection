@@ -1,5 +1,5 @@
 /**
- * Authenticated OpenAPI inspection — a port of legacy `inspect_openapi`,
+ * OpenAPI inspection — a port of legacy `inspect_openapi`,
  * `_collection_path` and `_server_root`, with trusted-origin restrictions added.
  */
 import { MimError } from './errors';
@@ -57,7 +57,7 @@ export function findMissionEndpoint(schema: Json): MissionInspection {
 		if (/\b(instruments?|measurements?)\b/.test(text)) score -= 2;
 		if (score > 0) candidates.push([score, path, operation]);
 	}
-	if (!candidates.length) throw new MimError('schema', 'No mission collection endpoint was identified in the authenticated schema.');
+	if (!candidates.length) throw new MimError('schema', 'No mission collection endpoint was identified in the API schema.');
 	const [, missionPath, operation] = bestCandidate(candidates);
 	const parameters = Array.isArray(operation?.parameters) ? operation!.parameters : [];
 	return {
@@ -75,7 +75,7 @@ export function collectionPath(schema: Json, collection: 'products' | 'instrumen
 		if (new RegExp(`\\b${singular}s?\\b`).test(text)) score += 2;
 		if (score) candidates.push([score, path]);
 	}
-	if (!candidates.length) throw new MimError('schema', `No ${collection} collection endpoint was identified in the authenticated schema.`);
+	if (!candidates.length) throw new MimError('schema', `No ${collection} collection endpoint was identified in the API schema.`);
 	return bestCandidate(candidates)[1];
 }
 

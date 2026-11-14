@@ -8,6 +8,8 @@ import { familyLabel } from './guidance';
 import { SCOPE_LABELS } from './profiles';
 import { CHECK_OUTCOME_LABELS, checkActions, type CheckOutcome, type Guidance, type ResolvedCheck } from './purpose';
 import type { Product, ProvenanceRow } from './types';
+import type { CqasSummary } from './cqas';
+import { mimEditionText, mimMissionStatusText, mimMissionYearsText, type MimSource, type MimSummary } from './mim';
 
 export interface SummaryPurpose {
 	sentence: string;
@@ -44,6 +46,11 @@ export interface SummaryInput {
 	provenance: Record<string, Record<string, ProvenanceRow>>;
 	unresolvedReason: (id: string) => string;
 	purpose?: SummaryPurpose | null;
+	/** C-QAS report summaries by product ID (proposed). */
+	cqasSummaries?: Record<string, CqasSummary>;
+	/** CEOS MIM database summaries by product ID and the snapshot source (for the footnote). */
+	mimSummaries?: Record<string, MimSummary>;
+	mimSource?: MimSource | null;
 }
 
 export function noteNeedsReview(note: ProductNote | undefined, currentFingerprint: string): boolean {
@@ -118,6 +125,13 @@ export function buildSelectionSummary(input: SummaryInput): string {
 			for (const [label, url] of links) lines.push(`  ${label}: ${url}`);
 			const dates = [...new Set(Object.values(input.provenance[id] ?? {}).map((row) => row.date_checked).filter(Boolean))].sort();
 			lines.push(`  Catalogue sources last checked: ${dates.length ? dates.join(', ') : 'not recorded'} (checking date, not observation date)`);
+			const mimFacts = input.mimSummaries?.[id];
+			if (mimFacts?.missions.length) lines.push(`  Missions*: ${mimMissionYearsText(mimFacts)} · ${mimMissionStatusText(mimFacts)}`);
+			const cqas = input.cqasSummaries?.[id];
+			if (cqas) {
+				lines.push(`  C-QAS checks (proposed): ${cqas.lines.join('; ')}.`);
+				lines.push(`  C-QAS details: ${cqas.provenance}. Not a CEOS-ARD assessment.`);
+			}
 			lines.push('  Open by default: availability for the area and period; task-specific accuracy and suitability.');
 		}
 		if (purpose && purpose.checks.length) {
@@ -133,6 +147,11 @@ export function buildSelectionSummary(input: SummaryInput): string {
 		if (note?.rationale.trim()) lines.push(`  Why retained: ${note.rationale.trim()}`);
 		if (note?.openChecks.trim()) lines.push(`  Open checks: ${note.openChecks.trim()}`);
 		if (noteNeedsReview(note, input.currentFingerprint)) lines.push('  REVIEW RATIONALE: criteria changed since this note was written.');
+	}
+	if (input.mimSource && state.shortlist.some((id) => input.mimSummaries?.[id]?.missions.length)) {
+		const edition = mimEditionText(input.mimSource);
+		lines.push('');
+		lines.push(`* From the CEOS MIM database: ${input.mimSource.attribution}${edition ? `, ${edition}` : ''} (${input.mimSource.licence.name}). Declared by agencies; not part of the CEOS-ARD assessment.`);
 	}
 	return lines.join('\n');
 }

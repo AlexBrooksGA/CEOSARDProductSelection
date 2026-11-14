@@ -1,0 +1,287 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-CATALYST-S1-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "catalyst-sentinel1-rtc",
+		"name": "Catalyst Sentinel-1 RTC",
+		"short_name": "Catalyst Sentinel-1 RTC"
+	},
+	"pfs": {
+		"name": "Normalised Radar Backscatter",
+		"short_name": "NRB",
+		"version": "5.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "CATALYST_S1A_IW_RTC_20250724T015012_ROSAMOND_10M",
+		"platform": "Sentinel-1A",
+		"instrument": "C-SAR",
+		"acquisition_date": "2025-07-24",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "ROSAMOND",
+			"name": "Rosamond, USA"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-N560-G2-R4-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "N560",
+				"part": "Check set",
+				"meaning": "Normalised Radar Backscatter PFS v5.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R4",
+				"part": "Radiometric method",
+				"meaning": "Corner reflector radar cross-section, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Normalised Radar Backscatter PFS v5.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Not met",
+			"goal": "Not met",
+			"reason": "Orbit source not recorded in metadata"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Backscatter Measurements (NRB)",
+			"id": "rcm-backsca-nrb",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		}
+	],
+	"findings_summary": "1 Not met: Source Data Orbit Information. It has missing supporting evidence.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Rosamond, USA reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 10,
+		"radial_rmse_px": 0.36,
+		"comparisons_px": [
+			0.41,
+			0.38,
+			0.35,
+			0.36,
+			0.33,
+			0.32
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 6,
+		"matches_total": 6,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±1.5 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R4",
+		"method": "demo-v1",
+		"comparison": "Measured minus theoretical corner reflector RCS",
+		"reference": "Rosamond, USA trihedral reflectors",
+		"method_notes": "integrated-energy method; signal-to-clutter ratio above 25 dB; cross-polarised channel not measurable on trihedrals",
+		"quantity": "radar cross-section",
+		"short_quantity": "RCS",
+		"units": "dB",
+		"decimals": 2,
+		"headline_channel": "VV",
+		"channels": [
+			{
+				"channel": "VV",
+				"name": "co-polarised",
+				"difference": 0.28,
+				"uncertainty_k1": 0.23,
+				"reference_value": null
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 8,
+		"samples_total": 8,
+		"sample_unit": "corner reflectors",
+		"unique_exclusions": 0,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not assessed",
+		"uncertainty_goal_reason": "no radar uncertainty requirement checked"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Co-polarised (VV) radar cross-section difference",
+		"channel": "VV",
+		"units": "dB",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "Corner reflector array",
+				"code": "ROSAMOND",
+				"name": "Rosamond, USA"
+			}
+		],
+		"points": [
+			{
+				"date": "2024-03-26",
+				"site": "ROSAMOND",
+				"value": 0.244,
+				"uncertainty_k1": 0.257
+			},
+			{
+				"date": "2024-06-15",
+				"site": "ROSAMOND",
+				"value": 0.244,
+				"uncertainty_k1": 0.212
+			},
+			{
+				"date": "2024-08-08",
+				"site": "ROSAMOND",
+				"value": 0.349,
+				"uncertainty_k1": 0.263
+			},
+			{
+				"date": "2024-10-17",
+				"site": "ROSAMOND",
+				"value": 0.458,
+				"uncertainty_k1": 0.202
+			},
+			{
+				"date": "2024-11-25",
+				"site": "ROSAMOND",
+				"value": 0.213,
+				"uncertainty_k1": 0.199
+			},
+			{
+				"date": "2025-02-22",
+				"site": "ROSAMOND",
+				"value": 0.632,
+				"uncertainty_k1": 0.242
+			},
+			{
+				"date": "2025-04-22",
+				"site": "ROSAMOND",
+				"value": 0.371,
+				"uncertainty_k1": 0.256
+			},
+			{
+				"date": "2025-06-19",
+				"site": "ROSAMOND",
+				"value": 0.283,
+				"uncertainty_k1": 0.237
+			},
+			{
+				"date": "2025-07-24",
+				"site": "ROSAMOND",
+				"value": 0.28,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2025-08-11",
+				"site": "ROSAMOND",
+				"value": 0.263,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2025-10-29",
+				"site": "ROSAMOND",
+				"value": 0.112,
+				"uncertainty_k1": 0.229
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "Record the orbit source (restituted or precise) in the metadata.",
+	"next_actions": [
+		"Record the orbit source (restituted or precise) in the metadata.",
+		"To reach Goal, review the evidence for Metadata Machine Readability."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

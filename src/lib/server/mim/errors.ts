@@ -2,7 +2,7 @@
 export type MimErrorKind = 'not_configured' | 'auth' | 'timeout' | 'unavailable' | 'http' | 'schema' | 'response' | 'untrusted_url' | 'too_large';
 
 export const MIM_ERROR_MESSAGES: Record<MimErrorKind, string> = {
-	not_configured: 'MIM is not configured for this deployment. The curated catalogue remains available.',
+	not_configured: 'MIM is turned off or not configured for this deployment. The curated catalogue remains available.',
 	auth: 'MIM API authentication failed. The curated catalogue remains available.',
 	timeout: 'The MIM service timed out. The curated catalogue remains available.',
 	unavailable: 'The MIM service is currently unavailable. The curated catalogue remains available.',

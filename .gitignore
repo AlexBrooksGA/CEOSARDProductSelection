@@ -32,3 +32,7 @@ assets/purpose-imagery/optical.png
 assets/purpose-imagery/depth.png
 assets/purpose-imagery/optical-portrait.png
 assets/purpose-imagery/depth-portrait.png
+
+# Static artifact build (scripts/build-artifact.mjs)
+.artifact-work/
+artifact-build/

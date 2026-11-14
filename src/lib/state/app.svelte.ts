@@ -6,6 +6,8 @@
  * session adapter (session.ts). Components consume derived domain results from here and
  * never implement their own matching rules.
  */
+import type { CqasSummary } from '$lib/domain/cqas';
+import type { MimSource, MimSummary, ProductVisual } from '$lib/domain/mim';
 import { getContext, setContext } from 'svelte';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
@@ -52,12 +54,20 @@ export interface MimStatusView {
 	retryAfterSeconds: number | null;
 	endpoints: { products: string; instruments: string } | null;
 	ttlHours: number;
+	host: string | null;
+	disabledReason: 'off' | 'misconfigured' | null;
+	publicAccess: boolean;
+	edition: { edition: string | null; asOf: string | null; licence: { name: string; url: string | null } | null; attribution: string } | null;
 }
 
 export interface LayoutPayload {
 	products: Product[];
 	profiles: Profile[];
 	agencyMarks: Record<string, { url: string; monochrome: boolean }>;
+	cqasSummaries: Record<string, CqasSummary>;
+	mimSummaries: Record<string, MimSummary>;
+	productVisuals: Record<string, ProductVisual>;
+	mimSource: MimSource | null;
 	notFound: Record<string, Record<string, string>>;
 	catalogueSource: 'researched' | 'demo-fallback';
 	mim: MimStatusView;
@@ -73,6 +83,12 @@ export class AppStore {
 	curated = $state.raw<Product[]>([]);
 	builtInProfiles = $state.raw<Profile[]>([]);
 	agencyMarks = $state.raw<LayoutPayload['agencyMarks']>({});
+	/** C-QAS report summaries by product ID (example data until C-QAS produces real reports). */
+	cqasSummaries = $state.raw<LayoutPayload['cqasSummaries']>({});
+	/** CEOS MIM database facts for curated products (snapshot), and its source for the footnote. */
+	mimSummaries = $state.raw<LayoutPayload['mimSummaries']>({});
+	mimSource = $state.raw<LayoutPayload['mimSource']>(null);
+	productVisuals = $state.raw<LayoutPayload['productVisuals']>({});
 	catalogueSource = $state.raw<LayoutPayload['catalogueSource']>('researched');
 	notFound = $state.raw<LayoutPayload['notFound']>({});
 
@@ -93,6 +109,10 @@ export class AppStore {
 		this.curated = payload.products;
 		this.builtInProfiles = payload.profiles;
 		this.agencyMarks = payload.agencyMarks;
+		this.cqasSummaries = payload.cqasSummaries ?? {};
+		this.mimSummaries = payload.mimSummaries ?? {};
+		this.mimSource = payload.mimSource ?? null;
+		this.productVisuals = payload.productVisuals ?? {};
 		this.catalogueSource = payload.catalogueSource;
 		this.notFound = payload.notFound;
 		this.mimStatus = payload.mim;
@@ -165,7 +185,7 @@ export class AppStore {
 
 	unresolvedReason(id: string): string {
 		if (id.startsWith('mim-product:')) {
-			if (!this.mimStatus.configured) return 'MIM record — MIM is not configured for this deployment.';
+			if (!this.mimStatus.configured) return `MIM record — MIM is ${this.mimStatus.disabledReason === 'off' ? 'turned off' : 'not configured'} for this deployment.`;
 			if (!this.mimLoaded) return 'MIM record — MIM products are not loaded in this session.';
 			return 'MIM record — not present in the currently loaded MIM data.';
 		}

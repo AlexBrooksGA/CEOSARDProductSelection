@@ -12,7 +12,8 @@ import { defineConfig, devices } from '@playwright/test';
 // scene has its own test in purpose.spec.ts that turns it back on.
 export const chromiumPath = process.env.PW_CHROMIUM_PATH;
 const launchOptions = { ...(chromiumPath ? { executablePath: chromiumPath } : {}), args: ['--disable-3d-apis'] };
-const base = { env: { HOST: '127.0.0.1', MIMS_API_USERNAME: '', MIMS_API_PASSWORD: '' } };
+// The catalogue project turns MIM off so no test can reach the live CEOS Database API.
+const base = { env: { HOST: '127.0.0.1', MIMS_API_BASE_URL: 'off', MIMS_API_USERNAME: '', MIMS_API_PASSWORD: '', MIMS_API_KEY: '' } };
 
 export default defineConfig({
 	testDir: 'tests/e2e',
@@ -39,6 +40,7 @@ export default defineConfig({
 				MIMS_API_BASE_URL: 'http://127.0.0.1:4599/api',
 				MIMS_API_USERNAME: 'e2e-user',
 				MIMS_API_PASSWORD: 'e2e-secret',
+				MIMS_API_KEY: '',
 				MIMS_REFRESH_COOLDOWN_SECONDS: '30',
 				MIMS_FAILURE_BACKOFF_SECONDS: '0'
 			},

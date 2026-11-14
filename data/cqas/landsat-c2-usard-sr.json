@@ -1,0 +1,336 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-USARD-SR-001",
+	"report_date": "2026-10-12",
+	"domain": "optical",
+	"product": {
+		"explorer_id": "landsat-c2-usard-sr",
+		"name": "Landsat Collection 2 U.S. ARD Surface Reflectance",
+		"short_name": "Landsat Collection 2 U.S. ARD Surface Reflectance"
+	},
+	"pfs": {
+		"name": "Surface Reflectance",
+		"short_name": "SR",
+		"version": "5.0.2",
+		"total_requirements": 36
+	},
+	"scene": {
+		"product_id": "LC09_CU_005009_20250723_20250802_02",
+		"platform": "Landsat 9",
+		"instrument": "OLI-2",
+		"acquisition_date": "2025-07-23",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "RadCalNet",
+			"code": "RVUS",
+			"name": "Railroad Valley Playa, USA"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. Example U.S. ARD tile over the site; tiles have no WRS path and row."
+	},
+	"run": {
+		"code": "C031-S502-G1-R1-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "S502",
+				"part": "Check set",
+				"meaning": "Surface Reflectance PFS v5.0.2"
+			},
+			{
+				"code": "G1",
+				"part": "Geometric method",
+				"meaning": "Relative image-to-image matching, demo-v1"
+			},
+			{
+				"code": "R1",
+				"part": "Radiometric method",
+				"meaning": "RadCalNet surface reflectance comparison, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "10 of the 36 Surface Reflectance PFS v5.0.2 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-optical",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sr",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Coordinate Reference System",
+			"id": "meta-crs-optical",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Spectral Bands",
+			"id": "meta-specband",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Access",
+			"id": "meta-daccess",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "No Data",
+			"id": "pxl-pinodat",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Cloud",
+			"id": "pxl-picloud",
+			"threshold": "Met",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Measurement",
+			"id": "rac-measur-sr",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurement Uncertainty",
+			"id": "rac-muncer-sr",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Correction",
+			"id": "gcor-geocorr-sr",
+			"threshold": "Met",
+			"goal": "Not met"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G1",
+		"kind": "relative",
+		"method": "demo-v1",
+		"reference": "Landsat 9 repeat reference image",
+		"comparison": "Same-platform repeat image",
+		"method_notes": "phase correlation; offsets from the original grid",
+		"pixel_size_m": 30,
+		"radial_rmse_px": 0.38,
+		"comparisons_px": [
+			0.35,
+			0.3,
+			0.36,
+			0.41,
+			0.43,
+			0.41
+		],
+		"limit_px": 0.5,
+		"limit_source": "PFS Threshold",
+		"matches_accepted": 92,
+		"matches_total": 109,
+		"match_unit": "image matches",
+		"positional_uncertainty": null,
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Met",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R1",
+		"method": "demo-v1",
+		"comparison": "Observed minus RadCalNet surface reference",
+		"reference": "RadCalNet RVUS surface reflectance",
+		"method_notes": "spectral response matched; time gap 582 s; 150 × 150 m window",
+		"quantity": "surface reflectance",
+		"short_quantity": "SR",
+		"units": "1",
+		"decimals": 3,
+		"headline_channel": "B4",
+		"channels": [
+			{
+				"channel": "B2",
+				"name": "blue",
+				"difference": 0.001,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.242
+			},
+			{
+				"channel": "B3",
+				"name": "green",
+				"difference": 0.001,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.257
+			},
+			{
+				"channel": "B4",
+				"name": "red",
+				"difference": 0.004,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.359
+			},
+			{
+				"channel": "B5",
+				"name": "near infrared",
+				"difference": 0.004,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.371
+			},
+			{
+				"channel": "B6",
+				"name": "shortwave infrared",
+				"difference": 0.005,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.489
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 18,
+		"samples_total": 25,
+		"sample_unit": "pixels in the site window",
+		"unique_exclusions": 7,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not met",
+		"uncertainty_goal_reason": "product estimate missing"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Red (B4) surface reflectance difference",
+		"channel": "B4",
+		"units": "1",
+		"decimals": 3,
+		"sites": [
+			{
+				"network": "RadCalNet",
+				"code": "RVUS",
+				"name": "Railroad Valley Playa, USA"
+			},
+			{
+				"network": "RadCalNet",
+				"code": "LCFR",
+				"name": "La Crau, France"
+			}
+		],
+		"points": [
+			{
+				"date": "2024-03-01",
+				"site": "RVUS",
+				"value": 0.0087,
+				"uncertainty_k1": 0.0057
+			},
+			{
+				"date": "2024-03-30",
+				"site": "LCFR",
+				"value": 0.0016,
+				"uncertainty_k1": 0.0056
+			},
+			{
+				"date": "2024-06-14",
+				"site": "RVUS",
+				"value": 0.0072,
+				"uncertainty_k1": 0.007
+			},
+			{
+				"date": "2024-08-01",
+				"site": "LCFR",
+				"value": 0.0031,
+				"uncertainty_k1": 0.0059
+			},
+			{
+				"date": "2024-09-12",
+				"site": "RVUS",
+				"value": 0.0069,
+				"uncertainty_k1": 0.0063
+			},
+			{
+				"date": "2024-10-31",
+				"site": "LCFR",
+				"value": -0.0049,
+				"uncertainty_k1": 0.0067
+			},
+			{
+				"date": "2024-11-29",
+				"site": "RVUS",
+				"value": 0.0023,
+				"uncertainty_k1": 0.0059
+			},
+			{
+				"date": "2025-02-03",
+				"site": "LCFR",
+				"value": 0.0054,
+				"uncertainty_k1": 0.0054
+			},
+			{
+				"date": "2025-03-15",
+				"site": "RVUS",
+				"value": 0.0011,
+				"uncertainty_k1": 0.007
+			},
+			{
+				"date": "2025-05-02",
+				"site": "LCFR",
+				"value": 0.0031,
+				"uncertainty_k1": 0.0071
+			},
+			{
+				"date": "2025-07-07",
+				"site": "RVUS",
+				"value": 0.0076,
+				"uncertainty_k1": 0.0057
+			},
+			{
+				"date": "2025-07-23",
+				"site": "RVUS",
+				"value": 0.004,
+				"uncertainty_k1": 0.006
+			},
+			{
+				"date": "2025-07-27",
+				"site": "LCFR",
+				"value": 0.0051,
+				"uncertainty_k1": 0.0064
+			},
+			{
+				"date": "2025-10-06",
+				"site": "RVUS",
+				"value": 0.0001,
+				"uncertainty_k1": 0.0064
+			},
+			{
+				"date": "2025-11-03",
+				"site": "LCFR",
+				"value": 0.0012,
+				"uncertainty_k1": 0.0068
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "To reach Goal, review the evidence for Geometric Correction.",
+	"next_actions": [
+		"To reach Goal, review the evidence for Geometric Correction."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

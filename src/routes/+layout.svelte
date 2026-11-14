@@ -49,6 +49,10 @@
 			Curated catalogue: {store.curated.length} records{store.catalogueSource === 'demo-fallback' ? ' (demonstration fallback data)' : ''}. Profiles, notes and drafts are kept only in this browser tab's session.
 			The explorer does not download or validate imagery.
 		</p>
+		<p>
+			Mission, instrument and satellite silhouette information marked <span class="mim-mark" aria-hidden="true">*</span> is from the CEOS MIM Database (database.eohandbook.com),
+			<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>; satellite pictures carry their own credits on product pages.
+		</p>
 	</div>
 </footer>
 <div class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">{store.announcement}</div>

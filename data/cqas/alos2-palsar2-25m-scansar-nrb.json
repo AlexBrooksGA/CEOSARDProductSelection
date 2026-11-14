@@ -1,0 +1,287 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-ALOS2-SCANSAR-001",
+	"report_date": "2026-10-12",
+	"domain": "radar",
+	"product": {
+		"explorer_id": "alos2-palsar2-25m-scansar-nrb",
+		"name": "ALOS-2 PALSAR-2 25m ScanSAR NRB",
+		"short_name": "ALOS-2 PALSAR-2 25m ScanSAR NRB"
+	},
+	"pfs": {
+		"name": "Normalised Radar Backscatter",
+		"short_name": "NRB",
+		"version": "5.6.0",
+		"total_requirements": 50
+	},
+	"scene": {
+		"product_id": "ALOS2-WBDR-0582171340-250704-HHHV-NRB",
+		"platform": "ALOS-2",
+		"instrument": "PALSAR-2",
+		"acquisition_date": "2025-07-04",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "Corner reflector array",
+			"code": "TOMAKOMAI",
+			"name": "Tomakomai, Japan"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run."
+	},
+	"run": {
+		"code": "C031-N560-G2-R4-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "N560",
+				"part": "Check set",
+				"meaning": "Normalised Radar Backscatter PFS v5.6.0"
+			},
+			{
+				"code": "G2",
+				"part": "Geometric method",
+				"meaning": "Corner reflector location, demo-v1"
+			},
+			{
+				"code": "R4",
+				"part": "Radiometric method",
+				"meaning": "Corner reflector radar cross-section, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "11 of the 50 Normalised Radar Backscatter PFS v5.6.0 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sar",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Source Data Orbit Information",
+			"id": "src-orbit",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Product Data Access",
+			"id": "prod-daccess-prod",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Product Sample Spacing",
+			"id": "prod-samspa",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Product Coordinate Reference System",
+			"id": "prod-crs-sar",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Data Mask Image",
+			"id": "pxl-damaski",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Backscatter Measurements (NRB)",
+			"id": "rcm-backsca-nrb",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Radiometric Accuracy",
+			"id": "rcm-radacc-sar",
+			"threshold": "Not required",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Digital Elevation Model",
+			"id": "gcor-cdem",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Geometric Accuracy",
+			"id": "gcor-geomacc-sar",
+			"threshold": "Met",
+			"goal": "Not met"
+		}
+	],
+	"findings_summary": "No checked Threshold requirement is Not met.",
+	"geometric": {
+		"label": "DEMO-G2",
+		"kind": "absolute",
+		"method": "demo-v1",
+		"reference": "Tomakomai, Japan reflector survey",
+		"comparison": "Surveyed corner reflector positions",
+		"method_notes": "peak location by sinc interpolation; solid Earth tides corrected",
+		"pixel_size_m": 25,
+		"radial_rmse_px": 0.22,
+		"comparisons_px": [
+			0.19,
+			0.16,
+			0.24,
+			0.21,
+			0.29,
+			0.23,
+			0.21,
+			0.2
+		],
+		"limit_px": null,
+		"limit_source": null,
+		"matches_accepted": 8,
+		"matches_total": 8,
+		"match_unit": "corner reflectors",
+		"positional_uncertainty": "±2 m (k = 1)",
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not assessed",
+		"requirement_result": "Met",
+		"requirement_reason": null
+	},
+	"radiometric": {
+		"label": "DEMO-R4",
+		"method": "demo-v1",
+		"comparison": "Measured minus theoretical corner reflector RCS",
+		"reference": "Tomakomai, Japan trihedral reflectors",
+		"method_notes": "integrated-energy method; signal-to-clutter ratio above 25 dB; cross-polarised channel not measurable on trihedrals",
+		"quantity": "radar cross-section",
+		"short_quantity": "RCS",
+		"units": "dB",
+		"decimals": 2,
+		"headline_channel": "HH",
+		"channels": [
+			{
+				"channel": "HH",
+				"name": "co-polarised",
+				"difference": -0.14,
+				"uncertainty_k1": 0.27,
+				"reference_value": null
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 8,
+		"samples_total": 8,
+		"sample_unit": "corner reflectors",
+		"unique_exclusions": 0,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not assessed",
+		"uncertainty_goal_reason": "no radar uncertainty requirement checked"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Co-polarised (HH) radar cross-section difference",
+		"channel": "HH",
+		"units": "dB",
+		"decimals": 2,
+		"sites": [
+			{
+				"network": "Corner reflector array",
+				"code": "TOMAKOMAI",
+				"name": "Tomakomai, Japan"
+			}
+		],
+		"points": [
+			{
+				"date": "2023-06-13",
+				"site": "TOMAKOMAI",
+				"value": 0.049,
+				"uncertainty_k1": 0.276
+			},
+			{
+				"date": "2023-08-21",
+				"site": "TOMAKOMAI",
+				"value": -0.353,
+				"uncertainty_k1": 0.301
+			},
+			{
+				"date": "2023-11-19",
+				"site": "TOMAKOMAI",
+				"value": -0.122,
+				"uncertainty_k1": 0.271
+			},
+			{
+				"date": "2024-03-21",
+				"site": "TOMAKOMAI",
+				"value": -0.134,
+				"uncertainty_k1": 0.278
+			},
+			{
+				"date": "2024-06-30",
+				"site": "TOMAKOMAI",
+				"value": -0.181,
+				"uncertainty_k1": 0.274
+			},
+			{
+				"date": "2024-09-05",
+				"site": "TOMAKOMAI",
+				"value": -0.164,
+				"uncertainty_k1": 0.23
+			},
+			{
+				"date": "2025-01-01",
+				"site": "TOMAKOMAI",
+				"value": -0.208,
+				"uncertainty_k1": 0.262
+			},
+			{
+				"date": "2025-03-03",
+				"site": "TOMAKOMAI",
+				"value": -0.034,
+				"uncertainty_k1": 0.31
+			},
+			{
+				"date": "2025-06-12",
+				"site": "TOMAKOMAI",
+				"value": -0.11,
+				"uncertainty_k1": 0.247
+			},
+			{
+				"date": "2025-07-04",
+				"site": "TOMAKOMAI",
+				"value": -0.14,
+				"uncertainty_k1": 0.27
+			},
+			{
+				"date": "2025-10-21",
+				"site": "TOMAKOMAI",
+				"value": -0.017,
+				"uncertainty_k1": 0.3
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "To reach Goal, review the evidence for Metadata Machine Readability.",
+	"next_actions": [
+		"To reach Goal, review the evidence for Metadata Machine Readability."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

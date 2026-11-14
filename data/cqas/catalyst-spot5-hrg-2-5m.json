@@ -1,0 +1,296 @@
+{
+	"schema": "cqas-report/2",
+	"data_status": "example",
+	"status_note": "All values, scenes and dates below are made up for this mock-up to be plausible for this product. C-QAS has not run on any real scene yet; its test system is still being built.",
+	"report_id": "DEMO-SPOT5-001",
+	"report_date": "2026-10-12",
+	"domain": "optical",
+	"product": {
+		"explorer_id": "catalyst-spot5-hrg-2-5m",
+		"name": "Catalyst SPOT 5 HRG 2.5m",
+		"short_name": "Catalyst SPOT 5 HRG 2.5m"
+	},
+	"pfs": {
+		"name": "Surface Reflectance",
+		"short_name": "SR",
+		"version": "5.0.2",
+		"total_requirements": 36
+	},
+	"scene": {
+		"product_id": "CATALYST_SPOT5_HRG_PSH_20140612_101544_SR",
+		"platform": "SPOT-5",
+		"instrument": "HRG",
+		"acquisition_date": "2014-06-12",
+		"path": null,
+		"row": null,
+		"reference_site": {
+			"network": "CEOS PICS",
+			"code": "LIBYA4",
+			"name": "Libya-4 desert site"
+		},
+		"note": "Example input scene chosen to illustrate the report; not a real C-QAS run. SPOT-5 operated until 2015, so the example scene and series predate RadCalNet; a desert (PICS) site is used instead."
+	},
+	"run": {
+		"code": "C031-S502-G1-R2-D01",
+		"snapshot": "DEMO-01",
+		"reviewer": null,
+		"segments": [
+			{
+				"code": "C031",
+				"part": "Software",
+				"meaning": "C-QAS processing software v0.3.1"
+			},
+			{
+				"code": "S502",
+				"part": "Check set",
+				"meaning": "Surface Reflectance PFS v5.0.2"
+			},
+			{
+				"code": "G1",
+				"part": "Geometric method",
+				"meaning": "Relative image-to-image matching, demo-v1"
+			},
+			{
+				"code": "R2",
+				"part": "Radiometric method",
+				"meaning": "Desert site (PICS) model comparison, demo-v1"
+			},
+			{
+				"code": "D01",
+				"part": "Snapshot",
+				"meaning": "Assessment snapshot DEMO-01"
+			}
+		],
+		"note": "Mock code. It identifies the software and settings that produced these results."
+	},
+	"findings_scope": "10 of the 36 Surface Reflectance PFS v5.0.2 requirements: the ones C-QAS is planned to check automatically from the product, its metadata and reference comparisons.",
+	"findings": [
+		{
+			"requirement": "Metadata Machine Readability",
+			"id": "meta-memare-optical",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Collection Time",
+			"id": "meta-time-sr",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Coordinate Reference System",
+			"id": "meta-crs-optical",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Spectral Bands",
+			"id": "meta-specband",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Data Access",
+			"id": "meta-daccess",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "No Data",
+			"id": "pxl-pinodat",
+			"threshold": "Met",
+			"goal": "Not required"
+		},
+		{
+			"requirement": "Cloud",
+			"id": "pxl-picloud",
+			"threshold": "Met",
+			"goal": "Met"
+		},
+		{
+			"requirement": "Measurement",
+			"id": "rac-measur-sr",
+			"threshold": "Met",
+			"goal": "Not met"
+		},
+		{
+			"requirement": "Measurement Uncertainty",
+			"id": "rac-muncer-sr",
+			"threshold": "Not required",
+			"goal": "Not assessed"
+		},
+		{
+			"requirement": "Geometric Correction",
+			"id": "gcor-geocorr-sr",
+			"threshold": "Not met",
+			"goal": "Not assessed",
+			"reason": "Relative error 0.58 pixel exceeds the 0.5 pixel limit on this scene"
+		}
+	],
+	"findings_summary": "1 Not met: Geometric Correction.",
+	"geometric": {
+		"label": "DEMO-G1",
+		"kind": "relative",
+		"method": "demo-v1",
+		"reference": "SPOT-5 repeat reference image",
+		"comparison": "Same-platform repeat image",
+		"method_notes": "phase correlation; offsets from the original grid",
+		"pixel_size_m": 2.5,
+		"radial_rmse_px": 0.58,
+		"comparisons_px": [
+			0.54,
+			0.71,
+			0.57,
+			0.52,
+			0.69,
+			0.39
+		],
+		"limit_px": 0.5,
+		"limit_source": "PFS Threshold",
+		"matches_accepted": 108,
+		"matches_total": 150,
+		"match_unit": "image matches",
+		"positional_uncertainty": null,
+		"absolute_accuracy": "Not assessed",
+		"numeric_test": "Not met",
+		"requirement_result": "Not met",
+		"requirement_reason": "relative error 0.58 pixel exceeds the 0.5 pixel limit on this scene"
+	},
+	"radiometric": {
+		"label": "DEMO-R2",
+		"method": "demo-v1",
+		"comparison": "Observed minus desert site (PICS) model",
+		"reference": "Libya-4 desert site PICS model",
+		"method_notes": "spectral response matched; BRDF-normalised site model; 500 × 500 m window",
+		"quantity": "surface reflectance",
+		"short_quantity": "SR",
+		"units": "1",
+		"decimals": 3,
+		"headline_channel": "B2",
+		"channels": [
+			{
+				"channel": "B1",
+				"name": "green",
+				"difference": 0.006,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.29
+			},
+			{
+				"channel": "B2",
+				"name": "red",
+				"difference": 0.002,
+				"uncertainty_k1": 0.007,
+				"reference_value": 0.335
+			},
+			{
+				"channel": "B3",
+				"name": "near infrared",
+				"difference": 0.005,
+				"uncertainty_k1": 0.006,
+				"reference_value": 0.414
+			},
+			{
+				"channel": "B4",
+				"name": "shortwave infrared",
+				"difference": 0.008,
+				"uncertainty_k1": 0.005,
+				"reference_value": 0.425
+			}
+		],
+		"limit": null,
+		"limit_source": null,
+		"samples_used": 30663,
+		"samples_total": 40000,
+		"sample_unit": "pixels in the site window",
+		"unique_exclusions": 9337,
+		"product_uncertainty": null,
+		"accuracy_test": "Not assessed",
+		"accuracy_reason": "no agreed limit",
+		"uncertainty_goal": "Not met",
+		"uncertainty_goal_reason": "product estimate missing"
+	},
+	"radiometric_note": null,
+	"series": {
+		"test": "radiometric",
+		"description": "Red (B2) surface reflectance difference",
+		"channel": "B2",
+		"units": "1",
+		"decimals": 3,
+		"sites": [
+			{
+				"network": "CEOS PICS",
+				"code": "LIBYA4",
+				"name": "Libya-4 desert site"
+			}
+		],
+		"points": [
+			{
+				"date": "2012-05-05",
+				"site": "LIBYA4",
+				"value": 0.0002,
+				"uncertainty_k1": 0.0068
+			},
+			{
+				"date": "2012-09-03",
+				"site": "LIBYA4",
+				"value": -0.0029,
+				"uncertainty_k1": 0.0075
+			},
+			{
+				"date": "2013-01-30",
+				"site": "LIBYA4",
+				"value": 0.0011,
+				"uncertainty_k1": 0.0069
+			},
+			{
+				"date": "2013-06-01",
+				"site": "LIBYA4",
+				"value": 0.0022,
+				"uncertainty_k1": 0.0063
+			},
+			{
+				"date": "2013-08-07",
+				"site": "LIBYA4",
+				"value": 0.0025,
+				"uncertainty_k1": 0.0065
+			},
+			{
+				"date": "2013-12-03",
+				"site": "LIBYA4",
+				"value": -0.0035,
+				"uncertainty_k1": 0.0084
+			},
+			{
+				"date": "2014-04-23",
+				"site": "LIBYA4",
+				"value": 0.0077,
+				"uncertainty_k1": 0.0064
+			},
+			{
+				"date": "2014-06-12",
+				"site": "LIBYA4",
+				"value": 0.002,
+				"uncertainty_k1": 0.007
+			},
+			{
+				"date": "2014-07-31",
+				"site": "LIBYA4",
+				"value": 0.0024,
+				"uncertainty_k1": 0.0061
+			},
+			{
+				"date": "2014-11-22",
+				"site": "LIBYA4",
+				"value": -0.0036,
+				"uncertainty_k1": 0.0065
+			}
+		],
+		"note": "Each point is one scene over a site. Zero means the same as the reference."
+	},
+	"next_action": "Review the geometric correction: the measured error on this scene exceeds the 0.5 pixel limit.",
+	"next_actions": [
+		"Review the geometric correction: the measured error on this scene exceeds the 0.5 pixel limit.",
+		"To reach Goal, review the evidence for Data Collection Time."
+	],
+	"scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment."
+}

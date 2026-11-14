@@ -35,6 +35,8 @@ export interface ExplorerState {
 	purpose: string | null;
 	/** Guidance version the purpose key refers to. */
 	guidanceVersion: string | null;
+	/** Level of detail for the C-QAS section on product pages (view preference only). */
+	cqasDetail: 'simple' | 'advanced';
 }
 
 /** Neutral initial browse state: all families, assessed scope, no criteria, no launch-year cut-off. */
@@ -54,7 +56,8 @@ export const NEUTRAL_STATE: ExplorerState = Object.freeze({
 	fields: [],
 	profileId: null,
 	purpose: null,
-	guidanceVersion: null
+	guidanceVersion: null,
+	cqasDetail: 'simple'
 }) as ExplorerState;
 
 export function cloneState(state: ExplorerState): ExplorerState {

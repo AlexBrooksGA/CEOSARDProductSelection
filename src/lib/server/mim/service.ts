@@ -17,12 +17,18 @@ import { assertTrusted, assertUnderBasePath, createMimHttp, type MimHttp } from 
 import { instrumentIndex, normaliseMimProduct, toBrowserProduct } from './normalise';
 import { collectionPath, declaredSchemaUrl, findMissionEndpoint, joinPath, serverRoot } from './schema';
 
-export const DEFAULT_BASE_URL = 'https://eo-explorer-demo.diamondsky.au/api';
+/** Public CEOS Database API (CEOS MIM database). No credentials needed; CC BY 4.0. */
+export const DEFAULT_BASE_URL = 'https://ceos-capabilities.org/api';
+/** Attribution required by the CEOS MIM database licence. */
+export const MIM_ATTRIBUTION = 'CEOS MIM Database, https://database.eohandbook.com';
 
 export interface MimServiceOptions {
 	baseUrl?: string;
+	/** Turn MIM off for this deployment (MIMS_API_BASE_URL=off). */
+	disabled?: boolean;
 	username?: string;
 	password?: string;
+	apiKey?: string;
 	ttlMs?: number;
 	refreshCooldownMs?: number;
 	failureBackoffMs?: number;
@@ -52,6 +58,23 @@ export interface MimStatus {
 	ttlHours: number;
 	retryAfterSeconds: number | null;
 	endpoints: { products: string; instruments: string } | null;
+	/** Public CEOS Database API host when that is the source, for display; null for any other host. */
+	host: string | null;
+	/** Why MIM is not configured: turned off on purpose, or an invalid setting. */
+	disabledReason: 'off' | 'misconfigured' | null;
+	/** True when no Basic credentials are used (the public API needs none). */
+	publicAccess: boolean;
+	/** Database edition and licence from the API's /meta, when available. */
+	edition: MimEdition | null;
+}
+
+export interface MimEdition {
+	/** Short identifier registry edition, e.g. "e574f0c2". */
+	edition: string | null;
+	/** Data extract date (ISO), e.g. "2026-10-23". */
+	asOf: string | null;
+	licence: { name: string; url: string | null } | null;
+	attribution: string;
 }
 
 export interface MimLoadResult {
@@ -63,6 +86,27 @@ interface CacheEntry {
 	products: Product[];
 	fetchedAt: number;
 	endpoints: { products: string; instruments: string };
+	edition: MimEdition | null;
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Read the small provenance document; anything unexpected is dropped, never trusted. */
+export function parseMimEdition(payload: unknown): MimEdition | null {
+	if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null;
+	const meta = payload as Json;
+	const text = (value: unknown, max = 120) => (typeof value === 'string' && value.trim() && value.length <= max ? value.trim() : null);
+	const edition = text(meta.registry_edition, 32);
+	const asOf = text(meta.as_of, 10);
+	const licence = meta.licence && typeof meta.licence === 'object' && !Array.isArray(meta.licence) ? (meta.licence as Json) : null;
+	const licenceName = licence ? text(licence.name, 60) : null;
+	const licenceUrl = licence ? text(licence.url, 200) : null;
+	return {
+		edition: edition && /^[A-Za-z0-9._:-]+$/.test(edition) ? edition : null,
+		asOf: asOf && ISO_DATE.test(asOf) ? asOf : null,
+		licence: licenceName ? { name: licenceName, url: licenceUrl && /^https:\/\//.test(licenceUrl) ? licenceUrl : null } : null,
+		attribution: MIM_ATTRIBUTION
+	};
 }
 
 type Json = Record<string, unknown>;
@@ -74,8 +118,24 @@ function namedCollection(payload: unknown, key: 'products' | 'instruments'): Jso
 	return ((payload as Json)[key] as unknown[]).filter((item): item is Json => Boolean(item) && typeof item === 'object' && !Array.isArray(item));
 }
 
+/**
+ * Service options from private environment variables. Pure, so it can be tested without SvelteKit.
+ * MIMS_API_BASE_URL: empty means the public API, "off" (any case) turns MIM off.
+ */
+export function mimOptionsFromEnv(env: Record<string, string | undefined>): Pick<MimServiceOptions, 'disabled' | 'baseUrl' | 'username' | 'password' | 'apiKey'> {
+	const base = env.MIMS_API_BASE_URL?.trim();
+	const off = base?.toLowerCase() === 'off';
+	return {
+		disabled: off,
+		baseUrl: base && !off ? base : undefined,
+		username: env.MIMS_API_USERNAME || undefined,
+		password: env.MIMS_API_PASSWORD || undefined,
+		apiKey: env.MIMS_API_KEY?.trim() || undefined
+	};
+}
+
 export class MimService {
-	private readonly options: Required<Omit<MimServiceOptions, 'username' | 'password' | 'fetchImpl' | 'sleep' | 'log'>> & Pick<MimServiceOptions, 'username' | 'password' | 'fetchImpl' | 'sleep' | 'log'>;
+	private readonly options: Required<Omit<MimServiceOptions, 'username' | 'password' | 'apiKey' | 'fetchImpl' | 'sleep' | 'log'>> & Pick<MimServiceOptions, 'username' | 'password' | 'apiKey' | 'fetchImpl' | 'sleep' | 'log'>;
 	private cache: CacheEntry | null = null;
 	private inflight: Promise<void> | null = null;
 	private lastAttempt: number | null = null;
@@ -85,8 +145,10 @@ export class MimService {
 	constructor(options: MimServiceOptions = {}) {
 		this.options = {
 			baseUrl: (options.baseUrl || DEFAULT_BASE_URL).trim(),
+			disabled: options.disabled ?? false,
 			username: options.username,
 			password: options.password,
+			apiKey: options.apiKey,
 			ttlMs: options.ttlMs ?? 6 * 60 * 60 * 1000,
 			refreshCooldownMs: options.refreshCooldownMs ?? 60_000,
 			failureBackoffMs: options.failureBackoffMs ?? 30_000,
@@ -102,8 +164,13 @@ export class MimService {
 		};
 	}
 
+	/**
+	 * Configured unless turned off, the base URL is unsafe, or only half of a Basic credential
+	 * pair is set (a misconfiguration that would otherwise fail obscurely upstream).
+	 */
 	get configured(): boolean {
-		return Boolean(this.options.username && this.options.password && this.validBaseUrl());
+		const halfCredentials = Boolean(this.options.username) !== Boolean(this.options.password);
+		return !this.options.disabled && !halfCredentials && this.validBaseUrl();
 	}
 
 	private validBaseUrl(): boolean {
@@ -135,7 +202,12 @@ export class MimService {
 			lastAttemptAt: iso(this.lastAttempt),
 			ttlHours: this.options.ttlMs / 3_600_000,
 			endpoints: this.cache?.endpoints ?? null,
-			retryAfterSeconds: null as number | null
+			retryAfterSeconds: null as number | null,
+			// Only the public API's host is shown; a private deployment's host stays on the server.
+			host: this.validBaseUrl() && !this.options.disabled && new URL(this.options.baseUrl).origin === new URL(DEFAULT_BASE_URL).origin ? new URL(DEFAULT_BASE_URL).host : null,
+			disabledReason: this.configured ? null : this.options.disabled ? ('off' as const) : ('misconfigured' as const),
+			publicAccess: !(this.options.username && this.options.password),
+			edition: this.cache?.edition ?? null
 		};
 		if (!this.configured) {
 			return { ...base, state: 'not_configured', message: MIM_ERROR_MESSAGES.not_configured, errorKind: 'not_configured' };
@@ -218,8 +290,9 @@ export class MimService {
 		const { baseUrl } = this.options;
 		const http: MimHttp = createMimHttp({
 			baseUrl,
-			username: this.options.username!,
-			password: this.options.password!,
+			username: this.options.username,
+			password: this.options.password,
+			apiKey: this.options.apiKey,
 			requestTimeoutMs: this.options.requestTimeoutMs,
 			maxResponseBytes: this.options.maxResponseBytes,
 			retries: this.options.retries,
@@ -230,7 +303,7 @@ export class MimService {
 		const docsUrl = new URL('docs/', baseUrl.replace(/\/+$/, '') + '/').href;
 		const html = await http.getText(docsUrl, deadline);
 		const declared = declaredSchemaUrl(html);
-		if (!declared) throw new MimError('schema', 'The authenticated documentation did not declare an OpenAPI schema URL.');
+		if (!declared) throw new MimError('schema', 'The API documentation did not declare an OpenAPI schema URL.');
 		const schemaUrl = assertTrusted(new URL(declared, docsUrl).href, baseUrl).href;
 		const schema = await http.getJson(schemaUrl, deadline);
 		if (!schema || typeof schema !== 'object' || Array.isArray(schema) || !(schema as Json).paths || typeof (schema as Json).paths !== 'object') {
@@ -251,6 +324,18 @@ export class MimService {
 		const records = deduplicateProducts(
 			products.map((item) => normaliseMimProduct(item, index, productUrl)).filter((record): record is Product => record !== null).map(toBrowserProduct)
 		);
-		return { products: records, fetchedAt: this.now(), endpoints: { products: productPath, instruments: instrumentPath } };
+		// Edition and licence are optional extras: a missing or failed /meta never fails the load.
+		let edition: MimEdition | null = null;
+		const paths = (schema as Json).paths as Json;
+		if (paths['/meta']) {
+			try {
+				const metaUrl = joinPath(root, '/meta');
+				assertUnderBasePath(metaUrl, baseUrl);
+				edition = parseMimEdition(await http.getJson(metaUrl, deadline));
+			} catch (error) {
+				this.options.log?.(`MIM edition unavailable (${error instanceof MimError ? error.kind : 'error'})`);
+			}
+		}
+		return { products: records, fetchedAt: this.now(), endpoints: { products: productPath, instruments: instrumentPath }, edition };
 	}
 }

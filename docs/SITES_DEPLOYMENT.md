@@ -20,7 +20,15 @@ The adapter's optional default Cloudflare HTTP cache is disabled during packagin
 
 ## Runtime settings and access
 
-MIM requests, credentials, validation and caching stay on the server. Configure `MIMS_API_BASE_URL`, `MIMS_API_USERNAME` and `MIMS_API_PASSWORD` as Sites runtime secrets. Never commit `.env` or credentials, and never put them in the build or hosting manifest. Existing Sites secrets remain managed by Sites; they are not stored in this repository.
+MIM requests, any key or credentials, validation and caching stay on the server. MIM now reads the public CEOS Database API (`https://ceos-capabilities.org/api`) with no settings at all.
+
+**When republishing after this change, update the Site's runtime secrets:**
+
+1. **Delete `MIMS_API_USERNAME` and `MIMS_API_PASSWORD`.** They belong to the old demo host. Do this before or together with step 2: if only the base URL changes, the old credentials would be sent to the new API.
+2. **Delete `MIMS_API_BASE_URL`**, or set it to `https://ceos-capabilities.org/api`. Set it to `off` to turn MIM off.
+3. Optionally add `MIMS_API_KEY` (a free key from support@ceos-capabilities.org) for higher rate limits.
+
+Never commit `.env`, keys or credentials, and never put them in the build or hosting manifest. Sites secrets are managed by Sites; they are not stored in this repository.
 
 MIM memory caching, refresh cooldown and failure backoff are per Worker isolate, may reset when an isolate is retired and are not shared between locations. No persistent shared cache or database is configured.
 
