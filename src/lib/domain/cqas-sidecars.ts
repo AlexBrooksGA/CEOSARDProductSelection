@@ -11,7 +11,7 @@ export interface Alerts {schema:string;evaluated_at:string;coverage_note:string;
 const canonical = (x:unknown):string => JSON.stringify(x === undefined ? null : x && typeof x==='object' ? Array.isArray(x) ? x.map(v=>JSON.parse(canonical(v))) : Object.fromEntries(Object.entries(x).sort().map(([k,v])=>[k,JSON.parse(canonical(v))])) : x);
 const equal=(a:unknown,b:unknown)=>canonical(a)===canonical(b);
 const insist=(ok:unknown,message:string)=>{if(!ok)throw Error(message)};
-const time=(x:string)=>new Date(x).getTime();
+const time=(x:string)=>BigInt(new Date(x).getTime())*1000n+BigInt((x.match(/\.(\d+)/)?.[1]??'').padEnd(6,'0').slice(3,6));
 const instant=(x:string)=>new Date(x).toISOString().slice(0,19)+'.'+(x.match(/\.(\d+)/)?.[1]??'').padEnd(6,'0')+'Z';
 const scope='A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment.';
 function signature(s:Source) {
@@ -46,7 +46,7 @@ export function parseSeries(raw:unknown):Series {
    const s=sources.get(p.result_id)!;
    insist(equal(signature(s),signature(first)),'Mixed methods, processing or sampling in segment');
    insist(p.product_version===s.result.product_version && instant(p.acquired)===instant(s.registration.scene.acquired),'Invalid observation identity');
-   if(previous)insist(time(p.acquired)>=time(previous.acquired)&&time(p.acquired)-time(previous.acquired)<=d.max_gap_days*86400000,'Invalid chronological connection');
+   if(previous)insist(time(p.acquired)>=time(previous.acquired)&&time(p.acquired)-time(previous.acquired)<=BigInt(d.max_gap_days)*86400000000n,'Invalid chronological connection');
    previous=p;
    const matches=s.result.measurements.map((m,i)=>({m,i})).filter(({m})=>m.name===d.measurement&&equal(m.per,d.per));
    insist(matches.length<=1,'Ambiguous measurement'); const match=matches[0]; let reason:string|null=null;
@@ -72,7 +72,7 @@ export function parseSeries(raw:unknown):Series {
   const a=doc.segments[i]!,b=doc.segments[i+1]!,left=a.observations.at(-1)!,right=b.observations[0]!;
   insist(m.before_result===left.result_id&&m.after_result===right.result_id&&time(m.at)===time(right.acquired)&&time(right.acquired)>=time(left.acquired),'Invalid boundary marker');
   const reasons=Object.keys(a.key).filter(k=>!equal(a.key[k],b.key[k])).map(k=>k+'_changed');
-  if(time(right.acquired)-time(left.acquired)>d.max_gap_days*86400000)reasons.push('observation_interval_exceeded');
+  if(time(right.acquired)-time(left.acquired)>BigInt(d.max_gap_days)*86400000000n)reasons.push('observation_interval_exceeded');
   if(left.status==='gap'||right.status==='gap')reasons.push('unassessed_gap');
   insist(reasons.length&&equal([...reasons].sort(),[...m.reasons].sort()),'Invalid boundary reason');
  });
@@ -105,7 +105,7 @@ export function parseAlerts(raw:unknown):Alerts{
  }
  const services:Alerts['service_alerts']=[];
  for(const [,fact]of [...latest].sort(([a],[b])=>a<b?-1:1)){
-  const reason=fact.kind==='schedule'?(time(doc.evaluated_at)-time(fact.observed_at)>doc.policy.stale_after_hours*3600000?'stale_schedule':null):!fact.healthy?(fact.kind==='task'?'task_failure':'provider_unavailable'):null;
+  const reason=fact.kind==='schedule'?(time(doc.evaluated_at)-time(fact.observed_at)>BigInt(doc.policy.stale_after_hours)*3600000000n?'stale_schedule':null):!fact.healthy?(fact.kind==='task'?'task_failure':'provider_unavailable'):null;
   if(reason)services.push({kind:'service',subject:fact.subject,reason,source:fact});
  }
  insist(equal(doc.quality_alerts,quality)&&equal(doc.service_alerts,services),'Untraceable alert projection');return doc;

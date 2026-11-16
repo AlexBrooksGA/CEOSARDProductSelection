@@ -62,3 +62,10 @@ it('does not attribute a same-named series from a different collection to a prod
  const own=parseSeries(s()),snapshot=parseAlerts(a());own.definition.collection='another.collection';
  expect(relatedQuality(own.definition.id,[own],snapshot)).toBe(false);
 });
+
+it('preserves microsecond ordering at segment boundaries',()=>{
+ const doc=s(),later='2026-11-14T12:00:00.000002Z',earlier='2026-11-14T12:00:00.000001Z';
+ doc.sources[0]!.registration.scene.acquired=later;doc.segments[0]!.observations[0]!.acquired=later;
+ doc.sources[1]!.registration.scene.acquired=earlier;doc.segments[1]!.observations[0]!.acquired=earlier;doc.markers[0]!.at=earlier;
+ expect(()=>parseSeries(doc)).toThrow('Invalid boundary marker');
+});
