@@ -1,0 +1,650 @@
+{
+  "schema": "cqas-alerts/1",
+  "data_status": "provisional",
+  "contract_status": "proposed",
+  "evaluated_at": "2026-11-24T12:00:00Z",
+  "policy": {
+    "bands": [
+      {
+        "series_id": "synthetic-red",
+        "unit": "1",
+        "limit": 0.05,
+        "source": "Synthetic test policy"
+      }
+    ],
+    "stale_after_hours": 24
+  },
+  "series": [
+    {
+      "schema": "cqas-series/1",
+      "contract_status": "proposed",
+      "data_status": "provisional",
+      "scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment.",
+      "definition": {
+        "id": "synthetic-red",
+        "collection": "synthetic.optical-sr",
+        "site": "synthetic.site-a",
+        "check": "radiometry.site_window_stats",
+        "measurement": "mean_reflectance",
+        "per": {
+          "band": "sr_red"
+        },
+        "unit": "1",
+        "min_scenes": 2,
+        "max_gap_days": 10
+      },
+      "sources": [
+        {
+          "registration": {
+            "collection": "synthetic.optical-sr",
+            "scene": {
+              "platform": "SYNTHETIC-1",
+              "instrument": "SYNTHCAM",
+              "acquired": "2026-11-15T12:00:00Z",
+              "grid": null,
+              "attributes": {}
+            },
+            "product_version": {
+              "provider_id": "SYNTHETIC_1",
+              "processing": {
+                "label": "v1",
+                "attributes": {},
+                "produced": null
+              },
+              "supersedes": null
+            },
+            "assets": [
+              {
+                "role": "sr_red",
+                "href": "/tmp/synthetic_sr_red.bin",
+                "origin": null,
+                "bytes": 1,
+                "pixel_size_m": 30.0,
+                "checksum": {
+                  "alg": "sha256",
+                  "value": "abababababababababababababababababababababababababababababababab",
+                  "source": "computed"
+                }
+              }
+            ],
+            "source": {
+              "adapter": "synthetic@0.1.0",
+              "original_metadata": [
+                "evidence://sha256/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+              ],
+              "provenance": "provider"
+            }
+          },
+          "result": {
+            "result_id": "4e3b8179-23da-48d0-8662-a36c55739162",
+            "created": "2026-11-15T13:00:00Z",
+            "run_id": "5e0da3f2-b84c-46d3-889c-b5d9986fa693",
+            "product_version": "pv-1d5a8a326b56b2405823a1ba563d4fcdc828569fb59d3bb0bba3012ad0de6dd6",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "idempotency_key": "39e568338c77521f95e3ff1b572a3a14f3b7d4bad4c37de9966bd88998731707",
+            "outcome": "completed",
+            "reason": null,
+            "measurements": [
+              {
+                "name": "mean_reflectance",
+                "per": {
+                  "band": "sr_red"
+                },
+                "value": 0.1,
+                "unit": "1",
+                "n_valid": 9,
+                "n_total": 10,
+                "uncertainty": {
+                  "not_estimated": "Synthetic statistic; no uncertainty budget"
+                }
+              }
+            ],
+            "quality_flags": [
+              "site_unverified"
+            ],
+            "exclusions": {
+              "cloud": 1
+            },
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "inputs": [],
+            "reference": null,
+            "evidence": [],
+            "follows": null
+          },
+          "product_state": "registered",
+          "resolved_config": "evidence://sha256/9f64a07426cdadcce43e2bec19e112187291b121a14cefa4e758439854f1a15e",
+          "configuration": {
+            "check": "radiometry.site_window_stats@0.1.0",
+            "params": {
+              "window_m": 90
+            },
+            "assets": [],
+            "reference_snapshots": [],
+            "context": {
+              "site": {
+                "id": "synthetic.site-a"
+              }
+            }
+          }
+        },
+        {
+          "registration": {
+            "collection": "synthetic.optical-sr",
+            "scene": {
+              "platform": "SYNTHETIC-1",
+              "instrument": "SYNTHCAM",
+              "acquired": "2026-11-16T12:00:00Z",
+              "grid": null,
+              "attributes": {}
+            },
+            "product_version": {
+              "provider_id": "SYNTHETIC_2",
+              "processing": {
+                "label": "v1",
+                "attributes": {},
+                "produced": null
+              },
+              "supersedes": null
+            },
+            "assets": [
+              {
+                "role": "sr_red",
+                "href": "/tmp/synthetic_sr_red.bin",
+                "origin": null,
+                "bytes": 1,
+                "pixel_size_m": 30.0,
+                "checksum": {
+                  "alg": "sha256",
+                  "value": "abababababababababababababababababababababababababababababababab",
+                  "source": "computed"
+                }
+              }
+            ],
+            "source": {
+              "adapter": "synthetic@0.1.0",
+              "original_metadata": [
+                "evidence://sha256/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+              ],
+              "provenance": "provider"
+            }
+          },
+          "result": {
+            "result_id": "974cd1e0-d3e0-4073-af22-da066dd79c47",
+            "created": "2026-11-16T13:00:00Z",
+            "run_id": "a15ca12e-51a4-49a9-9d88-b8538b860f89",
+            "product_version": "pv-9a2917d7ad8f7bda02205e9cf1832b01ae9f7299c24dfec5d8b633161e79c347",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "idempotency_key": "100f3df6cd8d9c5bba302f05d51eda4ed755018f7c2dd0c4da50a85550d12162",
+            "outcome": "not_assessed",
+            "reason": {
+              "code": "reference_unavailable",
+              "detail": null
+            },
+            "measurements": [],
+            "quality_flags": [
+              "site_unverified"
+            ],
+            "exclusions": {
+              "cloud": 1
+            },
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "inputs": [],
+            "reference": null,
+            "evidence": [],
+            "follows": null
+          },
+          "product_state": "registered",
+          "resolved_config": "evidence://sha256/9f64a07426cdadcce43e2bec19e112187291b121a14cefa4e758439854f1a15e",
+          "configuration": {
+            "check": "radiometry.site_window_stats@0.1.0",
+            "params": {
+              "window_m": 90
+            },
+            "assets": [],
+            "reference_snapshots": [],
+            "context": {
+              "site": {
+                "id": "synthetic.site-a"
+              }
+            }
+          }
+        },
+        {
+          "registration": {
+            "collection": "synthetic.optical-sr",
+            "scene": {
+              "platform": "SYNTHETIC-1",
+              "instrument": "SYNTHCAM",
+              "acquired": "2026-11-17T12:00:00Z",
+              "grid": null,
+              "attributes": {}
+            },
+            "product_version": {
+              "provider_id": "SYNTHETIC_3",
+              "processing": {
+                "label": "v1",
+                "attributes": {},
+                "produced": null
+              },
+              "supersedes": null
+            },
+            "assets": [
+              {
+                "role": "sr_red",
+                "href": "/tmp/synthetic_sr_red.bin",
+                "origin": null,
+                "bytes": 1,
+                "pixel_size_m": 30.0,
+                "checksum": {
+                  "alg": "sha256",
+                  "value": "abababababababababababababababababababababababababababababababab",
+                  "source": "computed"
+                }
+              }
+            ],
+            "source": {
+              "adapter": "synthetic@0.1.0",
+              "original_metadata": [
+                "evidence://sha256/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+              ],
+              "provenance": "provider"
+            }
+          },
+          "result": {
+            "result_id": "a5dffd1a-dec8-4083-bf66-55b3e49b7739",
+            "created": "2026-11-17T13:00:00Z",
+            "run_id": "82a6a427-1d5b-450c-a2be-2ac79d95316a",
+            "product_version": "pv-9777af1196095ee512cd1c7c33651786c3755067e3eb61657981773418bdfdab",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "idempotency_key": "8f9b44daac10f552077c0cc54f432c42c8f1f0b9f4ad93b614720e5c5f31be1a",
+            "outcome": "completed",
+            "reason": null,
+            "measurements": [
+              {
+                "name": "mean_reflectance",
+                "per": {
+                  "band": "sr_red"
+                },
+                "value": 0.1,
+                "unit": "1",
+                "n_valid": 9,
+                "n_total": 10,
+                "uncertainty": {
+                  "not_estimated": "Synthetic statistic; no uncertainty budget"
+                }
+              }
+            ],
+            "quality_flags": [
+              "site_unverified"
+            ],
+            "exclusions": {
+              "cloud": 1
+            },
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "inputs": [],
+            "reference": null,
+            "evidence": [],
+            "follows": null
+          },
+          "product_state": "registered",
+          "resolved_config": "evidence://sha256/9f64a07426cdadcce43e2bec19e112187291b121a14cefa4e758439854f1a15e",
+          "configuration": {
+            "check": "radiometry.site_window_stats@0.1.0",
+            "params": {
+              "window_m": 90
+            },
+            "assets": [],
+            "reference_snapshots": [],
+            "context": {
+              "site": {
+                "id": "synthetic.site-a"
+              }
+            }
+          }
+        },
+        {
+          "registration": {
+            "collection": "synthetic.optical-sr",
+            "scene": {
+              "platform": "SYNTHETIC-1",
+              "instrument": "SYNTHCAM",
+              "acquired": "2026-11-18T12:00:00Z",
+              "grid": null,
+              "attributes": {}
+            },
+            "product_version": {
+              "provider_id": "SYNTHETIC_4",
+              "processing": {
+                "label": "v1",
+                "attributes": {},
+                "produced": null
+              },
+              "supersedes": null
+            },
+            "assets": [
+              {
+                "role": "sr_red",
+                "href": "/tmp/synthetic_sr_red.bin",
+                "origin": null,
+                "bytes": 1,
+                "pixel_size_m": 30.0,
+                "checksum": {
+                  "alg": "sha256",
+                  "value": "abababababababababababababababababababababababababababababababab",
+                  "source": "computed"
+                }
+              }
+            ],
+            "source": {
+              "adapter": "synthetic@0.1.0",
+              "original_metadata": [
+                "evidence://sha256/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+              ],
+              "provenance": "provider"
+            }
+          },
+          "result": {
+            "result_id": "8ec8c0c4-6fce-41ad-86e3-d1a53348fdc1",
+            "created": "2026-11-18T13:00:00Z",
+            "run_id": "b0177022-7084-4403-8bcb-178552160b60",
+            "product_version": "pv-91731e068071c8d0b46f4e9003ceac2e930a787e3c33b17682793b0366811873",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "idempotency_key": "80ae723ef41b635442f7cf558ee1f943b89e6258c22fa0a2337250a66f64e0d8",
+            "outcome": "completed",
+            "reason": null,
+            "measurements": [
+              {
+                "name": "mean_reflectance",
+                "per": {
+                  "band": "sr_red"
+                },
+                "value": 0.5,
+                "unit": "1",
+                "n_valid": 9,
+                "n_total": 10,
+                "uncertainty": {
+                  "not_estimated": "Synthetic statistic; no uncertainty budget"
+                }
+              }
+            ],
+            "quality_flags": [
+              "site_unverified"
+            ],
+            "exclusions": {
+              "cloud": 1
+            },
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "inputs": [],
+            "reference": null,
+            "evidence": [],
+            "follows": null
+          },
+          "product_state": "registered",
+          "resolved_config": "evidence://sha256/9f64a07426cdadcce43e2bec19e112187291b121a14cefa4e758439854f1a15e",
+          "configuration": {
+            "check": "radiometry.site_window_stats@0.1.0",
+            "params": {
+              "window_m": 90
+            },
+            "assets": [],
+            "reference_snapshots": [],
+            "context": {
+              "site": {
+                "id": "synthetic.site-a"
+              }
+            }
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "4a606bd5c114e5440f146c9f5fd9a70b7668ebb88fcf1d3b7ee67053a7af748c",
+          "key": {
+            "collection": "synthetic.optical-sr",
+            "site": "synthetic.site-a",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "measurement": "mean_reflectance",
+            "per": {
+              "band": "sr_red"
+            },
+            "unit": "1",
+            "platform": "SYNTHETIC-1",
+            "instrument": "SYNTHCAM",
+            "processing_label": "v1",
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "context_sha256": "5bf6c707aa1c8836b1d3e217690ef136eb1f0a9bc3e583e6672a44d42f159793",
+            "reference": null,
+            "reference_snapshots": [],
+            "pixel_sizes_m": {
+              "sr_red": [
+                30.0
+              ]
+            }
+          },
+          "observations": [
+            {
+              "result_id": "4e3b8179-23da-48d0-8662-a36c55739162",
+              "product_version": "pv-1d5a8a326b56b2405823a1ba563d4fcdc828569fb59d3bb0bba3012ad0de6dd6",
+              "acquired": "2026-11-15T12:00:00Z",
+              "status": "observed",
+              "measurement_index": 0,
+              "value": 0.1,
+              "uncertainty": {
+                "not_estimated": "Synthetic statistic; no uncertainty budget"
+              },
+              "reason": null
+            }
+          ],
+          "observed_scene_count": 1,
+          "status": "insufficient_observations"
+        },
+        {
+          "id": "38301609343f46a1d335a6913a6170793bfabcf8669b98f0346854fab26c8eed",
+          "key": {
+            "collection": "synthetic.optical-sr",
+            "site": "synthetic.site-a",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "measurement": "mean_reflectance",
+            "per": {
+              "band": "sr_red"
+            },
+            "unit": "1",
+            "platform": "SYNTHETIC-1",
+            "instrument": "SYNTHCAM",
+            "processing_label": "v1",
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "context_sha256": "5bf6c707aa1c8836b1d3e217690ef136eb1f0a9bc3e583e6672a44d42f159793",
+            "reference": null,
+            "reference_snapshots": [],
+            "pixel_sizes_m": {
+              "sr_red": [
+                30.0
+              ]
+            }
+          },
+          "observations": [
+            {
+              "result_id": "974cd1e0-d3e0-4073-af22-da066dd79c47",
+              "product_version": "pv-9a2917d7ad8f7bda02205e9cf1832b01ae9f7299c24dfec5d8b633161e79c347",
+              "acquired": "2026-11-16T12:00:00Z",
+              "status": "gap",
+              "measurement_index": null,
+              "value": null,
+              "uncertainty": null,
+              "reason": {
+                "code": "reference_unavailable",
+                "detail": null
+              }
+            }
+          ],
+          "observed_scene_count": 0,
+          "status": "no_valid_observations"
+        },
+        {
+          "id": "0c6b10cf5b2420a8481490e58a23280bf7ab856ba0128b2d7f5dd1aa7cac0002",
+          "key": {
+            "collection": "synthetic.optical-sr",
+            "site": "synthetic.site-a",
+            "check": "radiometry.site_window_stats@0.1.0",
+            "measurement": "mean_reflectance",
+            "per": {
+              "band": "sr_red"
+            },
+            "unit": "1",
+            "platform": "SYNTHETIC-1",
+            "instrument": "SYNTHCAM",
+            "processing_label": "v1",
+            "method": {
+              "check_version": "0.1.0",
+              "maturity": "experimental",
+              "code": "synthetic-code",
+              "image": null
+            },
+            "context_sha256": "5bf6c707aa1c8836b1d3e217690ef136eb1f0a9bc3e583e6672a44d42f159793",
+            "reference": null,
+            "reference_snapshots": [],
+            "pixel_sizes_m": {
+              "sr_red": [
+                30.0
+              ]
+            }
+          },
+          "observations": [
+            {
+              "result_id": "a5dffd1a-dec8-4083-bf66-55b3e49b7739",
+              "product_version": "pv-9777af1196095ee512cd1c7c33651786c3755067e3eb61657981773418bdfdab",
+              "acquired": "2026-11-17T12:00:00Z",
+              "status": "observed",
+              "measurement_index": 0,
+              "value": 0.1,
+              "uncertainty": {
+                "not_estimated": "Synthetic statistic; no uncertainty budget"
+              },
+              "reason": null
+            },
+            {
+              "result_id": "8ec8c0c4-6fce-41ad-86e3-d1a53348fdc1",
+              "product_version": "pv-91731e068071c8d0b46f4e9003ceac2e930a787e3c33b17682793b0366811873",
+              "acquired": "2026-11-18T12:00:00Z",
+              "status": "observed",
+              "measurement_index": 0,
+              "value": 0.5,
+              "uncertainty": {
+                "not_estimated": "Synthetic statistic; no uncertainty budget"
+              },
+              "reason": null
+            }
+          ],
+          "observed_scene_count": 2,
+          "status": "sufficient_observations"
+        }
+      ],
+      "markers": [
+        {
+          "at": "2026-11-16T12:00:00Z",
+          "before_result": "4e3b8179-23da-48d0-8662-a36c55739162",
+          "after_result": "974cd1e0-d3e0-4073-af22-da066dd79c47",
+          "reasons": [
+            "unassessed_gap"
+          ]
+        },
+        {
+          "at": "2026-11-17T12:00:00Z",
+          "before_result": "974cd1e0-d3e0-4073-af22-da066dd79c47",
+          "after_result": "a5dffd1a-dec8-4083-bf66-55b3e49b7739",
+          "reasons": [
+            "unassessed_gap"
+          ]
+        }
+      ],
+      "summary": {
+        "statement": "Observed measurements over 3 scenes at 1 site. 3 observations and 1 gaps. Observation sufficiency is reported separately for each segment.",
+        "status": "sufficient_observations",
+        "observed_scene_count": 3,
+        "site_count": 1,
+        "observation_count": 3,
+        "gap_count": 1,
+        "source_result_ids": [
+          "4e3b8179-23da-48d0-8662-a36c55739162",
+          "8ec8c0c4-6fce-41ad-86e3-d1a53348fdc1",
+          "974cd1e0-d3e0-4073-af22-da066dd79c47",
+          "a5dffd1a-dec8-4083-bf66-55b3e49b7739"
+        ]
+      }
+    }
+  ],
+  "service_observations": [
+    {
+      "kind": "provider",
+      "subject": "Synthetic provider",
+      "observed_at": "2026-11-14T12:00:00Z",
+      "healthy": false,
+      "evidence": "evidence://sha256/abababababababababababababababababababababababababababababababab"
+    }
+  ],
+  "quality_alerts": [
+    {
+      "kind": "quality",
+      "series_id": "synthetic-red",
+      "segment_id": "0c6b10cf5b2420a8481490e58a23280bf7ab856ba0128b2d7f5dd1aa7cac0002",
+      "result_ids": [
+        "a5dffd1a-dec8-4083-bf66-55b3e49b7739",
+        "8ec8c0c4-6fce-41ad-86e3-d1a53348fdc1"
+      ],
+      "observed_change": 0.4,
+      "unit": "1",
+      "band": {
+        "series_id": "synthetic-red",
+        "unit": "1",
+        "limit": 0.05,
+        "source": "Synthetic test policy"
+      },
+      "statement": "Observed change exceeds the configured advisory band."
+    }
+  ],
+  "service_alerts": [
+    {
+      "kind": "service",
+      "subject": "Synthetic provider",
+      "reason": "provider_unavailable",
+      "source": {
+        "kind": "provider",
+        "subject": "Synthetic provider",
+        "observed_at": "2026-11-14T12:00:00Z",
+        "healthy": false,
+        "evidence": "evidence://sha256/abababababababababababababababababababababababababababababababab"
+      }
+    }
+  ],
+  "coverage_note": "Service coverage is limited to the supplied evidence."
+}

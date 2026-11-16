@@ -7,6 +7,8 @@
 	import FactList from '$lib/components/FactList.svelte';
 	import FamilyMark from '$lib/components/FamilyMark.svelte';
 	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
+	import CqasMonitoring from '$lib/components/cqas/CqasMonitoring.svelte';
+	import CqasV3Section from '$lib/components/cqas/CqasV3Section.svelte';
 	import CqasSection from '$lib/components/cqas/CqasSection.svelte';
 	import MimFootnote from '$lib/components/MimFootnote.svelte';
 	import MimMark from '$lib/components/MimMark.svelte';
@@ -51,7 +53,7 @@
 	let access = $derived(product ? accessAction(product) : null);
 	let links = $derived(product ? productLinks(product) : []);
 	// Full C-QAS report from this page's load (example data until C-QAS produces real reports).
-	let cqas = $derived(product && data.cqasReport && data.id === product.id ? data.cqasReport : null);
+	let cqas = $derived(product && !data.cqasV3Reports.length && data.cqasReport && data.id === product.id ? data.cqasReport : null);
 	// CEOS MIM database: full details for curated products, compact summary for gap fills.
 	let mim = $derived(data.mimDetails && product && data.id === product.id ? data.mimDetails : null);
 	let mimSummary = $derived(product ? (store.mimSummaries[product.id] ?? null) : null);
@@ -242,7 +244,9 @@
 			</section>
 		</div>
 
-		{#if cqas}{#key product.id}<CqasSection report={cqas} {product} />{/key}{/if}
+		{#if data.cqasSeries.length || data.cqasAlerts.length}<CqasMonitoring series={data.cqasSeries} alerts={data.cqasAlerts} />{/if}
+		{#if data.cqasV3Reports.length}<CqasV3Section reports={data.cqasV3Reports} />{/if}
+		{#if cqas && !data.cqasV3Reports.length}{#key product.id}<CqasSection report={cqas} {product} />{/key}{/if}
 
 		<section class="panel stack" aria-labelledby="links-heading">
 			<h2 id="links-heading">Access, documentation and samples</h2>

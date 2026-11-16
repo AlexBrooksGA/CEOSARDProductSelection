@@ -1,0 +1,1154 @@
+{
+  "$defs": {
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 0,
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "checksum": {
+          "$ref": "#/$defs/Checksum"
+        },
+        "href": {
+          "minLength": 1,
+          "title": "Href",
+          "type": "string"
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin"
+        },
+        "pixel_size_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pixel Size M"
+        },
+        "role": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "href",
+        "bytes",
+        "checksum"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "CheckOutcome": {
+      "enum": [
+        "completed",
+        "not_assessed",
+        "not_applicable",
+        "execution_error"
+      ],
+      "title": "CheckOutcome",
+      "type": "string"
+    },
+    "CheckResult": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)+@\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Check",
+          "type": "string"
+        },
+        "created": {
+          "format": "date-time",
+          "title": "Created",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "exclusions": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Exclusions",
+          "type": "object"
+        },
+        "follows": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Follows"
+        },
+        "idempotency_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/InputRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "measurements": {
+          "items": {
+            "$ref": "#/$defs/Measurement"
+          },
+          "title": "Measurements",
+          "type": "array"
+        },
+        "method": {
+          "$ref": "#/$defs/Method"
+        },
+        "outcome": {
+          "$ref": "#/$defs/CheckOutcome"
+        },
+        "product_version": {
+          "pattern": "^pv-[0-9a-f]{64}$",
+          "title": "Product Version",
+          "type": "string"
+        },
+        "quality_flags": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReferenceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "result_id": {
+          "format": "uuid",
+          "title": "Result Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "result_id",
+        "created",
+        "run_id",
+        "product_version",
+        "check",
+        "idempotency_key",
+        "outcome",
+        "method"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "Checksum": {
+      "additionalProperties": false,
+      "properties": {
+        "alg": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Alg",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "provider",
+            "computed"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 8,
+          "pattern": "^[0-9a-f]+$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "alg",
+        "value",
+        "source"
+      ],
+      "title": "Checksum",
+      "type": "object"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "uri": {
+          "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "uri"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "FindingOutcome": {
+      "enum": [
+        "met",
+        "not_met",
+        "evidence_missing",
+        "not_assessed",
+        "not_applicable",
+        "not_required"
+      ],
+      "title": "FindingOutcome",
+      "type": "string"
+    },
+    "FindingReason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "parts_established": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Parts Established",
+          "type": "array"
+        },
+        "parts_open": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Parts Open",
+          "type": "array"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "FindingReason",
+      "type": "object"
+    },
+    "Grid": {
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "minLength": 1,
+          "title": "Ref",
+          "type": "string"
+        },
+        "scheme": {
+          "minLength": 1,
+          "title": "Scheme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scheme",
+        "ref"
+      ],
+      "title": "Grid",
+      "type": "object"
+    },
+    "InputRef": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "minLength": 8,
+          "pattern": "^[0-9a-f]+$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "checksum"
+      ],
+      "title": "InputRef",
+      "type": "object"
+    },
+    "Maturity": {
+      "enum": [
+        "operational",
+        "experimental",
+        "test_double",
+        "awaiting_dependency"
+      ],
+      "title": "Maturity",
+      "type": "string"
+    },
+    "Measurement": {
+      "additionalProperties": false,
+      "properties": {
+        "n_total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Total"
+        },
+        "n_valid": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Valid"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "per": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Per",
+          "type": "object"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uncertainty"
+            },
+            {
+              "$ref": "#/$defs/NotEstimated"
+            }
+          ],
+          "title": "Uncertainty"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "unit",
+        "uncertainty"
+      ],
+      "title": "Measurement",
+      "type": "object"
+    },
+    "Method": {
+      "additionalProperties": false,
+      "properties": {
+        "check_version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Check Version",
+          "type": "string"
+        },
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "maturity": {
+          "$ref": "#/$defs/Maturity"
+        }
+      },
+      "required": [
+        "check_version",
+        "maturity",
+        "code"
+      ],
+      "title": "Method",
+      "type": "object"
+    },
+    "NativeRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RecordBasis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "data_status": {
+          "const": "provisional",
+          "title": "Data Status",
+          "type": "string"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/RecordFinding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "product_state": {
+          "title": "Product State",
+          "type": "string"
+        },
+        "product_version": {
+          "pattern": "^pv-[0-9a-f]{64}$",
+          "title": "Product Version",
+          "type": "string"
+        },
+        "registration": {
+          "$ref": "#/$defs/ProductRegistration"
+        },
+        "results": {
+          "items": {
+            "$ref": "#/$defs/CheckResult"
+          },
+          "title": "Results",
+          "type": "array"
+        },
+        "schema": {
+          "const": "cqas-record/1",
+          "title": "Schema",
+          "type": "string"
+        },
+        "scope_note": {
+          "title": "Scope Note",
+          "type": "string"
+        },
+        "status_note": {
+          "title": "Status Note",
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/$defs/RecordSummary"
+        }
+      },
+      "required": [
+        "schema",
+        "data_status",
+        "status_note",
+        "scope_note",
+        "generated_at",
+        "product_version",
+        "product_state",
+        "registration",
+        "summary",
+        "findings",
+        "results"
+      ],
+      "title": "NativeRecord",
+      "type": "object"
+    },
+    "NotEstimated": {
+      "additionalProperties": false,
+      "properties": {
+        "not_estimated": {
+          "minLength": 1,
+          "title": "Not Estimated",
+          "type": "string"
+        }
+      },
+      "required": [
+        "not_estimated"
+      ],
+      "title": "NotEstimated",
+      "type": "object"
+    },
+    "Processing": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "produced": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Produced"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "Processing",
+      "type": "object"
+    },
+    "ProductRegistration": {
+      "additionalProperties": false,
+      "properties": {
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/Asset"
+          },
+          "minItems": 1,
+          "title": "Assets",
+          "type": "array"
+        },
+        "collection": {
+          "pattern": "^[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+$",
+          "title": "Collection",
+          "type": "string"
+        },
+        "product_version": {
+          "$ref": "#/$defs/ProductVersion"
+        },
+        "scene": {
+          "$ref": "#/$defs/Scene"
+        },
+        "source": {
+          "$ref": "#/$defs/RegistrationSource"
+        }
+      },
+      "required": [
+        "collection",
+        "scene",
+        "product_version",
+        "assets",
+        "source"
+      ],
+      "title": "ProductRegistration",
+      "type": "object"
+    },
+    "ProductVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "processing": {
+          "$ref": "#/$defs/Processing"
+        },
+        "provider_id": {
+          "minLength": 1,
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "pattern": "^pv-[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes"
+        }
+      },
+      "required": [
+        "provider_id",
+        "processing"
+      ],
+      "title": "ProductVersion",
+      "type": "object"
+    },
+    "PublicationTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "explorer_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Explorer Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "short_name": {
+          "minLength": 1,
+          "title": "Short Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "explorer_id",
+        "name",
+        "short_name"
+      ],
+      "title": "PublicationTarget",
+      "type": "object"
+    },
+    "Reason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Reason",
+      "type": "object"
+    },
+    "RecordBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "pfs_family": {
+          "title": "Pfs Family",
+          "type": "string"
+        },
+        "pfs_snapshot": {
+          "title": "Pfs Snapshot",
+          "type": "string"
+        },
+        "pfs_version": {
+          "title": "Pfs Version",
+          "type": "string"
+        },
+        "rulesets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Rulesets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "pfs_snapshot",
+        "pfs_family",
+        "pfs_version",
+        "rulesets"
+      ],
+      "title": "RecordBasis",
+      "type": "object"
+    },
+    "RecordFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "derived_from": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Derived From",
+          "type": "array"
+        },
+        "finding_id": {
+          "format": "uuid",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/RequirementLevel"
+        },
+        "outcome": {
+          "$ref": "#/$defs/FindingOutcome"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FindingReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "requirement": {
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "title": "Requirement",
+          "type": "string"
+        },
+        "review_state": {
+          "$ref": "#/$defs/ReviewState"
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "requirement",
+        "title",
+        "level",
+        "outcome",
+        "review_state",
+        "derived_from"
+      ],
+      "title": "RecordFinding",
+      "type": "object"
+    },
+    "RecordSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "findings": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Findings",
+          "type": "object"
+        },
+        "maturity": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Maturity",
+          "type": "object"
+        },
+        "results": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Results",
+          "type": "object"
+        }
+      },
+      "required": [
+        "findings",
+        "results",
+        "maturity"
+      ],
+      "title": "RecordSummary",
+      "type": "object"
+    },
+    "ReferenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "snapshot": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "snapshot"
+      ],
+      "title": "ReferenceRef",
+      "type": "object"
+    },
+    "RegistrationSource": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "pattern": "^[a-z][a-z0-9_.-]*@\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Adapter",
+          "type": "string"
+        },
+        "original_metadata": {
+          "items": {
+            "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Original Metadata",
+          "type": "array"
+        },
+        "provenance": {
+          "default": "provider",
+          "enum": [
+            "provider",
+            "submitter_declared"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter",
+        "original_metadata"
+      ],
+      "title": "RegistrationSource",
+      "type": "object"
+    },
+    "RequirementLevel": {
+      "enum": [
+        "threshold",
+        "goal"
+      ],
+      "title": "RequirementLevel",
+      "type": "string"
+    },
+    "ReviewState": {
+      "enum": [
+        "provisional",
+        "needs_review",
+        "reviewed"
+      ],
+      "title": "ReviewState",
+      "type": "string"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "description": "One acquisition, independent of processing.",
+      "properties": {
+        "acquired": {
+          "format": "date-time",
+          "title": "Acquired",
+          "type": "string"
+        },
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "grid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Grid"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "instrument": {
+          "minLength": 1,
+          "title": "Instrument",
+          "type": "string"
+        },
+        "platform": {
+          "minLength": 1,
+          "title": "Platform",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform",
+        "instrument",
+        "acquired"
+      ],
+      "title": "Scene",
+      "type": "object"
+    },
+    "SimpleView": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_count": {
+          "minimum": 0,
+          "title": "Finding Count",
+          "type": "integer"
+        },
+        "result_count": {
+          "minimum": 0,
+          "title": "Result Count",
+          "type": "integer"
+        },
+        "scene_count": {
+          "const": 1,
+          "default": 1,
+          "title": "Scene Count",
+          "type": "integer"
+        },
+        "source_finding_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Source Finding Ids",
+          "type": "array"
+        },
+        "source_result_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Source Result Ids",
+          "type": "array"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "statement",
+        "result_count",
+        "finding_count",
+        "source_result_ids",
+        "source_finding_ids"
+      ],
+      "title": "SimpleView",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          "title": "Components",
+          "type": "object"
+        },
+        "k": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "K",
+          "type": "number"
+        },
+        "method": {
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "standard": {
+          "minimum": 0,
+          "title": "Standard",
+          "type": "number"
+        }
+      },
+      "required": [
+        "standard",
+        "method"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cqas:contract:report-v3-proposal:0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "contract_status": {
+      "const": "proposed",
+      "default": "proposed",
+      "title": "Contract Status",
+      "type": "string"
+    },
+    "data_status": {
+      "const": "provisional",
+      "default": "provisional",
+      "title": "Data Status",
+      "type": "string"
+    },
+    "product": {
+      "$ref": "#/$defs/PublicationTarget"
+    },
+    "record": {
+      "$ref": "#/$defs/NativeRecord"
+    },
+    "schema": {
+      "const": "cqas-report/3",
+      "default": "cqas-report/3",
+      "title": "Schema",
+      "type": "string"
+    },
+    "simple": {
+      "$ref": "#/$defs/SimpleView"
+    }
+  },
+  "required": [
+    "product",
+    "record",
+    "simple"
+  ],
+  "title": "CqasReportV3Proposal",
+  "type": "object"
+}

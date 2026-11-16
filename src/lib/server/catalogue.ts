@@ -6,6 +6,8 @@
  * prototype did: the researched catalogue wins; demo + status overlay is a fallback only.
  */
 import { CatalogueError, loadCatalogue, loadProfiles, type CatalogueLoadResult } from '$lib/domain/catalogue';
+import { loadSidecars, type Series, type Alerts } from '$lib/domain/cqas-sidecars';
+import { loadReportsV3, type ReportV3 } from '$lib/domain/cqas-v3';
 import { cqasSummary, loadCqasReports, type CqasReport, type CqasSummary } from '$lib/domain/cqas';
 import { mimDetailsFor, MimSnapshotError, mimSummary, parseMimSnapshot, productVisual, type MimCredit, type MimSnapshot, type MimSummary, type MissionVisual, type ProductVisual } from '$lib/domain/mim';
 import { buildProvenanceIndex } from '$lib/domain/provenance';
@@ -15,6 +17,8 @@ const jsonFiles = import.meta.glob('/data/*.json', { eager: true, import: 'defau
 const csvFiles = import.meta.glob('/data/*.csv', { eager: true, query: '?raw', import: 'default' }) as Record<string, string>;
 // C-QAS reports (cqas-report/2), one file per product: data/cqas/<product-id>.json.
 const cqasFiles = import.meta.glob('/data/cqas/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
+const v3Files = import.meta.glob('/data/cqas-v3/**/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
+const alertFiles = import.meta.glob('/data/cqas-alerts/**/*.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 // CEOS MIM database snapshot for curated products (tools/build_mim_snapshot.mjs).
 const mimFiles = import.meta.glob('/data/mim/snapshot.json', { eager: true, import: 'default' }) as Record<string, unknown>;
 // Vendored mission icons and credited pictures (tools/fetch_mission_visuals.mjs).
@@ -24,6 +28,9 @@ const logoFiles = import.meta.glob('/assets/agency_logos/*.{png,svg,jpg,webp,ico
 const logoManifest = import.meta.glob('/assets/agency_logos/manifest.json', { eager: true, import: 'default' }) as Record<string, { agencies?: Record<string, { file?: string; display_treatment?: string }> }>;
 
 export interface BundledData {
+ cqasSeries: Record<string,Series[]>;
+ cqasAlerts: Alerts[];
+ cqasV3Reports: Record<string, ReportV3[]>;
 	catalogue: CatalogueLoadResult;
 	profiles: Profile[];
 	provenance: ProvenanceIndex;
@@ -68,6 +75,14 @@ function build(): BundledData {
 	}
 	// A bad C-QAS file is skipped with a warning; it never takes down discovery or matching.
 	const cqas = loadCqasReports(cqasFiles, known);
+ const v3 = loadReportsV3(v3Files, known);
+ const monitoring = loadSidecars({...v3Files,...alertFiles}, known);
+ const cqasSummaries: Record<string, CqasSummary> = Object.fromEntries(Object.entries(cqas.reports).map(([id, report]) => [id, cqasSummary(report)]));
+ for (const [id, reports] of Object.entries(v3.reports)) cqasSummaries[id] = {
+  data_status: 'provisional',
+  lines: [`Pipeline evidence for ${reports.length} product versions.`, 'Results retain source IDs and method maturity.', 'Provisional evidence; see each product version.'],
+  provenance: 'cqas-report/3 — proposed format'
+ };
 	// Like C-QAS, a bad MIM snapshot is skipped with a warning; it never stops the explorer.
 	let mimSnapshot: MimSnapshot | null = null;
 	const mimWarnings: string[] = [];
@@ -94,7 +109,7 @@ function build(): BundledData {
 		const visual = productVisual(details, missionVisuals);
 		if (visual) productVisuals[product.id] = visual;
 	}
-	return { catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasSummaries: Object.fromEntries(Object.entries(cqas.reports).map(([id, report]) => [id, cqasSummary(report)])), cqasWarnings: cqas.warnings, mimSnapshot, mimSummaries, missionVisuals, productVisuals, mimWarnings };
+	return { cqasSeries: monitoring.series, cqasAlerts: monitoring.alerts, cqasV3Reports: v3.reports, catalogue, profiles, provenance, provenanceWarnings: log.warnings, agencyMarks, cqasReports: cqas.reports, cqasSummaries, cqasWarnings: [...cqas.warnings, ...v3.warnings, ...monitoring.warnings], mimSnapshot, mimSummaries, missionVisuals, productVisuals, mimWarnings };
 }
 
 /** Validated bundled data, or a clear error message when the bundled files are unusable. */
