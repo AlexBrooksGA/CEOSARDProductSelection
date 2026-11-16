@@ -4,6 +4,7 @@
 </script>
 <section id="cqas" tabindex="-1" aria-label="C-QAS pipeline evidence">
  <h2>C-QAS pipeline evidence</h2>
+ <p><a href="/monitoring">View monitoring evidence and service alerts</a></p>
  <p>Provisional pipeline output · proposed report format</p>
  {#each reports as report (report.record.product_version)}
   <article>

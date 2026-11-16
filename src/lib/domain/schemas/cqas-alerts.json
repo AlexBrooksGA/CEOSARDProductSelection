@@ -1,0 +1,1532 @@
+{
+  "$defs": {
+    "AlertPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "bands": {
+          "items": {
+            "$ref": "#/$defs/ChangeBand"
+          },
+          "title": "Bands",
+          "type": "array"
+        },
+        "stale_after_hours": {
+          "exclusiveMinimum": 0,
+          "title": "Stale After Hours",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bands",
+        "stale_after_hours"
+      ],
+      "title": "AlertPolicy",
+      "type": "object"
+    },
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 0,
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "checksum": {
+          "$ref": "#/$defs/Checksum"
+        },
+        "href": {
+          "minLength": 1,
+          "title": "Href",
+          "type": "string"
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin"
+        },
+        "pixel_size_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pixel Size M"
+        },
+        "role": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "href",
+        "bytes",
+        "checksum"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "ChangeBand": {
+      "additionalProperties": false,
+      "properties": {
+        "limit": {
+          "exclusiveMinimum": 0,
+          "title": "Limit",
+          "type": "number"
+        },
+        "series_id": {
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "title": "Series Id",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "series_id",
+        "unit",
+        "limit",
+        "source"
+      ],
+      "title": "ChangeBand",
+      "type": "object"
+    },
+    "CheckOutcome": {
+      "enum": [
+        "completed",
+        "not_assessed",
+        "not_applicable",
+        "execution_error"
+      ],
+      "title": "CheckOutcome",
+      "type": "string"
+    },
+    "CheckResult": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)+@\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Check",
+          "type": "string"
+        },
+        "created": {
+          "format": "date-time",
+          "title": "Created",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "exclusions": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Exclusions",
+          "type": "object"
+        },
+        "follows": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Follows"
+        },
+        "idempotency_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/InputRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "measurements": {
+          "items": {
+            "$ref": "#/$defs/Measurement"
+          },
+          "title": "Measurements",
+          "type": "array"
+        },
+        "method": {
+          "$ref": "#/$defs/Method"
+        },
+        "outcome": {
+          "$ref": "#/$defs/CheckOutcome"
+        },
+        "product_version": {
+          "pattern": "^pv-[0-9a-f]{64}$",
+          "title": "Product Version",
+          "type": "string"
+        },
+        "quality_flags": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReferenceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "result_id": {
+          "format": "uuid",
+          "title": "Result Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "result_id",
+        "created",
+        "run_id",
+        "product_version",
+        "check",
+        "idempotency_key",
+        "outcome",
+        "method"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "Checksum": {
+      "additionalProperties": false,
+      "properties": {
+        "alg": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Alg",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "provider",
+            "computed"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 8,
+          "pattern": "^[0-9a-f]+$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "alg",
+        "value",
+        "source"
+      ],
+      "title": "Checksum",
+      "type": "object"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "uri": {
+          "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "uri"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "Grid": {
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "minLength": 1,
+          "title": "Ref",
+          "type": "string"
+        },
+        "scheme": {
+          "minLength": 1,
+          "title": "Scheme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scheme",
+        "ref"
+      ],
+      "title": "Grid",
+      "type": "object"
+    },
+    "InputRef": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "minLength": 8,
+          "pattern": "^[0-9a-f]+$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "checksum"
+      ],
+      "title": "InputRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Maturity": {
+      "enum": [
+        "operational",
+        "experimental",
+        "test_double",
+        "awaiting_dependency"
+      ],
+      "title": "Maturity",
+      "type": "string"
+    },
+    "Measurement": {
+      "additionalProperties": false,
+      "properties": {
+        "n_total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Total"
+        },
+        "n_valid": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Valid"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "per": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Per",
+          "type": "object"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uncertainty"
+            },
+            {
+              "$ref": "#/$defs/NotEstimated"
+            }
+          ],
+          "title": "Uncertainty"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "unit",
+        "uncertainty"
+      ],
+      "title": "Measurement",
+      "type": "object"
+    },
+    "Method": {
+      "additionalProperties": false,
+      "properties": {
+        "check_version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Check Version",
+          "type": "string"
+        },
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "maturity": {
+          "$ref": "#/$defs/Maturity"
+        }
+      },
+      "required": [
+        "check_version",
+        "maturity",
+        "code"
+      ],
+      "title": "Method",
+      "type": "object"
+    },
+    "NotEstimated": {
+      "additionalProperties": false,
+      "properties": {
+        "not_estimated": {
+          "minLength": 1,
+          "title": "Not Estimated",
+          "type": "string"
+        }
+      },
+      "required": [
+        "not_estimated"
+      ],
+      "title": "NotEstimated",
+      "type": "object"
+    },
+    "Processing": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "produced": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Produced"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "Processing",
+      "type": "object"
+    },
+    "ProductRegistration": {
+      "additionalProperties": false,
+      "properties": {
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/Asset"
+          },
+          "minItems": 1,
+          "title": "Assets",
+          "type": "array"
+        },
+        "collection": {
+          "pattern": "^[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+$",
+          "title": "Collection",
+          "type": "string"
+        },
+        "product_version": {
+          "$ref": "#/$defs/ProductVersion"
+        },
+        "scene": {
+          "$ref": "#/$defs/Scene"
+        },
+        "source": {
+          "$ref": "#/$defs/RegistrationSource"
+        }
+      },
+      "required": [
+        "collection",
+        "scene",
+        "product_version",
+        "assets",
+        "source"
+      ],
+      "title": "ProductRegistration",
+      "type": "object"
+    },
+    "ProductVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "processing": {
+          "$ref": "#/$defs/Processing"
+        },
+        "provider_id": {
+          "minLength": 1,
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "pattern": "^pv-[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes"
+        }
+      },
+      "required": [
+        "provider_id",
+        "processing"
+      ],
+      "title": "ProductVersion",
+      "type": "object"
+    },
+    "QualityAlert": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "$ref": "#/$defs/ChangeBand"
+        },
+        "kind": {
+          "const": "quality",
+          "default": "quality",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observed_change": {
+          "title": "Observed Change",
+          "type": "number"
+        },
+        "result_ids": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "format": "uuid",
+              "type": "string"
+            }
+          ],
+          "title": "Result Ids",
+          "type": "array"
+        },
+        "segment_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "series_id": {
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "title": "Series Id",
+          "type": "string"
+        },
+        "statement": {
+          "const": "Observed change exceeds the configured advisory band.",
+          "default": "Observed change exceeds the configured advisory band.",
+          "title": "Statement",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "series_id",
+        "segment_id",
+        "result_ids",
+        "observed_change",
+        "unit",
+        "band"
+      ],
+      "title": "QualityAlert",
+      "type": "object"
+    },
+    "Reason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Reason",
+      "type": "object"
+    },
+    "ReferenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "snapshot": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "snapshot"
+      ],
+      "title": "ReferenceRef",
+      "type": "object"
+    },
+    "RegistrationSource": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "pattern": "^[a-z][a-z0-9_.-]*@\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Adapter",
+          "type": "string"
+        },
+        "original_metadata": {
+          "items": {
+            "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Original Metadata",
+          "type": "array"
+        },
+        "provenance": {
+          "default": "provider",
+          "enum": [
+            "provider",
+            "submitter_declared"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter",
+        "original_metadata"
+      ],
+      "title": "RegistrationSource",
+      "type": "object"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "description": "One acquisition, independent of processing.",
+      "properties": {
+        "acquired": {
+          "format": "date-time",
+          "title": "Acquired",
+          "type": "string"
+        },
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "grid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Grid"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "instrument": {
+          "minLength": 1,
+          "title": "Instrument",
+          "type": "string"
+        },
+        "platform": {
+          "minLength": 1,
+          "title": "Platform",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform",
+        "instrument",
+        "acquired"
+      ],
+      "title": "Scene",
+      "type": "object"
+    },
+    "SeriesDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)+$",
+          "title": "Check",
+          "type": "string"
+        },
+        "collection": {
+          "pattern": "^[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+$",
+          "title": "Collection",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "max_gap_days": {
+          "exclusiveMinimum": 0,
+          "maximum": 36500,
+          "title": "Max Gap Days",
+          "type": "integer"
+        },
+        "measurement": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Measurement",
+          "type": "string"
+        },
+        "min_scenes": {
+          "minimum": 2,
+          "title": "Min Scenes",
+          "type": "integer"
+        },
+        "per": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Per",
+          "type": "object"
+        },
+        "site": {
+          "minLength": 1,
+          "title": "Site",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "collection",
+        "site",
+        "check",
+        "measurement",
+        "per",
+        "unit",
+        "min_scenes",
+        "max_gap_days"
+      ],
+      "title": "SeriesDefinition",
+      "type": "object"
+    },
+    "SeriesDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_status": {
+          "const": "proposed",
+          "default": "proposed",
+          "title": "Contract Status",
+          "type": "string"
+        },
+        "data_status": {
+          "const": "provisional",
+          "default": "provisional",
+          "title": "Data Status",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/SeriesDefinition"
+        },
+        "markers": {
+          "items": {
+            "$ref": "#/$defs/SeriesMarker"
+          },
+          "title": "Markers",
+          "type": "array"
+        },
+        "schema": {
+          "const": "cqas-series/1",
+          "default": "cqas-series/1",
+          "title": "Schema",
+          "type": "string"
+        },
+        "scope_note": {
+          "default": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment.",
+          "title": "Scope Note",
+          "type": "string"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/SeriesSegment"
+          },
+          "title": "Segments",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SeriesSource"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "summary": {
+          "$ref": "#/$defs/SeriesSummary"
+        }
+      },
+      "required": [
+        "definition",
+        "sources",
+        "segments",
+        "markers",
+        "summary"
+      ],
+      "title": "SeriesDocument",
+      "type": "object"
+    },
+    "SeriesKey": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)+@\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$",
+          "title": "Check",
+          "type": "string"
+        },
+        "collection": {
+          "pattern": "^[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+$",
+          "title": "Collection",
+          "type": "string"
+        },
+        "context_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Context Sha256",
+          "type": "string"
+        },
+        "instrument": {
+          "minLength": 1,
+          "title": "Instrument",
+          "type": "string"
+        },
+        "measurement": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Measurement",
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/$defs/Method"
+        },
+        "per": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Per",
+          "type": "object"
+        },
+        "pixel_sizes_m": {
+          "additionalProperties": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "title": "Pixel Sizes M",
+          "type": "object"
+        },
+        "platform": {
+          "minLength": 1,
+          "title": "Platform",
+          "type": "string"
+        },
+        "processing_label": {
+          "minLength": 1,
+          "title": "Processing Label",
+          "type": "string"
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReferenceRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference_snapshots": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Reference Snapshots",
+          "type": "array"
+        },
+        "site": {
+          "minLength": 1,
+          "title": "Site",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "collection",
+        "site",
+        "check",
+        "measurement",
+        "per",
+        "unit",
+        "platform",
+        "instrument",
+        "processing_label",
+        "method",
+        "context_sha256",
+        "reference",
+        "reference_snapshots",
+        "pixel_sizes_m"
+      ],
+      "title": "SeriesKey",
+      "type": "object"
+    },
+    "SeriesMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "after_result": {
+          "format": "uuid",
+          "title": "After Result",
+          "type": "string"
+        },
+        "at": {
+          "format": "date-time",
+          "title": "At",
+          "type": "string"
+        },
+        "before_result": {
+          "format": "uuid",
+          "title": "Before Result",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "at",
+        "before_result",
+        "after_result",
+        "reasons"
+      ],
+      "title": "SeriesMarker",
+      "type": "object"
+    },
+    "SeriesObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "acquired": {
+          "format": "date-time",
+          "title": "Acquired",
+          "type": "string"
+        },
+        "measurement_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Measurement Index"
+        },
+        "product_version": {
+          "pattern": "^pv-[0-9a-f]{64}$",
+          "title": "Product Version",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result_id": {
+          "format": "uuid",
+          "title": "Result Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "gap"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uncertainty"
+            },
+            {
+              "$ref": "#/$defs/NotEstimated"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "result_id",
+        "product_version",
+        "acquired",
+        "status",
+        "measurement_index",
+        "value",
+        "uncertainty",
+        "reason"
+      ],
+      "title": "SeriesObservation",
+      "type": "object"
+    },
+    "SeriesSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "key": {
+          "$ref": "#/$defs/SeriesKey"
+        },
+        "observations": {
+          "items": {
+            "$ref": "#/$defs/SeriesObservation"
+          },
+          "minItems": 1,
+          "title": "Observations",
+          "type": "array"
+        },
+        "observed_scene_count": {
+          "minimum": 0,
+          "title": "Observed Scene Count",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "sufficient_observations",
+            "insufficient_observations",
+            "no_valid_observations"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "observations",
+        "observed_scene_count",
+        "status"
+      ],
+      "title": "SeriesSegment",
+      "type": "object"
+    },
+    "SeriesSource": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "product_state": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Product State",
+          "type": "string"
+        },
+        "registration": {
+          "$ref": "#/$defs/ProductRegistration"
+        },
+        "resolved_config": {
+          "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+          "title": "Resolved Config",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/CheckResult"
+        }
+      },
+      "required": [
+        "registration",
+        "result",
+        "product_state",
+        "resolved_config",
+        "configuration"
+      ],
+      "title": "SeriesSource",
+      "type": "object"
+    },
+    "SeriesSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "gap_count": {
+          "minimum": 0,
+          "title": "Gap Count",
+          "type": "integer"
+        },
+        "observation_count": {
+          "minimum": 0,
+          "title": "Observation Count",
+          "type": "integer"
+        },
+        "observed_scene_count": {
+          "minimum": 0,
+          "title": "Observed Scene Count",
+          "type": "integer"
+        },
+        "site_count": {
+          "minimum": 0,
+          "title": "Site Count",
+          "type": "integer"
+        },
+        "source_result_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Source Result Ids",
+          "type": "array"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "sufficient_observations",
+            "insufficient_observations",
+            "no_valid_observations"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "statement",
+        "status",
+        "observed_scene_count",
+        "site_count",
+        "observation_count",
+        "gap_count",
+        "source_result_ids"
+      ],
+      "title": "SeriesSummary",
+      "type": "object"
+    },
+    "ServiceAlert": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "service",
+          "default": "service",
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "task_failure",
+            "provider_unavailable",
+            "stale_schedule"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ServiceObservation"
+        },
+        "subject": {
+          "title": "Subject",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject",
+        "reason",
+        "source"
+      ],
+      "title": "ServiceAlert",
+      "type": "object"
+    },
+    "ServiceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "pattern": "^evidence://sha256/[0-9a-f]{64}$",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "healthy": {
+          "title": "Healthy",
+          "type": "boolean"
+        },
+        "kind": {
+          "enum": [
+            "schedule",
+            "task",
+            "provider"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "subject": {
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "subject",
+        "observed_at",
+        "healthy",
+        "evidence"
+      ],
+      "title": "ServiceObservation",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          "title": "Components",
+          "type": "object"
+        },
+        "k": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "K",
+          "type": "number"
+        },
+        "method": {
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "standard": {
+          "minimum": 0,
+          "title": "Standard",
+          "type": "number"
+        }
+      },
+      "required": [
+        "standard",
+        "method"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cqas:contract:alerts:0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "contract_status": {
+      "const": "proposed",
+      "default": "proposed",
+      "title": "Contract Status",
+      "type": "string"
+    },
+    "coverage_note": {
+      "const": "Service coverage is limited to the supplied evidence.",
+      "default": "Service coverage is limited to the supplied evidence.",
+      "title": "Coverage Note",
+      "type": "string"
+    },
+    "data_status": {
+      "const": "provisional",
+      "default": "provisional",
+      "title": "Data Status",
+      "type": "string"
+    },
+    "evaluated_at": {
+      "format": "date-time",
+      "title": "Evaluated At",
+      "type": "string"
+    },
+    "policy": {
+      "$ref": "#/$defs/AlertPolicy"
+    },
+    "quality_alerts": {
+      "items": {
+        "$ref": "#/$defs/QualityAlert"
+      },
+      "title": "Quality Alerts",
+      "type": "array"
+    },
+    "schema": {
+      "const": "cqas-alerts/1",
+      "default": "cqas-alerts/1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "series": {
+      "items": {
+        "$ref": "#/$defs/SeriesDocument"
+      },
+      "title": "Series",
+      "type": "array"
+    },
+    "service_alerts": {
+      "items": {
+        "$ref": "#/$defs/ServiceAlert"
+      },
+      "title": "Service Alerts",
+      "type": "array"
+    },
+    "service_observations": {
+      "items": {
+        "$ref": "#/$defs/ServiceObservation"
+      },
+      "title": "Service Observations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "evaluated_at",
+    "policy",
+    "series",
+    "service_observations",
+    "quality_alerts",
+    "service_alerts"
+  ],
+  "title": "AlertDocument",
+  "type": "object"
+}

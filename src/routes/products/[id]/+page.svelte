@@ -7,6 +7,7 @@
 	import FactList from '$lib/components/FactList.svelte';
 	import FamilyMark from '$lib/components/FamilyMark.svelte';
 	import PurposeChecks from '$lib/components/purpose/PurposeChecks.svelte';
+	import CqasMonitoring from '$lib/components/cqas/CqasMonitoring.svelte';
 	import CqasV3Section from '$lib/components/cqas/CqasV3Section.svelte';
 	import CqasSection from '$lib/components/cqas/CqasSection.svelte';
 	import MimFootnote from '$lib/components/MimFootnote.svelte';
@@ -243,6 +244,7 @@
 			</section>
 		</div>
 
+		{#if data.cqasSeries.length || data.cqasAlerts.length}<CqasMonitoring series={data.cqasSeries} alerts={data.cqasAlerts} />{/if}
 		{#if data.cqasV3Reports.length}<CqasV3Section reports={data.cqasV3Reports} />{/if}
 		{#if cqas && !data.cqasV3Reports.length}{#key product.id}<CqasSection report={cqas} {product} />{/key}{/if}
 
