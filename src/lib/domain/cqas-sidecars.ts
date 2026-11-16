@@ -95,12 +95,15 @@ export function parseAlerts(raw:unknown):Alerts{
   const delta=Math.abs(b!.value!-a!.value!);
   if(instant(a!.acquired)!==instant(b!.acquired)&&delta>band.limit)quality.push({kind:'quality',series_id:band.series_id,segment_id:seg.id,result_ids:[a!.result_id,b!.result_id],observed_change:delta,unit:band.unit,band,statement:'Observed change exceeds the configured advisory band.'});
  }
- const latest=new Map<string,ServiceFact>();
+ const latest=new Map<string,ServiceFact>(),seen=new Map<string,ServiceFact>();
+ const normalized=(fact:ServiceFact)=>({...fact,observed_at:instant(fact.observed_at)});
  for(const fact of doc.service_observations){
   insist(time(fact.observed_at)<=time(doc.evaluated_at),'Future service evidence');
   insist(fact.kind!=='schedule'||fact.healthy,'Failed schedule heartbeat');
   const k=JSON.stringify([fact.kind,fact.subject]),old=latest.get(k);
-  if(old&&time(old.observed_at)===time(fact.observed_at))insist(equal(old,fact),'Conflicting service evidence');
+  const event=JSON.stringify([fact.kind,fact.subject,time(fact.observed_at).toString()]),previous=seen.get(event);
+  if(previous)insist(equal(normalized(previous),normalized(fact)),'Conflicting service evidence');
+  seen.set(event,fact);
   if(!old||time(fact.observed_at)>time(old.observed_at))latest.set(k,fact);
  }
  const services:Alerts['service_alerts']=[];
@@ -108,7 +111,7 @@ export function parseAlerts(raw:unknown):Alerts{
   const reason=fact.kind==='schedule'?(time(doc.evaluated_at)-time(fact.observed_at)>BigInt(doc.policy.stale_after_hours)*3600000000n?'stale_schedule':null):!fact.healthy?(fact.kind==='task'?'task_failure':'provider_unavailable'):null;
   if(reason)services.push({kind:'service',subject:fact.subject,reason,source:fact});
  }
- insist(equal(doc.quality_alerts,quality)&&equal(doc.service_alerts,services),'Untraceable alert projection');return doc;
+ insist(equal(doc.quality_alerts,quality)&&equal(doc.service_alerts.map(a=>({...a,source:normalized(a.source)})),services.map(a=>({...a,source:normalized(a.source)}))),'Untraceable alert projection');return doc;
 }
 
 export function loadSidecars(files:Record<string,unknown>,known:Iterable<string>){

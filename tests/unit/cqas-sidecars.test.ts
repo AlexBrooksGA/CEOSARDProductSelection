@@ -69,3 +69,19 @@ it('preserves microsecond ordering at segment boundaries',()=>{
  doc.sources[1]!.registration.scene.acquired=earlier;doc.segments[1]!.observations[0]!.acquired=earlier;doc.markers[0]!.at=earlier;
  expect(()=>parseSeries(doc)).toThrow('Invalid boundary marker');
 });
+
+
+it('accepts equivalent timezone service evidence and projection spellings',()=>{
+ const doc=a(),fact=doc.service_observations[0]!;
+ const equivalent={...fact,observed_at:new Date(new Date(fact.observed_at).getTime()+3600000).toISOString().replace('Z','+01:00')};
+ doc.service_observations.push(equivalent);
+ doc.service_alerts[0]!.source=equivalent;
+ expect(parseAlerts(doc).service_alerts).toHaveLength(1);
+});
+
+it.each([false,true])('rejects historical service conflicts regardless of order (newest first: %s)',newestFirst=>{
+ const doc=a(),fact=doc.service_observations[0]!,conflict={...fact,healthy:!fact.healthy};
+ const newer={...fact,observed_at:doc.evaluated_at};
+ doc.service_observations=newestFirst?[newer,fact,conflict]:[fact,conflict,newer];
+ expect(()=>parseAlerts(doc)).toThrow('Conflicting service evidence');
+});
