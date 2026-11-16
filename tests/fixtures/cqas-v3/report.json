@@ -1,0 +1,177 @@
+{
+  "schema": "cqas-report/3",
+  "contract_status": "proposed",
+  "data_status": "provisional",
+  "product": {
+    "explorer_id": "sentinel2-level2a",
+    "name": "Synthetic integration fixture",
+    "short_name": "Synthetic"
+  },
+  "record": {
+    "schema": "cqas-record/1",
+    "data_status": "provisional",
+    "status_note": "Provisional. Produced by C-QAS and not reviewed. A result from an experimental check cannot establish a requirement, so a finding is 'not assessed' until its checks are validated, whatever they measured.",
+    "scope_note": "A C-QAS check describes the scenes and reference comparisons listed. It does not establish collection-wide suitability and is not a CEOS-ARD assessment.",
+    "generated_at": "2026-11-14T12:00:00Z",
+    "product_version": "pv-91cd4fa31a3af7058de8195d6de3f4a1c3462f4de0da46b3e1322d347e314a9f",
+    "product_state": "registered",
+    "registration": {
+      "collection": "synthetic.optical-sr",
+      "scene": {
+        "platform": "SYNTHETIC-1",
+        "instrument": "SYNTHCAM",
+        "acquired": "2026-01-01T00:00:00Z",
+        "grid": null,
+        "attributes": {}
+      },
+      "product_version": {
+        "provider_id": "SYNTHETIC_0001",
+        "processing": {
+          "label": "v1",
+          "attributes": {},
+          "produced": null
+        },
+        "supersedes": null
+      },
+      "assets": [
+        {
+          "role": "sr_red",
+          "href": "/tmp/synthetic_sr_red.bin",
+          "origin": null,
+          "bytes": 1,
+          "pixel_size_m": 30.0,
+          "checksum": {
+            "alg": "sha256",
+            "value": "abababababababababababababababababababababababababababababababab",
+            "source": "computed"
+          }
+        }
+      ],
+      "source": {
+        "adapter": "synthetic@0.1.0",
+        "original_metadata": [
+          "evidence://sha256/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+        ],
+        "provenance": "provider"
+      }
+    },
+    "basis": {
+      "pfs_snapshot": "SR-v5.0.2@fdcf53320d78",
+      "pfs_family": "SR",
+      "pfs_version": "5.0.2",
+      "rulesets": [
+        "synthetic@1"
+      ]
+    },
+    "summary": {
+      "findings": {
+        "not_assessed": 1
+      },
+      "results": {
+        "completed": 1,
+        "not_assessed": 1
+      },
+      "maturity": {
+        "experimental": 2
+      }
+    },
+    "findings": [
+      {
+        "finding_id": "59a556a0-6e30-49d9-8759-45f5d1c6d5f8",
+        "requirement": "time-sr",
+        "title": "Collection time",
+        "level": "threshold",
+        "outcome": "not_assessed",
+        "reason": {
+          "code": "no_part_established",
+          "detail": null,
+          "parts_established": [],
+          "parts_open": [
+            "collection_time"
+          ]
+        },
+        "review_state": "provisional",
+        "derived_from": [
+          "06ebcb0b-71f4-4c06-905a-acb8f0d4f7cb"
+        ],
+        "supersedes": null
+      }
+    ],
+    "results": [
+      {
+        "result_id": "06ebcb0b-71f4-4c06-905a-acb8f0d4f7cb",
+        "created": "2026-11-14T12:00:00Z",
+        "run_id": "baeb6890-0f50-4be9-a846-0ce13717df89",
+        "product_version": "pv-91cd4fa31a3af7058de8195d6de3f4a1c3462f4de0da46b3e1322d347e314a9f",
+        "check": "metadata.collection_time@0.1.0",
+        "idempotency_key": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "outcome": "completed",
+        "reason": null,
+        "measurements": [
+          {
+            "name": "value",
+            "per": {},
+            "value": true,
+            "unit": "1",
+            "n_valid": null,
+            "n_total": null,
+            "uncertainty": {
+              "not_estimated": "x"
+            }
+          }
+        ],
+        "quality_flags": [],
+        "exclusions": {},
+        "method": {
+          "check_version": "0.1.0",
+          "maturity": "experimental",
+          "code": "test",
+          "image": null
+        },
+        "inputs": [],
+        "reference": null,
+        "evidence": [],
+        "follows": null
+      },
+      {
+        "result_id": "18a68d72-1801-4eb0-b4ad-4d9eb258447c",
+        "created": "2026-11-14T12:00:00Z",
+        "run_id": "537ccc77-fb06-4a62-a2ec-245fcfa4be6c",
+        "product_version": "pv-91cd4fa31a3af7058de8195d6de3f4a1c3462f4de0da46b3e1322d347e314a9f",
+        "check": "geometry.registration@0.1.0",
+        "idempotency_key": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "outcome": "not_assessed",
+        "reason": {
+          "code": "reference_unavailable",
+          "detail": null
+        },
+        "measurements": [],
+        "quality_flags": [],
+        "exclusions": {},
+        "method": {
+          "check_version": "0.1.0",
+          "maturity": "experimental",
+          "code": "test",
+          "image": null
+        },
+        "inputs": [],
+        "reference": null,
+        "evidence": [],
+        "follows": null
+      }
+    ]
+  },
+  "simple": {
+    "statement": "Observed results for 1 scene: 2 check results and 1 requirement-level findings. See each result's outcome, maturity and assessment reason.",
+    "scene_count": 1,
+    "result_count": 2,
+    "finding_count": 1,
+    "source_result_ids": [
+      "06ebcb0b-71f4-4c06-905a-acb8f0d4f7cb",
+      "18a68d72-1801-4eb0-b4ad-4d9eb258447c"
+    ],
+    "source_finding_ids": [
+      "59a556a0-6e30-49d9-8759-45f5d1c6d5f8"
+    ]
+  }
+}
